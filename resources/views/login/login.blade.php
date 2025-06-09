@@ -277,14 +277,6 @@
                             </div>
                             <div class="benefit-item">
                                 <i class="fas fa-check"></i>
-                                <span>Acceder a ofertas exclusivas</span>
-                            </div>
-                            <div class="benefit-item">
-                                <i class="fas fa-check"></i>
-                                <span>Guardar tus búsquedas favoritas</span>
-                            </div>
-                            <div class="benefit-item">
-                                <i class="fas fa-check"></i>
                                 <span>Completar reservas más rápido</span>
                             </div>
                         </div>
@@ -349,8 +341,13 @@
                 <!-- Side Information -->
                 <div class="col-lg-4 col-md-5 d-none d-md-block">
                     <div class="ms-4">
+<<<<<<< HEAD
                         <h3 class="text-primary fw-bold mb-4">¿Por qué elegir Despegar?</h3>
 
+=======
+                        <h3 class="text-primary fw-bold mb-4">¿Por qué elegir Frategar?</h3>
+                        
+>>>>>>> 1fab4ed1b65f4e043807df1534bd75057eea09aa
                         <div class="d-flex align-items-start mb-4">
                             <div class="me-3">
                                 <i class="fas fa-shield-alt fa-2x text-primary"></i>
@@ -380,16 +377,6 @@
                             <div>
                                 <h5>Atención 24/7</h5>
                                 <p class="text-muted">Te ayudamos cuando lo necesites, todos los días del año.</p>
-                            </div>
-                        </div>
-
-                        <div class="d-flex align-items-start">
-                            <div class="me-3">
-                                <i class="fas fa-star fa-2x text-warning"></i>
-                            </div>
-                            <div>
-                                <h5>+20 años de experiencia</h5>
-                                <p class="text-muted">Somos líderes en turismo online en Latinoamérica.</p>
                             </div>
                         </div>
                     </div>
@@ -447,7 +434,7 @@
 
             <div class="row">
                 <div class="col-12 text-center">
-                    <p class="mb-0">&copy; 2024 Despegar. Todos los derechos reservados.</p>
+                    <p class="mb-0">&copy; 2024 Frategar. Todos los derechos reservados.</p>
                 </div>
             </div>
         </div>

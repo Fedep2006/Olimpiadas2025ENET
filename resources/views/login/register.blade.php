@@ -18,7 +18,11 @@
             min-height: 100vh;
         }
         
-       
+            .navbar-brand {
+            font-weight: bold;
+            font-size: 1.8rem;
+            color: var(--despegar-blue) !important;
+        }
         
         .register-container {
             min-height: calc(100vh - 200px);
@@ -260,7 +264,48 @@
     </style>
 </head>
 <body>
-  <x-layouts-navbar/>
+
+<nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm">
+        <div class="container">
+            <a class="navbar-brand" href="/">
+                <i class="fas fa-plane text-primary"></i> Frategar
+            </a>
+            
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="#"><i class="fas fa-plane"></i> Vuelos</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#"><i class="fas fa-bed"></i> Hoteles</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#"><i class="fas fa-suitcase"></i> Paquetes</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#"><i class="fas fa-car"></i> Autos</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#"><i class="fas fa-ship"></i> Cruceros</a>
+                    </li>
+                </ul>
+                
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/login"><i class="fas fa-user"></i> Mi cuenta</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#"><i class="fas fa-headset"></i> Ayuda</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
 
 
     <!-- Register Section -->
@@ -303,7 +348,7 @@
                         </div>
 
                         <!-- Register Form -->
-                        <form id="registerForm" action="{{ route('register') }}" method="POST">
+                        <form id="registerForm" action="" method="POST">
                             @csrf
                             <div class="row mb-3">
                                 <div class="col-6">
@@ -418,27 +463,6 @@
                 <div class="col-lg-4 col-md-5 d-none d-md-block">
                     <div class="ms-4">
                         <h3 class="text-primary fw-bold mb-4">¡Únete a millones de viajeros!</h3>
-                        
-                        <div class="d-flex align-items-start mb-4">
-                            <div class="me-3">
-                                <i class="fas fa-globe fa-2x text-primary"></i>
-                            </div>
-                            <div>
-                                <h5>+500 destinos</h5>
-                                <p class="text-muted">Viajá a cualquier lugar del mundo con las mejores opciones.</p>
-                            </div>
-                        </div>
-
-                        <div class="d-flex align-items-start mb-4">
-                            <div class="me-3">
-                                <i class="fas fa-users fa-2x text-primary"></i>
-                            </div>
-                            <div>
-                                <h5>+50 millones de usuarios</h5>
-                                <p class="text-muted">Formá parte de la comunidad de viajeros más grande de Latinoamérica.</p>
-                            </div>
-                        </div>
-
                         <div class="d-flex align-items-start mb-4">
                             <div class="me-3">
                                 <i class="fas fa-medal fa-2x text-warning"></i>
@@ -446,16 +470,6 @@
                             <div>
                                 <h5>Empresa líder</h5>
                                 <p class="text-muted">Reconocida como la mejor plataforma de viajes online.</p>
-                            </div>
-                        </div>
-
-                        <div class="d-flex align-items-start">
-                            <div class="me-3">
-                                <i class="fas fa-mobile-alt fa-2x text-primary"></i>
-                            </div>
-                            <div>
-                                <h5>App móvil gratuita</h5>
-                                <p class="text-muted">Descargá nuestra app y gestioná tus viajes desde cualquier lugar.</p>
                             </div>
                         </div>
                     </div>
@@ -469,7 +483,7 @@
         <div class="container">
             <div class="row">
                 <div class="col-md-3 mb-4">
-                    <h5>Despegar</h5>
+                    <h5>Frategar</h5>
                     <ul class="list-unstyled">
                         <li><a href="#" class="text-light text-decoration-none">Quiénes somos</a></li>
                         <li><a href="#" class="text-light text-decoration-none">Trabaja con nosotros</a></li>
@@ -513,7 +527,7 @@
             
             <div class="row">
                 <div class="col-12 text-center">
-                    <p class="mb-0">&copy; 2024 Frategar. Todos los derechos reservados.</p>
+                    <p class="mb-0">&copy; 2025 Frategar. Todos los derechos reservados.</p>
                 </div>
             </div>
         </div>
