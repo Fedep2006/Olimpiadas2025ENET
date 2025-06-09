@@ -13,11 +13,9 @@ return new class extends Migration
     {
         Schema::create('compras_paquetes', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('id_usuario');
-            $table->unsignedBigInteger('id_paquete');
+            $table->foreignId('id_usuario')->constrained('users')->onDelete('cascade');
+            $table->foreignId('id_paquete')->constrained('paquetes')->onDelete('cascade');
             $table->timestamp('fecha_compra')->useCurrent();
-            $table->foreign('id_usuario')->references('id')->on('users')->onDelete('cascade');
-            $table->foreign('id_paquete')->references('id')->on('paquetes')->onDelete('cascade');
         });
     }
 
