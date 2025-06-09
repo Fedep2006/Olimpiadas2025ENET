@@ -452,39 +452,39 @@
         </div>
         
         <nav class="sidebar-menu">
-            <a href="#" class="menu-item active">
+            <a href="/dashboard" class="menu-item active">
                 <i class="fas fa-tachometer-alt"></i>
                 <span class="menu-text">Dashboard</span>
             </a>
-            <a href="#" class="menu-item">
+            <a href="/dashboard/reservas" class="menu-item">
                 <i class="fas fa-calendar-check"></i>
                 <span class="menu-text">Reservas</span>
             </a>
-            <a href="#" class="menu-item">
+            <a href="/dashboard/usuarios" class="menu-item">
                 <i class="fas fa-users"></i>
                 <span class="menu-text">Usuarios</span>
             </a>
-            <a href="#" class="menu-item">
+            <a href="/dashboard/vuelos" class="menu-item">
                 <i class="fas fa-plane"></i>
                 <span class="menu-text">Vuelos</span>
             </a>
-            <a href="#" class="menu-item">
+            <a href="/dashboard/hoteles" class="menu-item">
                 <i class="fas fa-bed"></i>
                 <span class="menu-text">Hoteles</span>
             </a>
-            <a href="#" class="menu-item">
+            <a href="/dashboard/autos" class="menu-item">
                 <i class="fas fa-car"></i>
                 <span class="menu-text">Autos</span>
             </a>
-            <a href="#" class="menu-item">
+            <a href="/dashboard/promociones" class="menu-item">
                 <i class="fas fa-tags"></i>
                 <span class="menu-text">Promociones</span>
             </a>
-            <a href="#" class="menu-item">
+            <a href="/dashboard/reportes" class="menu-item">
                 <i class="fas fa-chart-bar"></i>
                 <span class="menu-text">Reportes</span>
             </a>
-            <a href="#" class="menu-item">
+            <a href="/dashboard/configuracion" class="menu-item">
                 <i class="fas fa-cog"></i>
                 <span class="menu-text">Configuración</span>
             </a>
