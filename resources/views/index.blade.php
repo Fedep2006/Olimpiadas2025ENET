@@ -391,7 +391,7 @@
                     </a>
                 </div>
                 <div class="col-md-4 mb-4">
-                       <a  href="/detalles  style="text-decoration: none; color: inherit;"">
+                       <a  href="/detalles"  style="text-decoration: none; color: inherit;">
                     <div class="card offer-card h-100">
                         <img src="/placeholder.svg?height=200&width=400" class="card-img-top" alt="Cancún">
                         <div class="card-body">
