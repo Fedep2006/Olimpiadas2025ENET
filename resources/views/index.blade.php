@@ -503,15 +503,7 @@
                     <h5>Atención 24/7</h5>
                     <p class="text-muted">Te ayudamos cuando lo necesites</p>
                 </div>
-                
-                <div class="col-md-3 text-center mb-4">
-                    <div class="mb-3">
-                        <i class="fas fa-mobile-alt fa-3x text-primary"></i>
-                    </div>
-                    <h5>App móvil</h5>
-                    <p class="text-muted">Llevá tus viajes en tu celular</p>
-                </div>
-                
+            
                 <div class="col-md-3 text-center mb-4">
                     <div class="mb-3">
                         <i class="fas fa-percent fa-3x text-primary"></i>
@@ -564,14 +556,6 @@
                         <a href="#" class="text-light"><i class="fab fa-twitter fa-2x"></i></a>
                         <a href="#" class="text-light"><i class="fab fa-instagram fa-2x"></i></a>
                         <a href="#" class="text-light"><i class="fab fa-youtube fa-2x"></i></a>
-                    </div>
-                    
-                    <div class="mt-3">
-                        <h6>Descarga la app</h6>
-                        <div class="d-flex flex-column gap-2">
-                            <img src="/placeholder.svg?height=40&width=120" alt="App Store" class="img-fluid" style="max-width: 120px;">
-                            <img src="/placeholder.svg?height=40&width=120" alt="Google Play" class="img-fluid" style="max-width: 120px;">
-                        </div>
                     </div>
                 </div>
             </div>
