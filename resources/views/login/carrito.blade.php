@@ -715,7 +715,7 @@
             
             <div class="row">
                 <div class="col-12 text-center">
-                    <p class="mb-0">&copy; 2024 Frategar. Todos los derechos reservados.</p>
+                    <p class="mb-0">&copy; 2025 Frategar. Todos los derechos reservados.</p>
                 </div>
             </div>
         </div>
