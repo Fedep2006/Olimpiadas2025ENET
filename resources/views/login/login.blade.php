@@ -269,17 +269,7 @@
                         </div>
 
                         <!-- Benefits -->
-                        <div class="benefits">
-                            <h6>Al iniciar sesión podés:</h6>
-                            <div class="benefit-item">
-                                <i class="fas fa-check"></i>
-                                <span>Ver tus reservas y gestionar tus viajes</span>
-                            </div>
-                            <div class="benefit-item">
-                                <i class="fas fa-check"></i>
-                                <span>Completar reservas más rápido</span>
-                            </div>
-                        </div>
+
 
                         <!-- Login Form -->
                         <form>
@@ -334,6 +324,8 @@
                         </div>
                     </div>
                 </div>
+
+
 
                 <!-- Side Information -->
                 <div class="col-lg-4 col-md-5 d-none d-md-block">

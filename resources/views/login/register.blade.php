@@ -321,25 +321,7 @@
                         </div>
 
                         <!-- Benefits -->
-                        <div class="benefits">
-                            <h6>Al crear tu cuenta obtenés:</h6>
-                            <div class="benefit-item">
-                                <i class="fas fa-check"></i>
-                                <span>Ofertas exclusivas para miembros</span>
-                            </div>
-                            <div class="benefit-item">
-                                <i class="fas fa-check"></i>
-                                <span>Gestión fácil de tus reservas</span>
-                            </div>
-                            <div class="benefit-item">
-                                <i class="fas fa-check"></i>
-                                <span>Historial de viajes y favoritos</span>
-                            </div>
-                            <div class="benefit-item">
-                                <i class="fas fa-check"></i>
-                                <span>Check-in online y más servicios</span>
-                            </div>
-                        </div>
+                      
 
                         <!-- Social Register -->
 
@@ -536,3 +518,5 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
+
+<!-- aaron rompio todo-->
