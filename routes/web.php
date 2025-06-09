@@ -11,3 +11,6 @@ Route::get('/login', function () {
 Route::get('/register', function () {
     return view('login.register'); // Make sure resources/views/login/register.blade.php exists
 });
+Route::get('/detalles', function () {
+    return view('detalles'); // Make sure resources/views/login/register.blade.php exists
+});
