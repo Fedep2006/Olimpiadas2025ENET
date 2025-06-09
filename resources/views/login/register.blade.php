@@ -412,7 +412,7 @@
                                 <div class="form-check">
                                     <input class="form-check-input" type="checkbox" id="newsletter">
                                     <label class="form-check-label" for="newsletter">
-                                        Quiero recibir ofertas y promociones por email
+                                        Quiero recibir (una foto de Aaron viniendose en el codigo) ofertas y promociones por email
                                     </label>
                                 </div>
                             </div>
@@ -516,4 +516,4 @@
 </body>
 </html>
 
-<!-- aaron rompio todo-->
+<!-- aaron rompio todo, hasta mi corazon-->
