@@ -323,14 +323,11 @@
                             </button>
                         </form>
 
-<<<<<<< HEAD
                         <!-- Social Login -->
                         <div class="divider">
                             <span>o iniciá sesión con</span>
                         </div>
 
-=======
->>>>>>> df34d5506af0d2ddccd96a27c2f3992e0e554f0f
                         <!-- Register Link -->
                         <div class="register-link">
                             <p class="mb-0">¿No tenés cuenta? <a href="/register">Registrate gratis</a></p>
@@ -341,13 +338,8 @@
                 <!-- Side Information -->
                 <div class="col-lg-4 col-md-5 d-none d-md-block">
                     <div class="ms-4">
-<<<<<<< HEAD
                         <h3 class="text-primary fw-bold mb-4">¿Por qué elegir Despegar?</h3>
 
-=======
-                        <h3 class="text-primary fw-bold mb-4">¿Por qué elegir Frategar?</h3>
-                        
->>>>>>> 1fab4ed1b65f4e043807df1534bd75057eea09aa
                         <div class="d-flex align-items-start mb-4">
                             <div class="me-3">
                                 <i class="fas fa-shield-alt fa-2x text-primary"></i>
