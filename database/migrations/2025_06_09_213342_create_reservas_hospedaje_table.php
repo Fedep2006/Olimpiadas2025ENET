@@ -15,7 +15,6 @@ return new class extends Migration
             $table->id();
             $table->foreignId('id_usuario')->constrained('users')->onDelete('cascade');
             $table->foreignId('id_hospedaje')->constrained('hospedajes')->onDelete('cascade');
-            $table->unsignedBigInteger('id_hospedaje');
             $table->date('fecha_inicio');
             $table->date('fecha_fin');
         });

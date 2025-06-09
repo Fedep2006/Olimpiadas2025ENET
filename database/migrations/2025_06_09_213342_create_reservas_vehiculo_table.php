@@ -15,7 +15,6 @@ return new class extends Migration
             $table->id();
             $table->foreignId('id_usuario')->constrained('users')->onDelete('cascade');
             $table->foreignId('id_vehiculo')->constrained('vehiculos')->onDelete('cascade');
-            $table->unsignedBigInteger('id_vehiculo');
             $table->date('fecha_inicio');
             $table->date('fecha_fin');
         });

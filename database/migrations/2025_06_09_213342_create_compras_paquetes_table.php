@@ -15,7 +15,6 @@ return new class extends Migration
             $table->id();
             $table->foreignId('id_usuario')->constrained('users')->onDelete('cascade');
             $table->foreignId('id_paquete')->constrained('paquetes')->onDelete('cascade');
-            $table->unsignedBigInteger('id_paquete');
             $table->timestamp('fecha_compra')->useCurrent();
         });
     }
