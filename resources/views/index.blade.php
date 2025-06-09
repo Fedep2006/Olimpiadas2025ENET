@@ -107,7 +107,7 @@
     <!-- Header -->
     <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm">
         <div class="container">
-            <a class="navbar-brand" href="#">
+            <a class="navbar-brand" href="/">
                 <i class="fas fa-plane text-primary"></i> Frategar
             </a>
             
@@ -520,7 +520,7 @@
         <div class="container">
             <div class="row">
                 <div class="col-md-3 mb-4">
-                    <h5>Despegar</h5>
+                    <h5>Frategar</h5>
                     <ul class="list-unstyled">
                         <li><a href="#" class="text-light text-decoration-none">Quiénes somos</a></li>
                         <li><a href="#" class="text-light text-decoration-none">Trabaja con nosotros</a></li>
@@ -564,7 +564,7 @@
             
             <div class="row">
                 <div class="col-12 text-center">
-                    <p class="mb-0">&copy; 2024 Despegar. Todos los derechos reservados.</p>
+                    <p class="mb-0">&copy; 2024 Frategar. Todos los derechos reservados.</p>
                 </div>
             </div>
         </div>
