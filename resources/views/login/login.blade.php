@@ -275,14 +275,6 @@
                             </div>
                             <div class="benefit-item">
                                 <i class="fas fa-check"></i>
-                                <span>Acceder a ofertas exclusivas</span>
-                            </div>
-                            <div class="benefit-item">
-                                <i class="fas fa-check"></i>
-                                <span>Guardar tus búsquedas favoritas</span>
-                            </div>
-                            <div class="benefit-item">
-                                <i class="fas fa-check"></i>
                                 <span>Completar reservas más rápido</span>
                             </div>
                         </div>
@@ -366,16 +358,6 @@
                             <div>
                                 <h5>Atención 24/7</h5>
                                 <p class="text-muted">Te ayudamos cuando lo necesites, todos los días del año.</p>
-                            </div>
-                        </div>
-
-                        <div class="d-flex align-items-start">
-                            <div class="me-3">
-                                <i class="fas fa-star fa-2x text-warning"></i>
-                            </div>
-                            <div>
-                                <h5>+20 años de experiencia</h5>
-                                <p class="text-muted">Somos líderes en turismo online en Latinoamérica.</p>
                             </div>
                         </div>
                     </div>
