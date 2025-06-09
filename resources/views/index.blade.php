@@ -12,19 +12,39 @@
             --despegar-orange: #ff6600;
             --despegar-light-blue: #e6f3ff;
         }
-        
+
         .navbar-brand {
             font-weight: bold;
             font-size: 1.8rem;
             color: var(--despegar-blue) !important;
         }
-        
+
+        /* Hero con imagen de fondo */
         .hero-section {
-            background: linear-gradient(135deg, var(--despegar-blue) 0%, #004499 100%);
+            position: relative;
             color: white;
             padding: 60px 0;
+            background: none; /* Quitar imagen de fondo */
+            overflow: hidden;
         }
-        
+        .hero-video-bg {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            object-fit: cover;
+            z-index: 0;
+        }
+        .hero-section::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.4);
+            z-index: 1;
+        }
+        .hero-section .container {
+            position: relative;
+            z-index: 2;
+        }
+
         .search-card {
             background: white;
             border-radius: 15px;
@@ -32,7 +52,7 @@
             padding: 30px;
             margin-top: 30px;
         }
-        
+
         .tab-pills .nav-link {
             border-radius: 25px;
             margin-right: 10px;
@@ -40,12 +60,12 @@
             border: 2px solid transparent;
             color: var(--despegar-blue);
         }
-        
+
         .tab-pills .nav-link.active {
             background-color: var(--despegar-blue);
             color: white;
         }
-        
+
         .btn-search {
             background-color: var(--despegar-orange);
             border: none;
@@ -54,23 +74,23 @@
             font-weight: bold;
             color: white;
         }
-        
+
         .btn-search:hover {
             background-color: #e55a00;
             color: white;
         }
-        
+
         .offer-card {
             border-radius: 15px;
             overflow: hidden;
             box-shadow: 0 5px 15px rgba(0,0,0,0.1);
             transition: transform 0.3s ease;
         }
-        
+
         .offer-card:hover {
             transform: translateY(-5px);
         }
-        
+
         .price-tag {
             background-color: var(--despegar-orange);
             color: white;
@@ -78,14 +98,14 @@
             border-radius: 15px;
             font-weight: bold;
         }
-        
+
         .destination-card {
             position: relative;
             border-radius: 15px;
             overflow: hidden;
             height: 200px;
         }
-        
+
         .destination-overlay {
             position: absolute;
             bottom: 0;
@@ -95,7 +115,7 @@
             color: white;
             padding: 20px;
         }
-        
+
         .footer-section {
             background-color: #2c3e50;
             color: white;
@@ -110,37 +130,20 @@
             <a class="navbar-brand" href="/">
                 <i class="fas fa-plane text-primary"></i> Frategar
             </a>
-            
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
                 <span class="navbar-toggler-icon"></span>
             </button>
-            
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav me-auto">
-                    <li class="nav-item">
-                        <a class="nav-link" href="#"><i class="fas fa-plane"></i> Vuelos</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#"><i class="fas fa-bed"></i> Hoteles</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#"><i class="fas fa-suitcase"></i> Paquetes</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#"><i class="fas fa-car"></i> Autos</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#"><i class="fas fa-ship"></i> Cruceros</a>
-                    </li>
+                    <li class="nav-item"><a class="nav-link" href="#"><i class="fas fa-plane"></i> Vuelos</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#"><i class="fas fa-bed"></i> Hoteles</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#"><i class="fas fa-suitcase"></i> Paquetes</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#"><i class="fas fa-car"></i> Autos</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#"><i class="fas fa-ship"></i> Cruceros</a></li>
                 </ul>
-                
                 <ul class="navbar-nav">
-                    <li class="nav-item">
-                        <a class="nav-link" href="/login"><i class="fas fa-user"></i> Mi cuenta</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#"><i class="fas fa-headset"></i> Ayuda</a>
-                    </li>
+                    <li class="nav-item"><a class="nav-link" href="/login"><i class="fas fa-user"></i> Mi cuenta</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#"><i class="fas fa-headset"></i> Ayuda</a></li>
                 </ul>
             </div>
         </div>
@@ -148,6 +151,7 @@
 
     <!-- Hero Section -->
     <section class="hero-section">
+        <video class="hero-video-bg" src="{{ asset('img/fondo.mp4') }}" autoplay loop muted playsinline></video>
         <div class="container">
             <div class="row">
                 <div class="col-lg-8 mx-auto text-center">
@@ -155,7 +159,6 @@
                     <p class="lead mb-4">Encontrá vuelos, hoteles y paquetes al mejor precio</p>
                 </div>
             </div>
-            
             <div class="row">
                 <div class="col-lg-10 mx-auto">
                     <div class="search-card">
@@ -182,7 +185,6 @@
                                 </a>
                             </li>
                         </ul>
-                        
                         <!-- Tab Content -->
                         <div class="tab-content">
                             <!-- Vuelos Tab -->
@@ -204,7 +206,6 @@
                                             </div>
                                         </div>
                                     </div>
-                                    
                                     <div class="row mb-3">
                                         <div class="col-md-3">
                                             <label class="form-label">Ida</label>
@@ -233,7 +234,6 @@
                                             </select>
                                         </div>
                                     </div>
-                                    
                                     <div class="text-center">
                                         <button type="submit" class="btn btn-search btn-lg">
                                             <i class="fas fa-search me-2"></i>Buscar vuelos
@@ -241,7 +241,6 @@
                                     </div>
                                 </form>
                             </div>
-                            
                             <!-- Hoteles Tab -->
                             <div class="tab-pane fade" id="hoteles">
                                 <form>
@@ -262,7 +261,6 @@
                                             </select>
                                         </div>
                                     </div>
-                                    
                                     <div class="row mb-3">
                                         <div class="col-md-6">
                                             <label class="form-label">Check-in</label>
@@ -273,7 +271,6 @@
                                             <input type="date" class="form-control">
                                         </div>
                                     </div>
-                                    
                                     <div class="text-center">
                                         <button type="submit" class="btn btn-search btn-lg">
                                             <i class="fas fa-search me-2"></i>Buscar hoteles
@@ -281,7 +278,6 @@
                                     </div>
                                 </form>
                             </div>
-                            
                             <!-- Paquetes Tab -->
                             <div class="tab-pane fade" id="paquetes">
                                 <form>
@@ -301,7 +297,6 @@
                                             </div>
                                         </div>
                                     </div>
-                                    
                                     <div class="row mb-3">
                                         <div class="col-md-4">
                                             <label class="form-label">Salida</label>
@@ -320,7 +315,6 @@
                                             </select>
                                         </div>
                                     </div>
-                                    
                                     <div class="text-center">
                                         <button type="submit" class="btn btn-search btn-lg">
                                             <i class="fas fa-search me-2"></i>Buscar paquetes
@@ -328,7 +322,6 @@
                                     </div>
                                 </form>
                             </div>
-                            
                             <!-- Autos Tab -->
                             <div class="tab-pane fade" id="autos">
                                 <form>
@@ -348,7 +341,6 @@
                                             </div>
                                         </div>
                                     </div>
-                                    
                                     <div class="row mb-3">
                                         <div class="col-md-6">
                                             <label class="form-label">Fecha de retiro</label>
@@ -359,7 +351,6 @@
                                             <input type="datetime-local" class="form-control">
                                         </div>
                                     </div>
-                                    
                                     <div class="text-center">
                                         <button type="submit" class="btn btn-search btn-lg">
                                             <i class="fas fa-search me-2"></i>Buscar autos
@@ -383,7 +374,6 @@
                     <p class="text-muted">Los mejores precios para tu próximo viaje</p>
                 </div>
             </div>
-            
             <div class="row">
                 <div class="col-md-4 mb-4">
                     <div class="card offer-card h-100">
@@ -398,7 +388,6 @@
                         </div>
                     </div>
                 </div>
-                
                 <div class="col-md-4 mb-4">
                     <div class="card offer-card h-100">
                         <img src="/placeholder.svg?height=200&width=400" class="card-img-top" alt="Cancún">
@@ -412,7 +401,6 @@
                         </div>
                     </div>
                 </div>
-                
                 <div class="col-md-4 mb-4">
                     <div class="card offer-card h-100">
                         <img src="/placeholder.svg?height=200&width=400" class="card-img-top" alt="Europa">
@@ -439,7 +427,6 @@
                     <p class="text-muted">Los lugares más elegidos por nuestros viajeros</p>
                 </div>
             </div>
-            
             <div class="row">
                 <div class="col-md-3 mb-4">
                     <div class="destination-card">
@@ -450,7 +437,6 @@
                         </div>
                     </div>
                 </div>
-                
                 <div class="col-md-3 mb-4">
                     <div class="destination-card">
                         <img src="/placeholder.svg?height=200&width=300" class="w-100 h-100 object-fit-cover" alt="Nueva York">
@@ -460,7 +446,6 @@
                         </div>
                     </div>
                 </div>
-                
                 <div class="col-md-3 mb-4">
                     <div class="destination-card">
                         <img src="/placeholder.svg?height=200&width=300" class="w-100 h-100 object-fit-cover" alt="Tokio">
@@ -470,7 +455,6 @@
                         </div>
                     </div>
                 </div>
-                
                 <div class="col-md-3 mb-4">
                     <div class="destination-card">
                         <img src="/placeholder.svg?height=200&width=300" class="w-100 h-100 object-fit-cover" alt="Londres">
@@ -495,7 +479,6 @@
                     <h5>Compra protegida</h5>
                     <p class="text-muted">Tu dinero está protegido con nosotros</p>
                 </div>
-                
                 <div class="col-md-3 text-center mb-4">
                     <div class="mb-3">
                         <i class="fas fa-headset fa-3x text-primary"></i>
@@ -503,13 +486,19 @@
                     <h5>Atención 24/7</h5>
                     <p class="text-muted">Te ayudamos cuando lo necesites</p>
                 </div>
-            
                 <div class="col-md-3 text-center mb-4">
                     <div class="mb-3">
                         <i class="fas fa-percent fa-3x text-primary"></i>
                     </div>
                     <h5>Mejores precios</h5>
                     <p class="text-muted">Garantizamos el mejor precio</p>
+                </div>
+                <div class="col-md-3 text-center mb-4">
+                    <div class="mb-3">
+                        <i class="fas fa-car-side fa-3x text-primary"></i>
+                    </div>
+                    <h5>Autos y más</h5>
+                    <p class="text-muted">Alquiler de autos y otros servicios</p>
                 </div>
             </div>
         </div>
@@ -528,7 +517,6 @@
                         <li><a href="#" class="text-light text-decoration-none">Inversores</a></li>
                     </ul>
                 </div>
-                
                 <div class="col-md-3 mb-4">
                     <h5>Productos</h5>
                     <ul class="list-unstyled">
@@ -538,7 +526,6 @@
                         <li><a href="#" class="text-light text-decoration-none">Autos</a></li>
                     </ul>
                 </div>
-                
                 <div class="col-md-3 mb-4">
                     <h5>Ayuda</h5>
                     <ul class="list-unstyled">
@@ -548,7 +535,6 @@
                         <li><a href="#" class="text-light text-decoration-none">Privacidad</a></li>
                     </ul>
                 </div>
-                
                 <div class="col-md-3 mb-4">
                     <h5>Síguenos</h5>
                     <div class="d-flex gap-3">
@@ -559,9 +545,7 @@
                     </div>
                 </div>
             </div>
-            
             <hr class="my-4">
-            
             <div class="row">
                 <div class="col-12 text-center">
                     <p class="mb-0">&copy; 2024 Frategar. Todos los derechos reservados.</p>
