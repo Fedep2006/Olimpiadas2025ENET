@@ -13,12 +13,11 @@ return new class extends Migration
     {
         Schema::create('reservas_hospedaje', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('id_usuario');
+            $table->foreignId('id_usuario')->constrained('users')->onDelete('cascade');
+            $table->foreignId('id_hospedaje')->constrained('hospedajes')->onDelete('cascade');
             $table->unsignedBigInteger('id_hospedaje');
             $table->date('fecha_inicio');
             $table->date('fecha_fin');
-            $table->foreign('id_usuario')->references('id')->on('users')->onDelete('cascade');
-            $table->foreign('id_hospedaje')->references('id')->on('hospedajes')->onDelete('cascade');
         });
     }
 

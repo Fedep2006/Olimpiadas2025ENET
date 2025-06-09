@@ -13,11 +13,9 @@ return new class extends Migration
     {
         Schema::create('reservas_viaje', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('id_usuario');
-            $table->unsignedBigInteger('id_viaje');
+            $table->foreignId('id_usuario')->constrained('users')->onDelete('cascade');
+            $table->foreignId('id_viaje')->constrained('viajes')->onDelete('cascade');
             $table->timestamp('fecha_reserva')->useCurrent();
-            $table->foreign('id_usuario')->references('id')->on('users')->onDelete('cascade');
-            $table->foreign('id_viaje')->references('id')->on('viajes')->onDelete('cascade');
         });
     }
 

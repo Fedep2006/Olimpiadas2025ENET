@@ -13,10 +13,9 @@ return new class extends Migration
     {
         Schema::create('paquete_contenido', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('id_paquete');
+            $table->foreignId('id_paquete')->constrained('paquetes')->onDelete('cascade');
             $table->enum('tipo_contenido', ['viaje', 'hospedaje', 'vehiculo']);
             $table->unsignedBigInteger('id_contenido');
-            $table->foreign('id_paquete')->references('id')->on('paquetes')->onDelete('cascade');
             $table->timestamps();
         });
     }
