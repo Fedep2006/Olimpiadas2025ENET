@@ -13,6 +13,9 @@ return new class extends Migration
     {
         Schema::create('paquetes', function (Blueprint $table) {
             $table->id();
+            $table->string('nombre');
+            $table->text('descripcion')->nullable();
+            $table->decimal('precio_total', 10, 2);
             $table->timestamps();
         });
     }

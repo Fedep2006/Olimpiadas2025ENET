@@ -13,6 +13,12 @@ return new class extends Migration
     {
         Schema::create('vehiculos', function (Blueprint $table) {
             $table->id();
+            $table->enum('tipo', ['auto', 'camioneta', 'moto', 'bicicleta']);
+            $table->string('marca');
+            $table->string('modelo');
+            $table->string('ubicacion');
+            $table->decimal('precio_por_dia', 10, 2);
+            $table->boolean('disponible')->default(true);
             $table->timestamps();
         });
     }
