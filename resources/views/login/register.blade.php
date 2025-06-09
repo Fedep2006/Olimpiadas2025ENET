@@ -325,9 +325,6 @@
 
                         <!-- Social Register -->
 
-                        <div class="divider">
-                            <span>Completá el formulario</span>
-                        </div>
 
                         <!-- Register Form -->
                         <form id="registerForm" action="" method="POST">
