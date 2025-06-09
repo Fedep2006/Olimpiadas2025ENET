@@ -463,27 +463,6 @@
                 <div class="col-lg-4 col-md-5 d-none d-md-block">
                     <div class="ms-4">
                         <h3 class="text-primary fw-bold mb-4">¡Únete a millones de viajeros!</h3>
-                        
-                        <div class="d-flex align-items-start mb-4">
-                            <div class="me-3">
-                                <i class="fas fa-globe fa-2x text-primary"></i>
-                            </div>
-                            <div>
-                                <h5>+500 destinos</h5>
-                                <p class="text-muted">Viajá a cualquier lugar del mundo con las mejores opciones.</p>
-                            </div>
-                        </div>
-
-                        <div class="d-flex align-items-start mb-4">
-                            <div class="me-3">
-                                <i class="fas fa-users fa-2x text-primary"></i>
-                            </div>
-                            <div>
-                                <h5>+50 millones de usuarios</h5>
-                                <p class="text-muted">Formá parte de la comunidad de viajeros más grande de Latinoamérica.</p>
-                            </div>
-                        </div>
-
                         <div class="d-flex align-items-start mb-4">
                             <div class="me-3">
                                 <i class="fas fa-medal fa-2x text-warning"></i>
@@ -491,16 +470,6 @@
                             <div>
                                 <h5>Empresa líder</h5>
                                 <p class="text-muted">Reconocida como la mejor plataforma de viajes online.</p>
-                            </div>
-                        </div>
-
-                        <div class="d-flex align-items-start">
-                            <div class="me-3">
-                                <i class="fas fa-mobile-alt fa-2x text-primary"></i>
-                            </div>
-                            <div>
-                                <h5>App móvil gratuita</h5>
-                                <p class="text-muted">Descargá nuestra app y gestioná tus viajes desde cualquier lugar.</p>
                             </div>
                         </div>
                     </div>
