@@ -108,7 +108,7 @@
     <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm">
         <div class="container">
             <a class="navbar-brand" href="#">
-                <i class="fas fa-plane text-primary"></i> Despegar
+                <i class="fas fa-plane text-primary"></i> Frategar
             </a>
             
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
@@ -136,7 +136,7 @@
                 
                 <ul class="navbar-nav">
                     <li class="nav-item">
-                        <a class="nav-link" href="#"><i class="fas fa-user"></i> Mi cuenta</a>
+                        <a class="nav-link" href="/login"><i class="fas fa-user"></i> Mi cuenta</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="#"><i class="fas fa-headset"></i> Ayuda</a>
