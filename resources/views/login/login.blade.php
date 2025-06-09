@@ -292,9 +292,6 @@
                                     </span>
                                     <input type="password" class="form-control" id="password"
                                         placeholder="Tu contraseña" required>
-                                    <button class="btn btn-outline-secondary" type="button" onclick="togglePassword()">
-                                        <i class="fas fa-eye" id="toggleIcon"></i>
-                                    </button>
                                 </div>
                             </div>
 
@@ -310,13 +307,8 @@
 
                             <button type="submit" class="btn btn-login">
                                 <i class="fas fa-sign-in-alt me-2"></i>Iniciar Sesión
-                            </button>
+                            </button> 
                         </form>
-
-                        <!-- Social Login -->
-                        <div class="divider">
-                            <span>o iniciá sesión con</span>
-                        </div>
 
                         <!-- Register Link -->
                         <div class="register-link">

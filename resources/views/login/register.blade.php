@@ -381,9 +381,6 @@
                                         <i class="fas fa-lock"></i>
                                     </span>
                                     <input type="password" class="form-control" id="password" placeholder="Creá una contraseña segura" required>
-                                    <button class="btn btn-outline-secondary" type="button" onclick="togglePassword('password', 'toggleIcon1')">
-                                        <i class="fas fa-eye" id="toggleIcon1"></i>
-                                    </button>
                                 </div>
                                 <div class="password-strength">
                                     <div class="strength-bar">
@@ -401,9 +398,6 @@
                                         <i class="fas fa-lock"></i>
                                     </span>
                                     <input type="password" class="form-control" id="confirmPassword" placeholder="Repetí tu contraseña" required>
-                                    <button class="btn btn-outline-secondary" type="button" onclick="togglePassword('confirmPassword', 'toggleIcon2')">
-                                        <i class="fas fa-eye" id="toggleIcon2"></i>
-                                    </button>
                                 </div>
                                 <div class="form-text" id="confirmPasswordFeedback"></div>
                             </div>
