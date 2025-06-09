@@ -376,6 +376,7 @@
             </div>
             <div class="row">
                 <div class="col-md-4 mb-4">
+                    <a  href="/detalles"  style="text-decoration: none; color: inherit;">
                     <div class="card offer-card h-100">
                         <img src="/placeholder.svg?height=200&width=400" class="card-img-top" alt="Miami">
                         <div class="card-body">
@@ -387,8 +388,10 @@
                             <p class="card-text"><small class="text-success">¡Oferta por tiempo limitado!</small></p>
                         </div>
                     </div>
+                    </a>
                 </div>
                 <div class="col-md-4 mb-4">
+                       <a  href="/detalles  style="text-decoration: none; color: inherit;"">
                     <div class="card offer-card h-100">
                         <img src="/placeholder.svg?height=200&width=400" class="card-img-top" alt="Cancún">
                         <div class="card-body">
@@ -400,8 +403,10 @@
                             <p class="card-text"><small class="text-success">¡Últimas plazas disponibles!</small></p>
                         </div>
                     </div>
+                    </a>
                 </div>
                 <div class="col-md-4 mb-4">
+                      <a  href="/detalles" style="text-decoration: none; color: inherit;">
                     <div class="card offer-card h-100">
                         <img src="/placeholder.svg?height=200&width=400" class="card-img-top" alt="Europa">
                         <div class="card-body">
@@ -413,6 +418,7 @@
                             <p class="card-text"><small class="text-success">¡Incluye traslados!</small></p>
                         </div>
                     </div>
+                    </a>
                 </div>
             </div>
         </div>
