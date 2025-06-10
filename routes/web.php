@@ -27,9 +27,13 @@ Route::get('/login', function () {
     createUserIfNotExists();
     return view('login.login');
 });
-Route::get('/register', function () {
-    return view('login.register'); // Make sure resources/views/login/register.blade.php exists
-});
+
+route::get( '/register' , [App\Http\Controllers\RegisterController::class, 'index'])
+    ->name('register');
+
+    Route::post( '/CrearRegistro' , [App\Http\Controllers\RegisterController::class, 'register'])
+    ->name('register.process');
+
 Route::get('/detalles', function () {
     return view('detalles'); // Make sure resources/views/login/register.blade.php exists
 });
