@@ -14,7 +14,7 @@ class administracionController extends Controller
     {
         return view('administracion.reservas');
     }
-    public function autos()
+    public function vehiculos()
     {
         return view('administracion.vehiculos');
     }

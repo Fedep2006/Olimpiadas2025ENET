@@ -28,7 +28,7 @@ Route::prefix('administracion')->group(function () {
 
     Route::get('/reportes', [administracionController::class, 'reportes'])->name('administracion.reportes');
 
-    Route::get('/vehiculos', [administracionController::class, 'autos'])->name('administracion.vehiculos');
+    Route::get('/vehiculos', [administracionController::class, 'vehiculos'])->name('administracion.vehiculos');
 
     Route::get('/hoteles', [administracionController::class, 'hoteles'])->name('administracion.hoteles');
 
