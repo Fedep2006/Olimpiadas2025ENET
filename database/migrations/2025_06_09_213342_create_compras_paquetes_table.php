@@ -13,8 +13,8 @@ return new class extends Migration
     {
         Schema::create('compras_paquetes', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('id_usuario')->constrained('users')->onDelete('cascade');
-            $table->foreignId('id_paquete')->constrained('paquetes')->onDelete('cascade');
+            $table->foreignId('usuario_id')->constrained('users')->onDelete('cascade');
+            $table->foreignId('paquete_id')->constrained('paquetes')->onDelete('cascade');
             $table->timestamp('fecha_compra')->useCurrent();
         });
     }
