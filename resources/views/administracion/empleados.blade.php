@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gestión de Usuarios - Frategar Admin</title>
+    <title>Gestión de Empleados - Frategar Admin</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <style>
@@ -409,7 +409,7 @@
                 <i class="fas fa-calendar-check"></i>
                 <span class="menu-text">Reservas</span>
             </a>
-            <a href="/administracion/usuarios" class="menu-item active">
+            <a href="/administracion/usuarios" class="menu-item">
                 <i class="fas fa-users"></i>
                 <span class="menu-text">Usuarios</span>
             </a>
@@ -433,7 +433,7 @@
                 <i class="fas fa-chart-bar"></i>
                 <span class="menu-text">Reportes</span>
             </a>
-              <a href="/administracion/empleados" class="menu-item ">
+              <a href="/administracion/empleados" class="menu-item active">
                 <i class="fas fa-users"></i>
                 <span class="menu-text">Empleados</span>
             </a>

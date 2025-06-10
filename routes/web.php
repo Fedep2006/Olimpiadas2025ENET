@@ -62,6 +62,8 @@ Route::prefix('administracion')->middleware('auth')->group(function () {
     Route::get('/usuarios', [administracionController::class, 'usuarios'])->name('administracion.usuarios');
 
     Route::get('/viajes', [administracionController::class, 'vuelos'])->name('administracion.viajes');
+
+    Route::get('/empleados', [administracionController::class, 'empleados'])->name('administracion.empleados');
 });
 
 // Mostrar el formulario

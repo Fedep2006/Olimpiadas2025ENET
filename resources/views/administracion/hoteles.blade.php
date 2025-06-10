@@ -452,6 +452,10 @@
                 <i class="fas fa-chart-bar"></i>
                 <span class="menu-text">Reportes</span>
             </a>
+              <a href="/administracion/empleados" class="menu-item ">
+                <i class="fas fa-users"></i>
+                <span class="menu-text">Empleados</span>
+            </a>
             <form method="POST" action="{{ route('logout') }}">
                 @csrf
                 <button type="submit" class="menu-item">
@@ -626,7 +630,7 @@
                     <i class="far fa-star"></i>
                 @endfor
             </div>
-            <small class="text-muted">{{ $hotel->estrellas }} Estrellas</small>
+            <small class="text-muted">{{ $hotel->estrellas }} </small>
         </td>
         <td>
             <div><strong>{{ $hotel->habitaciones }}</strong> habitaciones</div>
@@ -709,8 +713,8 @@
             <input type="text" class="form-control" id="ubicacion" name="ubicacion" value="{{ $hotel1->ubicacion }}" required>
           </div>
            <div class="mb-3">
-            <label for="ubicacion" class="form-label">Descripcion</label>
-            <input type="text" class="form-control" id="ubicacion" name="ubicacion" value="{{ $hotel1->descripcion }}" required>
+            <label for="descripcion" class="form-label">Descripcion</label>
+            <input type="text" class="form-control" id="descripcion" name="descripcion" value="{{ $hotel1->descripcion }}" required>
           </div>
           <div class="mb-3">
             <label for="estrellas" class="form-label">Estrellas</label>
@@ -748,16 +752,14 @@ document.querySelectorAll('.action-btn.edit').forEach(btn => {
     btn.addEventListener('click', function() {
         const row = btn.closest('tr');
         const hotel = {
-            id: row.querySelector('small').textContent.replace('ID:', '').trim(),
-            nombre: row.querySelector('h6').textContent,
+            id: row.querySelector('.hotel-details small').textContent.replace('ID:', '').trim(),
+            nombre: row.querySelector('.hotel-details h6').textContent,
             ubicacion: row.querySelector('td:nth-child(2) div strong').textContent,
             descripcion: row.querySelector('td:nth-child(3) div strong').textContent,
-            pais: row.querySelector('td:nth-child(2) small').textContent,
-            estrellas: row.querySelectorAll('td:nth-child(3) .fas.fa-star').length,
-            habitaciones: row.querySelector('td:nth-child(4) strong').textContent,
-            tipos_habitacion: row.querySelector('td:nth-child(4) small').textContent.match(/\d+/)[0],
-            precio_por_noche: row.querySelector('td:nth-child(5) .price-amount').textContent.replace('$',''),
-            disponibilidad: row.querySelector('td:nth-child(6) .status-badge').classList.contains('status-active') ? '1' : '0'
+            estrellas: row.querySelectorAll('td:nth-child(4) .fas.fa-star').length,
+            habitaciones: row.querySelector('td:nth-child(5) strong').textContent,
+            precio_por_noche: row.querySelector('td:nth-child(6) .price-amount').textContent.replace('$',''),
+            disponibilidad: row.querySelector('td:nth-child(7) .status-badge').classList.contains('status-active') ? '1' : '0'
         };
         document.getElementById('hotel_id').value = hotel.id;
         document.getElementById('nombre').value = hotel.nombre;
@@ -775,14 +777,13 @@ document.querySelectorAll('.action-btn.edit').forEach(btn => {
 document.getElementById('formEditarHotel').addEventListener('submit', function(e) {
     e.preventDefault();
     const id = document.getElementById('hotel_id').value;
-    const data = Object.fromEntries(new FormData(this));
-    fetch(`/administracion/hoteles/actualizar/${id}`, {
+    const formData = new FormData(this);
+    fetch(`/administracion/hoteles/actualizar/`, {
         method: 'POST',
         headers: {
-            'Content-Type': 'application/json',
             'X-CSRF-TOKEN': '{{ csrf_token() }}'
         },
-        body: JSON.stringify(data)
+        body: formData
     })
     .then(res => res.ok ? location.reload() : alert('Error al guardar'))
     .catch(() => alert('Error al guardar'));
