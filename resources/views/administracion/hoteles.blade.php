@@ -7,6 +7,7 @@
     <title>Gestión de Hoteles - Frategar Admin</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="{{ asset('css/app.css') }}" rel="stylesheet">
     <style>
         :root {
             --despegar-blue: #0066cc;
@@ -406,7 +407,7 @@
             </a>
         </div>
 
-             <nav class="sidebar-menu">
+        <nav class="sidebar-menu">
             <a href="/administracion" class="menu-item ">
                 <i class="fas fa-tachometer-alt"></i>
                 <span class="menu-text">Inicio</span>
@@ -439,10 +440,20 @@
                 <i class="fas fa-chart-bar"></i>
                 <span class="menu-text">Reportes</span>
             </a>
+            <form method="POST" action="{{ route('logout') }}">
+                @csrf
+                <button type="submit"
+                    class="appearance-none bg-transparent border-none p-0 m-0 shadow-none outline-none w-full text-left menu-item">
+                    <i class="fas fa-sign-out-alt"></i>
+                    <span class="menu-text">Cerrar Sesión</span>
+                </button>
+            </form>
             <a href="#" class="menu-item">
+
                 <i class="fas fa-sign-out-alt"></i>
                 <span class="menu-text">Cerrar Sesión</span>
             </a>
+
         </nav>
     </div>
 

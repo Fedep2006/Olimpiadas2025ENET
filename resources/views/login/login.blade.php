@@ -270,15 +270,15 @@
 
                         <!-- Benefits -->
 
-                        @if($errors->any())
+                        @if ($errors->any())
                             <div class="alert alert-danger">
                                 <ul class="mb-0">
-                                @foreach($errors->all() as $e)
-                                    <li>{{ $e }}</li>
-                                @endforeach
+                                    @foreach ($errors->all() as $e)
+                                        <li>{{ $e }}</li>
+                                    @endforeach
                                 </ul>
                             </div>
-                            @endif
+                        @endif
 
                         <!-- Login Form -->
                         <form method="POST" action="{{ route('login.process') }}">
@@ -289,7 +289,8 @@
                                     <span class="input-group-text">
                                         <i class="fas fa-envelope"></i>
                                     </span>
-                                    <input type="email" name="email" class="form-control" id="email" placeholder="tu@email.com" required>
+                                    <input type="email" name="email" class="form-control" id="email"
+                                        placeholder="tu@email.com" required>
 
                                 </div>
                             </div>
@@ -307,7 +308,9 @@
 
                             <div class="d-flex justify-content-between align-items-center mb-4">
                                 <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" id="remember">
+                                    <input type="hidden" name="remember" value="0">
+                                    <input class="form-check-input" type="checkbox" name="remember" id="remember"
+                                        value="1">
                                     <label class="form-check-label" for="remember">
                                         Recordarme
                                     </label>
@@ -317,7 +320,7 @@
 
                             <button type="submit" class="btn btn-login">
                                 <i class="fas fa-sign-in-alt me-2"></i>Iniciar Sesión
-                            </button> 
+                            </button>
                         </form>
 
                         <!-- Register Link -->
