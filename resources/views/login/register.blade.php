@@ -321,35 +321,22 @@
                         </div>
 
                         <!-- Benefits -->
-                      
-
-                        <!-- Social Register -->
-
 
                         <!-- Register Form -->
-                        <form id="registerForm" action="" method="POST">
+                        <form id="registerForm" action="{{ route("register.process") }}" method="POST">
                             @csrf
                             <div class="row mb-3">
-                                <div class="col-6">
-                                    <label for="firstName" class="form-label">Nombre</label>
+                                
+                                    <label for="nom" class="form-label">Nombre</label>
                                     <div class="input-group">
                                         <span class="input-group-text">
                                             <i class="fas fa-user"></i>
-                                        </span>
-                                        <input type="text" class="form-control" id="firstName" placeholder="Tu nombre" required>
+                                        </span>                                        
+                                        <input type="text" class="form-control" id="name" name="name" placeholder="Tu nombre" value="" required>
+                                         
                                     </div>
                                     <div class="form-text" id="firstNameFeedback"></div>
-                                </div>
-                                <div class="col-6">
-                                    <label for="lastName" class="form-label">Apellido</label>
-                                    <div class="input-group">
-                                        <span class="input-group-text">
-                                            <i class="fas fa-user"></i>
-                                        </span>
-                                        <input type="text" class="form-control" id="lastName" placeholder="Tu apellido" required>
-                                    </div>
-                                    <div class="form-text" id="lastNameFeedback"></div>
-                                </div>
+                                
                             </div>
 
                             <div class="mb-3">
@@ -358,7 +345,7 @@
                                     <span class="input-group-text">
                                         <i class="fas fa-envelope"></i>
                                     </span>
-                                    <input type="email" class="form-control" id="email" placeholder="tu@email.com" required>
+                                    <input type="email" class="form-control" id="email" name="email" placeholder="tu@email.com" required>
                                 </div>
                                 <div class="form-text" id="emailFeedback"></div>
                             </div>
@@ -369,7 +356,7 @@
                                     <span class="input-group-text">
                                         <i class="fas fa-phone"></i>
                                     </span>
-                                    <input type="tel" class="form-control" id="phone" placeholder="+54 11 1234-5678" required>
+                                    <input type="tel" class="form-control" id="phone" name="phone" placeholder="+54 11 1234-5678" required>
                                 </div>
                                 <div class="form-text" id="phoneFeedback"></div>
                             </div>
@@ -380,7 +367,7 @@
                                     <span class="input-group-text">
                                         <i class="fas fa-lock"></i>
                                     </span>
-                                    <input type="password" class="form-control" id="password" placeholder="Creá una contraseña segura" required>
+                                    <input type="password" class="form-control" id="password" name="password" placeholder="Creá una contraseña segura" required>
                                 </div>
                                 <div class="password-strength">
                                     <div class="strength-bar">
@@ -397,23 +384,23 @@
                                     <span class="input-group-text">
                                         <i class="fas fa-lock"></i>
                                     </span>
-                                    <input type="password" class="form-control" id="confirmPassword" placeholder="Repetí tu contraseña" required>
+                                    <input type="password" class="form-control" id="confirmPassword" name="password_confirmation" placeholder="Repetí tu contraseña" required>
                                 </div>
                                 <div class="form-text" id="confirmPasswordFeedback"></div>
                             </div>
 
                             <div class="mb-3">
                                 <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" id="newsletter">
+                                    <input class="form-check-input" type="checkbox" id="newsletter" name="newsletter">
                                     <label class="form-check-label" for="newsletter">
-                                        Quiero recibir (una foto de Aaron viniendose en el codigo) ofertas y promociones por email
+                                        Quiero recibir ofertas y promociones por email
                                     </label>
                                 </div>
                             </div>
 
                             <div class="mb-4">
                                 <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" id="terms" required>
+                                    <input class="form-check-input" type="checkbox" id="terms" name="terms" required>
                                     <label class="form-check-label" for="terms">
                                         Acepto los <a href="#" class="terms-link">Términos y Condiciones</a> y la <a href="#" class="terms-link">Política de Privacidad</a>
                                     </label>
