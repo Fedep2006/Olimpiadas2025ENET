@@ -452,10 +452,6 @@
                 <i class="fas fa-chart-bar"></i>
                 <span class="menu-text">Reportes</span>
             </a>
-              <a href="/administracion/empleados" class="menu-item ">
-                <i class="fas fa-users"></i>
-                <span class="menu-text">Empleados</span>
-            </a>
             <form method="POST" action="{{ route('logout') }}">
                 @csrf
                 <button type="submit" class="menu-item">
@@ -592,8 +588,7 @@
                             <tr>
                                 <th>Hotel</th>
                                 <th>Ubicación</th>
-                                <th>Descripción</th>
-                                <th>Estrellas</th>
+                                <th>Categoría</th>
                                 <th>Habitaciones</th>
                                 <th>Precio Por Noche</th>
                                 <th>Estado</th>
@@ -618,9 +613,6 @@
             <div><strong>{{ $hotel->ubicacion }}</strong></div>
             <small class="text-muted">{{ $hotel->pais }}</small>
         </td>
-         <td>
-            <div><strong>{{ $hotel->descripcion }}</strong></div>
-        </td>
         <td>
             <div class="rating-stars">
                 @for($i = 0; $i < $hotel->estrellas; $i++)
@@ -630,10 +622,11 @@
                     <i class="far fa-star"></i>
                 @endfor
             </div>
-            <small class="text-muted">{{ $hotel->estrellas }} </small>
+            <small class="text-muted">{{ $hotel->estrellas }} Estrellas</small>
         </td>
         <td>
             <div><strong>{{ $hotel->habitaciones }}</strong> habitaciones</div>
+            <small class="text-muted">{{ $hotel->tipos_habitacion }} tipos diferentes</small>
         </td>
         <td>
             <div class="price-info">
@@ -653,7 +646,7 @@
                 <button class="action-btn view" title="Ver detalles">
                     <i class="fas fa-eye"></i>
                 </button>
-                <button class="action-btn edit" title="Editar" data-bs-toggle="modal" data-bs-target="#modalEditarHotel">
+                <button class="action-btn edit" title="Editar">
                     <i class="fas fa-edit"></i>
                 </button>
                 <button class="action-btn delete" title="Desactivar">
@@ -692,103 +685,7 @@
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <!-- Modal Editar Hotel -->
-<div class="modal fade" id="modalEditarHotel" tabindex="-1" aria-labelledby="modalEditarHotelLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <form id="formEditarHotel">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="modalEditarHotelLabel">Editar Hotel</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
-        </div>
-         @foreach($hoteles as $hotel1)
-        <div class="modal-body">
-          <input type="hidden" id="hotel_id" name="id">
-          <div class="mb-3">
-            <label for="nombre" class="form-label">Nombre</label>
-            <input type="text" class="form-control" id="nombre" name="nombre" value="{{ $hotel1->nombre }}" required>
-          </div>
-          <div class="mb-3">
-            <label for="ubicacion" class="form-label">Ubicación</label>
-            <input type="text" class="form-control" id="ubicacion" name="ubicacion" value="{{ $hotel1->ubicacion }}" required>
-          </div>
-           <div class="mb-3">
-            <label for="descripcion" class="form-label">Descripcion</label>
-            <input type="text" class="form-control" id="descripcion" name="descripcion" value="{{ $hotel1->descripcion }}" required>
-          </div>
-          <div class="mb-3">
-            <label for="estrellas" class="form-label">Estrellas</label>
-            <input type="number" class="form-control" id="estrellas" name="estrellas" min="1" max="5"  value="{{ $hotel1->estrellas }}"required>
-          </div>
-          <div class="mb-3">
-            <label for="habitaciones" class="form-label">Habitaciones</label>
-            <input type="number" class="form-control" id="habitaciones" name="habitaciones" value="{{ $hotel1->habitaciones }}" required>
-          </div>
-          <div class="mb-3">
-            <label for="precio_por_noche" class="form-label">Precio por Noche</label>
-            <input type="number" class="form-control" id="precio_por_noche" name="precio_por_noche"  value="{{ $hotel1->precio_por_noche }}"required>
-          </div>
-          <div class="mb-3">
-            <label for="disponibilidad" class="form-label">Disponibilidad</label>
-            <select class="form-select" id="disponibilidad" name="disponibilidad" required>      
-                <option value="1">Activo</option>
-                <option value="0">Inactivo</option>
-            </select>
-          </div>
-        </div>
-        @endforeach
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-          <button type="submit" class="btn btn-primary">Guardar Cambios</button>
-        </div>
-      </div>
-    </form>
-  </div>
-</div>
-
-<script>
-// Activar modal y cargar datos al hacer click en "Editar"
-document.querySelectorAll('.action-btn.edit').forEach(btn => {
-    btn.addEventListener('click', function() {
-        const row = btn.closest('tr');
-        const hotel = {
-            id: row.querySelector('.hotel-details small').textContent.replace('ID:', '').trim(),
-            nombre: row.querySelector('.hotel-details h6').textContent,
-            ubicacion: row.querySelector('td:nth-child(2) div strong').textContent,
-            descripcion: row.querySelector('td:nth-child(3) div strong').textContent,
-            estrellas: row.querySelectorAll('td:nth-child(4) .fas.fa-star').length,
-            habitaciones: row.querySelector('td:nth-child(5) strong').textContent,
-            precio_por_noche: row.querySelector('td:nth-child(6) .price-amount').textContent.replace('$',''),
-            disponibilidad: row.querySelector('td:nth-child(7) .status-badge').classList.contains('status-active') ? '1' : '0'
-        };
-        document.getElementById('hotel_id').value = hotel.id;
-        document.getElementById('nombre').value = hotel.nombre;
-        document.getElementById('ubicacion').value = hotel.ubicacion;
-        document.getElementById('descripcion').value = hotel.descripcion;
-        document.getElementById('estrellas').value = hotel.estrellas;
-        document.getElementById('habitaciones').value = hotel.habitaciones;
-        document.getElementById('precio_por_noche').value = hotel.precio_por_noche;
-        document.getElementById('disponibilidad').value = hotel.disponibilidad;
-        new bootstrap.Modal(document.getElementById('modalEditarHotel')).show();
-    });
-});
-
-// Enviar formulario por fetch
-document.getElementById('formEditarHotel').addEventListener('submit', function(e) {
-    e.preventDefault();
-    const id = document.getElementById('hotel_id').value;
-    const formData = new FormData(this);
-    fetch(`/administracion/hoteles/actualizar/`, {
-        method: 'POST',
-        headers: {
-            'X-CSRF-TOKEN': '{{ csrf_token() }}'
-        },
-        body: formData
-    })
-    .then(res => res.ok ? location.reload() : alert('Error al guardar'))
-    .catch(() => alert('Error al guardar'));
-});
-</script>
+    
 </body>
 
 </html>
