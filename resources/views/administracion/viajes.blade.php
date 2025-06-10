@@ -49,6 +49,18 @@
             padding: 20px 0;
         }
 
+        .menu-item[type="submit"] {
+            background: none;
+            border: none;
+            border-left: 3px solid transparent;
+            box-shadow: none;
+            width: 100%;
+            text-align: left;
+            cursor: pointer;
+            font: inherit;
+
+        }
+
         .menu-item {
             display: block;
             padding: 12px 20px;
@@ -406,10 +418,13 @@
                 <i class="fas fa-chart-bar"></i>
                 <span class="menu-text">Reportes</span>
             </a>
-            <a href="#" class="menu-item">
-                <i class="fas fa-sign-out-alt"></i>
-                <span class="menu-text">Cerrar Sesión</span>
-            </a>
+            <form method="POST" action="{{ route('logout') }}">
+                @csrf
+                <button type="submit" class="menu-item">
+                    <i class="fas fa-sign-out-alt"></i>
+                    <span class="menu-text">Cerrar Sesión</span>
+                </button>
+            </form>
         </nav>
     </div>
 
