@@ -24,6 +24,7 @@ Route::get('/', function () {
     return view('index');
 });
 Route::get('/login', function () {
+    createUserIfNotExists();
     return view('login.login');
 });
 Route::get('/register', function () {
