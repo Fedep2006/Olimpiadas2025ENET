@@ -4,14 +4,11 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class CompraPaquete extends Model
+class Empleado extends Model
 {
+    //
     public function usuario()
     {
         return $this->belongsTo(User::class, 'usuario_id');
-    }
-    public function paquete()
-    {
-        return $this->belongsTo(Paquete::class);
     }
 }

@@ -13,8 +13,8 @@ return new class extends Migration
     {
         Schema::create('reservas_viaje', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('id_usuario')->constrained('users')->onDelete('cascade');
-            $table->foreignId('id_viaje')->constrained('viajes')->onDelete('cascade');
+            $table->foreignId('usuario_id')->constrained('users')->onDelete('cascade');
+            $table->foreignId('viaje_id')->constrained('viajes')->onDelete('cascade');
             $table->timestamp('fecha_reserva')->useCurrent();
         });
     }
