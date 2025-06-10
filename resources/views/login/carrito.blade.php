@@ -325,7 +325,7 @@
     <!-- Header -->
     <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm">
         <div class="container">
-            <a class="navbar-brand" href="index.html">
+            <a class="navbar-brand" href="/">
                 <i class="fas fa-plane text-primary"></i> Frategar
             </a>
             
