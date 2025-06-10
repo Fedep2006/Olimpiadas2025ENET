@@ -17,7 +17,8 @@ class AuthController extends Controller
         // Intentar credenciales
         if (Auth::attempt($request->only('email','password'))) {
             $request->session()->regenerate();
-            return redirect()->intended('dashboard');
+            return redirect()->intended('/administracion')
+                ->with('success', 'Has iniciado sesión correctamente.');
         }
 
         // Si falla
