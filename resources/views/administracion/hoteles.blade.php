@@ -505,10 +505,6 @@
                     <div class="stat-number">2,654</div>
                     <div class="stat-label">Hoteles Activos</div>
                 </div>
-                <div class="stat-card" style="border-left-color: #ffc107;">
-                    <div class="stat-number">123</div>
-                    <div class="stat-label">En Mantenimiento</div>
-                </div>
                 <div class="stat-card" style="border-left-color: #dc3545;">
                     <div class="stat-number">70</div>
                     <div class="stat-label">Inactivos</div>
@@ -554,15 +550,6 @@
                             </select>
                         </div>
                         <div class="filter-group">
-                            <label class="form-label">Ocupación</label>
-                            <select class="form-select">
-                                <option value="">Todas</option>
-                                <option value="high">Alta (>80%)</option>
-                                <option value="medium">Media (50-80%)</option>
-                                <option value="low">Baja (<50%)< /option>
-                            </select>
-                        </div>
-                        <div class="filter-group">
                             <label class="form-label">&nbsp;</label>
                             <div class="d-flex gap-2">
                                 <button class="btn-admin">
@@ -586,15 +573,11 @@
                     <div class="d-flex gap-2">
                         <a href="#" class="btn-admin">
                             <i class="fas fa-download"></i>
-                            Exportar
+                            Imprimir PDF
                         </a>
-                        <a href="#" class="btn-admin warning">
+                        <a href="{{ route('administracion.hoteles') }}" class="btn-admin warning">
                             <i class="fas fa-sync"></i>
                             Sincronizar
-                        </a>
-                        <a href="#" class="btn-admin success">
-                            <i class="fas fa-upload"></i>
-                            Importar
                         </a>
                     </div>
                 </div>
@@ -605,316 +588,83 @@
                             <tr>
                                 <th>Hotel</th>
                                 <th>Ubicación</th>
-                                <th>Categoría</th>
+                                <th>Descripción</th>
+                                <th>Estrellas</th>
                                 <th>Habitaciones</th>
-                                <th>Ocupación</th>
-                                <th>Precio Promedio</th>
+                                <th>Precio Por Noche</th>
                                 <th>Estado</th>
                                 <th>Acciones</th>
                             </tr>
                         </thead>
-                        <tbody>
-                            <tr>
-                                <td>
-                                    <div class="hotel-info">
-                                        <div class="hotel-image">
-                                            <i class="fas fa-building"></i>
-                                        </div>
-                                        <div class="hotel-details">
-                                            <h6>Hotel Fontainebleau Miami Beach</h6>
-                                            <small>ID: #HTL-001</small>
-                                        </div>
-                                    </div>
-                                </td>
-                                <td>
-                                    <div><strong>Miami Beach, FL</strong></div>
-                                    <small class="text-muted">Estados Unidos</small>
-                                </td>
-                                <td>
-                                    <div class="rating-stars">
-                                        <i class="fas fa-star"></i>
-                                        <i class="fas fa-star"></i>
-                                        <i class="fas fa-star"></i>
-                                        <i class="fas fa-star"></i>
-                                        <i class="fas fa-star"></i>
-                                    </div>
-                                    <small class="text-muted">5 Estrellas</small>
-                                </td>
-                                <td>
-                                    <div><strong>1,504</strong> habitaciones</div>
-                                    <small class="text-muted">12 tipos diferentes</small>
-                                </td>
-                                <td>
-                                    <div class="occupancy-info">
-                                        <div><strong>85%</strong></div>
-                                        <div class="occupancy-bar">
-                                            <div class="occupancy-fill occupancy-high" style="width: 85%;"></div>
-                                        </div>
-                                    </div>
-                                </td>
-                                <td>
-                                    <div class="price-info">
-                                        <div class="price-amount">$450</div>
-                                        <small class="text-muted">por noche</small>
-                                    </div>
-                                </td>
-                                <td><span class="status-badge status-active">Activo</span></td>
-                                <td>
-                                    <div class="action-buttons">
-                                        <button class="action-btn view" title="Ver detalles">
-                                            <i class="fas fa-eye"></i>
-                                        </button>
-                                        <button class="action-btn edit" title="Editar">
-                                            <i class="fas fa-edit"></i>
-                                        </button>
-                                        <button class="action-btn delete" title="Desactivar">
-                                            <i class="fas fa-ban"></i>
-                                        </button>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <div class="hotel-info">
-                                        <div class="hotel-image">
-                                            <i class="fas fa-building"></i>
-                                        </div>
-                                        <div class="hotel-details">
-                                            <h6>Hotel Ritz Paris</h6>
-                                            <small>ID: #HTL-002</small>
-                                        </div>
-                                    </div>
-                                </td>
-                                <td>
-                                    <div><strong>París, Francia</strong></div>
-                                    <small class="text-muted">Europa</small>
-                                </td>
-                                <td>
-                                    <div class="rating-stars">
-                                        <i class="fas fa-star"></i>
-                                        <i class="fas fa-star"></i>
-                                        <i class="fas fa-star"></i>
-                                        <i class="fas fa-star"></i>
-                                        <i class="fas fa-star"></i>
-                                    </div>
-                                    <small class="text-muted">5 Estrellas</small>
-                                </td>
-                                <td>
-                                    <div><strong>142</strong> habitaciones</div>
-                                    <small class="text-muted">8 tipos diferentes</small>
-                                </td>
-                                <td>
-                                    <div class="occupancy-info">
-                                        <div><strong>72%</strong></div>
-                                        <div class="occupancy-bar">
-                                            <div class="occupancy-fill occupancy-medium" style="width: 72%;"></div>
-                                        </div>
-                                    </div>
-                                </td>
-                                <td>
-                                    <div class="price-info">
-                                        <div class="price-amount">$850</div>
-                                        <small class="text-muted">por noche</small>
-                                    </div>
-                                </td>
-                                <td><span class="status-badge status-active">Activo</span></td>
-                                <td>
-                                    <div class="action-buttons">
-                                        <button class="action-btn view" title="Ver detalles">
-                                            <i class="fas fa-eye"></i>
-                                        </button>
-                                        <button class="action-btn edit" title="Editar">
-                                            <i class="fas fa-edit"></i>
-                                        </button>
-                                        <button class="action-btn delete" title="Desactivar">
-                                            <i class="fas fa-ban"></i>
-                                        </button>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <div class="hotel-info">
-                                        <div class="hotel-image">
-                                            <i class="fas fa-building"></i>
-                                        </div>
-                                        <div class="hotel-details">
-                                            <h6>Hotel Presidente InterContinental</h6>
-                                            <small>ID: #HTL-003</small>
-                                        </div>
-                                    </div>
-                                </td>
-                                <td>
-                                    <div><strong>Cancún, México</strong></div>
-                                    <small class="text-muted">América Latina</small>
-                                </td>
-                                <td>
-                                    <div class="rating-stars">
-                                        <i class="fas fa-star"></i>
-                                        <i class="fas fa-star"></i>
-                                        <i class="fas fa-star"></i>
-                                        <i class="fas fa-star"></i>
-                                        <i class="far fa-star"></i>
-                                    </div>
-                                    <small class="text-muted">4 Estrellas</small>
-                                </td>
-                                <td>
-                                    <div><strong>299</strong> habitaciones</div>
-                                    <small class="text-muted">6 tipos diferentes</small>
-                                </td>
-                                <td>
-                                    <div class="occupancy-info">
-                                        <div><strong>45%</strong></div>
-                                        <div class="occupancy-bar">
-                                            <div class="occupancy-fill occupancy-low" style="width: 45%;"></div>
-                                        </div>
-                                    </div>
-                                </td>
-                                <td>
-                                    <div class="price-info">
-                                        <div class="price-amount">$280</div>
-                                        <small class="text-muted">por noche</small>
-                                    </div>
-                                </td>
-                                <td><span class="status-badge status-maintenance">Mantenimiento</span></td>
-                                <td>
-                                    <div class="action-buttons">
-                                        <button class="action-btn view" title="Ver detalles">
-                                            <i class="fas fa-eye"></i>
-                                        </button>
-                                        <button class="action-btn edit" title="Editar">
-                                            <i class="fas fa-edit"></i>
-                                        </button>
-                                        <button class="action-btn delete" title="Desactivar">
-                                            <i class="fas fa-ban"></i>
-                                        </button>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <div class="hotel-info">
-                                        <div class="hotel-image">
-                                            <i class="fas fa-building"></i>
-                                        </div>
-                                        <div class="hotel-details">
-                                            <h6>The Plaza Hotel</h6>
-                                            <small>ID: #HTL-004</small>
-                                        </div>
-                                    </div>
-                                </td>
-                                <td>
-                                    <div><strong>Nueva York, NY</strong></div>
-                                    <small class="text-muted">Estados Unidos</small>
-                                </td>
-                                <td>
-                                    <div class="rating-stars">
-                                        <i class="fas fa-star"></i>
-                                        <i class="fas fa-star"></i>
-                                        <i class="fas fa-star"></i>
-                                        <i class="fas fa-star"></i>
-                                        <i class="fas fa-star"></i>
-                                    </div>
-                                    <small class="text-muted">5 Estrellas</small>
-                                </td>
-                                <td>
-                                    <div><strong>282</strong> habitaciones</div>
-                                    <small class="text-muted">10 tipos diferentes</small>
-                                </td>
-                                <td>
-                                    <div class="occupancy-info">
-                                        <div><strong>92%</strong></div>
-                                        <div class="occupancy-bar">
-                                            <div class="occupancy-fill occupancy-high" style="width: 92%;"></div>
-                                        </div>
-                                    </div>
-                                </td>
-                                <td>
-                                    <div class="price-info">
-                                        <div class="price-amount">$695</div>
-                                        <small class="text-muted">por noche</small>
-                                    </div>
-                                </td>
-                                <td><span class="status-badge status-active">Activo</span></td>
-                                <td>
-                                    <div class="action-buttons">
-                                        <button class="action-btn view" title="Ver detalles">
-                                            <i class="fas fa-eye"></i>
-                                        </button>
-                                        <button class="action-btn edit" title="Editar">
-                                            <i class="fas fa-edit"></i>
-                                        </button>
-                                        <button class="action-btn delete" title="Desactivar">
-                                            <i class="fas fa-ban"></i>
-                                        </button>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <div class="hotel-info">
-                                        <div class="hotel-image">
-                                            <i class="fas fa-building"></i>
-                                        </div>
-                                        <div class="hotel-details">
-                                            <h6>Hotel Villa Magna</h6>
-                                            <small>ID: #HTL-005</small>
-                                        </div>
-                                    </div>
-                                </td>
-                                <td>
-                                    <div><strong>Madrid, España</strong></div>
-                                    <small class="text-muted">Europa</small>
-                                </td>
-                                <td>
-                                    <div class="rating-stars">
-                                        <i class="fas fa-star"></i>
-                                        <i class="fas fa-star"></i>
-                                        <i class="fas fa-star"></i>
-                                        <i class="fas fa-star"></i>
-                                        <i class="fas fa-star"></i>
-                                    </div>
-                                    <small class="text-muted">5 Estrellas</small>
-                                </td>
-                                <td>
-                                    <div><strong>150</strong> habitaciones</div>
-                                    <small class="text-muted">7 tipos diferentes</small>
-                                </td>
-                                <td>
-                                    <div class="occupancy-info">
-                                        <div><strong>68%</strong></div>
-                                        <div class="occupancy-bar">
-                                            <div class="occupancy-fill occupancy-medium" style="width: 68%;"></div>
-                                        </div>
-                                    </div>
-                                </td>
-                                <td>
-                                    <div class="price-info">
-                                        <div class="price-amount">$420</div>
-                                        <small class="text-muted">por noche</small>
-                                    </div>
-                                </td>
-                                <td><span class="status-badge status-inactive">Inactivo</span></td>
-                                <td>
-                                    <div class="action-buttons">
-                                        <button class="action-btn view" title="Ver detalles">
-                                            <i class="fas fa-eye"></i>
-                                        </button>
-                                        <button class="action-btn edit" title="Editar">
-                                            <i class="fas fa-edit"></i>
-                                        </button>
-                                        <button class="action-btn delete" title="Eliminar">
-                                            <i class="fas fa-trash"></i>
-                                        </button>
-                                    </div>
-                                </td>
-                            </tr>
-                        </tbody>
+                       <tbody>
+    @foreach($hoteles as $hotel)
+    <tr>
+        <td>
+            <div class="hotel-info">
+                <div class="hotel-image">
+                    <i class="fas fa-building"></i>
+                </div>
+                <div class="hotel-details">
+                    <h6>{{ $hotel->nombre }}</h6>
+                    <small>ID:{{ str_pad($hotel->id, 3, '0', STR_PAD_LEFT) }}</small>
+                </div>
+            </div>
+        </td>
+        <td>
+            <div><strong>{{ $hotel->ubicacion }}</strong></div>
+            <small class="text-muted">{{ $hotel->pais }}</small>
+        </td>
+         <td>
+            <div><strong>{{ $hotel->descripcion }}</strong></div>
+        </td>
+        <td>
+            <div class="rating-stars">
+                @for($i = 0; $i < $hotel->estrellas; $i++)
+                    <i class="fas fa-star"></i>
+                @endfor
+                @for($i = $hotel->estrellas; $i < 5; $i++)
+                    <i class="far fa-star"></i>
+                @endfor
+            </div>
+            <small class="text-muted">{{ $hotel->estrellas }} Estrellas</small>
+        </td>
+        <td>
+            <div><strong>{{ $hotel->habitaciones }}</strong> habitaciones</div>
+        </td>
+        <td>
+            <div class="price-info">
+                <div class="price-amount">${{ $hotel->precio_por_noche }}</div>
+                <small class="text-muted">por noche</small>
+            </div>
+        </td>
+        <td>
+            @if($hotel->disponibilidad == '1')
+                <span class="status-badge status-active">Activo</span>
+            @elseif($hotel->disponibilidad == '0')
+                <span class="status-badge status-inactive">Inactivo</span>
+            @endif
+        </td>
+        <td>
+            <div class="action-buttons">
+                <button class="action-btn view" title="Ver detalles">
+                    <i class="fas fa-eye"></i>
+                </button>
+                <button class="action-btn edit" title="Editar" data-bs-toggle="modal" data-bs-target="#modalEditarHotel">
+                    <i class="fas fa-edit"></i>
+                </button>
+                <button class="action-btn delete" title="Desactivar">
+                    <i class="fas fa-ban"></i>
+                </button>
+            </div>
+        </td>
+    </tr>
+    @endforeach
+</tbody>
                     </table>
                 </div>
 
                 <!-- Pagination -->
-                <nav>
+              <!--  <nav>
                     <ul class="pagination">
                         <li class="page-item disabled">
                             <a class="page-link" href="#" tabindex="-1">Anterior</a>
@@ -932,12 +682,112 @@
                             <a class="page-link" href="#">Siguiente</a>
                         </li>
                     </ul>
-                </nav>
+                </nav> -->
             </div>
         </div>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Modal Editar Hotel -->
+<div class="modal fade" id="modalEditarHotel" tabindex="-1" aria-labelledby="modalEditarHotelLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <form id="formEditarHotel">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="modalEditarHotelLabel">Editar Hotel</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+        </div>
+         @foreach($hoteles as $hotel1)
+        <div class="modal-body">
+          <input type="hidden" id="hotel_id" name="id">
+          <div class="mb-3">
+            <label for="nombre" class="form-label">Nombre</label>
+            <input type="text" class="form-control" id="nombre" name="nombre" value="{{ $hotel1->nombre }}" required>
+          </div>
+          <div class="mb-3">
+            <label for="ubicacion" class="form-label">Ubicación</label>
+            <input type="text" class="form-control" id="ubicacion" name="ubicacion" value="{{ $hotel1->ubicacion }}" required>
+          </div>
+           <div class="mb-3">
+            <label for="ubicacion" class="form-label">Descripcion</label>
+            <input type="text" class="form-control" id="ubicacion" name="ubicacion" value="{{ $hotel1->descripcion }}" required>
+          </div>
+          <div class="mb-3">
+            <label for="estrellas" class="form-label">Estrellas</label>
+            <input type="number" class="form-control" id="estrellas" name="estrellas" min="1" max="5"  value="{{ $hotel1->estrellas }}"required>
+          </div>
+          <div class="mb-3">
+            <label for="habitaciones" class="form-label">Habitaciones</label>
+            <input type="number" class="form-control" id="habitaciones" name="habitaciones" value="{{ $hotel1->habitaciones }}" required>
+          </div>
+          <div class="mb-3">
+            <label for="precio_por_noche" class="form-label">Precio por Noche</label>
+            <input type="number" class="form-control" id="precio_por_noche" name="precio_por_noche"  value="{{ $hotel1->precio_por_noche }}"required>
+          </div>
+          <div class="mb-3">
+            <label for="disponibilidad" class="form-label">Disponibilidad</label>
+            <select class="form-select" id="disponibilidad" name="disponibilidad" required>      
+                <option value="1">Activo</option>
+                <option value="0">Inactivo</option>
+            </select>
+          </div>
+        </div>
+        @endforeach
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+          <button type="submit" class="btn btn-primary">Guardar Cambios</button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+
+<script>
+// Activar modal y cargar datos al hacer click en "Editar"
+document.querySelectorAll('.action-btn.edit').forEach(btn => {
+    btn.addEventListener('click', function() {
+        const row = btn.closest('tr');
+        const hotel = {
+            id: row.querySelector('small').textContent.replace('ID:', '').trim(),
+            nombre: row.querySelector('h6').textContent,
+            ubicacion: row.querySelector('td:nth-child(2) div strong').textContent,
+            descripcion: row.querySelector('td:nth-child(3) div strong').textContent,
+            pais: row.querySelector('td:nth-child(2) small').textContent,
+            estrellas: row.querySelectorAll('td:nth-child(3) .fas.fa-star').length,
+            habitaciones: row.querySelector('td:nth-child(4) strong').textContent,
+            tipos_habitacion: row.querySelector('td:nth-child(4) small').textContent.match(/\d+/)[0],
+            precio_por_noche: row.querySelector('td:nth-child(5) .price-amount').textContent.replace('$',''),
+            disponibilidad: row.querySelector('td:nth-child(6) .status-badge').classList.contains('status-active') ? '1' : '0'
+        };
+        document.getElementById('hotel_id').value = hotel.id;
+        document.getElementById('nombre').value = hotel.nombre;
+        document.getElementById('ubicacion').value = hotel.ubicacion;
+        document.getElementById('descripcion').value = hotel.descripcion;
+        document.getElementById('estrellas').value = hotel.estrellas;
+        document.getElementById('habitaciones').value = hotel.habitaciones;
+        document.getElementById('precio_por_noche').value = hotel.precio_por_noche;
+        document.getElementById('disponibilidad').value = hotel.disponibilidad;
+        new bootstrap.Modal(document.getElementById('modalEditarHotel')).show();
+    });
+});
+
+// Enviar formulario por fetch
+document.getElementById('formEditarHotel').addEventListener('submit', function(e) {
+    e.preventDefault();
+    const id = document.getElementById('hotel_id').value;
+    const data = Object.fromEntries(new FormData(this));
+    fetch(`/administracion/hoteles/actualizar/${id}`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRF-TOKEN': '{{ csrf_token() }}'
+        },
+        body: JSON.stringify(data)
+    })
+    .then(res => res.ok ? location.reload() : alert('Error al guardar'))
+    .catch(() => alert('Error al guardar'));
+});
+</script>
 </body>
 
 </html>

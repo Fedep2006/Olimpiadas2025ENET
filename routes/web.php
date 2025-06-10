@@ -53,6 +53,7 @@ Route::prefix('administracion')->middleware('auth')->group(function () {
     Route::get('/vehiculos', [administracionController::class, 'vehiculos'])->name('administracion.vehiculos');
 
     Route::get('/hoteles', [administracionController::class, 'hoteles'])->name('administracion.hoteles');
+    Route::post('/hoteles/actualizar', [administracionController::class, 'EditHoteles'])->name('administracion.hoteles.update');
 
     Route::get('/paquetes', [administracionController::class, 'paquetes'])->name('administracion.paquetes');
 
