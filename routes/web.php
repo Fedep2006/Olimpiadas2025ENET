@@ -41,6 +41,8 @@ Route::prefix('administracion')->group(function () {
 
     Route::get('/viajes', [administracionController::class, 'vuelos'])->name('administracion.viajes');
 });
+
+
 // Mostrar el formulario
 Route::get('/login', function () {
     return view('login.login'); 
