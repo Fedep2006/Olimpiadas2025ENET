@@ -16,15 +16,15 @@ class administracionController extends Controller
     }
     public function autos()
     {
-        return view('administracion.autos');
+        return view('administracion.vehiculos');
     }
     public function hoteles()
     {
         return view('administracion.hoteles');
     }
-    public function promociones()
+    public function paquetes()
     {
-        return view('administracion.promociones');
+        return view('administracion.paquetes');
     }
     public function reportes()
     {
@@ -36,6 +36,6 @@ class administracionController extends Controller
     }
     public function vuelos()
     {
-        return view('administracion.vuelos');
+        return view('administracion.viajes');
     }
 }

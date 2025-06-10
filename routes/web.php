@@ -28,15 +28,15 @@ Route::prefix('administracion')->group(function () {
 
     Route::get('/reportes', [administracionController::class, 'reportes'])->name('administracion.reportes');
 
-    Route::get('/autos', [administracionController::class, 'autos'])->name('administracion.autos');
+    Route::get('/vehiculos', [administracionController::class, 'autos'])->name('administracion.vehiculos');
 
     Route::get('/hoteles', [administracionController::class, 'hoteles'])->name('administracion.hoteles');
 
-    Route::get('/promociones', [administracionController::class, 'promociones'])->name('administracion.promociones');
+    Route::get('/paquetes', [administracionController::class, 'paquetes'])->name('administracion.paquetes');
 
     Route::get('/reservas', [administracionController::class, 'reservas'])->name('administracion.reservas');
 
     Route::get('/usuarios', [administracionController::class, 'usuarios'])->name('administracion.usuarios');
 
-    Route::get('/vuelos', [administracionController::class, 'vuelos'])->name('administracion.vuelos');
+    Route::get('/viajes', [administracionController::class, 'vuelos'])->name('administracion.viajes');
 });

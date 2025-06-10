@@ -406,8 +406,8 @@
             </a>
         </div>
 
-        <nav class="sidebar-menu">
-            <a href="/administracion" class="menu-item">
+             <nav class="sidebar-menu">
+            <a href="/administracion" class="menu-item ">
                 <i class="fas fa-tachometer-alt"></i>
                 <span class="menu-text">Inicio</span>
             </a>
@@ -419,29 +419,25 @@
                 <i class="fas fa-users"></i>
                 <span class="menu-text">Usuarios</span>
             </a>
-            <a href="/administracion/vuelos" class="menu-item">
+            <a href="/administracion/viajes" class="menu-item">
                 <i class="fas fa-plane"></i>
-                <span class="menu-text">Vuelos</span>
+                <span class="menu-text">Viajes</span>
             </a>
-            <a href="/administracion/hoteles" class="menu-item  active">
+            <a href="/administracion/hoteles" class="menu-item active">
                 <i class="fas fa-bed"></i>
                 <span class="menu-text">Hoteles</span>
             </a>
-            <a href="/administracion/autos" class="menu-item">
+            <a href="/administracion/vehiculos" class="menu-item">
                 <i class="fas fa-car"></i>
-                <span class="menu-text">Autos</span>
+                <span class="menu-text">Vehiculos</span>
             </a>
-            <a href="/administracion/promociones" class="menu-item">
+            <a href="/administracion/paquetes" class="menu-item">
                 <i class="fas fa-tags"></i>
-                <span class="menu-text">Promociones</span>
+                <span class="menu-text">Paquetes</span>
             </a>
             <a href="/administracion/reportes" class="menu-item">
                 <i class="fas fa-chart-bar"></i>
                 <span class="menu-text">Reportes</span>
-            </a>
-            <a href="/administracion/configuracion" class="menu-item">
-                <i class="fas fa-cog"></i>
-                <span class="menu-text">Configuración</span>
             </a>
             <a href="#" class="menu-item">
                 <i class="fas fa-sign-out-alt"></i>
