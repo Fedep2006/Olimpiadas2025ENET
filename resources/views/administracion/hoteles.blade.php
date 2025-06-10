@@ -448,10 +448,6 @@
                 <i class="fas fa-tags"></i>
                 <span class="menu-text">Paquetes</span>
             </a>
-            <a href="/administracion/reportes" class="menu-item">
-                <i class="fas fa-chart-bar"></i>
-                <span class="menu-text">Reportes</span>
-            </a>
             <form method="POST" action="{{ route('logout') }}">
                 @csrf
                 <button type="submit" class="menu-item">
