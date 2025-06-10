@@ -289,8 +289,8 @@
                                     <span class="input-group-text">
                                         <i class="fas fa-envelope"></i>
                                     </span>
-                                    <input type="email" class="form-control" id="email" placeholder="tu@email.com"
-                                        required>
+                                    <input type="email" name="email" class="form-control" id="email" placeholder="tu@email.com" required>
+
                                 </div>
                             </div>
 
@@ -300,7 +300,7 @@
                                     <span class="input-group-text">
                                         <i class="fas fa-lock"></i>
                                     </span>
-                                    <input type="password" class="form-control" id="password"
+                                    <input type="password" name="password" class="form-control" id="password"
                                         placeholder="Tu contraseña" required>
                                 </div>
                             </div>

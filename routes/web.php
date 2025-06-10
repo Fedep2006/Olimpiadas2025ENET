@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\administracionController;
 use App\Http\Controllers\AuthController;
+use Illuminate\Support\Facades\Auth;
 
 Route::get('/', function () {
     return view('index');
@@ -56,3 +57,10 @@ Route::post('/login', [AuthController::class, 'login'])
 Route::get('/dashboard', function () {
     return view('dashboard'); // creá luego resources/views/dashboard.blade.php
 })->middleware('auth')->name('dashboard');
+
+Route::post('/logout', function () {
+    Auth::logout();
+    request()->session()->invalidate();
+    request()->session()->regenerateToken();
+    return redirect()->route('login');
+})->name('logout');
