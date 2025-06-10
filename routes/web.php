@@ -8,7 +8,19 @@ use App\Models\User;
 
 use Illuminate\Support\Facades\Auth;
 
+function createUserIfNotExists()
+{
+    if (!User::where('email', 'a@gmail.com')->exists()) {
+        $user = User::create([
+            'name' => 'aaron',
+            'email' => 'a@gmail.com',
+            'password' => bcrypt('123'), // Always hash the password!
+        ]);
+    }
+}
+
 Route::get('/', function () {
+    createUserIfNotExists();
     return view('index');
 });
 Route::get('/login', function () {
@@ -46,14 +58,6 @@ Route::prefix('administracion')->middleware('auth')->group(function () {
     Route::get('/viajes', [administracionController::class, 'vuelos'])->name('administracion.viajes');
 });
 
-Route::get('/crearUsuario', function () {
-
-    $user = User::create([
-        'name' => 'aaron',
-        'email' => 'a@gmail.com',
-        'password' => bcrypt('123'), // Always hash the password!
-    ]);
-});
 // Mostrar el formulario
 Route::get('/login', function () {
     return view('login.login');
