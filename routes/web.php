@@ -3,9 +3,24 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\administracionController;
 use App\Http\Controllers\AuthController;
+
+use App\Models\User;
+
 use Illuminate\Support\Facades\Auth;
 
+function createUserIfNotExists()
+{
+    if (!User::where('email', 'a@gmail.com')->exists()) {
+        $user = User::create([
+            'name' => 'aaron',
+            'email' => 'a@gmail.com',
+            'password' => bcrypt('123'), // Always hash the password!
+        ]);
+    }
+}
+
 Route::get('/', function () {
+    createUserIfNotExists();
     return view('index');
 });
 Route::get('/login', function () {
@@ -28,7 +43,7 @@ Route::get('/busqueda', function () {
     return view('busqueda'); // Make sure resources/views/login/register.blade.php exists
 });
 
-Route::prefix('administracion')->group(function () {
+Route::prefix('administracion')->middleware('auth')->group(function () {
 
     Route::get('/', [administracionController::class, 'inicio'])->name('administracion.inicio');
 
@@ -47,21 +62,16 @@ Route::prefix('administracion')->group(function () {
     Route::get('/viajes', [administracionController::class, 'vuelos'])->name('administracion.viajes');
 });
 
-
 // Mostrar el formulario
 Route::get('/login', function () {
-    return view('login.login'); 
+    return view('login.login');
 })->name('login');
 
 // Procesar el login
 Route::post('/login', [AuthController::class, 'login'])
-     ->name('login.process');
+    ->name('login.process');
 
-// Ruta protegida (dashboard)
-Route::get('/dashboard', function () {
-    return view('dashboard'); // creá luego resources/views/dashboard.blade.php
-})->middleware('auth')->name('dashboard');
-
+//logout
 Route::post('/logout', function () {
     Auth::logout();
     request()->session()->invalidate();
