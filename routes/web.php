@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\administracionController;
+use App\Http\Controllers\AuthController;
 
 Route::get('/', function () {
     return view('index');
@@ -40,3 +41,16 @@ Route::prefix('administracion')->group(function () {
 
     Route::get('/viajes', [administracionController::class, 'vuelos'])->name('administracion.viajes');
 });
+// Mostrar el formulario
+Route::get('/login', function () {
+    return view('login.login'); 
+})->name('login');
+
+// Procesar el login
+Route::post('/login', [AuthController::class, 'login'])
+     ->name('login.process');
+
+// Ruta protegida (dashboard)
+Route::get('/dashboard', function () {
+    return view('dashboard'); // creá luego resources/views/dashboard.blade.php
+})->middleware('auth')->name('dashboard');

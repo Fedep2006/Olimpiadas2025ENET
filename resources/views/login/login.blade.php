@@ -270,9 +270,19 @@
 
                         <!-- Benefits -->
 
+                        @if($errors->any())
+                            <div class="alert alert-danger">
+                                <ul class="mb-0">
+                                @foreach($errors->all() as $e)
+                                    <li>{{ $e }}</li>
+                                @endforeach
+                                </ul>
+                            </div>
+                            @endif
 
                         <!-- Login Form -->
-                        <form>
+                        <form method="POST" action="{{ route('login.process') }}">
+                            @csrf
                             <div class="mb-3">
                                 <label for="email" class="form-label">Email</label>
                                 <div class="input-group">
