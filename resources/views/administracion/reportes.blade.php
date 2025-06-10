@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -13,12 +14,12 @@
             --despegar-light-blue: #e6f3ff;
             --sidebar-width: 280px;
         }
-        
+
         body {
             background-color: #f8f9fa;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
-        
+
         .admin-sidebar {
             position: fixed;
             top: 0;
@@ -30,70 +31,70 @@
             z-index: 1000;
             overflow-y: auto;
         }
-        
+
         .sidebar-header {
             padding: 20px;
-            border-bottom: 1px solid rgba(255,255,255,0.1);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
             text-align: center;
         }
-        
+
         .sidebar-brand {
             font-size: 1.5rem;
             font-weight: bold;
             color: white;
             text-decoration: none;
         }
-        
+
         .sidebar-menu {
             padding: 20px 0;
         }
-        
+
         .menu-item {
             display: block;
             padding: 12px 20px;
-            color: rgba(255,255,255,0.8);
+            color: rgba(255, 255, 255, 0.8);
             text-decoration: none;
             transition: all 0.3s ease;
             border-left: 3px solid transparent;
         }
-        
+
         .menu-item:hover,
         .menu-item.active {
-            background-color: rgba(255,255,255,0.1);
+            background-color: rgba(255, 255, 255, 0.1);
             color: white;
             border-left-color: var(--despegar-orange);
         }
-        
+
         .menu-item i {
             width: 20px;
             margin-right: 15px;
         }
-        
+
         .main-content {
             margin-left: var(--sidebar-width);
             min-height: 100vh;
         }
-        
+
         .top-navbar {
             background: white;
             padding: 15px 30px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
             display: flex;
             justify-content: space-between;
             align-items: center;
         }
-        
+
         .admin-header h4 {
             color: var(--despegar-blue);
             margin: 0;
         }
-        
+
         .admin-user {
             display: flex;
             align-items: center;
             gap: 15px;
         }
-        
+
         .user-avatar {
             width: 40px;
             height: 40px;
@@ -105,39 +106,39 @@
             color: var(--despegar-blue);
             font-weight: bold;
         }
-        
+
         .dashboard-content {
             padding: 30px;
         }
-        
+
         .page-header {
             background: white;
             border-radius: 15px;
             padding: 25px;
             margin-bottom: 25px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
         }
-        
+
         .page-title {
             color: var(--despegar-blue);
             font-size: 1.8rem;
             font-weight: bold;
             margin: 0;
         }
-        
+
         .page-subtitle {
             color: #6c757d;
             margin: 5px 0 0 0;
         }
-        
+
         .content-card {
             background: white;
             border-radius: 15px;
             padding: 25px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
             margin-bottom: 25px;
         }
-        
+
         .card-header {
             display: flex;
             justify-content: space-between;
@@ -146,13 +147,13 @@
             padding-bottom: 15px;
             border-bottom: 1px solid #e9ecef;
         }
-        
+
         .card-title {
             color: var(--despegar-blue);
             font-weight: bold;
             margin: 0;
         }
-        
+
         .btn-admin {
             background-color: var(--despegar-blue);
             border: none;
@@ -165,41 +166,41 @@
             align-items: center;
             gap: 8px;
         }
-        
+
         .btn-admin:hover {
             background-color: #0052a3;
             color: white;
         }
-        
+
         .btn-admin.orange {
             background-color: var(--despegar-orange);
         }
-        
+
         .btn-admin.success {
             background-color: #28a745;
         }
-        
+
         .btn-admin.warning {
             background-color: #ffc107;
             color: #212529;
         }
-        
+
         .stats-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
             gap: 20px;
             margin-bottom: 25px;
         }
-        
+
         .stat-card {
             background: white;
             border-radius: 15px;
             padding: 25px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
             position: relative;
             overflow: hidden;
         }
-        
+
         .stat-card::before {
             content: '';
             position: absolute;
@@ -209,14 +210,14 @@
             height: 4px;
             background: linear-gradient(90deg, var(--despegar-blue), var(--despegar-orange));
         }
-        
+
         .stat-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
             margin-bottom: 15px;
         }
-        
+
         .stat-icon {
             width: 50px;
             height: 50px;
@@ -227,36 +228,36 @@
             font-size: 1.5rem;
             color: white;
         }
-        
+
         .stat-icon.revenue {
             background: linear-gradient(135deg, #28a745, #20c997);
         }
-        
+
         .stat-icon.bookings {
             background: linear-gradient(135deg, var(--despegar-blue), #0052a3);
         }
-        
+
         .stat-icon.users {
             background: linear-gradient(135deg, var(--despegar-orange), #ff8533);
         }
-        
+
         .stat-icon.growth {
             background: linear-gradient(135deg, #6f42c1, #8b5cf6);
         }
-        
+
         .stat-number {
             font-size: 2.2rem;
             font-weight: bold;
             color: #2c3e50;
             margin-bottom: 5px;
         }
-        
+
         .stat-label {
             color: #6c757d;
             font-size: 0.9rem;
             margin-bottom: 10px;
         }
-        
+
         .stat-change {
             display: flex;
             align-items: center;
@@ -264,15 +265,15 @@
             font-size: 0.85rem;
             font-weight: 500;
         }
-        
+
         .stat-change.positive {
             color: #28a745;
         }
-        
+
         .stat-change.negative {
             color: #dc3545;
         }
-        
+
         .chart-container {
             height: 300px;
             background: #f8f9fa;
@@ -285,11 +286,11 @@
             position: relative;
             overflow: hidden;
         }
-        
+
         .chart-placeholder {
             text-align: center;
         }
-        
+
         .chart-bars {
             display: flex;
             align-items: end;
@@ -298,7 +299,7 @@
             padding: 20px;
             gap: 10px;
         }
-        
+
         .chart-bar {
             background: linear-gradient(180deg, var(--despegar-blue), var(--despegar-orange));
             border-radius: 4px 4px 0 0;
@@ -306,12 +307,12 @@
             position: relative;
             transition: all 0.3s ease;
         }
-        
+
         .chart-bar:hover {
             opacity: 0.8;
             transform: translateY(-5px);
         }
-        
+
         .chart-bar::after {
             content: attr(data-value);
             position: absolute;
@@ -322,7 +323,7 @@
             font-weight: bold;
             color: var(--despegar-blue);
         }
-        
+
         .chart-labels {
             display: flex;
             justify-content: space-around;
@@ -330,45 +331,46 @@
             font-size: 0.8rem;
             color: #6c757d;
         }
-        
+
         .report-filters {
             background: #f8f9fa;
             border-radius: 10px;
             padding: 20px;
             margin-bottom: 20px;
         }
-        
+
         .filter-row {
             display: flex;
             gap: 15px;
             align-items: end;
             flex-wrap: wrap;
         }
-        
+
         .filter-group {
             flex: 1;
             min-width: 200px;
         }
-        
+
         .form-label {
             font-weight: 500;
             color: var(--despegar-blue);
             margin-bottom: 5px;
         }
-        
-        .form-control, .form-select {
+
+        .form-control,
+        .form-select {
             border-radius: 8px;
             border: 1px solid #ddd;
             padding: 10px 12px;
         }
-        
+
         .metrics-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
             gap: 20px;
             margin-bottom: 25px;
         }
-        
+
         .metric-item {
             display: flex;
             justify-content: space-between;
@@ -376,27 +378,27 @@
             padding: 15px 0;
             border-bottom: 1px solid #e9ecef;
         }
-        
+
         .metric-item:last-child {
             border-bottom: none;
         }
-        
+
         .metric-label {
             color: #6c757d;
             font-size: 0.9rem;
         }
-        
+
         .metric-value {
             font-weight: bold;
             color: var(--despegar-blue);
         }
-        
+
         .top-items {
             list-style: none;
             padding: 0;
             margin: 0;
         }
-        
+
         .top-item {
             display: flex;
             justify-content: space-between;
@@ -404,11 +406,11 @@
             padding: 12px 0;
             border-bottom: 1px solid #e9ecef;
         }
-        
+
         .top-item:last-child {
             border-bottom: none;
         }
-        
+
         .item-rank {
             width: 30px;
             height: 30px;
@@ -421,100 +423,101 @@
             font-weight: bold;
             font-size: 0.9rem;
         }
-        
+
         .item-info {
             flex: 1;
             margin-left: 15px;
         }
-        
+
         .item-name {
             font-weight: 500;
             margin-bottom: 2px;
         }
-        
+
         .item-details {
             font-size: 0.8rem;
             color: #6c757d;
         }
-        
+
         .item-value {
             font-weight: bold;
             color: var(--despegar-orange);
         }
-        
+
         .progress-item {
             margin-bottom: 20px;
         }
-        
+
         .progress-header {
             display: flex;
             justify-content: space-between;
             margin-bottom: 8px;
         }
-        
+
         .progress-label {
             font-weight: 500;
             color: #2c3e50;
         }
-        
+
         .progress-value {
             font-weight: bold;
             color: var(--despegar-blue);
         }
-        
+
         .progress {
             height: 8px;
             border-radius: 4px;
             background-color: #e9ecef;
         }
-        
+
         .progress-bar {
             border-radius: 4px;
             background: linear-gradient(90deg, var(--despegar-blue), var(--despegar-orange));
         }
     </style>
 </head>
+
 <body>
     <!-- Sidebar -->
 
     <div class="admin-sidebar">
         <div class="sidebar-header">
-            <a href="/dashboard" class="sidebar-brand">Frategar Admin</a>
+            <a href="/administracion" class="sidebar-brand">Frategar Admin</a>
         </div>
         <nav class="sidebar-menu">
-            <a href="/dashboard" class="menu-item ">
+            <a href="/administracion" class="menu-item ">
                 <i class="fas fa-tachometer-alt"></i>
-                <span class="menu-text">Dashboard</span>
+                <span class="menu-text">Inicio</span>
             </a>
-            <a href="/dashboard/reservas" class="menu-item">
+            <a href="/administracion/reservas" class="menu-item">
                 <i class="fas fa-calendar-check"></i>
                 <span class="menu-text">Reservas</span>
             </a>
-            <a href="/dashboard/usuarios" class="menu-item">
+            <a href="/administracion/usuarios" class="menu-item">
                 <i class="fas fa-users"></i>
                 <span class="menu-text">Usuarios</span>
             </a>
-            <a href="/dashboard/vuelos" class="menu-item">
+            <a href="/administracion/vuelos" class="menu-item">
                 <i class="fas fa-plane"></i>
                 <span class="menu-text">Vuelos</span>
             </a>
-            <a href="/dashboard/hoteles" class="menu-item">
+            <a href="/administracion/hoteles" class="menu-item">
                 <i class="fas fa-bed"></i>
                 <span class="menu-text">Hoteles</span>
             </a>
-            <a href="/dashboard/autos" class="menu-item">
+            <a href="/administracion/autos" class="menu-item">
                 <i class="fas fa-car"></i>
                 <span class="menu-text">Autos</span>
             </a>
-            <a href="/dashboard/promociones" class="menu-item">
+            <a href="/administracion/promociones" class="menu-item">
                 <i class="fas fa-tags"></i>
                 <span class="menu-text">Promociones</span>
             </a>
-            <a href="/dashboard/reportes" class="menu-item  active">
+            <a href="/administracion/reportes" class="menu-item  active">
                 <i class="fas fa-chart-bar"></i>
                 <span class="menu-text">Reportes</span>
             </a>
-            <a href="/dashboard/configuracion" class="menu-item">
+            <a href="/administracion/configuracion" class="menu-item">
                 <i class="fas fa-cog"></i>
                 <span class="menu-text">Configuración</span>
             </a>
@@ -532,7 +535,7 @@
             <div class="admin-header">
                 <h4>Reportes y Análisis</h4>
             </div>
-            
+
             <div class="admin-user">
                 <div class="user-avatar">JP</div>
                 <div>
@@ -882,4 +885,5 @@
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
+
 </html>

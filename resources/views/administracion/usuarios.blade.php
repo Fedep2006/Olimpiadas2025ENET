@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -13,12 +14,12 @@
             --despegar-light-blue: #e6f3ff;
             --sidebar-width: 280px;
         }
-        
+
         body {
             background-color: #f8f9fa;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
-        
+
         .admin-sidebar {
             position: fixed;
             top: 0;
@@ -30,70 +31,70 @@
             z-index: 1000;
             overflow-y: auto;
         }
-        
+
         .sidebar-header {
             padding: 20px;
-            border-bottom: 1px solid rgba(255,255,255,0.1);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
             text-align: center;
         }
-        
+
         .sidebar-brand {
             font-size: 1.5rem;
             font-weight: bold;
             color: white;
             text-decoration: none;
         }
-        
+
         .sidebar-menu {
             padding: 20px 0;
         }
-        
+
         .menu-item {
             display: block;
             padding: 12px 20px;
-            color: rgba(255,255,255,0.8);
+            color: rgba(255, 255, 255, 0.8);
             text-decoration: none;
             transition: all 0.3s ease;
             border-left: 3px solid transparent;
         }
-        
+
         .menu-item:hover,
         .menu-item.active {
-            background-color: rgba(255,255,255,0.1);
+            background-color: rgba(255, 255, 255, 0.1);
             color: white;
             border-left-color: var(--despegar-orange);
         }
-        
+
         .menu-item i {
             width: 20px;
             margin-right: 15px;
         }
-        
+
         .main-content {
             margin-left: var(--sidebar-width);
             min-height: 100vh;
         }
-        
+
         .top-navbar {
             background: white;
             padding: 15px 30px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
             display: flex;
             justify-content: space-between;
             align-items: center;
         }
-        
+
         .admin-header h4 {
             color: var(--despegar-blue);
             margin: 0;
         }
-        
+
         .admin-user {
             display: flex;
             align-items: center;
             gap: 15px;
         }
-        
+
         .user-avatar {
             width: 40px;
             height: 40px;
@@ -105,39 +106,39 @@
             color: var(--despegar-blue);
             font-weight: bold;
         }
-        
+
         .dashboard-content {
             padding: 30px;
         }
-        
+
         .page-header {
             background: white;
             border-radius: 15px;
             padding: 25px;
             margin-bottom: 25px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
         }
-        
+
         .page-title {
             color: var(--despegar-blue);
             font-size: 1.8rem;
             font-weight: bold;
             margin: 0;
         }
-        
+
         .page-subtitle {
             color: #6c757d;
             margin: 5px 0 0 0;
         }
-        
+
         .content-card {
             background: white;
             border-radius: 15px;
             padding: 25px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
             margin-bottom: 25px;
         }
-        
+
         .card-header {
             display: flex;
             justify-content: space-between;
@@ -146,13 +147,13 @@
             padding-bottom: 15px;
             border-bottom: 1px solid #e9ecef;
         }
-        
+
         .card-title {
             color: var(--despegar-blue);
             font-weight: bold;
             margin: 0;
         }
-        
+
         .btn-admin {
             background-color: var(--despegar-blue);
             border: none;
@@ -165,81 +166,82 @@
             align-items: center;
             gap: 8px;
         }
-        
+
         .btn-admin:hover {
             background-color: #0052a3;
             color: white;
         }
-        
+
         .btn-admin.orange {
             background-color: var(--despegar-orange);
         }
-        
+
         .btn-admin.success {
             background-color: #28a745;
         }
-        
+
         .btn-admin.danger {
             background-color: #dc3545;
         }
-        
+
         .status-badge {
             padding: 6px 12px;
             border-radius: 20px;
             font-size: 0.8rem;
             font-weight: bold;
         }
-        
+
         .status-active {
             background-color: #d4edda;
             color: #155724;
         }
-        
+
         .status-inactive {
             background-color: #f8d7da;
             color: #721c24;
         }
-        
+
         .status-pending {
             background-color: #fff3cd;
             color: #856404;
         }
-        
+
         .search-filters {
             background: #f8f9fa;
             border-radius: 10px;
             padding: 20px;
             margin-bottom: 20px;
         }
-        
+
         .filter-row {
             display: flex;
             gap: 15px;
             align-items: end;
             flex-wrap: wrap;
         }
-        
+
         .filter-group {
             flex: 1;
             min-width: 200px;
         }
-        
+
         .form-label {
             font-weight: 500;
             color: var(--despegar-blue);
             margin-bottom: 5px;
         }
-        
-        .form-control, .form-select {
+
+        .form-control,
+        .form-select {
             border-radius: 8px;
             border: 1px solid #ddd;
             padding: 10px 12px;
         }
-        
+
         .table-container {
             overflow-x: auto;
         }
-        
+
         .table th {
             background-color: var(--despegar-light-blue);
             color: var(--despegar-blue);
@@ -247,22 +249,22 @@
             border: none;
             padding: 15px 12px;
         }
-        
+
         .table td {
             padding: 15px 12px;
             vertical-align: middle;
             border-bottom: 1px solid #e9ecef;
         }
-        
+
         .table tbody tr:hover {
             background-color: #f8f9fa;
         }
-        
+
         .action-buttons {
             display: flex;
             gap: 5px;
         }
-        
+
         .action-btn {
             width: 32px;
             height: 32px;
@@ -274,60 +276,60 @@
             cursor: pointer;
             font-size: 0.9rem;
         }
-        
+
         .action-btn.view {
             background-color: #17a2b8;
             color: white;
         }
-        
+
         .action-btn.edit {
             background-color: #ffc107;
             color: #212529;
         }
-        
+
         .action-btn.delete {
             background-color: #dc3545;
             color: white;
         }
-        
+
         .action-btn.message {
             background-color: #28a745;
             color: white;
         }
-        
+
         .stats-row {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
             gap: 20px;
             margin-bottom: 25px;
         }
-        
+
         .stat-card {
             background: white;
             border-radius: 10px;
             padding: 20px;
             text-align: center;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
             border-left: 4px solid var(--despegar-blue);
         }
-        
+
         .stat-number {
             font-size: 2rem;
             font-weight: bold;
             color: var(--despegar-blue);
         }
-        
+
         .stat-label {
             color: #6c757d;
             font-size: 0.9rem;
         }
-        
+
         .user-profile {
             display: flex;
             align-items: center;
             gap: 12px;
         }
-        
+
         .user-profile-avatar {
             width: 45px;
             height: 45px;
@@ -340,85 +342,86 @@
             font-weight: bold;
             font-size: 1.1rem;
         }
-        
+
         .user-info h6 {
             margin: 0;
             font-weight: bold;
         }
-        
+
         .user-info small {
             color: #6c757d;
         }
-        
+
         .role-badge {
             padding: 4px 8px;
             border-radius: 12px;
             font-size: 0.75rem;
             font-weight: bold;
         }
-        
+
         .role-admin {
             background-color: #dc3545;
             color: white;
         }
-        
+
         .role-user {
             background-color: #007bff;
             color: white;
         }
-        
+
         .role-premium {
             background-color: #ffc107;
             color: #212529;
         }
     </style>
 </head>
+
 <body>
     <!-- Sidebar -->
     <div class="admin-sidebar">
         <div class="sidebar-header">
-            <a href="admin-dashboard.html" class="sidebar-brand">
+            <a href="/administracion" class="sidebar-brand">
                 <i class="fas fa-plane me-2"></i>
                 Frategar Admin
             </a>
         </div>
-        
-      <!-- Sidebar -->
-        
+
+        <!-- Sidebar -->
+
         <nav class="sidebar-menu">
-            <a href="/dashboard" class="menu-item ">
+            <a href="/administracion" class="menu-item ">
                 <i class="fas fa-tachometer-alt"></i>
-                <span class="menu-text">Dashboard</span>
+                <span class="menu-text">Inicio</span>
             </a>
-            <a href="/dashboard/reservas" class="menu-item">
+            <a href="/administracion/reservas" class="menu-item">
                 <i class="fas fa-calendar-check"></i>
                 <span class="menu-text">Reservas</span>
             </a>
-            <a href="/dashboard/usuarios" class="menu-item  active">
+            <a href="/administracion/usuarios" class="menu-item  active">
                 <i class="fas fa-users"></i>
                 <span class="menu-text">Usuarios</span>
             </a>
-            <a href="/dashboard/vuelos" class="menu-item">
+            <a href="/administracion/vuelos" class="menu-item">
                 <i class="fas fa-plane"></i>
                 <span class="menu-text">Vuelos</span>
             </a>
-            <a href="/dashboard/hoteles" class="menu-item">
+            <a href="/administracion/hoteles" class="menu-item">
                 <i class="fas fa-bed"></i>
                 <span class="menu-text">Hoteles</span>
             </a>
-            <a href="/dashboard/autos" class="menu-item">
+            <a href="/administracion/autos" class="menu-item">
                 <i class="fas fa-car"></i>
                 <span class="menu-text">Autos</span>
             </a>
-            <a href="/dashboard/promociones" class="menu-item">
+            <a href="/administracion/promociones" class="menu-item">
                 <i class="fas fa-tags"></i>
                 <span class="menu-text">Promociones</span>
             </a>
-            <a href="/dashboard/reportes" class="menu-item">
+            <a href="/administracion/reportes" class="menu-item">
                 <i class="fas fa-chart-bar"></i>
                 <span class="menu-text">Reportes</span>
             </a>
-            <a href="/dashboard/configuracion" class="menu-item">
+            <a href="/administracion/configuracion" class="menu-item">
                 <i class="fas fa-cog"></i>
                 <span class="menu-text">Configuración</span>
             </a>
@@ -436,7 +439,7 @@
             <div class="admin-header">
                 <h4>Gestión de Usuarios</h4>
             </div>
-            
+
             <div class="admin-user">
                 <div class="user-avatar">JP</div>
                 <div>
@@ -544,7 +547,7 @@
                         </a>
                     </div>
                 </div>
-                
+
                 <div class="table-container">
                     <table class="table">
                         <thead>
@@ -725,7 +728,7 @@
                         </tbody>
                     </table>
                 </div>
-                
+
                 <!-- Pagination -->
                 <nav>
                     <ul class="pagination">
@@ -752,4 +755,5 @@
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
+
 </html>
