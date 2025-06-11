@@ -432,6 +432,133 @@
         .toggle-sidebar:hover {
             color: var(--despegar-orange);
         }
+
+        /* Estilos para los selects múltiples */
+        .select2-container--bootstrap-5 .select2-selection {
+            min-height: 38px;
+            border: 1px solid #ced4da;
+            border-radius: 0.375rem;
+        }
+
+        .select2-container--bootstrap-5 .select2-selection--multiple .select2-selection__rendered {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 4px;
+            padding: 4px;
+        }
+
+        .select2-container--bootstrap-5 .select2-selection--multiple .select2-selection__choice {
+            background-color: var(--despegar-blue);
+            color: white;
+            border: none;
+            border-radius: 4px;
+            padding: 2px 8px;
+            margin: 2px;
+        }
+
+        .select2-container--bootstrap-5 .select2-selection--multiple .select2-selection__choice__remove {
+            color: white;
+            margin-right: 4px;
+        }
+
+        .select2-container--bootstrap-5 .select2-selection--multiple .select2-selection__choice__remove:hover {
+            color: #ffebee;
+        }
+
+        /* Estilos para los badges de estado */
+        .badge {
+            padding: 6px 12px;
+            font-weight: 500;
+            border-radius: 4px;
+        }
+
+        .badge.bg-success {
+            background-color: #28a745 !important;
+        }
+
+        .badge.bg-danger {
+            background-color: #dc3545 !important;
+        }
+
+        .badge.bg-primary {
+            background-color: var(--despegar-blue) !important;
+        }
+
+        .badge.bg-info {
+            background-color: #17a2b8 !important;
+        }
+
+        .badge.bg-warning {
+            background-color: #ffc107 !important;
+            color: #212529;
+        }
+
+        .badge.bg-secondary {
+            background-color: #6c757d !important;
+        }
+
+        /* Estilos para la tabla */
+        .table th {
+            background-color: #f8f9fa;
+            font-weight: 600;
+            white-space: nowrap;
+        }
+
+        .table td {
+            vertical-align: middle;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 8px;
+            justify-content: center;
+        }
+
+        .action-btn {
+            width: 32px;
+            height: 32px;
+            border: none;
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .action-btn.btn-edit {
+            background-color: var(--despegar-blue);
+            color: white;
+        }
+
+        .action-btn.btn-edit:hover {
+            background-color: #004499;
+        }
+
+        .action-btn.btn-delete {
+            background-color: #dc3545;
+            color: white;
+        }
+
+        .action-btn.btn-delete:hover {
+            background-color: #c82333;
+        }
+
+        /* Estilos para el formulario */
+        .form-label {
+            font-weight: 500;
+            color: #495057;
+        }
+
+        .form-control:focus {
+            border-color: var(--despegar-blue);
+            box-shadow: 0 0 0 0.2rem rgba(0, 102, 204, 0.25);
+        }
+
+        .form-check-input:checked {
+            background-color: var(--despegar-blue);
+            border-color: var(--despegar-blue);
+        }
     </style>
 </head>
 
@@ -597,45 +724,62 @@
                 <table class="table">
                     <thead>
                         <tr>
-                            <th>Imagen</th>
+                            <th>ID</th>
+                            <th>Nombre</th>
                             <th>Tipo</th>
                             <th>Origen</th>
                             <th>Destino</th>
                             <th>Fecha Salida</th>
-                            <th>Fecha Llegada</th>
-                            <th>Precio</th>
+                            <th>Empresa</th>
+                            <th>Asientos Disp.</th>
+                            <th>Precio Base</th>
+                            <th>Estado</th>
                             <th>Acciones</th>
                         </tr>
                     </thead>
                     <tbody>
                         @foreach($viajes as $viaje)
                         <tr>
+                            <td>{{ $viaje->id }}</td>
+                            <td>{{ $viaje->nombre }}</td>
                             <td>
-                                @if($viaje->imagen)
-                                    <img src="data:image/jpeg;base64,{{ $viaje->imagen }}" 
-                                         alt="Imagen del viaje" 
-                                         class="imagen-viaje">
-                                @else
-                                    <img src="{{ asset('img/no-image.png') }}" 
-                                         alt="Sin imagen" 
-                                         class="imagen-viaje">
-                                @endif
+                                @switch($viaje->tipo)
+                                    @case('bus')
+                                        <span class="badge bg-primary">Bus</span>
+                                        @break
+                                    @case('avion')
+                                        <span class="badge bg-info">Avión</span>
+                                        @break
+                                    @case('tren')
+                                        <span class="badge bg-success">Tren</span>
+                                        @break
+                                    @case('barco')
+                                        <span class="badge bg-warning">Barco</span>
+                                        @break
+                                    @case('transporte_privado')
+                                        <span class="badge bg-secondary">Transporte Privado</span>
+                                        @break
+                                @endswitch
                             </td>
-                            <td>{{ ucfirst($viaje->tipo) }}</td>
                             <td>{{ $viaje->origen }}</td>
                             <td>{{ $viaje->destino }}</td>
                             <td>{{ $viaje->fecha_salida->format('d/m/Y H:i') }}</td>
-                            <td>{{ $viaje->fecha_llegada->format('d/m/Y H:i') }}</td>
-                            <td>${{ number_format($viaje->precio, 2) }}</td>
+                            <td>{{ $viaje->empresa }}</td>
+                            <td>{{ $viaje->asientos_disponibles }}/{{ $viaje->capacidad_total }}</td>
+                            <td>${{ number_format($viaje->precio_base, 2) }}</td>
+                            <td>
+                                @if($viaje->activo)
+                                    <span class="badge bg-success">Activo</span>
+                                @else
+                                    <span class="badge bg-danger">Inactivo</span>
+                                @endif
+                            </td>
                             <td>
                                 <div class="action-buttons">
-                                    <button class="action-btn view" onclick="verDetalles({{ $viaje->id }})" title="Ver detalles">
-                                        <i class="fas fa-eye"></i>
-                                    </button>
-                                    <button class="action-btn edit" onclick="editarViaje({{ $viaje->id }})" title="Editar">
+                                    <button class="action-btn btn-edit" data-id="{{ $viaje->id }}" title="Editar">
                                         <i class="fas fa-edit"></i>
                                     </button>
-                                    <button class="action-btn delete" onclick="eliminarViaje({{ $viaje->id }})" title="Eliminar">
+                                    <button class="action-btn btn-delete" data-id="{{ $viaje->id }}" title="Eliminar">
                                         <i class="fas fa-trash"></i>
                                     </button>
                                 </div>
@@ -661,11 +805,18 @@
                         <input type="hidden" id="viaje_id" name="viaje_id">
                         
                         <div class="mb-3">
-                            <label for="tipo" class="form-label">Tipo de Viaje</label>
+                            <label for="nombre" class="form-label">Nombre del Viaje</label>
+                            <input type="text" class="form-control" id="nombre" name="nombre" required>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="tipo" class="form-label">Tipo de Transporte</label>
                             <select class="form-select" id="tipo" name="tipo" required>
-                                <option value="aereo">Aéreo</option>
-                                <option value="terrestre">Terrestre</option>
-                                <option value="maritimo">Marítimo</option>
+                                <option value="bus">Bus</option>
+                                <option value="avion">Avión</option>
+                                <option value="tren">Tren</option>
+                                <option value="barco">Barco</option>
+                                <option value="transporte_privado">Transporte Privado</option>
                             </select>
                         </div>
 
@@ -680,18 +831,58 @@
                         </div>
 
                         <div class="mb-3">
-                            <label for="fecha_salida" class="form-label">Fecha de Salida</label>
+                            <label for="fecha_salida" class="form-label">Fecha y Hora de Salida</label>
                             <input type="datetime-local" class="form-control" id="fecha_salida" name="fecha_salida" required>
                         </div>
 
                         <div class="mb-3">
-                            <label for="fecha_llegada" class="form-label">Fecha de Llegada</label>
+                            <label for="fecha_llegada" class="form-label">Fecha y Hora de Llegada</label>
                             <input type="datetime-local" class="form-control" id="fecha_llegada" name="fecha_llegada" required>
                         </div>
 
                         <div class="mb-3">
-                            <label for="precio" class="form-label">Precio</label>
-                            <input type="number" class="form-control" id="precio" name="precio" step="0.01" required>
+                            <label for="empresa" class="form-label">Empresa de Transporte</label>
+                            <input type="text" class="form-control" id="empresa" name="empresa" required>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="numero_viaje" class="form-label">Número de Viaje</label>
+                            <input type="text" class="form-control" id="numero_viaje" name="numero_viaje" required>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="capacidad_total" class="form-label">Capacidad Total</label>
+                            <input type="number" class="form-control" id="capacidad_total" name="capacidad_total" required min="1">
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="asientos_disponibles" class="form-label">Asientos Disponibles</label>
+                            <input type="number" class="form-control" id="asientos_disponibles" name="asientos_disponibles" required min="0">
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="precio_base" class="form-label">Precio Base</label>
+                            <input type="number" class="form-control" id="precio_base" name="precio_base" required min="0" step="0.01">
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="clases" class="form-label">Clases Disponibles</label>
+                            <select class="form-select" id="clases" name="clases[]" multiple>
+                                <option value="economica">Económica</option>
+                                <option value="business">Business</option>
+                                <option value="primera">Primera</option>
+                            </select>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="servicios" class="form-label">Servicios Incluidos</label>
+                            <select class="form-select" id="servicios" name="servicios[]" multiple>
+                                <option value="wifi">WiFi</option>
+                                <option value="comida">Comida</option>
+                                <option value="entretenimiento">Entretenimiento</option>
+                                <option value="aire_acondicionado">Aire Acondicionado</option>
+                                <option value="baño">Baño</option>
+                            </select>
                         </div>
 
                         <div class="mb-3">
@@ -700,9 +891,17 @@
                         </div>
 
                         <div class="mb-3">
-                            <label for="imagen" class="form-label">Imagen</label>
-                            <input type="file" class="form-control" id="imagen" name="imagen" accept="image/*">
-                            <div id="imagenPreview" class="mt-2"></div>
+                            <label for="observaciones" class="form-label">Observaciones</label>
+                            <textarea class="form-control" id="observaciones" name="observaciones" rows="3"></textarea>
+                        </div>
+
+                        <div class="mb-3">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="activo" name="activo" checked>
+                                <label class="form-check-label" for="activo">
+                                    Viaje Activo
+                                </label>
+                            </div>
                         </div>
                     </form>
                 </div>
@@ -807,6 +1006,115 @@
                 sidebar.classList.remove('show');
                 mainContent.classList.remove('expanded');
             }
+        });
+
+        // Inicializar selects múltiples
+        $('#clases, #servicios').select2({
+            theme: 'bootstrap-5',
+            width: '100%'
+        });
+
+        // Manejar el envío del formulario
+        document.getElementById('viajeForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const formData = new FormData(this);
+            
+            // Convertir arrays de clases y servicios a JSON
+            formData.set('clases', JSON.stringify(Array.from(document.getElementById('clases').selectedOptions).map(option => option.value)));
+            formData.set('servicios', JSON.stringify(Array.from(document.getElementById('servicios').selectedOptions).map(option => option.value)));
+            
+            const viajeId = document.getElementById('viaje_id').value;
+            const url = viajeId ? `/admin/viajes/${viajeId}` : '/admin/viajes';
+            const method = viajeId ? 'PUT' : 'POST';
+
+            fetch(url, {
+                method: method,
+                body: formData,
+                headers: {
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    location.reload();
+                } else {
+                    alert('Error al guardar el viaje');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Error al guardar el viaje');
+            });
+        });
+
+        // Manejar edición de viaje
+        document.querySelectorAll('.btn-edit').forEach(button => {
+            button.addEventListener('click', function() {
+                const viajeId = this.dataset.id;
+                fetch(`/admin/viajes/${viajeId}`)
+                    .then(response => response.json())
+                    .then(viaje => {
+                        document.getElementById('viaje_id').value = viaje.id;
+                        document.getElementById('nombre').value = viaje.nombre;
+                        document.getElementById('tipo').value = viaje.tipo;
+                        document.getElementById('origen').value = viaje.origen;
+                        document.getElementById('destino').value = viaje.destino;
+                        document.getElementById('fecha_salida').value = viaje.fecha_salida;
+                        document.getElementById('fecha_llegada').value = viaje.fecha_llegada;
+                        document.getElementById('empresa').value = viaje.empresa;
+                        document.getElementById('numero_viaje').value = viaje.numero_viaje;
+                        document.getElementById('capacidad_total').value = viaje.capacidad_total;
+                        document.getElementById('asientos_disponibles').value = viaje.asientos_disponibles;
+                        document.getElementById('precio_base').value = viaje.precio_base;
+                        
+                        // Actualizar selects múltiples
+                        $('#clases').val(viaje.clases).trigger('change');
+                        $('#servicios').val(viaje.servicios).trigger('change');
+                        
+                        document.getElementById('descripcion').value = viaje.descripcion;
+                        document.getElementById('observaciones').value = viaje.observaciones;
+                        document.getElementById('activo').checked = viaje.activo;
+                        
+                        document.getElementById('viajeModalLabel').textContent = 'Editar Viaje';
+                        new bootstrap.Modal(document.getElementById('viajeModal')).show();
+                    });
+            });
+        });
+
+        // Manejar eliminación de viaje
+        document.querySelectorAll('.btn-delete').forEach(button => {
+            button.addEventListener('click', function() {
+                if (confirm('¿Está seguro de eliminar este viaje?')) {
+                    const viajeId = this.dataset.id;
+                    fetch(`/admin/viajes/${viajeId}`, {
+                        method: 'DELETE',
+                        headers: {
+                            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
+                        }
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            location.reload();
+                        } else {
+                            alert('Error al eliminar el viaje');
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                        alert('Error al eliminar el viaje');
+                    });
+                }
+            });
+        });
+
+        // Limpiar formulario al abrir modal para nuevo viaje
+        document.querySelector('[data-bs-target="#viajeModal"]').addEventListener('click', function() {
+            document.getElementById('viajeForm').reset();
+            document.getElementById('viaje_id').value = '';
+            document.getElementById('viajeModalLabel').textContent = 'Nuevo Viaje';
+            $('#clases, #servicios').val(null).trigger('change');
         });
     });
 
@@ -950,13 +1258,22 @@
             .then(response => response.json())
             .then(viaje => {
                 document.getElementById('viaje_id').value = viaje.id;
+                document.getElementById('nombre').value = viaje.nombre;
                 document.getElementById('tipo').value = viaje.tipo;
                 document.getElementById('origen').value = viaje.origen;
                 document.getElementById('destino').value = viaje.destino;
                 document.getElementById('fecha_salida').value = viaje.fecha_salida;
                 document.getElementById('fecha_llegada').value = viaje.fecha_llegada;
-                document.getElementById('precio').value = viaje.precio;
+                document.getElementById('empresa').value = viaje.empresa;
+                document.getElementById('numero_viaje').value = viaje.numero_viaje;
+                document.getElementById('capacidad_total').value = viaje.capacidad_total;
+                document.getElementById('asientos_disponibles').value = viaje.asientos_disponibles;
+                document.getElementById('precio_base').value = viaje.precio_base;
+                document.getElementById('clases').value = viaje.clases.map(clase => clase.id);
+                document.getElementById('servicios').value = viaje.servicios.map(servicio => servicio.id);
                 document.getElementById('descripcion').value = viaje.descripcion;
+                document.getElementById('observaciones').value = viaje.observaciones;
+                document.getElementById('activo').checked = viaje.activo;
                 
                 if (viaje.imagen) {
                     document.getElementById('imagenPreview').innerHTML = `
