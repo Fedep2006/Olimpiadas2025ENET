@@ -3,7 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\administracionController;
 use App\Http\Controllers\AuthController;
-
+use App\Http\Controllers\UserController;
 use App\Models\User;
 
 use Illuminate\Support\Facades\Auth;
@@ -28,10 +28,10 @@ Route::get('/login', function () {
     return view('login.login');
 });
 
-route::get( '/register' , [App\Http\Controllers\RegisterController::class, 'index'])
+route::get('/register', [App\Http\Controllers\RegisterController::class, 'index'])
     ->name('register');
 
-    Route::post( '/CrearRegistro' , [App\Http\Controllers\RegisterController::class, 'register'])
+Route::post('/CrearRegistro', [App\Http\Controllers\RegisterController::class, 'register'])
     ->name('register.process');
 
 Route::get('/detalles', function () {
@@ -46,22 +46,23 @@ Route::get('/busqueda', function () {
 
 Route::prefix('administracion')->middleware('auth')->group(function () {
 
-    Route::get('/', [administracionController::class, 'inicio'])->name('administracion.inicio');
+    Route::get('/', [AdministracionController::class, 'inicio'])->name('administracion.inicio');
 
-    Route::get('/reportes', [administracionController::class, 'reportes'])->name('administracion.reportes');
+    Route::get('/reportes', [AdministracionController::class, 'reportes'])->name('administracion.reportes');
 
-    Route::get('/vehiculos', [administracionController::class, 'vehiculos'])->name('administracion.vehiculos');
+    Route::get('/vehiculos', [AdministracionController::class, 'vehiculos'])->name('administracion.vehiculos');
 
-    Route::get('/hoteles', [administracionController::class, 'hoteles'])->name('administracion.hoteles');
-    Route::post('/hoteles/actualizar', [administracionController::class, 'EditHoteles'])->name('administracion.hoteles.update');
+    Route::get('/hoteles', [AdministracionController::class, 'hoteles'])->name('administracion.hoteles');
+    Route::post('/hoteles/actualizar', [AdministracionController::class, 'EditHoteles'])->name('administracion.hoteles.update');
 
-    Route::get('/paquetes', [administracionController::class, 'paquetes'])->name('administracion.paquetes');
+    Route::get('/paquetes', [AdministracionController::class, 'paquetes'])->name('administracion.paquetes');
 
-    Route::get('/reservas', [administracionController::class, 'reservas'])->name('administracion.reservas');
+    Route::get('/reservas', [AdministracionController::class, 'reservas'])->name('administracion.reservas');
 
-    Route::get('/usuarios', [administracionController::class, 'usuarios'])->name('administracion.usuarios');
+    Route::get('/usuarios', [UserController::class, 'index'])->name('usuarios.index');
+    Route::post('/usuarios/create', [UserController::class, 'crear'])->name('usuarios.create');
 
-    Route::get('/viajes', [administracionController::class, 'vuelos'])->name('administracion.viajes');
+    Route::get('/viajes', [AdministracionController::class, 'vuelos'])->name('administracion.viajes');
 });
 
 // Mostrar el formulario
@@ -80,3 +81,8 @@ Route::post('/logout', function () {
     request()->session()->regenerateToken();
     return redirect()->route('login');
 })->name('logout');
+
+Route::prefix('usuarios')->middleware('auth')->group(function () {
+    Route::get('/', [UserController::class, 'index'])->name('usuarios.index');
+    Route::post('/create', [UserController::class, 'crear'])->name('usuarios.create');
+});

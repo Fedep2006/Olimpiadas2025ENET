@@ -4,6 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>Gestión de Usuarios - Frategar Admin</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
@@ -385,6 +386,195 @@
             background-color: #ffc107;
             color: #212529;
         }
+
+        /* Modal Styles */
+        .modal-content {
+            border: none;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .modal-header {
+            background: linear-gradient(180deg, var(--despegar-blue) 0%, #004499 100%);
+            color: white;
+            border-radius: 15px 15px 0 0;
+            padding: 1.5rem;
+            border: none;
+        }
+
+        .modal-header .btn-close {
+            filter: brightness(0) invert(1);
+            opacity: 0.8;
+        }
+
+        .modal-header .modal-title {
+            font-weight: 600;
+            font-size: 1.25rem;
+        }
+
+        .modal-body {
+            padding: 2rem;
+        }
+
+        .modal-footer {
+            padding: 1.5rem;
+            border-top: 1px solid #e9ecef;
+            background-color: #f8f9fa;
+            border-radius: 0 0 15px 15px;
+        }
+
+        .modal .form-label {
+            color: var(--despegar-blue);
+            font-weight: 500;
+            margin-bottom: 0.5rem;
+        }
+
+        .modal .form-control {
+            border: 2px solid #e9ecef;
+            border-radius: 8px;
+            padding: 0.75rem 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .modal .form-control:focus {
+            border-color: var(--despegar-blue);
+            box-shadow: 0 0 0 0.2rem rgba(0, 102, 204, 0.15);
+        }
+
+        .modal .btn {
+            padding: 0.75rem 1.5rem;
+            font-weight: 600;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .modal .btn-primary {
+            background-color: var(--despegar-blue);
+            border: none;
+        }
+
+        .modal .btn-primary:hover {
+            background-color: #0052a3;
+            transform: translateY(-1px);
+        }
+
+        .modal .btn-secondary {
+            background-color: #6c757d;
+            border: none;
+        }
+
+        .modal .btn-secondary:hover {
+            background-color: #5a6268;
+            transform: translateY(-1px);
+        }
+
+        .modal .mb-3 {
+            margin-bottom: 1.5rem !important;
+        }
+
+        /* Toast Notification Styles */
+        .toast-container {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1060;
+        }
+
+        .toast {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            min-width: 300px;
+        }
+
+        .toast.success {
+            border-left: 4px solid #28a745;
+        }
+
+        .toast.error {
+            border-left: 4px solid #dc3545;
+        }
+
+        .toast-header {
+            background-color: white;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+            padding: 0.75rem 1rem;
+        }
+
+        .toast-body {
+            padding: 1rem;
+        }
+
+        .pagination {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+            margin: 0;
+            padding: 0;
+        }
+
+        .pagination .page-item {
+            list-style: none;
+            margin: 0;
+        }
+
+        .pagination .page-link {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-width: 40px;
+            height: 40px;
+            padding: 0 12px;
+            border-radius: 8px;
+            border: 2px solid #e9ecef;
+            background-color: white;
+            color: var(--despegar-blue);
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .pagination .page-link:hover {
+            background-color: var(--despegar-light-blue);
+            border-color: var(--despegar-blue);
+            transform: translateY(-1px);
+        }
+
+        .pagination .page-item.active .page-link {
+            background-color: var(--despegar-blue);
+            border-color: var(--despegar-blue);
+            color: white;
+        }
+
+        .pagination .page-item.disabled .page-link {
+            background-color: #f8f9fa;
+            border-color: #e9ecef;
+            color: #6c757d;
+            cursor: not-allowed;
+        }
+
+        .pagination-info {
+            color: #6c757d;
+            font-size: 0.9rem;
+            margin: 0 15px;
+        }
+
+        .pagination .page-link i {
+            font-size: 0.8rem;
+        }
+
+        .pagination .page-link.prev,
+        .pagination .page-link.next {
+            padding: 0 15px;
+        }
+
+        .pagination .page-link.prev i {
+            margin-right: 5px;
+        }
+
+        .pagination .page-link.next i {
+            margin-left: 5px;
+        }
     </style>
 </head>
 
@@ -469,77 +659,48 @@
                         <h1 class="page-title">Gestión de Usuarios</h1>
                         <p class="page-subtitle">Administra todos los usuarios registrados en el sistema</p>
                     </div>
-                    <a href="#" class="btn-admin orange">
+                    <button class="btn-admin orange">
                         <i class="fas fa-user-plus"></i>
                         Nuevo Usuario
-                    </a>
-                </div>
-            </div>
-
-            <!-- Stats Row -->
-            <div class="stats-row">
-                <div class="stat-card">
-                    <div class="stat-number">3,891</div>
-                    <div class="stat-label">Total Usuarios</div>
-                </div>
-                <div class="stat-card" style="border-left-color: #28a745;">
-                    <div class="stat-number">3,654</div>
-                    <div class="stat-label">Usuarios Activos</div>
-                </div>
-                <div class="stat-card" style="border-left-color: #ffc107;">
-                    <div class="stat-number">892</div>
-                    <div class="stat-label">Usuarios Premium</div>
-                </div>
-                <div class="stat-card" style="border-left-color: #dc3545;">
-                    <div class="stat-number">237</div>
-                    <div class="stat-label">Usuarios Inactivos</div>
+                    </button>
                 </div>
             </div>
 
             <!-- Filters -->
             <div class="content-card">
                 <div class="search-filters">
-                    <div class="filter-row">
+                    <form id="searchForm" class="filter-row">
                         <div class="filter-group">
                             <label class="form-label">Buscar Usuario</label>
-                            <input type="text" class="form-control" placeholder="Nombre, email o ID de usuario">
-                        </div>
-                        <div class="filter-group">
-                            <label class="form-label">Estado</label>
-                            <select class="form-select">
-                                <option value="">Todos los estados</option>
-                                <option value="active">Activo</option>
-                                <option value="inactive">Inactivo</option>
-                                <option value="pending">Pendiente</option>
-                            </select>
-                        </div>
-                        <div class="filter-group">
-                            <label class="form-label">Tipo de Usuario</label>
-                            <select class="form-select">
-                                <option value="">Todos los tipos</option>
-                                <option value="user">Usuario Regular</option>
-                                <option value="premium">Usuario Premium</option>
-                                <option value="admin">Administrador</option>
-                            </select>
+                            <div class="input-group">
+                                <input type="text" class="form-control" name="search" id="searchInput"
+                                    placeholder="Nombre, email o ID de usuario" value="{{ request('search') }}"
+                                    autocomplete="off">
+                                <button class="btn btn-outline-secondary" type="button" id="clearSearch">
+                                    <i class="fas fa-times"></i>
+                                </button>
+                            </div>
                         </div>
                         <div class="filter-group">
                             <label class="form-label">Fecha de Registro</label>
-                            <input type="date" class="form-control">
+                            <input type="date" class="form-control" name="registration_date"
+                                value="{{ request('registration_date') }}">
                         </div>
                         <div class="filter-group">
                             <label class="form-label">&nbsp;</label>
                             <div class="d-flex gap-2">
-                                <button class="btn-admin">
+                                <button type="submit" class="btn-admin">
                                     <i class="fas fa-search"></i>
                                     Buscar
                                 </button>
-                                <button class="btn-admin" style="background-color: #6c757d;">
+                                <button type="button" class="btn-admin" style="background-color: #6c757d;"
+                                    id="clearFilters">
                                     <i class="fas fa-times"></i>
                                     Limpiar
                                 </button>
                             </div>
                         </div>
-                    </div>
+                    </form>
                 </div>
             </div>
 
@@ -548,11 +709,11 @@
                 <div class="card-header">
                     <h5 class="card-title">Lista de Usuarios</h5>
                     <div class="d-flex gap-2">
-                        <a href="#" class="btn-admin">
+                        <a href="#" class="btn-admin" id="exportUsers">
                             <i class="fas fa-download"></i>
                             Exportar
                         </a>
-                        <a href="#" class="btn-admin success">
+                        <a href="#" class="btn-admin success" id="sendNewsletter">
                             <i class="fas fa-envelope"></i>
                             Enviar Newsletter
                         </a>
@@ -565,206 +726,298 @@
                             <tr>
                                 <th>Usuario</th>
                                 <th>Email</th>
-                                <th>Teléfono</th>
-                                <th>Tipo</th>
                                 <th>Fecha Registro</th>
-                                <th>Última Actividad</th>
-                                <th>Estado</th>
                                 <th>Acciones</th>
                             </tr>
                         </thead>
-                        <tbody>
-                            <tr>
-                                <td>
-                                    <div class="user-profile">
-                                        <div class="user-profile-avatar">MP</div>
-                                        <div class="user-info">
-                                            <h6>María Pérez</h6>
-                                            <small>ID: #USR-001</small>
-                                        </div>
-                                    </div>
-                                </td>
-                                <td>maria.perez@email.com</td>
-                                <td>+54 11 1234-5678</td>
-                                <td><span class="role-badge role-premium">Premium</span></td>
-                                <td>15 Ene 2024</td>
-                                <td>Hace 2 horas</td>
-                                <td><span class="status-badge status-active">Activo</span></td>
-                                <td>
-                                    <div class="action-buttons">
-                                        <button class="action-btn view" title="Ver perfil">
-                                            <i class="fas fa-eye"></i>
-                                        </button>
-                                        <button class="action-btn edit" title="Editar">
-                                            <i class="fas fa-edit"></i>
-                                        </button>
-                                        <button class="action-btn message" title="Enviar mensaje">
-                                            <i class="fas fa-envelope"></i>
-                                        </button>
-                                        <button class="action-btn delete" title="Desactivar">
-                                            <i class="fas fa-ban"></i>
-                                        </button>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <div class="user-profile">
-                                        <div class="user-profile-avatar">CG</div>
-                                        <div class="user-info">
-                                            <h6>Carlos García</h6>
-                                            <small>ID: #USR-002</small>
-                                        </div>
-                                    </div>
-                                </td>
-                                <td>carlos.garcia@email.com</td>
-                                <td>+54 11 2345-6789</td>
-                                <td><span class="role-badge role-user">Usuario</span></td>
-                                <td>20 Ene 2024</td>
-                                <td>Hace 1 día</td>
-                                <td><span class="status-badge status-active">Activo</span></td>
-                                <td>
-                                    <div class="action-buttons">
-                                        <button class="action-btn view" title="Ver perfil">
-                                            <i class="fas fa-eye"></i>
-                                        </button>
-                                        <button class="action-btn edit" title="Editar">
-                                            <i class="fas fa-edit"></i>
-                                        </button>
-                                        <button class="action-btn message" title="Enviar mensaje">
-                                            <i class="fas fa-envelope"></i>
-                                        </button>
-                                        <button class="action-btn delete" title="Desactivar">
-                                            <i class="fas fa-ban"></i>
-                                        </button>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <div class="user-profile">
-                                        <div class="user-profile-avatar">AL</div>
-                                        <div class="user-info">
-                                            <h6>Ana López</h6>
-                                            <small>ID: #USR-003</small>
-                                        </div>
-                                    </div>
-                                </td>
-                                <td>ana.lopez@email.com</td>
-                                <td>+54 11 3456-7890</td>
-                                <td><span class="role-badge role-user">Usuario</span></td>
-                                <td>25 Ene 2024</td>
-                                <td>Hace 3 días</td>
-                                <td><span class="status-badge status-inactive">Inactivo</span></td>
-                                <td>
-                                    <div class="action-buttons">
-                                        <button class="action-btn view" title="Ver perfil">
-                                            <i class="fas fa-eye"></i>
-                                        </button>
-                                        <button class="action-btn edit" title="Editar">
-                                            <i class="fas fa-edit"></i>
-                                        </button>
-                                        <button class="action-btn message" title="Enviar mensaje">
-                                            <i class="fas fa-envelope"></i>
-                                        </button>
-                                        <button class="action-btn delete" title="Eliminar">
-                                            <i class="fas fa-trash"></i>
-                                        </button>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <div class="user-profile">
-                                        <div class="user-profile-avatar">JR</div>
-                                        <div class="user-info">
-                                            <h6>José Rodríguez</h6>
-                                            <small>ID: #USR-004</small>
-                                        </div>
-                                    </div>
-                                </td>
-                                <td>jose.rodriguez@email.com</td>
-                                <td>+54 11 4567-8901</td>
-                                <td><span class="role-badge role-admin">Admin</span></td>
-                                <td>10 Ene 2024</td>
-                                <td>Hace 30 min</td>
-                                <td><span class="status-badge status-active">Activo</span></td>
-                                <td>
-                                    <div class="action-buttons">
-                                        <button class="action-btn view" title="Ver perfil">
-                                            <i class="fas fa-eye"></i>
-                                        </button>
-                                        <button class="action-btn edit" title="Editar">
-                                            <i class="fas fa-edit"></i>
-                                        </button>
-                                        <button class="action-btn message" title="Enviar mensaje">
-                                            <i class="fas fa-envelope"></i>
-                                        </button>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <div class="user-profile">
-                                        <div class="user-profile-avatar">LM</div>
-                                        <div class="user-info">
-                                            <h6>Laura Martínez</h6>
-                                            <small>ID: #USR-005</small>
-                                        </div>
-                                    </div>
-                                </td>
-                                <td>laura.martinez@email.com</td>
-                                <td>+54 11 5678-9012</td>
-                                <td><span class="role-badge role-premium">Premium</span></td>
-                                <td>05 Feb 2024</td>
-                                <td>Hace 5 horas</td>
-                                <td><span class="status-badge status-pending">Pendiente</span></td>
-                                <td>
-                                    <div class="action-buttons">
-                                        <button class="action-btn view" title="Ver perfil">
-                                            <i class="fas fa-eye"></i>
-                                        </button>
-                                        <button class="action-btn edit" title="Editar">
-                                            <i class="fas fa-edit"></i>
-                                        </button>
-                                        <button class="action-btn message" title="Enviar mensaje">
-                                            <i class="fas fa-envelope"></i>
-                                        </button>
-                                        <button class="action-btn delete" title="Activar">
-                                            <i class="fas fa-check"></i>
-                                        </button>
-                                    </div>
-                                </td>
-                            </tr>
+                        <tbody id="usersTableBody">
+                            @include('administracion.partials.users-table')
                         </tbody>
                     </table>
                 </div>
 
                 <!-- Pagination -->
-                <nav>
-                    <ul class="pagination">
-                        <li class="page-item disabled">
-                            <a class="page-link" href="#" tabindex="-1">Anterior</a>
-                        </li>
-                        <li class="page-item active">
-                            <a class="page-link" href="#">1</a>
-                        </li>
-                        <li class="page-item">
-                            <a class="page-link" href="#">2</a>
-                        </li>
-                        <li class="page-item">
-                            <a class="page-link" href="#">3</a>
-                        </li>
-                        <li class="page-item">
-                            <a class="page-link" href="#">Siguiente</a>
-                        </li>
-                    </ul>
-                </nav>
+                <div class="d-flex justify-content-between align-items-center mt-4">
+                    <div class="pagination-info">
+                        @if ($users->total() > 0)
+                            Mostrando {{ $users->firstItem() }} - {{ $users->lastItem() }} de {{ $users->total() }}
+                            usuarios
+                        @else
+                            No hay usuarios para mostrar
+                        @endif
+                    </div>
+                    <div class="pagination-container">
+                        @include('administracion.partials.pagination')
+                    </div>
+                </div>
             </div>
         </div>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Modal Nuevo Usuario -->
+    <div class="modal" id="nuevoUsuarioModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Nuevo Usuario</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="nuevoUsuarioForm">
+                        <div class="mb-3">
+                            <label for="name" class="form-label">Nombre de Usuario</label>
+                            <input type="text" class="form-control" id="name" name="name" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="email" class="form-label">Email</label>
+                            <input type="email" class="form-control" id="email" name="email" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="password" class="form-label">Contraseña</label>
+                            <input type="password" class="form-control" id="password" name="password" required>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="button" class="btn btn-primary" id="guardarUsuario">Guardar Usuario</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Container -->
+    <div class="toast-container"></div>
+
+    <script>
+        // Wait for DOM to be fully loaded
+        document.addEventListener('DOMContentLoaded', function() {
+            // Initialize modal after a small delay
+            setTimeout(function() {
+                const nuevoUsuarioModal = new bootstrap.Modal(document.getElementById(
+                    'nuevoUsuarioModal'), {
+                    backdrop: 'static',
+                    keyboard: false
+                });
+
+                // Handle the click on "Nuevo Usuario" button
+                document.querySelector('.btn-admin.orange').addEventListener('click', function(e) {
+                    e.preventDefault();
+                    nuevoUsuarioModal.show();
+                });
+
+                // Function to show toast notification
+                function showToast(message, type = 'success') {
+                    const toastContainer = document.querySelector('.toast-container');
+                    const toast = document.createElement('div');
+                    toast.className = `toast ${type} show`;
+                    toast.innerHTML = `
+                        <div class="toast-header">
+                            <strong class="me-auto">${type === 'success' ? 'Éxito' : 'Error'}</strong>
+                            <button type="button" class="btn-close" data-bs-dismiss="toast"></button>
+                        </div>
+                        <div class="toast-body">
+                            ${message}
+                        </div>
+                    `;
+                    toastContainer.appendChild(toast);
+
+                    // Remove toast after 5 seconds
+                    setTimeout(() => {
+                        toast.remove();
+                    }, 20000);
+                }
+
+                // Function to update the table with new data
+                function updateTable(data) {
+                    document.getElementById('usersTableBody').innerHTML = data.view;
+                    document.querySelector('.pagination-container').innerHTML = data.pagination;
+                    document.querySelector('.pagination-info').innerHTML = data.paginationInfo;
+                }
+
+                // Search functionality
+                let searchTimeout;
+                const searchInput = document.getElementById('searchInput');
+                const clearSearchBtn = document.getElementById('clearSearch');
+
+                // Real-time search with debounce
+                searchInput.addEventListener('input', function() {
+                    clearTimeout(searchTimeout);
+                    searchTimeout = setTimeout(() => {
+                        const formData = new FormData(document.getElementById(
+                            'searchForm'));
+                        const searchParams = new URLSearchParams(formData);
+
+                        fetch(`/usuarios?${searchParams.toString()}`, {
+                                headers: {
+                                    'X-Requested-With': 'XMLHttpRequest'
+                                }
+                            })
+                            .then(response => response.json())
+                            .then(data => {
+                                updateTable(data);
+                                window.history.pushState({}, '',
+                                    `/usuarios?${searchParams.toString()}`);
+                            })
+                            .catch(error => {
+                                console.error('Error:', error);
+                                showToast('Error al buscar usuarios', 'error');
+                            });
+                    }, 500); // 500ms debounce
+                });
+
+                // Clear search input
+                clearSearchBtn.addEventListener('click', function() {
+                    searchInput.value = '';
+                    const formData = new FormData(document.getElementById('searchForm'));
+                    const searchParams = new URLSearchParams(formData);
+
+                    fetch(`/usuarios?${searchParams.toString()}`, {
+                            headers: {
+                                'X-Requested-With': 'XMLHttpRequest'
+                            }
+                        })
+                        .then(response => response.json())
+                        .then(data => {
+                            updateTable(data);
+                            window.history.pushState({}, '',
+                                `/usuarios?${searchParams.toString()}`);
+                        })
+                        .catch(error => {
+                            console.error('Error:', error);
+                            showToast('Error al limpiar la búsqueda', 'error');
+                        });
+                });
+
+                // Handle form submission
+                document.getElementById('searchForm').addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    const formData = new FormData(this);
+                    const searchParams = new URLSearchParams(formData);
+
+                    fetch(`/usuarios?${searchParams.toString()}`, {
+                            headers: {
+                                'X-Requested-With': 'XMLHttpRequest'
+                            }
+                        })
+                        .then(response => response.json())
+                        .then(data => {
+                            updateTable(data);
+                            window.history.pushState({}, '',
+                                `/usuarios?${searchParams.toString()}`);
+                        })
+                        .catch(error => {
+                            console.error('Error:', error);
+                            showToast('Error al buscar usuarios', 'error');
+                        });
+                });
+
+                // Clear all filters
+                document.getElementById('clearFilters').addEventListener('click', function() {
+                    document.getElementById('searchForm').reset();
+                    window.location.href = '/usuarios';
+                });
+
+                // Handle pagination clicks
+                document.addEventListener('click', function(e) {
+                    if (e.target.matches('.pagination a')) {
+                        e.preventDefault();
+                        const url = e.target.href;
+
+                        fetch(url, {
+                                headers: {
+                                    'X-Requested-With': 'XMLHttpRequest'
+                                }
+                            })
+                            .then(response => response.json())
+                            .then(data => {
+                                updateTable(data);
+                                window.history.pushState({}, '', url);
+                            })
+                            .catch(error => {
+                                console.error('Error:', error);
+                                showToast('Error al cargar la página', 'error');
+                            });
+                    }
+                });
+
+                // Handle form submission
+                document.getElementById('guardarUsuario').addEventListener('click', async function() {
+                    const form = document.getElementById('nuevoUsuarioForm');
+                    if (form.checkValidity()) {
+                        const formData = new FormData(form);
+                        const data = Object.fromEntries(formData.entries());
+
+                        try {
+                            const token = document.querySelector('meta[name="csrf-token"]')
+                                ?.getAttribute('content');
+
+                            if (!token) {
+                                throw new Error('Token CSRF no encontrado');
+                            }
+
+                            const response = await fetch('/usuarios/create', {
+                                method: 'POST',
+                                headers: {
+                                    'Content-Type': 'application/json',
+                                    'Accept': 'application/json',
+                                    'X-CSRF-TOKEN': token,
+                                    'X-Requested-With': 'XMLHttpRequest'
+                                },
+                                credentials: 'same-origin',
+                                body: JSON.stringify(data)
+                            });
+
+                            const result = await response.json();
+
+                            if (!response.ok) {
+                                if (response.status === 422) {
+                                    const errors = result.errors;
+                                    const errorMessages = Object.values(errors).flat();
+                                    showToast(errorMessages.join('<br>'), 'error');
+                                } else {
+                                    throw new Error(result.message ||
+                                        'Error en la respuesta del servidor');
+                                }
+                                return;
+                            }
+
+                            showToast(result.message);
+                            nuevoUsuarioModal.hide();
+                            form.reset();
+
+                            // Refresh the user list
+                            const currentUrl = new URL(window.location.href);
+                            const searchParams = new URLSearchParams(currentUrl.search);
+
+                            fetch(`/usuarios?${searchParams.toString()}`, {
+                                    headers: {
+                                        'X-Requested-With': 'XMLHttpRequest'
+                                    }
+                                })
+                                .then(response => response.json())
+                                .then(data => {
+                                    updateTable(data);
+                                })
+                                .catch(error => {
+                                    console.error('Error al actualizar la lista:', error);
+                                    showToast('Error al actualizar la lista de usuarios',
+                                        'error');
+                                });
+                        } catch (error) {
+                            console.error('Error completo:', error);
+                            showToast(error.message || 'Error al procesar la solicitud',
+                                'error');
+                        }
+                    } else {
+                        form.reportValidity();
+                    }
+                });
+            }, 100);
+        });
+    </script>
 </body>
 
 </html>

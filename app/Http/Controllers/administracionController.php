@@ -6,7 +6,7 @@ use App\Models\Hospedaje;
 use Illuminate\Http\Request;
 
 
-class administracionController extends Controller
+class AdministracionController extends Controller
 {
     public function inicio()
     {
@@ -25,20 +25,18 @@ class administracionController extends Controller
     public function hoteles()
     {
 
-    $hoteles = Hospedaje::all(); // Puedes agregar paginación o filtros si lo deseas
-    return view('administracion.hoteles', compact('hoteles'));
-
-
+        $hoteles = Hospedaje::all(); // Puedes agregar paginación o filtros si lo deseas
+        return view('administracion.hoteles', compact('hoteles'));
     }
 
     public function EditHoteles(Request $request)
     {
         $request->validate([
             'id' => 'required|exists:hospedajes,id', // Asegúrate de que el ID del hospedaje exista
-            'nombre' => 'required|string|max:255', 
-            'ubicacion' => 'required|string|max:255', 
-            'descripcion' => 'required|string|max:255', 
-            'habitaciones' =>  'required|integer|min:1', 
+            'nombre' => 'required|string|max:255',
+            'ubicacion' => 'required|string|max:255',
+            'descripcion' => 'required|string|max:255',
+            'habitaciones' =>  'required|integer|min:1',
             'precio_por_noche' =>  'required|numeric|min:0',
             'disponibilidad' =>  'required|boolean',
         ]);
@@ -56,11 +54,11 @@ class administracionController extends Controller
 
         return redirect()->route('administracion.hoteles')->with('success', 'Hotel updated successfully.');
     }
-    
 
-        
 
-    
+
+
+
     //Seccion Paquetes
     public function paquetes()
     {
