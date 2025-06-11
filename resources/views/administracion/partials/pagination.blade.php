@@ -19,17 +19,47 @@
             @endif
 
             {{-- Números de Página --}}
-            @foreach ($users->getUrlRange(1, $users->lastPage()) as $page => $url)
-                @if ($page == $users->currentPage())
+            @php
+                $start = max(1, $users->currentPage() - 2);
+                $end = min($users->lastPage(), $users->currentPage() + 2);
+            @endphp
+
+            {{-- Primera página --}}
+            @if ($start > 1)
+                <li class="page-item">
+                    <a class="page-link" href="{{ $users->url(1) }}">1</a>
+                </li>
+                @if ($start > 2)
+                    <li class="page-item disabled">
+                        <span class="page-link">...</span>
+                    </li>
+                @endif
+            @endif
+
+            {{-- Páginas alrededor de la actual --}}
+            @for ($i = $start; $i <= $end; $i++)
+                @if ($i == $users->currentPage())
                     <li class="page-item active">
-                        <span class="page-link">{{ $page }}</span>
+                        <span class="page-link">{{ $i }}</span>
                     </li>
                 @else
                     <li class="page-item">
-                        <a class="page-link" href="{{ $url }}">{{ $page }}</a>
+                        <a class="page-link" href="{{ $users->url($i) }}">{{ $i }}</a>
                     </li>
                 @endif
-            @endforeach
+            @endfor
+
+            {{-- Última página --}}
+            @if ($end < $users->lastPage())
+                @if ($end < $users->lastPage() - 1)
+                    <li class="page-item disabled">
+                        <span class="page-link">...</span>
+                    </li>
+                @endif
+                <li class="page-item">
+                    <a class="page-link" href="{{ $users->url($users->lastPage()) }}">{{ $users->lastPage() }}</a>
+                </li>
+            @endif
 
             {{-- Botón Siguiente --}}
             @if ($users->hasMorePages())

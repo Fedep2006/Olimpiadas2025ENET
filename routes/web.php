@@ -8,23 +8,10 @@ use App\Models\User;
 
 use Illuminate\Support\Facades\Auth;
 
-function createUserIfNotExists()
-{
-    if (!User::where('email', 'a@gmail.com')->exists()) {
-        $user = User::create([
-            'name' => 'aaron',
-            'email' => 'a@gmail.com',
-            'password' => bcrypt('123'), // Always hash the password!
-        ]);
-    }
-}
-
 Route::get('/', function () {
-    createUserIfNotExists();
     return view('index');
 });
 Route::get('/login', function () {
-    createUserIfNotExists();
     return view('login.login');
 });
 

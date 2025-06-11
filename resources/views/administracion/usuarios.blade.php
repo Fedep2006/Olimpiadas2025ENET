@@ -507,10 +507,12 @@
 
         .pagination {
             display: flex;
-            gap: 8px;
+            gap: 4px;
             align-items: center;
             margin: 0;
             padding: 0;
+            flex-wrap: wrap;
+            justify-content: center;
         }
 
         .pagination .page-item {
@@ -522,16 +524,17 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            min-width: 40px;
-            height: 40px;
-            padding: 0 12px;
-            border-radius: 8px;
-            border: 2px solid #e9ecef;
+            min-width: 36px;
+            height: 36px;
+            padding: 0 8px;
+            border-radius: 6px;
+            border: 1px solid #e9ecef;
             background-color: white;
             color: var(--despegar-blue);
-            font-weight: 600;
+            font-weight: 500;
             text-decoration: none;
-            transition: all 0.3s ease;
+            transition: all 0.2s ease;
+            font-size: 0.9rem;
         }
 
         .pagination .page-link:hover {
@@ -557,6 +560,7 @@
             color: #6c757d;
             font-size: 0.9rem;
             margin: 0 15px;
+            text-align: center;
         }
 
         .pagination .page-link i {
@@ -565,15 +569,23 @@
 
         .pagination .page-link.prev,
         .pagination .page-link.next {
-            padding: 0 15px;
+            padding: 0 12px;
+            white-space: nowrap;
         }
 
         .pagination .page-link.prev i {
-            margin-right: 5px;
+            margin-right: 4px;
         }
 
         .pagination .page-link.next i {
-            margin-left: 5px;
+            margin-left: 4px;
+        }
+
+        .pagination-container {
+            display: flex;
+            justify-content: center;
+            width: 100%;
+            margin-top: 1rem;
         }
     </style>
 </head>
