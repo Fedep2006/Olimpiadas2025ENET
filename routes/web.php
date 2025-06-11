@@ -61,14 +61,12 @@ Route::prefix('administracion')->middleware('auth')->group(function () {
 
     Route::get('/usuarios', [UserController::class, 'index'])->name('usuarios.index');
     Route::post('/usuarios/create', [UserController::class, 'crear'])->name('usuarios.create');
+    Route::put('/usuarios/{user}', [UserController::class, 'update'])->name('usuarios.update');
+    Route::delete('/usuarios/{user}', [UserController::class, 'destroy'])->name('usuarios.destroy');
 
-<<<<<<< HEAD
-    Route::get('/viajes', [AdministracionController::class, 'vuelos'])->name('administracion.viajes');
-=======
     Route::get('/viajes', [administracionController::class, 'vuelos'])->name('administracion.viajes');
 
     Route::get('/empleados', [administracionController::class, 'empleados'])->name('administracion.empleados');
->>>>>>> 128a082e4b031478cd7f5c06b79a25751c1de742
 });
 
 // Mostrar el formulario
@@ -88,7 +86,9 @@ Route::post('/logout', function () {
     return redirect()->route('login');
 })->name('logout');
 
-Route::prefix('usuarios')->middleware('auth')->group(function () {
+Route::prefix('usuarios')->middleware(['auth'])->group(function () {
     Route::get('/', [UserController::class, 'index'])->name('usuarios.index');
     Route::post('/create', [UserController::class, 'crear'])->name('usuarios.create');
+    Route::put('/{user}', [UserController::class, 'update'])->name('usuarios.update');
+    Route::delete('/{user}', [UserController::class, 'destroy'])->name('usuarios.destroy');
 });

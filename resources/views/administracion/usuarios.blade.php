@@ -619,7 +619,7 @@
                 <i class="fas fa-tags"></i>
                 <span class="menu-text">Paquetes</span>
             </a>
-              <a href="/administracion/empleados" class="menu-item ">
+            <a href="/administracion/empleados" class="menu-item ">
                 <i class="fas fa-users"></i>
                 <span class="menu-text">Empleados</span>
             </a>
@@ -708,16 +708,6 @@
             <div class="content-card">
                 <div class="card-header">
                     <h5 class="card-title">Lista de Usuarios</h5>
-                    <div class="d-flex gap-2">
-                        <a href="#" class="btn-admin" id="exportUsers">
-                            <i class="fas fa-download"></i>
-                            Exportar
-                        </a>
-                        <a href="#" class="btn-admin success" id="sendNewsletter">
-                            <i class="fas fa-envelope"></i>
-                            Enviar Newsletter
-                        </a>
-                    </div>
                 </div>
 
                 <div class="table-container">
@@ -788,6 +778,54 @@
         </div>
     </div>
 
+    <!-- Modal Editar Usuario -->
+    <div class="modal" id="editarUsuarioModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Editar Usuario</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="editarUsuarioForm">
+                        <input type="hidden" id="editUserId" name="user_id">
+                        <div class="mb-3">
+                            <label for="editName" class="form-label">Nombre de Usuario</label>
+                            <input type="text" class="form-control" id="editName" name="name" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="editEmail" class="form-label">Email</label>
+                            <input type="email" class="form-control" id="editEmail" name="email" required>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="button" class="btn btn-primary" id="actualizarUsuario">Guardar Cambios</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Confirmar Eliminación -->
+    <div class="modal" id="confirmarEliminacionModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Confirmar Eliminación</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <p>¿Está seguro de que desea eliminar este usuario? Esta acción no se puede deshacer.</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="button" class="btn btn-danger" id="confirmarEliminacion">Eliminar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- Toast Container -->
     <div class="toast-container"></div>
 
@@ -798,8 +836,20 @@
             setTimeout(function() {
                 const nuevoUsuarioModal = new bootstrap.Modal(document.getElementById(
                     'nuevoUsuarioModal'), {
-                    backdrop: 'static',
-                    keyboard: false
+                    backdrop: true,
+                    keyboard: true
+                });
+
+                // Initialize modals
+                const editarUsuarioModal = new bootstrap.Modal(document.getElementById(
+                    'editarUsuarioModal'), {
+                    backdrop: true,
+                    keyboard: true
+                });
+                const confirmarEliminacionModal = new bootstrap.Modal(document.getElementById(
+                    'confirmarEliminacionModal'), {
+                    backdrop: true,
+                    keyboard: true
                 });
 
                 // Handle the click on "Nuevo Usuario" button
@@ -824,10 +874,10 @@
                     `;
                     toastContainer.appendChild(toast);
 
-                    // Remove toast after 5 seconds
+                    // Remove toast after 3 seconds
                     setTimeout(() => {
                         toast.remove();
-                    }, 20000);
+                    }, 3000);
                 }
 
                 // Function to update the table with new data
@@ -841,36 +891,10 @@
                 let searchTimeout;
                 const searchInput = document.getElementById('searchInput');
                 const clearSearchBtn = document.getElementById('clearSearch');
+                const dateInput = document.querySelector('input[name="registration_date"]');
 
-                // Real-time search with debounce
-                searchInput.addEventListener('input', function() {
-                    clearTimeout(searchTimeout);
-                    searchTimeout = setTimeout(() => {
-                        const formData = new FormData(document.getElementById(
-                            'searchForm'));
-                        const searchParams = new URLSearchParams(formData);
-
-                        fetch(`/usuarios?${searchParams.toString()}`, {
-                                headers: {
-                                    'X-Requested-With': 'XMLHttpRequest'
-                                }
-                            })
-                            .then(response => response.json())
-                            .then(data => {
-                                updateTable(data);
-                                window.history.pushState({}, '',
-                                    `/usuarios?${searchParams.toString()}`);
-                            })
-                            .catch(error => {
-                                console.error('Error:', error);
-                                showToast('Error al buscar usuarios', 'error');
-                            });
-                    }, 500); // 500ms debounce
-                });
-
-                // Clear search input
-                clearSearchBtn.addEventListener('click', function() {
-                    searchInput.value = '';
+                // Function to perform search
+                function performSearch() {
                     const formData = new FormData(document.getElementById('searchForm'));
                     const searchParams = new URLSearchParams(formData);
 
@@ -882,36 +906,35 @@
                         .then(response => response.json())
                         .then(data => {
                             updateTable(data);
-                            window.history.pushState({}, '',
-                                `/usuarios?${searchParams.toString()}`);
-                        })
-                        .catch(error => {
-                            console.error('Error:', error);
-                            showToast('Error al limpiar la búsqueda', 'error');
-                        });
-                });
-
-                // Handle form submission
-                document.getElementById('searchForm').addEventListener('submit', function(e) {
-                    e.preventDefault();
-                    const formData = new FormData(this);
-                    const searchParams = new URLSearchParams(formData);
-
-                    fetch(`/usuarios?${searchParams.toString()}`, {
-                            headers: {
-                                'X-Requested-With': 'XMLHttpRequest'
-                            }
-                        })
-                        .then(response => response.json())
-                        .then(data => {
-                            updateTable(data);
-                            window.history.pushState({}, '',
-                                `/usuarios?${searchParams.toString()}`);
+                            window.history.pushState({}, '', `/usuarios?${searchParams.toString()}`);
                         })
                         .catch(error => {
                             console.error('Error:', error);
                             showToast('Error al buscar usuarios', 'error');
                         });
+                }
+
+                // Real-time search with debounce
+                searchInput.addEventListener('input', function() {
+                    clearTimeout(searchTimeout);
+                    searchTimeout = setTimeout(performSearch, 500);
+                });
+
+                // Date input change handler
+                dateInput.addEventListener('change', function() {
+                    performSearch();
+                });
+
+                // Clear search input
+                clearSearchBtn.addEventListener('click', function() {
+                    searchInput.value = '';
+                    performSearch();
+                });
+
+                // Handle form submission
+                document.getElementById('searchForm').addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    performSearch();
                 });
 
                 // Clear all filters
@@ -1013,6 +1036,152 @@
                         }
                     } else {
                         form.reportValidity();
+                    }
+                });
+
+                // Handle edit button click
+                document.addEventListener('click', function(e) {
+                    const editBtn = e.target.closest('.action-btn.edit');
+                    if (editBtn) {
+                        const userId = editBtn.dataset.userId;
+                        const userRow = editBtn.closest('tr');
+                        const userName = userRow.querySelector('.user-info h6').textContent;
+                        const userEmail = userRow.querySelector('td:nth-child(2)').textContent;
+
+                        document.getElementById('editUserId').value = userId;
+                        document.getElementById('editName').value = userName;
+                        document.getElementById('editEmail').value = userEmail;
+
+                        editarUsuarioModal.show();
+                    }
+                });
+
+                // Handle update user
+                document.getElementById('actualizarUsuario').addEventListener('click', async function() {
+                    const form = document.getElementById('editarUsuarioForm');
+                    if (form.checkValidity()) {
+                        const formData = new FormData(form);
+                        const data = Object.fromEntries(formData.entries());
+                        const userId = data.user_id;
+
+                        try {
+                            const token = document.querySelector('meta[name="csrf-token"]')
+                                ?.getAttribute('content');
+                            if (!token) throw new Error('Token CSRF no encontrado');
+
+                            const response = await fetch(`/usuarios/${userId}`, {
+                                method: 'PUT',
+                                headers: {
+                                    'Content-Type': 'application/json',
+                                    'Accept': 'application/json',
+                                    'X-CSRF-TOKEN': token,
+                                    'X-Requested-With': 'XMLHttpRequest'
+                                },
+                                body: JSON.stringify(data)
+                            });
+
+                            const result = await response.json();
+
+                            if (!response.ok) {
+                                if (response.status === 422) {
+                                    const errors = result.errors;
+                                    const errorMessages = Object.values(errors).flat();
+                                    showToast(errorMessages.join('<br>'), 'error');
+                                } else {
+                                    throw new Error(result.message ||
+                                        'Error en la respuesta del servidor');
+                                }
+                                return;
+                            }
+
+                            showToast(result.message);
+                            editarUsuarioModal.hide();
+
+                            // Refresh the user list
+                            const currentUrl = new URL(window.location.href);
+                            const searchParams = new URLSearchParams(currentUrl.search);
+
+                            fetch(`/usuarios?${searchParams.toString()}`, {
+                                    headers: {
+                                        'X-Requested-With': 'XMLHttpRequest'
+                                    }
+                                })
+                                .then(response => response.json())
+                                .then(data => {
+                                    updateTable(data);
+                                })
+                                .catch(error => {
+                                    console.error('Error al actualizar la lista:', error);
+                                    showToast('Error al actualizar la lista de usuarios',
+                                        'error');
+                                });
+                        } catch (error) {
+                            console.error('Error completo:', error);
+                            showToast(error.message || 'Error al procesar la solicitud',
+                                'error');
+                        }
+                    } else {
+                        form.reportValidity();
+                    }
+                });
+
+                // Handle delete button click
+                document.addEventListener('click', function(e) {
+                    const deleteBtn = e.target.closest('.action-btn.delete');
+                    if (deleteBtn) {
+                        usuarioAEliminar = deleteBtn.dataset.userId;
+                        confirmarEliminacionModal.show();
+                    }
+                });
+
+                // Handle delete confirmation
+                document.getElementById('confirmarEliminacion').addEventListener('click', async function() {
+                    if (!usuarioAEliminar) return;
+
+                    try {
+                        const token = document.querySelector('meta[name="csrf-token"]')
+                            ?.getAttribute('content');
+                        if (!token) throw new Error('Token CSRF no encontrado');
+
+                        const response = await fetch(`/usuarios/${usuarioAEliminar}`, {
+                            method: 'DELETE',
+                            headers: {
+                                'Accept': 'application/json',
+                                'X-CSRF-TOKEN': token,
+                                'X-Requested-With': 'XMLHttpRequest'
+                            }
+                        });
+
+                        const result = await response.json();
+
+                        if (!response.ok) {
+                            throw new Error(result.message || 'Error al eliminar el usuario');
+                        }
+
+                        showToast(result.message);
+                        confirmarEliminacionModal.hide();
+
+                        // Refresh the user list
+                        const currentUrl = new URL(window.location.href);
+                        const searchParams = new URLSearchParams(currentUrl.search);
+
+                        fetch(`/usuarios?${searchParams.toString()}`, {
+                                headers: {
+                                    'X-Requested-With': 'XMLHttpRequest'
+                                }
+                            })
+                            .then(response => response.json())
+                            .then(data => {
+                                updateTable(data);
+                            })
+                            .catch(error => {
+                                console.error('Error al actualizar la lista:', error);
+                                showToast('Error al actualizar la lista de usuarios',
+                                    'error');
+                            });
+                    } catch (error) {
+                        console.error('Error completo:', error);
+                        showToast(error.message || 'Error al procesar la solicitud', 'error');
                     }
                 });
             }, 100);

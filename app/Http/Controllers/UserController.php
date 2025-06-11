@@ -77,7 +77,8 @@ class UserController extends Controller
 
         // Aplicar filtro de fecha
         if ($request->filled('registration_date')) {
-            $query->whereDate('created_at', $request->registration_date);
+            $date = $request->registration_date;
+            $query->whereDate('created_at', $date);
         }
 
         // Ordenar por fecha de creación descendente
@@ -98,5 +99,62 @@ class UserController extends Controller
         }
 
         return view('administracion.usuarios', compact('users'));
+    }
+
+    public function update(Request $request, User $user)
+    {
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|string|email|max:255|unique:users,email,' . $user->id,
+        ]);
+
+        try {
+            $user->update([
+                'name' => $request->name,
+                'email' => $request->email,
+            ]);
+
+            if ($request->ajax()) {
+                return response()->json([
+                    'message' => 'Usuario actualizado exitosamente',
+                    'user' => $user
+                ]);
+            }
+
+            return redirect()->back()->with('success', 'Usuario actualizado exitosamente');
+        } catch (\Exception $e) {
+            if ($request->ajax()) {
+                return response()->json([
+                    'message' => 'Error al actualizar el usuario',
+                    'error' => $e->getMessage()
+                ], 500);
+            }
+
+            return redirect()->back()->with('error', 'Error al actualizar el usuario');
+        }
+    }
+
+    public function destroy(User $user)
+    {
+        try {
+            $user->delete();
+
+            if (request()->ajax()) {
+                return response()->json([
+                    'message' => 'Usuario eliminado exitosamente'
+                ]);
+            }
+
+            return redirect()->back()->with('success', 'Usuario eliminado exitosamente');
+        } catch (\Exception $e) {
+            if (request()->ajax()) {
+                return response()->json([
+                    'message' => 'Error al eliminar el usuario',
+                    'error' => $e->getMessage()
+                ], 500);
+            }
+
+            return redirect()->back()->with('error', 'Error al eliminar el usuario');
+        }
     }
 }
