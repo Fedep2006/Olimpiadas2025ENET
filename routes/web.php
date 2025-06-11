@@ -56,6 +56,15 @@ Route::prefix('administracion')->middleware('auth')->group(function () {
     Route::get('/empleados', [administracionController::class, 'empleados'])->name('administracion.empleados');
 });
 
+// Rutas para el ABM de hoteles
+Route::prefix('administracion')->group(function () {
+    Route::get('/hoteles', [App\Http\Controllers\Admin\HotelController::class, 'index'])->name('administracion.hoteles');
+    Route::post('/hoteles', [App\Http\Controllers\Admin\HotelController::class, 'store'])->name('hoteles.store');
+    Route::get('/hoteles/{id}', [App\Http\Controllers\Admin\HotelController::class, 'show'])->name('hoteles.show');
+    Route::put('/hoteles/{id}', [App\Http\Controllers\Admin\HotelController::class, 'update'])->name('hoteles.update');
+    Route::delete('/hoteles/{id}', [App\Http\Controllers\Admin\HotelController::class, 'destroy'])->name('hoteles.destroy');
+});
+
 // Mostrar el formulario
 Route::get('/login', function () {
     return view('login.login');

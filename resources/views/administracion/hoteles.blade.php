@@ -4,6 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>Gestión de Hoteles - Frategar Admin</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
@@ -680,8 +681,233 @@
         </div>
     </div>
 
+    <!-- Modal para Crear/Editar Hotel -->
+    <div class="modal fade" id="hotelModal" tabindex="-1" aria-labelledby="hotelModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="hotelModalLabel">Nuevo Hotel</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="hotelForm">
+                        <input type="hidden" id="hotel_id" name="id">
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label for="nombre" class="form-label">Nombre del Hotel</label>
+                                <input type="text" class="form-control" id="nombre" name="nombre" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="ubicacion" class="form-label">Ubicación</label>
+                                <input type="text" class="form-control" id="ubicacion" name="ubicacion" required>
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label for="pais" class="form-label">País</label>
+                                <input type="text" class="form-control" id="pais" name="pais" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="estrellas" class="form-label">Estrellas</label>
+                                <select class="form-select" id="estrellas" name="estrellas" required>
+                                    <option value="1">1 Estrella</option>
+                                    <option value="2">2 Estrellas</option>
+                                    <option value="3">3 Estrellas</option>
+                                    <option value="4">4 Estrellas</option>
+                                    <option value="5">5 Estrellas</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label for="habitaciones" class="form-label">Número de Habitaciones</label>
+                                <input type="number" class="form-control" id="habitaciones" name="habitaciones" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="tipos_habitacion" class="form-label">Tipos de Habitación</label>
+                                <input type="text" class="form-control" id="tipos_habitacion" name="tipos_habitacion" required>
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label for="precio_por_noche" class="form-label">Precio por Noche</label>
+                                <input type="number" step="0.01" class="form-control" id="precio_por_noche" name="precio_por_noche" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="disponibilidad" class="form-label">Estado</label>
+                                <select class="form-select" id="disponibilidad" name="disponibilidad" required>
+                                    <option value="1">Activo</option>
+                                    <option value="0">Inactivo</option>
+                                </select>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="button" class="btn btn-primary" id="saveHotel">Guardar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal de Confirmación para Eliminar -->
+    <div class="modal fade" id="deleteModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Confirmar Eliminación</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    ¿Está seguro que desea eliminar este hotel?
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="button" class="btn btn-danger" id="confirmDelete">Eliminar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const hotelModal = new bootstrap.Modal(document.getElementById('hotelModal'));
+        const deleteModal = new bootstrap.Modal(document.getElementById('deleteModal'));
+        let currentHotelId = null;
+
+        // Función para abrir el modal de nuevo hotel
+        document.querySelector('.btn-admin.orange').addEventListener('click', function(e) {
+            e.preventDefault();
+            document.getElementById('hotelModalLabel').textContent = 'Nuevo Hotel';
+            document.getElementById('hotelForm').reset();
+            document.getElementById('hotel_id').value = '';
+            hotelModal.show();
+        });
+
+        // Función para guardar/actualizar hotel
+        document.getElementById('saveHotel').addEventListener('click', function() {
+            const form = document.getElementById('hotelForm');
+            const formData = new FormData(form);
+            const hotelId = document.getElementById('hotel_id').value;
+            
+            const url = hotelId ? `/administracion/hoteles/${hotelId}` : '/administracion/hoteles';
+            const method = hotelId ? 'PUT' : 'POST';
+
+            // Convertir FormData a objeto
+            const data = {};
+            formData.forEach((value, key) => {
+                data[key] = value;
+            });
+
+            // Agregar el método PUT como _method para Laravel
+            if (method === 'PUT') {
+                data._method = 'PUT';
+            }
+
+            fetch(url, {
+                method: method === 'PUT' ? 'POST' : method,
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
+                    'Accept': 'application/json'
+                },
+                body: JSON.stringify(data)
+            })
+            .then(response => {
+                if (!response.ok) {
+                    return response.json().then(err => Promise.reject(err));
+                }
+                return response.json();
+            })
+            .then(data => {
+                if (data.errors) {
+                    alert('Por favor corrija los errores en el formulario');
+                    return;
+                }
+                hotelModal.hide();
+                window.location.reload();
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Ocurrió un error al guardar el hotel: ' + (error.message || 'Error desconocido'));
+            });
+        });
+
+        // Función para editar hotel
+        document.querySelectorAll('.action-btn.edit').forEach(button => {
+            button.addEventListener('click', function() {
+                const hotelId = this.closest('tr').querySelector('.hotel-details small').textContent.split(':')[1].trim();
+                fetch(`/administracion/hoteles/${hotelId}`, {
+                    headers: {
+                        'Accept': 'application/json',
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
+                    }
+                })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Error al obtener los datos del hotel');
+                    }
+                    return response.json();
+                })
+                .then(hotel => {
+                    document.getElementById('hotelModalLabel').textContent = 'Editar Hotel';
+                    document.getElementById('hotel_id').value = hotel.id;
+                    document.getElementById('nombre').value = hotel.nombre;
+                    document.getElementById('ubicacion').value = hotel.ubicacion;
+                    document.getElementById('pais').value = hotel.pais;
+                    document.getElementById('estrellas').value = hotel.estrellas;
+                    document.getElementById('habitaciones').value = hotel.habitaciones;
+                    document.getElementById('tipos_habitacion').value = hotel.tipos_habitacion;
+                    document.getElementById('precio_por_noche').value = hotel.precio_por_noche;
+                    document.getElementById('disponibilidad').value = hotel.disponibilidad;
+                    hotelModal.show();
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('Error al cargar los datos del hotel: ' + error.message);
+                });
+            });
+        });
+
+        // Función para eliminar hotel
+        document.querySelectorAll('.action-btn.delete').forEach(button => {
+            button.addEventListener('click', function() {
+                currentHotelId = this.closest('tr').querySelector('.hotel-details small').textContent.split(':')[1].trim();
+                deleteModal.show();
+            });
+        });
+
+        // Confirmar eliminación
+        document.getElementById('confirmDelete').addEventListener('click', function() {
+            if (!currentHotelId) return;
+
+            fetch(`/administracion/hoteles/${currentHotelId}`, {
+                method: 'DELETE',
+                headers: {
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
+                    'Accept': 'application/json'
+                }
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Error al eliminar el hotel');
+                }
+                return response.json();
+            })
+            .then(data => {
+                deleteModal.hide();
+                window.location.reload();
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Ocurrió un error al eliminar el hotel: ' + error.message);
+            });
+        });
+    });
+    </script>
 </body>
 
 </html>
