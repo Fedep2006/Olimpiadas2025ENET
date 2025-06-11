@@ -20,7 +20,7 @@ return new class extends Migration
             $table->dateTime('fecha_llegada');
             $table->decimal('precio', 10, 2);
             $table->text('descripcion')->nullable();
-            $table->longBlob('imagen')->nullable();
+            $table->string('imagen')->nullable();
             $table->timestamps();
         });
     }
