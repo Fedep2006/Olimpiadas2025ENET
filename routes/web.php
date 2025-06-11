@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\administracionController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\Admin\HospedajeController;
 use App\Models\User;
 
 use Illuminate\Support\Facades\Auth;
@@ -39,9 +40,10 @@ Route::prefix('administracion')->middleware('auth')->group(function () {
 
     Route::get('/vehiculos', [AdministracionController::class, 'vehiculos'])->name('administracion.vehiculos');
 
-    Route::get('/hoteles', [AdministracionController::class, 'hoteles'])->name('administracion.hoteles');
-    Route::post('/hoteles/actualizar', [AdministracionController::class, 'EditHoteles'])->name('administracion.hoteles.update');
-
+    Route::get('/hospedajes', [HospedajeController::class, 'index'])->name('administracion.hospedaje');
+    Route::post('/hospedaje/store', [HospedajeController::class, 'storeHospedaje'])->name('administracion.hospedaje.Agregar');
+    Route::post('/hospedaje/edit', [HospedajeController::class, 'EditHospedaje'])->name('administracion.hospedaje.Editar');
+    Route::delete('/hospedaje/delete/{id}', [HospedajeController::class, 'destroyHospedaje'])->name('administracion.hospedaje.Borrar');
     Route::get('/paquetes', [AdministracionController::class, 'paquetes'])->name('administracion.paquetes');
 
     Route::get('/reservas', [AdministracionController::class, 'reservas'])->name('administracion.reservas');
@@ -60,6 +62,7 @@ Route::prefix('administracion')->middleware('auth')->group(function () {
 });
 
 // Rutas para el ABM de hoteles
+/*
 Route::prefix('administracion')->group(function () {
     Route::get('/hoteles', [App\Http\Controllers\Admin\HotelController::class, 'index'])->name('administracion.hoteles');
     Route::post('/hoteles', [App\Http\Controllers\Admin\HotelController::class, 'store'])->name('hoteles.store');
@@ -67,7 +70,7 @@ Route::prefix('administracion')->group(function () {
     Route::put('/hoteles/{id}', [App\Http\Controllers\Admin\HotelController::class, 'update'])->name('hoteles.update');
     Route::delete('/hoteles/{id}', [App\Http\Controllers\Admin\HotelController::class, 'destroy'])->name('hoteles.destroy');
 });
-
+*/
 // Mostrar el formulario
 Route::get('/login', function () {
     return view('login.login');
@@ -100,3 +103,4 @@ Route::get('/test-gmail', [App\Http\Controllers\TestGmailController::class, 'tes
 
 // Ruta de prueba para probar el envío de correos
 Route::get('/test-email', [App\Http\Controllers\TestEmailController::class, 'testEmail']);
+
