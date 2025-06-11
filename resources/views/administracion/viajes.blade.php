@@ -17,8 +17,8 @@
         }
 
         body {
-            background-color: #f8f9fa;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f8f9fa;
         }
 
         .admin-sidebar {
@@ -51,29 +51,35 @@
         }
 
         .menu-item {
-            display: flex;
-            align-items: center;
+            display: block;
             padding: 12px 20px;
-            color: white;
+            color: rgba(255, 255, 255, 0.8);
             text-decoration: none;
             transition: all 0.3s;
             border-left: 3px solid transparent;
         }
 
-        .menu-item:hover {
-            background-color: rgba(255, 255, 255, 0.1);
-            border-left-color: var(--despegar-orange);
-            color: white;
-        }
-
+        .menu-item:hover,
         .menu-item.active {
             background-color: rgba(255, 255, 255, 0.1);
+            color: white;
             border-left-color: var(--despegar-orange);
         }
 
         .menu-item i {
             width: 20px;
             margin-right: 10px;
+        }
+
+        .menu-item[type="submit"] {
+            background: none;
+            border: none;
+            border-left: 3px solid transparent;
+            box-shadow: none;
+            width: 100%;
+            text-align: left;
+            cursor: pointer;
+            font: inherit;
         }
 
         .main-content {
@@ -306,16 +312,112 @@
         .filtros-sidebar .btn:hover {
             opacity: 0.9;
         }
+
+        /* Estilos para los filtros horizontales */
+        .filtros-horizontales {
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+        }
+
+        .filtros-horizontales .row {
+            align-items: flex-end;
+        }
+
+        .filtros-horizontales .form-label {
+            color: #333;
+            font-weight: 500;
+            margin-bottom: 5px;
+        }
+
+        .filtros-horizontales .form-control,
+        .filtros-horizontales .form-select {
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+
+        .filtros-horizontales .btn {
+            height: 38px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 5px;
+        }
+
+        .filtros-horizontales .btn-primary {
+            background-color: var(--despegar-blue);
+            border: none;
+        }
+
+        .filtros-horizontales .btn-secondary {
+            background-color: #6c757d;
+            border: none;
+        }
+
+        /* Estilos para el modal de detalles */
+        .detalles-viaje {
+            padding: 20px;
+        }
+
+        .detalles-viaje .imagen-principal {
+            width: 100%;
+            max-height: 400px;
+            object-fit: cover;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+
+        .detalles-viaje .info-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+        }
+
+        .detalles-viaje .info-item {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 8px;
+        }
+
+        .detalles-viaje .info-label {
+            font-weight: 600;
+            color: #666;
+            margin-bottom: 5px;
+        }
+
+        .detalles-viaje .info-value {
+            color: #333;
+            font-size: 1.1em;
+        }
+
+        .detalles-viaje .descripcion {
+            margin-top: 20px;
+            padding: 15px;
+            background-color: #f8f9fa;
+            border-radius: 8px;
+        }
+
+        .detalles-viaje .descripcion h5 {
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        .detalles-viaje .descripcion p {
+            color: #666;
+            margin: 0;
+        }
     </style>
 </head>
 
 <body>
     <!-- Sidebar -->
-    <div class="admin-sidebar">
+    <div class="admin-sidebar" id="sidebar">
         <div class="sidebar-header">
             <a href="/administracion" class="sidebar-brand">
                 <i class="fas fa-plane me-2"></i>
-                Frategar Admin
+                <span class="brand-text">Frategar Admin</span>
             </a>
         </div>
 
@@ -342,7 +444,7 @@
             </a>
             <a href="/administracion/vehiculos" class="menu-item">
                 <i class="fas fa-car"></i>
-                <span class="menu-text">Vehiculos</span>
+                <span class="menu-text">Vehículos</span>
             </a>
             <a href="/administracion/paquetes" class="menu-item">
                 <i class="fas fa-tags"></i>
@@ -360,45 +462,6 @@
                 </button>
             </form>
         </nav>
-
-        <!-- Filtros en el sidebar -->
-        <div class="filtros-sidebar">
-            <h5>Filtros</h5>
-            <form id="filtroForm">
-                <div class="mb-3">
-                    <label for="buscar" class="form-label">Buscar</label>
-                    <input type="text" class="form-control" id="buscar" placeholder="Buscar...">
-                </div>
-                <div class="mb-3">
-                    <label for="filtroTipo" class="form-label">Tipo de Viaje</label>
-                    <select class="form-select" id="filtroTipo">
-                        <option value="">Todos</option>
-                        <option value="aereo">Aéreo</option>
-                        <option value="terrestre">Terrestre</option>
-                        <option value="maritimo">Marítimo</option>
-                    </select>
-                </div>
-                <div class="mb-3">
-                    <label for="filtroFecha" class="form-label">Fecha</label>
-                    <input type="date" class="form-control" id="filtroFecha">
-                </div>
-                <div class="mb-3">
-                    <label for="filtroPrecio" class="form-label">Rango de Precio</label>
-                    <select class="form-select" id="filtroPrecio">
-                        <option value="">Todos</option>
-                        <option value="0-1000">$0 - $1,000</option>
-                        <option value="1000-5000">$1,000 - $5,000</option>
-                        <option value="5000+">$5,000+</option>
-                    </select>
-                </div>
-                <button type="button" class="btn btn-primary" onclick="aplicarFiltros()">
-                    <i class="fas fa-filter"></i> Filtrar
-                </button>
-                <button type="button" class="btn btn-secondary" onclick="limpiarFiltros()">
-                    <i class="fas fa-times"></i> Limpiar
-                </button>
-            </form>
-        </div>
     </div>
 
     <!-- Main Content -->
@@ -452,6 +515,48 @@
                     <div class="stat-number">{{ $viajes->where('tipo', 'maritimo')->count() }}</div>
                     <div class="stat-label">Viajes Marítimos</div>
                 </div>
+            </div>
+
+            <!-- Filtros horizontales -->
+            <div class="filtros-horizontales">
+                <form id="filtroForm">
+                    <div class="row g-3">
+                        <div class="col-md-3">
+                            <label for="searchText" class="form-label">Buscar</label>
+                            <input type="text" class="form-control" id="searchText" placeholder="Buscar...">
+                        </div>
+                        <div class="col-md-2">
+                            <label for="tipoViaje" class="form-label">Tipo de Viaje</label>
+                            <select class="form-select" id="tipoViaje">
+                                <option value="">Todos</option>
+                                <option value="Nacional">Nacional</option>
+                                <option value="Internacional">Internacional</option>
+                            </select>
+                        </div>
+                        <div class="col-md-2">
+                            <label for="fechaInicio" class="form-label">Fecha Inicio</label>
+                            <input type="date" class="form-control" id="fechaInicio">
+                        </div>
+                        <div class="col-md-2">
+                            <label for="fechaFin" class="form-label">Fecha Fin</label>
+                            <input type="date" class="form-control" id="fechaFin">
+                        </div>
+                        <div class="col-md-2">
+                            <label for="filtroPrecio" class="form-label">Rango de Precio</label>
+                            <select class="form-select" id="filtroPrecio">
+                                <option value="">Todos</option>
+                                <option value="0-1000">$0 - $1,000</option>
+                                <option value="1000-5000">$1,000 - $5,000</option>
+                                <option value="5000+">$5,000+</option>
+                            </select>
+                        </div>
+                        <div class="col-md-1 d-flex align-items-end">
+                            <button type="button" class="btn btn-secondary w-100" onclick="limpiarFiltros()">
+                                <i class="fas fa-times"></i> Limpiar
+                            </button>
+                        </div>
+                    </div>
+                </form>
             </div>
 
             <!-- Tabla de viajes -->
@@ -585,20 +690,38 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                 </div>
                 <div class="modal-body">
-                    <div class="row">
-                        <div class="col-md-6">
-                            <div id="imagenDetalle" class="text-center mb-3">
-                                <img src="" alt="Imagen del viaje" class="imagen-detalle">
+                    <div class="detalles-viaje">
+                        <div id="imagenDetalle" class="text-center">
+                            <img src="" alt="Imagen del viaje" class="imagen-principal">
+                        </div>
+                        <div class="info-grid">
+                            <div class="info-item">
+                                <div class="info-label">Tipo de Viaje</div>
+                                <div class="info-value" id="detalleTipo"></div>
+                            </div>
+                            <div class="info-item">
+                                <div class="info-label">Origen</div>
+                                <div class="info-value" id="detalleOrigen"></div>
+                            </div>
+                            <div class="info-item">
+                                <div class="info-label">Destino</div>
+                                <div class="info-value" id="detalleDestino"></div>
+                            </div>
+                            <div class="info-item">
+                                <div class="info-label">Precio</div>
+                                <div class="info-value" id="detallePrecio"></div>
+                            </div>
+                            <div class="info-item">
+                                <div class="info-label">Fecha de Salida</div>
+                                <div class="info-value" id="detalleFechaSalida"></div>
+                            </div>
+                            <div class="info-item">
+                                <div class="info-label">Fecha de Llegada</div>
+                                <div class="info-value" id="detalleFechaLlegada"></div>
                             </div>
                         </div>
-                        <div class="col-md-6">
-                            <h4 id="detalleTipo"></h4>
-                            <p><strong>Origen:</strong> <span id="detalleOrigen"></span></p>
-                            <p><strong>Destino:</strong> <span id="detalleDestino"></span></p>
-                            <p><strong>Fecha de Salida:</strong> <span id="detalleFechaSalida"></span></p>
-                            <p><strong>Fecha de Llegada:</strong> <span id="detalleFechaLlegada"></span></p>
-                            <p><strong>Precio:</strong> <span id="detallePrecio"></span></p>
-                            <p><strong>Descripción:</strong></p>
+                        <div class="descripcion">
+                            <h5>Descripción</h5>
                             <p id="detalleDescripcion"></p>
                         </div>
                     </div>
@@ -634,36 +757,75 @@
         });
     });
 
-    function aplicarFiltros() {
-        const buscar = document.getElementById('buscar').value.toLowerCase();
-        const tipo = document.getElementById('filtroTipo').value;
-        const fecha = document.getElementById('filtroFecha').value;
-        const precio = document.getElementById('filtroPrecio').value;
+    function aplicarFiltrosEnTiempoReal() {
+        const searchText = document.getElementById('searchText').value.toLowerCase();
+        const tipoViaje = document.getElementById('tipoViaje').value;
+        const fechaInicio = document.getElementById('fechaInicio').value;
+        const fechaFin = document.getElementById('fechaFin').value;
+        const rangoPrecio = document.getElementById('filtroPrecio').value;
 
         const filas = document.querySelectorAll('tbody tr');
+        let contador = 0;
+
         filas.forEach(fila => {
-            const texto = fila.textContent.toLowerCase();
-            const tipoViaje = fila.children[1].textContent.toLowerCase();
-            const fechaViaje = fila.children[4].textContent;
-            const precioViaje = parseFloat(fila.children[6].textContent.replace('$', '').replace(',', ''));
+            const destino = fila.querySelector('td:nth-child(2)').textContent.toLowerCase();
+            const tipo = fila.querySelector('td:nth-child(3)').textContent;
+            const fecha = fila.querySelector('td:nth-child(4)').textContent;
+            const precioTexto = fila.querySelector('td:nth-child(5)').textContent;
+            const precio = parseFloat(precioTexto.replace(/[^0-9.-]+/g, ''));
 
-            let mostrar = true;
-
-            if (buscar && !texto.includes(buscar)) mostrar = false;
-            if (tipo && tipoViaje !== tipo) mostrar = false;
-            if (fecha && !fechaViaje.includes(fecha)) mostrar = false;
-            if (precio) {
-                const [min, max] = precio.split('-').map(p => p === '+' ? Infinity : parseFloat(p));
-                if (precioViaje < min || (max !== Infinity && precioViaje > max)) mostrar = false;
+            const cumpleBusqueda = destino.includes(searchText);
+            const cumpleTipo = tipoViaje === '' || tipo === tipoViaje;
+            const cumpleFecha = (!fechaInicio || fecha >= fechaInicio) && (!fechaFin || fecha <= fechaFin);
+            
+            let cumplePrecio = true;
+            if (rangoPrecio) {
+                switch(rangoPrecio) {
+                    case '0-1000':
+                        cumplePrecio = precio >= 0 && precio <= 1000;
+                        break;
+                    case '1000-5000':
+                        cumplePrecio = precio > 1000 && precio <= 5000;
+                        break;
+                    case '5000+':
+                        cumplePrecio = precio > 5000;
+                        break;
+                }
             }
 
-            fila.style.display = mostrar ? '' : 'none';
+            if (cumpleBusqueda && cumpleTipo && cumpleFecha && cumplePrecio) {
+                fila.style.display = '';
+                contador++;
+            } else {
+                fila.style.display = 'none';
+            }
         });
+
+        // Actualizar contador
+        document.getElementById('totalViajes').textContent = contador;
     }
 
+    // Agregar event listeners cuando el DOM esté listo
+    document.addEventListener('DOMContentLoaded', function() {
+        // Event listeners para los campos de filtro
+        document.getElementById('searchText').addEventListener('input', aplicarFiltrosEnTiempoReal);
+        document.getElementById('tipoViaje').addEventListener('change', aplicarFiltrosEnTiempoReal);
+        document.getElementById('fechaInicio').addEventListener('change', aplicarFiltrosEnTiempoReal);
+        document.getElementById('fechaFin').addEventListener('change', aplicarFiltrosEnTiempoReal);
+        document.getElementById('filtroPrecio').addEventListener('change', aplicarFiltrosEnTiempoReal);
+
+        // Inicializar contador
+        aplicarFiltrosEnTiempoReal();
+    });
+
+    // Función para limpiar filtros
     function limpiarFiltros() {
-        document.getElementById('filtroForm').reset();
-        document.querySelectorAll('tbody tr').forEach(fila => fila.style.display = '');
+        document.getElementById('searchText').value = '';
+        document.getElementById('tipoViaje').value = '';
+        document.getElementById('fechaInicio').value = '';
+        document.getElementById('fechaFin').value = '';
+        document.getElementById('filtroPrecio').value = '';
+        aplicarFiltrosEnTiempoReal();
     }
 
     function verDetalles(id) {
