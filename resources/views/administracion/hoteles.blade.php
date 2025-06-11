@@ -25,13 +25,18 @@
         .admin-sidebar {
             position: fixed;
             top: 0;
-            left: 0;
+            left: -280px;
             height: 100vh;
             width: var(--sidebar-width);
             background: linear-gradient(180deg, var(--despegar-blue) 0%, #004499 100%);
             color: white;
             z-index: 1000;
             overflow-y: auto;
+            transition: left 0.3s ease;
+        }
+
+        .admin-sidebar.show {
+            left: 0;
         }
 
         .sidebar-header {
@@ -85,8 +90,13 @@
         }
 
         .main-content {
-            margin-left: var(--sidebar-width);
+            margin-left: 0;
             min-height: 100vh;
+            transition: margin-left 0.3s ease;
+        }
+
+        .main-content.expanded {
+            margin-left: var(--sidebar-width);
         }
 
         .top-navbar {
@@ -406,11 +416,24 @@
         .occupancy-low {
             background-color: #28a745;
         }
+
+        .toggle-sidebar {
+            background: none;
+            border: none;
+            color: var(--despegar-blue);
+            font-size: 1.2rem;
+            cursor: pointer;
+            padding: 0;
+            margin-right: 15px;
+        }
+
+        .toggle-sidebar:hover {
+            color: var(--despegar-orange);
+        }
     </style>
 </head>
 
 <body>
-    <!-- Sidebar -->
     <!-- Sidebar -->
     <div class="admin-sidebar" id="sidebar">
         <div class="sidebar-header">
@@ -464,10 +487,13 @@
     </div>
 
     <!-- Main Content -->
-    <div class="main-content">
+    <div class="main-content" id="mainContent">
         <!-- Top Navbar -->
         <div class="top-navbar">
             <div class="admin-header">
+                <button class="toggle-sidebar" id="toggleSidebar">
+                    <i class="fas fa-bars"></i>
+                </button>
                 <h4>Gestión de Hoteles</h4>
             </div>
 
@@ -905,6 +931,26 @@
                 console.error('Error:', error);
                 alert('Ocurrió un error al eliminar el hotel: ' + error.message);
             });
+        });
+
+        const sidebar = document.getElementById('sidebar');
+        const mainContent = document.getElementById('mainContent');
+        const toggleBtn = document.getElementById('toggleSidebar');
+
+        toggleBtn.addEventListener('click', function() {
+            sidebar.classList.toggle('show');
+            mainContent.classList.toggle('expanded');
+        });
+
+        // Cerrar el menú al hacer clic fuera de él
+        document.addEventListener('click', function(event) {
+            const isClickInsideSidebar = sidebar.contains(event.target);
+            const isClickOnToggle = toggleBtn.contains(event.target);
+
+            if (!isClickInsideSidebar && !isClickOnToggle && sidebar.classList.contains('show')) {
+                sidebar.classList.remove('show');
+                mainContent.classList.remove('expanded');
+            }
         });
     });
     </script>

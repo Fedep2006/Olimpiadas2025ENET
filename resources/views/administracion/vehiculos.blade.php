@@ -23,13 +23,18 @@
         .admin-sidebar {
             position: fixed;
             top: 0;
-            left: 0;
+            left: -280px;
             height: 100vh;
             width: var(--sidebar-width);
             background: linear-gradient(180deg, var(--despegar-blue) 0%, #004499 100%);
             color: white;
             z-index: 1000;
             overflow-y: auto;
+            transition: left 0.3s ease;
+        }
+
+        .admin-sidebar.show {
+            left: 0;
         }
 
         .sidebar-header {
@@ -83,8 +88,13 @@
         }
 
         .main-content {
-            margin-left: var(--sidebar-width);
+            margin-left: 0;
             min-height: 100vh;
+            transition: margin-left 0.3s ease;
+        }
+
+        .main-content.expanded {
+            margin-left: var(--sidebar-width);
         }
 
         .top-navbar {
@@ -409,12 +419,26 @@
             font-size: 0.75rem;
             color: #6c757d;
         }
+
+        .toggle-sidebar {
+            background: none;
+            border: none;
+            color: var(--despegar-blue);
+            font-size: 1.2rem;
+            cursor: pointer;
+            padding: 0;
+            margin-right: 15px;
+        }
+
+        .toggle-sidebar:hover {
+            color: var(--despegar-orange);
+        }
     </style>
 </head>
 
 <body>
     <!-- Sidebar -->
-    <div class="admin-sidebar">
+    <div class="admin-sidebar" id="sidebar">
         <div class="sidebar-header">
             <a href="/administracion" class="sidebar-brand">
                 <i class="fas fa-plane me-2"></i>
@@ -467,11 +491,14 @@
     </div>
 
     <!-- Main Content -->
-    <div class="main-content">
+    <div class="main-content" id="mainContent">
         <!-- Top Navbar -->
         <div class="top-navbar">
             <div class="admin-header">
-                <h4>Gestión de Autos</h4>
+                <button class="toggle-sidebar" id="toggleSidebar">
+                    <i class="fas fa-bars"></i>
+                </button>
+                <h4>Gestión de Vehículos</h4>
             </div>
 
             <div class="admin-user">
@@ -899,6 +926,29 @@
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const sidebar = document.getElementById('sidebar');
+            const mainContent = document.getElementById('mainContent');
+            const toggleBtn = document.getElementById('toggleSidebar');
+
+            toggleBtn.addEventListener('click', function() {
+                sidebar.classList.toggle('show');
+                mainContent.classList.toggle('expanded');
+            });
+
+            // Cerrar el menú al hacer clic fuera de él
+            document.addEventListener('click', function(event) {
+                const isClickInsideSidebar = sidebar.contains(event.target);
+                const isClickOnToggle = toggleBtn.contains(event.target);
+
+                if (!isClickInsideSidebar && !isClickOnToggle && sidebar.classList.contains('show')) {
+                    sidebar.classList.remove('show');
+                    mainContent.classList.remove('expanded');
+                }
+            });
+        });
+    </script>
 </body>
 
 </html>

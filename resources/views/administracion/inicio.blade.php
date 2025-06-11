@@ -24,18 +24,18 @@
         .admin-sidebar {
             position: fixed;
             top: 0;
-            left: 0;
+            left: -280px;
             height: 100vh;
             width: var(--sidebar-width);
             background: linear-gradient(180deg, var(--despegar-blue) 0%, #004499 100%);
             color: white;
             z-index: 1000;
             overflow-y: auto;
-            transition: all 0.3s ease;
+            transition: left 0.3s ease;
         }
 
-        .admin-sidebar.collapsed {
-            width: 70px;
+        .admin-sidebar.show {
+            left: 0;
         }
 
         .sidebar-header {
@@ -93,13 +93,13 @@
         }
 
         .main-content {
-            margin-left: var(--sidebar-width);
+            margin-left: 0;
             min-height: 100vh;
-            transition: all 0.3s ease;
+            transition: margin-left 0.3s ease;
         }
 
         .main-content.expanded {
-            margin-left: 70px;
+            margin-left: var(--sidebar-width);
         }
 
         .top-navbar {
@@ -117,6 +117,12 @@
             color: var(--despegar-blue);
             font-size: 1.2rem;
             cursor: pointer;
+            padding: 0;
+            margin-right: 15px;
+        }
+
+        .toggle-sidebar:hover {
+            color: var(--despegar-orange);
         }
 
         .admin-header {
@@ -514,7 +520,7 @@
         <div class="top-navbar">
             <div class="admin-header">
                 <div class="d-flex align-items-center">
-                    <button class="toggle-sidebar me-3" id="toggleSidebar">
+                    <button class="toggle-sidebar" id="toggleSidebar">
                         <i class="fas fa-bars"></i>
                     </button>
                     <h4 class="mb-0">Panel Administrativo</h4>
@@ -910,6 +916,29 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const sidebar = document.getElementById('sidebar');
+            const mainContent = document.getElementById('mainContent');
+            const toggleBtn = document.getElementById('toggleSidebar');
+
+            toggleBtn.addEventListener('click', function() {
+                sidebar.classList.toggle('show');
+                mainContent.classList.toggle('expanded');
+            });
+
+            // Cerrar el menú al hacer clic fuera de él
+            document.addEventListener('click', function(event) {
+                const isClickInsideSidebar = sidebar.contains(event.target);
+                const isClickOnToggle = toggleBtn.contains(event.target);
+
+                if (!isClickInsideSidebar && !isClickOnToggle && sidebar.classList.contains('show')) {
+                    sidebar.classList.remove('show');
+                    mainContent.classList.remove('expanded');
+                }
+            });
+        });
+    </script>
 </body>
 
 </html>
