@@ -571,14 +571,46 @@
         .pagination .page-link.next {
             padding: 0 12px;
             white-space: nowrap;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            min-width: 100px;
+            height: 36px;
+            font-size: 0.9rem;
+            font-weight: 500;
         }
 
-        .pagination .page-link.prev i {
-            margin-right: 4px;
-        }
-
+        .pagination .page-link.prev i,
         .pagination .page-link.next i {
-            margin-left: 4px;
+            font-size: 0.8rem;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 1em;
+            height: 1em;
+            line-height: 1;
+        }
+
+        .pagination .page-link.prev span,
+        .pagination .page-link.next span {
+            display: inline-flex;
+            align-items: center;
+            line-height: 1;
+        }
+
+        .pagination .page-item.disabled .page-link.prev,
+        .pagination .page-item.disabled .page-link.next {
+            background-color: #f8f9fa;
+            border-color: #e9ecef;
+            color: #6c757d;
+            cursor: not-allowed;
+            opacity: 0.65;
+        }
+
+        .pagination .page-item.disabled .page-link.prev i,
+        .pagination .page-item.disabled .page-link.next i {
+            opacity: 0.65;
         }
 
         .pagination-container {
@@ -957,9 +989,12 @@
 
                 // Handle pagination clicks
                 document.addEventListener('click', function(e) {
-                    if (e.target.matches('.pagination a')) {
+                    const paginationLink = e.target.closest('.pagination a');
+                    if (paginationLink) {
                         e.preventDefault();
-                        const url = e.target.href;
+                        e.stopPropagation();
+
+                        const url = paginationLink.href;
 
                         fetch(url, {
                                 headers: {

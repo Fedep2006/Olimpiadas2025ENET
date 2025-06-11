@@ -4,16 +4,16 @@
             {{-- Botón Anterior --}}
             @if ($users->onFirstPage())
                 <li class="page-item disabled">
-                    <span class="page-link">
+                    <span class="page-link prev">
                         <i class="fas fa-chevron-left"></i>
-                        Anterior
+                        <span>Anterior</span>
                     </span>
                 </li>
             @else
                 <li class="page-item">
                     <a class="page-link prev" href="{{ $users->previousPageUrl() }}" rel="prev">
                         <i class="fas fa-chevron-left"></i>
-                        Anterior
+                        <span>Anterior</span>
                     </a>
                 </li>
             @endif
@@ -65,15 +65,15 @@
             @if ($users->hasMorePages())
                 <li class="page-item">
                     <a class="page-link next" href="{{ $users->nextPageUrl() }}" rel="next">
-                        Siguiente
                         <i class="fas fa-chevron-right"></i>
+                        <span>Siguiente</span>
                     </a>
                 </li>
             @else
                 <li class="page-item disabled">
-                    <span class="page-link">
-                        Siguiente
+                    <span class="page-link next">
                         <i class="fas fa-chevron-right"></i>
+                        <span>Siguiente</span>
                     </span>
                 </li>
             @endif
