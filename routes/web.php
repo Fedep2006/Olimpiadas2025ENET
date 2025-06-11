@@ -62,7 +62,13 @@ Route::prefix('administracion')->middleware('auth')->group(function () {
     Route::get('/usuarios', [UserController::class, 'index'])->name('usuarios.index');
     Route::post('/usuarios/create', [UserController::class, 'crear'])->name('usuarios.create');
 
+<<<<<<< HEAD
     Route::get('/viajes', [AdministracionController::class, 'vuelos'])->name('administracion.viajes');
+=======
+    Route::get('/viajes', [administracionController::class, 'vuelos'])->name('administracion.viajes');
+
+    Route::get('/empleados', [administracionController::class, 'empleados'])->name('administracion.empleados');
+>>>>>>> 128a082e4b031478cd7f5c06b79a25751c1de742
 });
 
 // Mostrar el formulario

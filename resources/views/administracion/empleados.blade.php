@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gestión de Vuelos - Frategar Admin</title>
+    <title>Gestión de Empleados - Frategar Admin</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <style>
@@ -192,9 +192,8 @@
             background-color: #28a745;
         }
 
-        .btn-admin.warning {
-            background-color: #ffc107;
-            color: #212529;
+        .btn-admin.danger {
+            background-color: #dc3545;
         }
 
         .status-badge {
@@ -209,14 +208,14 @@
             color: #155724;
         }
 
-        .status-delayed {
-            background-color: #fff3cd;
-            color: #856404;
-        }
-
-        .status-cancelled {
+        .status-inactive {
             background-color: #f8d7da;
             color: #721c24;
+        }
+
+        .status-pending {
+            background-color: #fff3cd;
+            color: #856404;
         }
 
         .search-filters {
@@ -305,6 +304,11 @@
             color: white;
         }
 
+        .action-btn.message {
+            background-color: #28a745;
+            color: white;
+        }
+
         .stats-row {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
@@ -332,58 +336,69 @@
             font-size: 0.9rem;
         }
 
-        .flight-info {
+        .user-profile {
             display: flex;
             align-items: center;
             gap: 12px;
         }
 
-        .airline-logo {
-            width: 40px;
-            height: 40px;
-            border-radius: 8px;
+        .user-profile-avatar {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
             background: var(--despegar-light-blue);
             display: flex;
             align-items: center;
             justify-content: center;
             color: var(--despegar-blue);
+            font-weight: bold;
+            font-size: 1.1rem;
         }
 
-        .flight-details h6 {
+        .user-info h6 {
             margin: 0;
             font-weight: bold;
         }
 
-        .flight-details small {
+        .user-info small {
             color: #6c757d;
         }
 
-        .route-info {
+        .role-badge {
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-size: 0.75rem;
             font-weight: bold;
-            color: var(--despegar-blue);
         }
 
-        .price-info {
-            text-align: right;
+        .role-admin {
+            background-color: #dc3545;
+            color: white;
         }
 
-        .price-amount {
-            font-size: 1.2rem;
-            font-weight: bold;
-            color: var(--despegar-orange);
+        .role-user {
+            background-color: #007bff;
+            color: white;
+        }
+
+        .role-premium {
+            background-color: #ffc107;
+            color: #212529;
         }
     </style>
 </head>
 
 <body>
     <!-- Sidebar -->
-    <div class="admin-sidebar" id="sidebar">
+    <div class="admin-sidebar">
         <div class="sidebar-header">
             <a href="/administracion" class="sidebar-brand">
                 <i class="fas fa-plane me-2"></i>
-                <span class="brand-text">Frategar Admin</span>
+                Frategar Admin
             </a>
         </div>
+
+        <!-- Sidebar -->
 
         <nav class="sidebar-menu">
             <a href="/administracion" class="menu-item ">
@@ -398,7 +413,7 @@
                 <i class="fas fa-users"></i>
                 <span class="menu-text">Usuarios</span>
             </a>
-            <a href="/administracion/viajes" class="menu-item active">
+            <a href="/administracion/viajes" class="menu-item ">
                 <i class="fas fa-plane"></i>
                 <span class="menu-text">Viajes</span>
             </a>
@@ -414,7 +429,7 @@
                 <i class="fas fa-tags"></i>
                 <span class="menu-text">Paquetes</span>
             </a>
-              <a href="/administracion/empleados" class="menu-item ">
+              <a href="/administracion/empleados" class="menu-item active">
                 <i class="fas fa-users"></i>
                 <span class="menu-text">Empleados</span>
             </a>
@@ -433,7 +448,7 @@
         <!-- Top Navbar -->
         <div class="top-navbar">
             <div class="admin-header">
-                <h4>Gestión de Vuelos</h4>
+                <h4>Gestión de Usuarios</h4>
             </div>
 
             <div class="admin-user">
@@ -451,12 +466,12 @@
             <div class="page-header">
                 <div class="d-flex justify-content-between align-items-center">
                     <div>
-                        <h1 class="page-title">Gestión de Vuelos</h1>
-                        <p class="page-subtitle">Administra el inventario de vuelos y horarios</p>
+                        <h1 class="page-title">Gestión de Usuarios</h1>
+                        <p class="page-subtitle">Administra todos los usuarios registrados en el sistema</p>
                     </div>
                     <a href="#" class="btn-admin orange">
-                        <i class="fas fa-plus"></i>
-                        Nuevo Vuelo
+                        <i class="fas fa-user-plus"></i>
+                        Nuevo Usuario
                     </a>
                 </div>
             </div>
@@ -464,20 +479,20 @@
             <!-- Stats Row -->
             <div class="stats-row">
                 <div class="stat-card">
-                    <div class="stat-number">1,847</div>
-                    <div class="stat-label">Total Vuelos</div>
+                    <div class="stat-number">3,891</div>
+                    <div class="stat-label">Total Usuarios</div>
                 </div>
                 <div class="stat-card" style="border-left-color: #28a745;">
-                    <div class="stat-number">1,654</div>
-                    <div class="stat-label">Vuelos Activos</div>
+                    <div class="stat-number">3,654</div>
+                    <div class="stat-label">Usuarios Activos</div>
                 </div>
                 <div class="stat-card" style="border-left-color: #ffc107;">
-                    <div class="stat-number">123</div>
-                    <div class="stat-label">Vuelos Retrasados</div>
+                    <div class="stat-number">892</div>
+                    <div class="stat-label">Usuarios Premium</div>
                 </div>
                 <div class="stat-card" style="border-left-color: #dc3545;">
-                    <div class="stat-number">70</div>
-                    <div class="stat-label">Vuelos Cancelados</div>
+                    <div class="stat-number">237</div>
+                    <div class="stat-label">Usuarios Inactivos</div>
                 </div>
             </div>
 
@@ -486,35 +501,30 @@
                 <div class="search-filters">
                     <div class="filter-row">
                         <div class="filter-group">
-                            <label class="form-label">Número de Vuelo</label>
-                            <input type="text" class="form-control" placeholder="Ej: AA1205, LA533">
-                        </div>
-                        <div class="filter-group">
-                            <label class="form-label">Aerolínea</label>
-                            <select class="form-select">
-                                <option value="">Todas las aerolíneas</option>
-                                <option value="american">American Airlines</option>
-                                <option value="latam">LATAM</option>
-                                <option value="aerolineas">Aerolíneas Argentinas</option>
-                                <option value="united">United Airlines</option>
-                            </select>
-                        </div>
-                        <div class="filter-group">
-                            <label class="form-label">Origen</label>
-                            <input type="text" class="form-control" placeholder="Ciudad o código aeropuerto">
-                        </div>
-                        <div class="filter-group">
-                            <label class="form-label">Destino</label>
-                            <input type="text" class="form-control" placeholder="Ciudad o código aeropuerto">
+                            <label class="form-label">Buscar Usuario</label>
+                            <input type="text" class="form-control" placeholder="Nombre, email o ID de usuario">
                         </div>
                         <div class="filter-group">
                             <label class="form-label">Estado</label>
                             <select class="form-select">
                                 <option value="">Todos los estados</option>
                                 <option value="active">Activo</option>
-                                <option value="delayed">Retrasado</option>
-                                <option value="cancelled">Cancelado</option>
+                                <option value="inactive">Inactivo</option>
+                                <option value="pending">Pendiente</option>
                             </select>
+                        </div>
+                        <div class="filter-group">
+                            <label class="form-label">Tipo de Usuario</label>
+                            <select class="form-select">
+                                <option value="">Todos los tipos</option>
+                                <option value="user">Usuario Regular</option>
+                                <option value="premium">Usuario Premium</option>
+                                <option value="admin">Administrador</option>
+                            </select>
+                        </div>
+                        <div class="filter-group">
+                            <label class="form-label">Fecha de Registro</label>
+                            <input type="date" class="form-control">
                         </div>
                         <div class="filter-group">
                             <label class="form-label">&nbsp;</label>
@@ -533,22 +543,18 @@
                 </div>
             </div>
 
-            <!-- Flights Table -->
+            <!-- Users Table -->
             <div class="content-card">
                 <div class="card-header">
-                    <h5 class="card-title">Lista de Vuelos</h5>
+                    <h5 class="card-title">Lista de Usuarios</h5>
                     <div class="d-flex gap-2">
                         <a href="#" class="btn-admin">
                             <i class="fas fa-download"></i>
                             Exportar
                         </a>
-                        <a href="#" class="btn-admin warning">
-                            <i class="fas fa-sync"></i>
-                            Sincronizar
-                        </a>
                         <a href="#" class="btn-admin success">
-                            <i class="fas fa-upload"></i>
-                            Importar
+                            <i class="fas fa-envelope"></i>
+                            Enviar Newsletter
                         </a>
                     </div>
                 </div>
@@ -557,12 +563,12 @@
                     <table class="table">
                         <thead>
                             <tr>
-                                <th>Vuelo</th>
-                                <th>Ruta</th>
-                                <th>Horarios</th>
-                                <th>Aeronave</th>
-                                <th>Capacidad</th>
-                                <th>Precio Base</th>
+                                <th>Usuario</th>
+                                <th>Email</th>
+                                <th>Teléfono</th>
+                                <th>Tipo</th>
+                                <th>Fecha Registro</th>
+                                <th>Última Actividad</th>
                                 <th>Estado</th>
                                 <th>Acciones</th>
                             </tr>
@@ -570,49 +576,32 @@
                         <tbody>
                             <tr>
                                 <td>
-                                    <div class="flight-info">
-                                        <div class="airline-logo">
-                                            <i class="fas fa-plane"></i>
-                                        </div>
-                                        <div class="flight-details">
-                                            <h6>AA 1205</h6>
-                                            <small>American Airlines</small>
+                                    <div class="user-profile">
+                                        <div class="user-profile-avatar">MP</div>
+                                        <div class="user-info">
+                                            <h6>María Pérez</h6>
+                                            <small>ID: #USR-001</small>
                                         </div>
                                     </div>
                                 </td>
-                                <td>
-                                    <div class="route-info">EZE → MIA</div>
-                                    <small class="text-muted">Buenos Aires - Miami</small>
-                                </td>
-                                <td>
-                                    <div><strong>Salida:</strong> 08:30</div>
-                                    <div><strong>Llegada:</strong> 14:15</div>
-                                    <small class="text-muted">8h 45m</small>
-                                </td>
-                                <td>
-                                    <div>Boeing 777-300ER</div>
-                                    <small class="text-muted">Vuelo directo</small>
-                                </td>
-                                <td>
-                                    <div><strong>368</strong> asientos</div>
-                                    <small class="text-success">245 disponibles</small>
-                                </td>
-                                <td>
-                                    <div class="price-info">
-                                        <div class="price-amount">$899</div>
-                                        <small class="text-muted">USD</small>
-                                    </div>
-                                </td>
+                                <td>maria.perez@email.com</td>
+                                <td>+54 11 1234-5678</td>
+                                <td><span class="role-badge role-premium">Premium</span></td>
+                                <td>15 Ene 2024</td>
+                                <td>Hace 2 horas</td>
                                 <td><span class="status-badge status-active">Activo</span></td>
                                 <td>
                                     <div class="action-buttons">
-                                        <button class="action-btn view" title="Ver detalles">
+                                        <button class="action-btn view" title="Ver perfil">
                                             <i class="fas fa-eye"></i>
                                         </button>
                                         <button class="action-btn edit" title="Editar">
                                             <i class="fas fa-edit"></i>
                                         </button>
-                                        <button class="action-btn delete" title="Cancelar">
+                                        <button class="action-btn message" title="Enviar mensaje">
+                                            <i class="fas fa-envelope"></i>
+                                        </button>
+                                        <button class="action-btn delete" title="Desactivar">
                                             <i class="fas fa-ban"></i>
                                         </button>
                                     </div>
@@ -620,99 +609,32 @@
                             </tr>
                             <tr>
                                 <td>
-                                    <div class="flight-info">
-                                        <div class="airline-logo">
-                                            <i class="fas fa-plane"></i>
-                                        </div>
-                                        <div class="flight-details">
-                                            <h6>LA 533</h6>
-                                            <small>LATAM Airlines</small>
+                                    <div class="user-profile">
+                                        <div class="user-profile-avatar">CG</div>
+                                        <div class="user-info">
+                                            <h6>Carlos García</h6>
+                                            <small>ID: #USR-002</small>
                                         </div>
                                     </div>
                                 </td>
-                                <td>
-                                    <div class="route-info">EZE → MIA</div>
-                                    <small class="text-muted">Buenos Aires - Miami</small>
-                                </td>
-                                <td>
-                                    <div><strong>Salida:</strong> 14:20</div>
-                                    <div><strong>Llegada:</strong> 20:35</div>
-                                    <small class="text-muted">9h 15m</small>
-                                </td>
-                                <td>
-                                    <div>Airbus A350-900</div>
-                                    <small class="text-muted">Vuelo directo</small>
-                                </td>
-                                <td>
-                                    <div><strong>325</strong> asientos</div>
-                                    <small class="text-warning">89 disponibles</small>
-                                </td>
-                                <td>
-                                    <div class="price-info">
-                                        <div class="price-amount">$1,150</div>
-                                        <small class="text-muted">USD</small>
-                                    </div>
-                                </td>
-                                <td><span class="status-badge status-delayed">Retrasado</span></td>
-                                <td>
-                                    <div class="action-buttons">
-                                        <button class="action-btn view" title="Ver detalles">
-                                            <i class="fas fa-eye"></i>
-                                        </button>
-                                        <button class="action-btn edit" title="Editar">
-                                            <i class="fas fa-edit"></i>
-                                        </button>
-                                        <button class="action-btn delete" title="Cancelar">
-                                            <i class="fas fa-ban"></i>
-                                        </button>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <div class="flight-info">
-                                        <div class="airline-logo">
-                                            <i class="fas fa-plane"></i>
-                                        </div>
-                                        <div class="flight-details">
-                                            <h6>AR 1303</h6>
-                                            <small>Aerolíneas Argentinas</small>
-                                        </div>
-                                    </div>
-                                </td>
-                                <td>
-                                    <div class="route-info">EZE → MAD</div>
-                                    <small class="text-muted">Buenos Aires - Madrid</small>
-                                </td>
-                                <td>
-                                    <div><strong>Salida:</strong> 23:55</div>
-                                    <div><strong>Llegada:</strong> 18:30+1</div>
-                                    <small class="text-muted">12h 35m</small>
-                                </td>
-                                <td>
-                                    <div>Airbus A330-200</div>
-                                    <small class="text-muted">Vuelo directo</small>
-                                </td>
-                                <td>
-                                    <div><strong>272</strong> asientos</div>
-                                    <small class="text-danger">12 disponibles</small>
-                                </td>
-                                <td>
-                                    <div class="price-info">
-                                        <div class="price-amount">$1,450</div>
-                                        <small class="text-muted">USD</small>
-                                    </div>
-                                </td>
+                                <td>carlos.garcia@email.com</td>
+                                <td>+54 11 2345-6789</td>
+                                <td><span class="role-badge role-user">Usuario</span></td>
+                                <td>20 Ene 2024</td>
+                                <td>Hace 1 día</td>
                                 <td><span class="status-badge status-active">Activo</span></td>
                                 <td>
                                     <div class="action-buttons">
-                                        <button class="action-btn view" title="Ver detalles">
+                                        <button class="action-btn view" title="Ver perfil">
                                             <i class="fas fa-eye"></i>
                                         </button>
                                         <button class="action-btn edit" title="Editar">
                                             <i class="fas fa-edit"></i>
                                         </button>
-                                        <button class="action-btn delete" title="Cancelar">
+                                        <button class="action-btn message" title="Enviar mensaje">
+                                            <i class="fas fa-envelope"></i>
+                                        </button>
+                                        <button class="action-btn delete" title="Desactivar">
                                             <i class="fas fa-ban"></i>
                                         </button>
                                     </div>
@@ -720,50 +642,96 @@
                             </tr>
                             <tr>
                                 <td>
-                                    <div class="flight-info">
-                                        <div class="airline-logo">
-                                            <i class="fas fa-plane"></i>
-                                        </div>
-                                        <div class="flight-details">
-                                            <h6>UA 845</h6>
-                                            <small>United Airlines</small>
+                                    <div class="user-profile">
+                                        <div class="user-profile-avatar">AL</div>
+                                        <div class="user-info">
+                                            <h6>Ana López</h6>
+                                            <small>ID: #USR-003</small>
                                         </div>
                                     </div>
                                 </td>
-                                <td>
-                                    <div class="route-info">EZE → IAH → MIA</div>
-                                    <small class="text-muted">Buenos Aires - Miami</small>
-                                </td>
-                                <td>
-                                    <div><strong>Salida:</strong> 22:45</div>
-                                    <div><strong>Llegada:</strong> 16:15+1</div>
-                                    <small class="text-muted">12h 30m</small>
-                                </td>
-                                <td>
-                                    <div>Boeing 787-9</div>
-                                    <small class="text-muted">1 escala</small>
-                                </td>
-                                <td>
-                                    <div><strong>296</strong> asientos</div>
-                                    <small class="text-success">178 disponibles</small>
-                                </td>
-                                <td>
-                                    <div class="price-info">
-                                        <div class="price-amount">$1,299</div>
-                                        <small class="text-muted">USD</small>
-                                    </div>
-                                </td>
-                                <td><span class="status-badge status-cancelled">Cancelado</span></td>
+                                <td>ana.lopez@email.com</td>
+                                <td>+54 11 3456-7890</td>
+                                <td><span class="role-badge role-user">Usuario</span></td>
+                                <td>25 Ene 2024</td>
+                                <td>Hace 3 días</td>
+                                <td><span class="status-badge status-inactive">Inactivo</span></td>
                                 <td>
                                     <div class="action-buttons">
-                                        <button class="action-btn view" title="Ver detalles">
+                                        <button class="action-btn view" title="Ver perfil">
                                             <i class="fas fa-eye"></i>
                                         </button>
                                         <button class="action-btn edit" title="Editar">
                                             <i class="fas fa-edit"></i>
+                                        </button>
+                                        <button class="action-btn message" title="Enviar mensaje">
+                                            <i class="fas fa-envelope"></i>
                                         </button>
                                         <button class="action-btn delete" title="Eliminar">
                                             <i class="fas fa-trash"></i>
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div class="user-profile">
+                                        <div class="user-profile-avatar">JR</div>
+                                        <div class="user-info">
+                                            <h6>José Rodríguez</h6>
+                                            <small>ID: #USR-004</small>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>jose.rodriguez@email.com</td>
+                                <td>+54 11 4567-8901</td>
+                                <td><span class="role-badge role-admin">Admin</span></td>
+                                <td>10 Ene 2024</td>
+                                <td>Hace 30 min</td>
+                                <td><span class="status-badge status-active">Activo</span></td>
+                                <td>
+                                    <div class="action-buttons">
+                                        <button class="action-btn view" title="Ver perfil">
+                                            <i class="fas fa-eye"></i>
+                                        </button>
+                                        <button class="action-btn edit" title="Editar">
+                                            <i class="fas fa-edit"></i>
+                                        </button>
+                                        <button class="action-btn message" title="Enviar mensaje">
+                                            <i class="fas fa-envelope"></i>
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div class="user-profile">
+                                        <div class="user-profile-avatar">LM</div>
+                                        <div class="user-info">
+                                            <h6>Laura Martínez</h6>
+                                            <small>ID: #USR-005</small>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>laura.martinez@email.com</td>
+                                <td>+54 11 5678-9012</td>
+                                <td><span class="role-badge role-premium">Premium</span></td>
+                                <td>05 Feb 2024</td>
+                                <td>Hace 5 horas</td>
+                                <td><span class="status-badge status-pending">Pendiente</span></td>
+                                <td>
+                                    <div class="action-buttons">
+                                        <button class="action-btn view" title="Ver perfil">
+                                            <i class="fas fa-eye"></i>
+                                        </button>
+                                        <button class="action-btn edit" title="Editar">
+                                            <i class="fas fa-edit"></i>
+                                        </button>
+                                        <button class="action-btn message" title="Enviar mensaje">
+                                            <i class="fas fa-envelope"></i>
+                                        </button>
+                                        <button class="action-btn delete" title="Activar">
+                                            <i class="fas fa-check"></i>
                                         </button>
                                     </div>
                                 </td>

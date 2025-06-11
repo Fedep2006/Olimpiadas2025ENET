@@ -474,9 +474,9 @@
                 <i class="fas fa-tags"></i>
                 <span class="menu-text">Paquetes</span>
             </a>
-            <a href="/administracion/reportes" class="menu-item">
-                <i class="fas fa-chart-bar"></i>
-                <span class="menu-text">Reportes</span>
+              <a href="/administracion/empleados" class="menu-item ">
+                <i class="fas fa-users"></i>
+                <span class="menu-text">Empleados</span>
             </a>
             <form method="POST" action="{{ route('logout') }}">
                 @csrf

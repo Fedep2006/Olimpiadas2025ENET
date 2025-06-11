@@ -38,7 +38,7 @@ class AdministracionController extends Controller
             'descripcion' => 'required|string|max:255',
             'habitaciones' =>  'required|integer|min:1',
             'precio_por_noche' =>  'required|numeric|min:0',
-            'disponibilidad' =>  'required|boolean',
+            'disponibilidad' =>  'required',
         ]);
 
         $hospedaje = Hospedaje::findOrFail($request->id);
@@ -75,5 +75,9 @@ class AdministracionController extends Controller
     public function vuelos()
     {
         return view('administracion.viajes');
+    }
+     public function empleados()
+    {
+        return view('administracion.empleados');
     }
 }
