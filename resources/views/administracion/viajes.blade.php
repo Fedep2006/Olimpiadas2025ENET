@@ -464,7 +464,7 @@
             </a>
             <a href="/administracion/hoteles" class="menu-item">
                 <i class="fas fa-bed"></i>
-                <span class="menu-text">Hoteles</span>
+                <span class="menu-text">Hospedaje</span>
             </a>
             <a href="/administracion/vehiculos" class="menu-item">
                 <i class="fas fa-car"></i>

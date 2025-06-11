@@ -462,7 +462,7 @@
             </a>
             <a href="/administracion/hoteles" class="menu-item active">
                 <i class="fas fa-bed"></i>
-                <span class="menu-text">Hoteles</span>
+                <span class="menu-text">Hospedaje</span>
             </a>
             <a href="/administracion/vehiculos" class="menu-item">
                 <i class="fas fa-car"></i>
@@ -518,7 +518,7 @@
             <div class="page-header">
                 <div class="d-flex justify-content-between align-items-center">
                     <div>
-                        <h1 class="page-title">Gestión de Hoteles</h1>
+                        <h1 class="page-title">Gestión de Hospedaje</h1>
                         <p class="page-subtitle">Administra el inventario de hoteles y habitaciones</p>
                     </div>
                     <a href="#" class="btn-admin orange">
@@ -532,11 +532,11 @@
             <div class="stats-row">
                 <div class="stat-card">
                     <div class="stat-number">2,847</div>
-                    <div class="stat-label">Total Hoteles</div>
+                    <div class="stat-label">Total</div>
                 </div>
                 <div class="stat-card" style="border-left-color: #28a745;">
                     <div class="stat-number">2,654</div>
-                    <div class="stat-label">Hoteles Activos</div>
+                    <div class="stat-label">Activos</div>
                 </div>
                 <div class="stat-card" style="border-left-color: #dc3545;">
                     <div class="stat-number">70</div>
@@ -549,7 +549,7 @@
                 <div class="search-filters">
                     <div class="filter-row">
                         <div class="filter-group">
-                            <label class="form-label">Nombre del Hotel</label>
+                            <label class="form-label">Nombre de Hospedaje</label>
                             <input type="text" class="form-control" placeholder="Buscar por nombre">
                         </div>
                         <div class="filter-group">
@@ -602,7 +602,7 @@
             <!-- Hotels Table -->
             <div class="content-card">
                 <div class="card-header">
-                    <h5 class="card-title">Lista de Hoteles</h5>
+                    <h5 class="card-title">Lista de Hospedajes</h5>
                     <div class="d-flex gap-2">
                         <a href="{{ route('administracion.hoteles') }}" class="btn-admin warning">
                             <i class="fas fa-sync"></i>
@@ -615,7 +615,7 @@
                     <table class="table">
                         <thead>
                             <tr>
-                                <th>Hotel</th>
+                                <th>Hospedaje</th>
                                 <th>Ubicación</th>
                                 <th>Categoría</th>
                                 <th>Habitaciones</th>
@@ -757,7 +757,11 @@
                             </div>
                             <div class="col-md-6">
                                 <label for="tipos_habitacion" class="form-label">Tipos de Habitación</label>
-                                <input type="text" class="form-control" id="tipos_habitacion" name="tipos_habitacion" required>
+                                <select class="form-select" id="tipos_de_habitaciones" name="tipos_de_habitaciones" required>
+                                    <option value="Departamento">Departamento</option>
+                                    <option value="Hotel">Hotel</option>
+                                    <option value="Alquiler">Alquiler</option>
+                                </select>
                             </div>
                         </div>
                         <div class="row mb-3">
