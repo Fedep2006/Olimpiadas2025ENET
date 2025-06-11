@@ -527,31 +527,17 @@
                 </div>
 
                 <div class="admin-user">
-                    <div class="notification-badge">
-                        <i class="fas fa-bell"></i>
+                    <div class="user-avatar">{{ substr(Auth::user()->name, 0, 2) }}</div>
+                    <div>
+                        <div class="fw-bold">{{ Auth::user()->name }}</div>
+                        <small class="text-muted">{{ Auth::user()->role }}</small>
                     </div>
-
-                    <div class="dropdown">
-                        <div class="d-flex align-items-center cursor-pointer" data-bs-toggle="dropdown">
-                            <div class="user-avatar me-2">JD</div>
-                            <div>
-                                <div class="fw-bold">Juan Pérez</div>
-                                <small class="text-muted">Administrador</small>
-                            </div>
-                            <i class="fas fa-chevron-down ms-2"></i>
-                        </div>
-                        <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="#"><i class="fas fa-user me-2"></i>Mi Perfil</a>
-                            </li>
-                            <li><a class="dropdown-item" href="#"><i class="fas fa-cog me-2"></i>Configuración</a>
-                            </li>
-                            <li>
-                                <hr class="dropdown-divider">
-                            </li>
-                            <li><a class="dropdown-item" href="#"><i class="fas fa-sign-out-alt me-2"></i>Cerrar
-                                    Sesión</a></li>
-                        </ul>
-                    </div>
+                    <form method="POST" action="{{ route('logout') }}" class="d-inline">
+                        @csrf
+                        <button type="submit" class="btn btn-link text-decoration-none p-0 ms-2">
+                            <i class="fas fa-sign-out-alt"></i>
+                        </button>
+                    </form>
                 </div>
             </div>
         </div>

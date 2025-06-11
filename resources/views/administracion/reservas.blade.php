@@ -462,11 +462,17 @@
             </div>
 
             <div class="admin-user">
-                <div class="user-avatar">JP</div>
+                <div class="user-avatar">{{ substr(Auth::user()->name, 0, 2) }}</div>
                 <div>
-                    <div class="fw-bold">Juan Pérez</div>
-                    <small class="text-muted">Administrador</small>
+                    <div class="fw-bold">{{ Auth::user()->name }}</div>
+                    <small class="text-muted">{{ Auth::user()->role }}</small>
                 </div>
+                <form method="POST" action="{{ route('logout') }}" class="d-inline">
+                    @csrf
+                    <button type="submit" class="btn btn-link text-decoration-none p-0 ms-2">
+                        <i class="fas fa-sign-out-alt"></i>
+                    </button>
+                </form>
             </div>
         </div>
 
