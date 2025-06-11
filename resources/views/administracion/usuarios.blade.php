@@ -24,13 +24,18 @@
         .admin-sidebar {
             position: fixed;
             top: 0;
-            left: 0;
+            left: -280px;
             height: 100vh;
             width: var(--sidebar-width);
             background: linear-gradient(180deg, var(--despegar-blue) 0%, #004499 100%);
             color: white;
             z-index: 1000;
             overflow-y: auto;
+            transition: left 0.3s ease;
+        }
+
+        .admin-sidebar.show {
+            left: 0;
         }
 
         .sidebar-header {
@@ -84,8 +89,13 @@
         }
 
         .main-content {
-            margin-left: var(--sidebar-width);
+            margin-left: 0;
             min-height: 100vh;
+            transition: margin-left 0.3s ease;
+        }
+
+        .main-content.expanded {
+            margin-left: var(--sidebar-width);
         }
 
         .top-navbar {
@@ -619,12 +629,26 @@
             width: 100%;
             margin-top: 1rem;
         }
+
+        .toggle-sidebar {
+            background: none;
+            border: none;
+            color: var(--despegar-blue);
+            font-size: 1.2rem;
+            cursor: pointer;
+            padding: 0;
+            margin-right: 15px;
+        }
+
+        .toggle-sidebar:hover {
+            color: var(--despegar-orange);
+        }
     </style>
 </head>
 
 <body>
     <!-- Sidebar -->
-    <div class="admin-sidebar">
+    <div class="admin-sidebar" id="sidebar">
         <div class="sidebar-header">
             <a href="/administracion" class="sidebar-brand">
                 <i class="fas fa-plane me-2"></i>
@@ -653,7 +677,7 @@
             </a>
             <a href="/administracion/hoteles" class="menu-item">
                 <i class="fas fa-bed"></i>
-                <span class="menu-text">Hoteles</span>
+                <span class="menu-text">Hospedaje</span>
             </a>
             <a href="/administracion/vehiculos" class="menu-item">
                 <i class="fas fa-car"></i>
@@ -678,19 +702,28 @@
     </div>
 
     <!-- Main Content -->
-    <div class="main-content">
+    <div class="main-content" id="mainContent">
         <!-- Top Navbar -->
         <div class="top-navbar">
             <div class="admin-header">
+                <button class="toggle-sidebar" id="toggleSidebar">
+                    <i class="fas fa-bars"></i>
+                </button>
                 <h4>Gestión de Usuarios</h4>
             </div>
 
             <div class="admin-user">
-                <div class="user-avatar">JP</div>
+                <div class="user-avatar">{{ substr(Auth::user()->name, 0, 2) }}</div>
                 <div>
-                    <div class="fw-bold">Juan Pérez</div>
-                    <small class="text-muted">Administrador</small>
+                    <div class="fw-bold">{{ Auth::user()->name }}</div>
+                    <small class="text-muted">{{ Auth::user()->role }}</small>
                 </div>
+                <form method="POST" action="{{ route('logout') }}" class="d-inline">
+                    @csrf
+                    <button type="submit" class="btn btn-link text-decoration-none p-0 ms-2">
+                        <i class="fas fa-sign-out-alt"></i>
+                    </button>
+                </form>
             </div>
         </div>
 
@@ -874,10 +907,30 @@
     <div class="toast-container"></div>
 
     <script>
-        // Wait for DOM to be fully loaded
         document.addEventListener('DOMContentLoaded', function() {
-            // Initialize modal after a small delay
+            const sidebar = document.getElementById('sidebar');
+            const mainContent = document.getElementById('mainContent');
+            const toggleBtn = document.getElementById('toggleSidebar');
+
+            toggleBtn.addEventListener('click', function() {
+                sidebar.classList.toggle('show');
+                mainContent.classList.toggle('expanded');
+            });
+
+            // Cerrar el menú al hacer clic fuera de él
+            document.addEventListener('click', function(event) {
+                const isClickInsideSidebar = sidebar.contains(event.target);
+                const isClickOnToggle = toggleBtn.contains(event.target);
+
+                if (!isClickInsideSidebar && !isClickOnToggle && sidebar.classList.contains('show')) {
+                    sidebar.classList.remove('show');
+                    mainContent.classList.remove('expanded');
+                }
+            });
+
+            // Wait for DOM to be fully loaded
             setTimeout(function() {
+                // Initialize modal after a small delay
                 const nuevoUsuarioModal = new bootstrap.Modal(document.getElementById(
                     'nuevoUsuarioModal'), {
                     backdrop: true,

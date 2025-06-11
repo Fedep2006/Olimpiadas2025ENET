@@ -25,13 +25,18 @@
         .admin-sidebar {
             position: fixed;
             top: 0;
-            left: 0;
+            left: -280px;
             height: 100vh;
             width: var(--sidebar-width);
             background: linear-gradient(180deg, var(--despegar-blue) 0%, #004499 100%);
             color: white;
             z-index: 1000;
             overflow-y: auto;
+            transition: left 0.3s ease;
+        }
+
+        .admin-sidebar.show {
+            left: 0;
         }
 
         .sidebar-header {
@@ -85,8 +90,13 @@
         }
 
         .main-content {
-            margin-left: var(--sidebar-width);
+            margin-left: 0;
             min-height: 100vh;
+            transition: margin-left 0.3s ease;
+        }
+
+        .main-content.expanded {
+            margin-left: var(--sidebar-width);
         }
 
         .top-navbar {
@@ -406,11 +416,24 @@
         .occupancy-low {
             background-color: #28a745;
         }
+
+        .toggle-sidebar {
+            background: none;
+            border: none;
+            color: var(--despegar-blue);
+            font-size: 1.2rem;
+            cursor: pointer;
+            padding: 0;
+            margin-right: 15px;
+        }
+
+        .toggle-sidebar:hover {
+            color: var(--despegar-orange);
+        }
     </style>
 </head>
 
 <body>
-    <!-- Sidebar -->
     <!-- Sidebar -->
     <div class="admin-sidebar" id="sidebar">
         <div class="sidebar-header">
@@ -439,7 +462,7 @@
             </a>
             <a href="/administracion/hoteles" class="menu-item active">
                 <i class="fas fa-bed"></i>
-                <span class="menu-text">Hoteles</span>
+                <span class="menu-text">Hospedaje</span>
             </a>
             <a href="/administracion/vehiculos" class="menu-item">
                 <i class="fas fa-car"></i>
@@ -448,6 +471,10 @@
             <a href="/administracion/paquetes" class="menu-item">
                 <i class="fas fa-tags"></i>
                 <span class="menu-text">Paquetes</span>
+            </a>
+            <a href="/administracion/empleados" class="menu-item">
+                <i class="fas fa-users"></i>
+                <span class="menu-text">Empleados</span>
             </a>
             <form method="POST" action="{{ route('logout') }}">
                 @csrf
@@ -460,19 +487,28 @@
     </div>
 
     <!-- Main Content -->
-    <div class="main-content">
+    <div class="main-content" id="mainContent">
         <!-- Top Navbar -->
         <div class="top-navbar">
             <div class="admin-header">
+                <button class="toggle-sidebar" id="toggleSidebar">
+                    <i class="fas fa-bars"></i>
+                </button>
                 <h4>Gestión de Hoteles</h4>
             </div>
 
             <div class="admin-user">
-                <div class="user-avatar">JP</div>
+                <div class="user-avatar">{{ substr(Auth::user()->name, 0, 2) }}</div>
                 <div>
-                    <div class="fw-bold">Juan Pérez</div>
-                    <small class="text-muted">Administrador</small>
+                    <div class="fw-bold">{{ Auth::user()->name }}</div>
+                    <small class="text-muted">{{ Auth::user()->role }}</small>
                 </div>
+                <form method="POST" action="{{ route('logout') }}" class="d-inline">
+                    @csrf
+                    <button type="submit" class="btn btn-link text-decoration-none p-0 ms-2">
+                        <i class="fas fa-sign-out-alt"></i>
+                    </button>
+                </form>
             </div>
         </div>
 
@@ -482,7 +518,7 @@
             <div class="page-header">
                 <div class="d-flex justify-content-between align-items-center">
                     <div>
-                        <h1 class="page-title">Gestión de Hoteles</h1>
+                        <h1 class="page-title">Gestión de Hospedaje</h1>
                         <p class="page-subtitle">Administra el inventario de hoteles y habitaciones</p>
                     </div>
                     <a href="#" class="btn-admin orange">
@@ -496,11 +532,11 @@
             <div class="stats-row">
                 <div class="stat-card">
                     <div class="stat-number">2,847</div>
-                    <div class="stat-label">Total Hoteles</div>
+                    <div class="stat-label">Total</div>
                 </div>
                 <div class="stat-card" style="border-left-color: #28a745;">
                     <div class="stat-number">2,654</div>
-                    <div class="stat-label">Hoteles Activos</div>
+                    <div class="stat-label">Activos</div>
                 </div>
                 <div class="stat-card" style="border-left-color: #dc3545;">
                     <div class="stat-number">70</div>
@@ -513,7 +549,7 @@
                 <div class="search-filters">
                     <div class="filter-row">
                         <div class="filter-group">
-                            <label class="form-label">Nombre del Hotel</label>
+                            <label class="form-label">Nombre de Hospedaje</label>
                             <input type="text" class="form-control" placeholder="Buscar por nombre">
                         </div>
                         <div class="filter-group">
@@ -566,12 +602,8 @@
             <!-- Hotels Table -->
             <div class="content-card">
                 <div class="card-header">
-                    <h5 class="card-title">Lista de Hoteles</h5>
+                    <h5 class="card-title">Lista de Hospedajes</h5>
                     <div class="d-flex gap-2">
-                        <a href="#" class="btn-admin">
-                            <i class="fas fa-download"></i>
-                            Imprimir PDF
-                        </a>
                         <a href="{{ route('administracion.hoteles') }}" class="btn-admin warning">
                             <i class="fas fa-sync"></i>
                             Sincronizar
@@ -583,7 +615,7 @@
                     <table class="table">
                         <thead>
                             <tr>
-                                <th>Hotel</th>
+                                <th>Hospedaje</th>
                                 <th>Ubicación</th>
                                 <th>Categoría</th>
                                 <th>Habitaciones</th>
@@ -725,7 +757,11 @@
                             </div>
                             <div class="col-md-6">
                                 <label for="tipos_habitacion" class="form-label">Tipos de Habitación</label>
-                                <input type="text" class="form-control" id="tipos_habitacion" name="tipos_habitacion" required>
+                                <select class="form-select" id="tipos_de_habitaciones" name="tipos_de_habitaciones" required>
+                                    <option value="Departamento">Departamento</option>
+                                    <option value="Hotel">Hotel</option>
+                                    <option value="Alquiler">Alquiler</option>
+                                </select>
                             </div>
                         </div>
                         <div class="row mb-3">
@@ -905,6 +941,26 @@
                 console.error('Error:', error);
                 alert('Ocurrió un error al eliminar el hotel: ' + error.message);
             });
+        });
+
+        const sidebar = document.getElementById('sidebar');
+        const mainContent = document.getElementById('mainContent');
+        const toggleBtn = document.getElementById('toggleSidebar');
+
+        toggleBtn.addEventListener('click', function() {
+            sidebar.classList.toggle('show');
+            mainContent.classList.toggle('expanded');
+        });
+
+        // Cerrar el menú al hacer clic fuera de él
+        document.addEventListener('click', function(event) {
+            const isClickInsideSidebar = sidebar.contains(event.target);
+            const isClickOnToggle = toggleBtn.contains(event.target);
+
+            if (!isClickInsideSidebar && !isClickOnToggle && sidebar.classList.contains('show')) {
+                sidebar.classList.remove('show');
+                mainContent.classList.remove('expanded');
+            }
         });
     });
     </script>
