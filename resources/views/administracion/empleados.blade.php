@@ -546,15 +546,11 @@
             <!-- Users Table -->
             <div class="content-card">
                 <div class="card-header">
-                    <h5 class="card-title">Lista de Usuarios</h5>
+                    <h5 class="card-title">Lista de Empleados</h5>
                     <div class="d-flex gap-2">
-                        <a href="#" class="btn-admin">
-                            <i class="fas fa-download"></i>
-                            Exportar
-                        </a>
                         <a href="#" class="btn-admin success">
-                            <i class="fas fa-envelope"></i>
-                            Enviar Newsletter
+                            <i class="fas fa-file-excel"></i>
+                            Excel
                         </a>
                     </div>
                 </div>

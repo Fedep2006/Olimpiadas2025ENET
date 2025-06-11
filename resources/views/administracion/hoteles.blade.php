@@ -572,10 +572,6 @@
                 <div class="card-header">
                     <h5 class="card-title">Lista de Hoteles</h5>
                     <div class="d-flex gap-2">
-                        <a href="#" class="btn-admin">
-                            <i class="fas fa-download"></i>
-                            Imprimir PDF
-                        </a>
                         <a href="{{ route('administracion.hoteles') }}" class="btn-admin warning">
                             <i class="fas fa-sync"></i>
                             Sincronizar
