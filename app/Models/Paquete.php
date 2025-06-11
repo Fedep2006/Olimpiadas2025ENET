@@ -19,7 +19,6 @@ class Paquete extends Model
         'cupo_minimo',
         'cupo_maximo',
         'activo',
-        'imagen',
         'imagenes',
         'condiciones'
     ];

@@ -23,7 +23,6 @@ return new class extends Migration
             $table->decimal('salario', 10, 2)->comment('Salario base del empleado');
             $table->enum('estado', ['activo', 'inactivo', 'vacaciones', 'licencia'])->default('activo')
                 ->comment('Estado actual del empleado');
-            $table->string('imagen')->nullable()->comment('URL de la foto del empleado');
             $table->json('habilidades')->nullable()->comment('Array de habilidades o competencias del empleado');
             $table->json('certificaciones')->nullable()->comment('Array de certificaciones o títulos del empleado');
             $table->text('observaciones')->nullable()->comment('Notas adicionales sobre el empleado');

@@ -23,7 +23,6 @@ return new class extends Migration
             $table->json('servicios')->nullable()->comment('Array de servicios específicos de la habitación (ej: ["minibar", "tv", "aire acondicionado"])');
             $table->json('camas')->nullable()->comment('Array de tipos de camas (ej: ["1 cama king", "2 camas individuales"])');
             $table->integer('metros_cuadrados')->nullable()->comment('Tamaño de la habitación en metros cuadrados');
-            $table->string('imagen')->nullable()->comment('URL de la imagen principal de la habitación');
             $table->json('imagenes')->nullable()->comment('Array de URLs de imágenes adicionales de la habitación');
             $table->text('descripcion')->nullable()->comment('Descripción detallada de la habitación');
             $table->json('politicas')->nullable()->comment('Array de políticas específicas de la habitación (ej: ["no fumadores", "solo adultos"])');
