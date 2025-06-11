@@ -4,31 +4,47 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Viaje extends Model
 {
-    use HasFactory;
+    use HasFactory, SoftDeletes;
 
     protected $fillable = [
+        'nombre',
         'tipo',
         'origen',
         'destino',
         'fecha_salida',
         'fecha_llegada',
-        'precio',
+        'empresa',
+        'numero_viaje',
+        'capacidad_total',
+        'asientos_disponibles',
+        'precio_base',
+        'clases',
+        'servicios',
         'descripcion',
-        'imagen'
+        'observaciones',
+        'activo'
     ];
 
     protected $casts = [
         'fecha_salida' => 'datetime',
         'fecha_llegada' => 'datetime',
-        'precio' => 'decimal:2'
+        'clases' => 'array',
+        'servicios' => 'array',
+        'activo' => 'boolean',
+        'capacidad_total' => 'integer',
+        'asientos_disponibles' => 'integer',
+        'precio_base' => 'decimal:2',
+        'tipo' => 'string'
     ];
 
-    public function reservaViajes()
+    // Relaciones
+    public function reservas()
     {
-        return $this->hasMany(ReservaViaje::class);
+        return $this->morphMany(Reserva::class, 'servicio', 'tipo', 'servicio_id');
     }
 
     public function setImagenAttribute($value)

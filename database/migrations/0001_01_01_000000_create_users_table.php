@@ -42,6 +42,7 @@ return new class extends Migration
      */
     public function down(): void
     {
+        // Then drop the users table
         Schema::dropIfExists('users');
         Schema::dropIfExists('password_reset_tokens');
         Schema::dropIfExists('sessions');
