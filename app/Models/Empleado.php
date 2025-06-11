@@ -18,7 +18,6 @@ class Empleado extends Model
         'fecha_contratacion',
         'salario',
         'estado',
-        'imagen',
         'habilidades',
         'certificaciones',
         'observaciones'

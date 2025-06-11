@@ -22,7 +22,6 @@ return new class extends Migration
             $table->string('codigo_postal')->nullable()->comment('Código postal de la ubicación');
             $table->integer('estrellas')->nullable()->comment('Clasificación del establecimiento (1 a 5 estrellas)');
             $table->boolean('disponibilidad')->default(true)->comment('Indica si el establecimiento está disponible para reservas');
-            $table->string('imagen')->nullable()->comment('URL de la imagen principal del establecimiento');
             $table->text('descripcion')->nullable()->comment('Descripción detallada del establecimiento y sus instalaciones');
             $table->json('servicios')->nullable()->comment('Array de servicios ofrecidos (wifi, piscina, restaurante, etc.)');
             $table->json('imagenes')->nullable()->comment('Array de URLs de imágenes adicionales del establecimiento');

@@ -23,7 +23,6 @@ return new class extends Migration
             $table->string('pais')->nullable()->comment('País de residencia');
             $table->string('telefono')->nullable()->comment('Número de teléfono de contacto');
             $table->string('email')->nullable()->comment('Correo electrónico de contacto');
-            $table->text('observaciones')->nullable()->comment('Notas adicionales sobre la persona');
             $table->timestamps();
             $table->softDeletes();
         });

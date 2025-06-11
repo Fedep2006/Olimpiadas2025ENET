@@ -22,7 +22,6 @@ class Habitacion extends Model
         'servicios',
         'camas',
         'metros_cuadrados',
-        'imagen',
         'imagenes',
         'descripcion',
         'politicas',

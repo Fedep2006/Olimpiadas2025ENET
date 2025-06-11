@@ -19,7 +19,6 @@ class Hospedaje extends Model
         'codigo_postal',
         'estrellas',
         'disponibilidad',
-        'imagen',
         'descripcion',
         'servicios',
         'imagenes',

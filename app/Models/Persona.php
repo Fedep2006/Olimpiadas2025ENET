@@ -20,8 +20,7 @@ class Persona extends Model
         'ciudad',
         'pais',
         'telefono',
-        'email',
-        'observaciones'
+        'email'
     ];
 
     protected $casts = [

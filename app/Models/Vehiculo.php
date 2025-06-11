@@ -21,7 +21,6 @@ class Vehiculo extends Model
         'ubicacion',
         'precio_por_dia',
         'disponible',
-        'imagen',
         'imagenes',
         'caracteristicas',
         'observaciones'
