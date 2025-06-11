@@ -91,3 +91,12 @@ Route::prefix('usuarios')->middleware(['auth'])->group(function () {
     Route::put('/{user}', [UserController::class, 'update'])->name('usuarios.update');
     Route::delete('/{user}', [UserController::class, 'destroy'])->name('usuarios.destroy');
 });
+
+// Ruta de prueba para simular una compra
+Route::get('/test-compra', [App\Http\Controllers\TestCompraController::class, 'simularCompra']);
+
+// Ruta de prueba para Gmail
+Route::get('/test-gmail', [App\Http\Controllers\TestGmailController::class, 'testGmail']);
+
+// Ruta de prueba para probar el envío de correos
+Route::get('/test-email', [App\Http\Controllers\TestEmailController::class, 'testEmail']);
