@@ -51,7 +51,10 @@ Route::prefix('administracion')->middleware('auth')->group(function () {
     Route::put('/usuarios/{user}', [UserController::class, 'update'])->name('usuarios.update');
     Route::delete('/usuarios/{user}', [UserController::class, 'destroy'])->name('usuarios.destroy');
 
-    Route::get('/viajes', [administracionController::class, 'vuelos'])->name('administracion.viajes');
+    Route::get('/viajes', [App\Http\Controllers\Admin\ViajeController::class, 'index'])->name('administracion.viajes');
+    Route::post('/viajes', [App\Http\Controllers\Admin\ViajeController::class, 'store'])->name('viajes.store');
+    Route::put('/viajes/{id}', [App\Http\Controllers\Admin\ViajeController::class, 'update'])->name('viajes.update');
+    Route::delete('/viajes/{id}', [App\Http\Controllers\Admin\ViajeController::class, 'destroy'])->name('viajes.destroy');
 
     Route::get('/empleados', [administracionController::class, 'empleados'])->name('administracion.empleados');
 });

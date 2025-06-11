@@ -4,7 +4,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gestión de Vuelos - Frategar Admin</title>
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+    <title>Gestión de Viajes - Frategar Admin</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <style>
@@ -49,138 +50,108 @@
             padding: 20px 0;
         }
 
-        .menu-item[type="submit"] {
-            background: none;
-            border: none;
-            border-left: 3px solid transparent;
-            box-shadow: none;
-            width: 100%;
-            text-align: left;
-            cursor: pointer;
-            font: inherit;
-
-        }
-
         .menu-item {
-            display: block;
+            display: flex;
+            align-items: center;
             padding: 12px 20px;
-            color: rgba(255, 255, 255, 0.8);
+            color: white;
             text-decoration: none;
-            transition: all 0.3s ease;
+            transition: all 0.3s;
             border-left: 3px solid transparent;
         }
 
-        .menu-item:hover,
+        .menu-item:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+            border-left-color: var(--despegar-orange);
+            color: white;
+        }
+
         .menu-item.active {
             background-color: rgba(255, 255, 255, 0.1);
-            color: white;
             border-left-color: var(--despegar-orange);
         }
 
         .menu-item i {
             width: 20px;
-            margin-right: 15px;
+            margin-right: 10px;
         }
 
         .main-content {
             margin-left: var(--sidebar-width);
-            min-height: 100vh;
+            padding: 20px;
         }
 
         .top-navbar {
-            background: white;
-            padding: 15px 30px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            background-color: white;
+            padding: 15px 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
             display: flex;
             justify-content: space-between;
             align-items: center;
         }
 
         .admin-header h4 {
-            color: var(--despegar-blue);
             margin: 0;
+            color: #333;
         }
 
         .admin-user {
             display: flex;
             align-items: center;
-            gap: 15px;
+            gap: 10px;
         }
 
         .user-avatar {
             width: 40px;
             height: 40px;
+            background-color: var(--despegar-blue);
+            color: white;
             border-radius: 50%;
-            background: var(--despegar-light-blue);
             display: flex;
             align-items: center;
             justify-content: center;
-            color: var(--despegar-blue);
             font-weight: bold;
         }
 
         .dashboard-content {
-            padding: 30px;
+            background-color: white;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         }
 
         .page-header {
-            background: white;
-            border-radius: 15px;
-            padding: 25px;
-            margin-bottom: 25px;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+            margin-bottom: 30px;
         }
 
         .page-title {
-            color: var(--despegar-blue);
-            font-size: 1.8rem;
-            font-weight: bold;
-            margin: 0;
+            font-size: 24px;
+            color: #333;
+            margin-bottom: 5px;
         }
 
         .page-subtitle {
-            color: #6c757d;
-            margin: 5px 0 0 0;
-        }
-
-        .content-card {
-            background: white;
-            border-radius: 15px;
-            padding: 25px;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
-            margin-bottom: 25px;
-        }
-
-        .card-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 20px;
-            padding-bottom: 15px;
-            border-bottom: 1px solid #e9ecef;
-        }
-
-        .card-title {
-            color: var(--despegar-blue);
-            font-weight: bold;
+            color: #666;
             margin: 0;
         }
 
         .btn-admin {
             background-color: var(--despegar-blue);
-            border: none;
             color: white;
+            border: none;
             padding: 10px 20px;
-            border-radius: 8px;
-            font-weight: bold;
+            border-radius: 5px;
             text-decoration: none;
             display: inline-flex;
             align-items: center;
             gap: 8px;
+            transition: all 0.3s;
         }
 
         .btn-admin:hover {
-            background-color: #0052a3;
+            background-color: #004499;
             color: white;
         }
 
@@ -188,89 +159,67 @@
             background-color: var(--despegar-orange);
         }
 
-        .btn-admin.success {
-            background-color: #28a745;
+        .btn-admin.orange:hover {
+            background-color: #cc5200;
         }
 
-        .btn-admin.warning {
-            background-color: #ffc107;
-            color: #212529;
+        .stats-row {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
         }
 
-        .status-badge {
-            padding: 6px 12px;
-            border-radius: 20px;
-            font-size: 0.8rem;
-            font-weight: bold;
-        }
-
-        .status-active {
-            background-color: #d4edda;
-            color: #155724;
-        }
-
-        .status-delayed {
-            background-color: #fff3cd;
-            color: #856404;
-        }
-
-        .status-cancelled {
-            background-color: #f8d7da;
-            color: #721c24;
-        }
-
-        .search-filters {
-            background: #f8f9fa;
-            border-radius: 10px;
+        .stat-card {
+            background-color: white;
             padding: 20px;
-            margin-bottom: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            border-left: 4px solid var(--despegar-blue);
         }
 
-        .filter-row {
-            display: flex;
-            gap: 15px;
-            align-items: end;
-            flex-wrap: wrap;
-        }
-
-        .filter-group {
-            flex: 1;
-            min-width: 200px;
-        }
-
-        .form-label {
-            font-weight: 500;
-            color: var(--despegar-blue);
+        .stat-number {
+            font-size: 24px;
+            font-weight: bold;
+            color: #333;
             margin-bottom: 5px;
         }
 
-        .form-control,
-        .form-select {
-            border-radius: 8px;
-            border: 1px solid #ddd;
-            padding: 10px 12px;
+        .stat-label {
+            color: #666;
+            font-size: 14px;
         }
 
-        .table-container {
-            overflow-x: auto;
+        .imagen-viaje {
+            width: 100px;
+            height: 100px;
+            object-fit: cover;
+            object-position: center;
+            border-radius: 5px;
+        }
+
+        .imagen-preview {
+            width: 200px;
+            height: 200px;
+            object-fit: cover;
+            object-position: center;
+            border-radius: 5px;
+        }
+
+        .imagen-detalle {
+            width: 100%;
+            max-height: 400px;
+            object-fit: contain;
+            border-radius: 10px;
+        }
+
+        .table {
+            margin-top: 20px;
         }
 
         .table th {
-            background-color: var(--despegar-light-blue);
-            color: var(--despegar-blue);
-            font-weight: bold;
-            border: none;
-            padding: 15px 12px;
-        }
-
-        .table td {
-            padding: 15px 12px;
-            vertical-align: middle;
-            border-bottom: 1px solid #e9ecef;
-        }
-
-        .table tbody tr:hover {
             background-color: #f8f9fa;
+            font-weight: 600;
         }
 
         .action-buttons {
@@ -282,111 +231,96 @@
             width: 32px;
             height: 32px;
             border: none;
-            border-radius: 6px;
+            border-radius: 4px;
             display: flex;
             align-items: center;
             justify-content: center;
+            color: white;
             cursor: pointer;
-            font-size: 0.9rem;
+            transition: all 0.3s;
         }
 
         .action-btn.view {
-            background-color: #17a2b8;
-            color: white;
+            background-color: var(--despegar-blue);
         }
 
         .action-btn.edit {
             background-color: #ffc107;
-            color: #212529;
         }
 
         .action-btn.delete {
             background-color: #dc3545;
+        }
+
+        .action-btn:hover {
+            opacity: 0.8;
+        }
+
+        .filtros-sidebar {
+            background-color: rgba(255, 255, 255, 0.1);
+            padding: 20px;
+            border-radius: 5px;
+            margin: 20px;
+        }
+
+        .filtros-sidebar h5 {
+            color: white;
+            margin-bottom: 15px;
+            font-weight: 600;
+        }
+
+        .filtros-sidebar .form-label {
+            color: white;
+            font-weight: 500;
+        }
+
+        .filtros-sidebar .form-control,
+        .filtros-sidebar .form-select {
+            background-color: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
             color: white;
         }
 
-        .stats-row {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 20px;
-            margin-bottom: 25px;
+        .filtros-sidebar .form-control::placeholder {
+            color: rgba(255, 255, 255, 0.5);
         }
 
-        .stat-card {
-            background: white;
-            border-radius: 10px;
-            padding: 20px;
-            text-align: center;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
-            border-left: 4px solid var(--despegar-blue);
+        .filtros-sidebar .form-control:focus,
+        .filtros-sidebar .form-select:focus {
+            background-color: rgba(255, 255, 255, 0.2);
+            border-color: rgba(255, 255, 255, 0.3);
+            color: white;
         }
 
-        .stat-number {
-            font-size: 2rem;
-            font-weight: bold;
-            color: var(--despegar-blue);
+        .filtros-sidebar .btn {
+            width: 100%;
+            margin-top: 10px;
+            background-color: var(--despegar-orange);
+            border: none;
         }
 
-        .stat-label {
-            color: #6c757d;
-            font-size: 0.9rem;
+        .filtros-sidebar .btn-secondary {
+            background-color: rgba(255, 255, 255, 0.2);
         }
 
-        .flight-info {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-
-        .airline-logo {
-            width: 40px;
-            height: 40px;
-            border-radius: 8px;
-            background: var(--despegar-light-blue);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: var(--despegar-blue);
-        }
-
-        .flight-details h6 {
-            margin: 0;
-            font-weight: bold;
-        }
-
-        .flight-details small {
-            color: #6c757d;
-        }
-
-        .route-info {
-            font-weight: bold;
-            color: var(--despegar-blue);
-        }
-
-        .price-info {
-            text-align: right;
-        }
-
-        .price-amount {
-            font-size: 1.2rem;
-            font-weight: bold;
-            color: var(--despegar-orange);
+        .filtros-sidebar .btn:hover {
+            opacity: 0.9;
         }
     </style>
 </head>
 
 <body>
     <!-- Sidebar -->
-    <div class="admin-sidebar" id="sidebar">
+    <div class="admin-sidebar">
         <div class="sidebar-header">
             <a href="/administracion" class="sidebar-brand">
                 <i class="fas fa-plane me-2"></i>
-                <span class="brand-text">Frategar Admin</span>
+                Frategar Admin
             </a>
         </div>
 
         <nav class="sidebar-menu">
-            <a href="/administracion" class="menu-item ">
+            <a href="/administracion" class="menu-item">
                 <i class="fas fa-tachometer-alt"></i>
                 <span class="menu-text">Inicio</span>
             </a>
@@ -414,7 +348,7 @@
                 <i class="fas fa-tags"></i>
                 <span class="menu-text">Paquetes</span>
             </a>
-              <a href="/administracion/empleados" class="menu-item ">
+            <a href="/administracion/empleados" class="menu-item">
                 <i class="fas fa-users"></i>
                 <span class="menu-text">Empleados</span>
             </a>
@@ -426,6 +360,45 @@
                 </button>
             </form>
         </nav>
+
+        <!-- Filtros en el sidebar -->
+        <div class="filtros-sidebar">
+            <h5>Filtros</h5>
+            <form id="filtroForm">
+                <div class="mb-3">
+                    <label for="buscar" class="form-label">Buscar</label>
+                    <input type="text" class="form-control" id="buscar" placeholder="Buscar...">
+                </div>
+                <div class="mb-3">
+                    <label for="filtroTipo" class="form-label">Tipo de Viaje</label>
+                    <select class="form-select" id="filtroTipo">
+                        <option value="">Todos</option>
+                        <option value="aereo">Aéreo</option>
+                        <option value="terrestre">Terrestre</option>
+                        <option value="maritimo">Marítimo</option>
+                    </select>
+                </div>
+                <div class="mb-3">
+                    <label for="filtroFecha" class="form-label">Fecha</label>
+                    <input type="date" class="form-control" id="filtroFecha">
+                </div>
+                <div class="mb-3">
+                    <label for="filtroPrecio" class="form-label">Rango de Precio</label>
+                    <select class="form-select" id="filtroPrecio">
+                        <option value="">Todos</option>
+                        <option value="0-1000">$0 - $1,000</option>
+                        <option value="1000-5000">$1,000 - $5,000</option>
+                        <option value="5000+">$5,000+</option>
+                    </select>
+                </div>
+                <button type="button" class="btn btn-primary" onclick="aplicarFiltros()">
+                    <i class="fas fa-filter"></i> Filtrar
+                </button>
+                <button type="button" class="btn btn-secondary" onclick="limpiarFiltros()">
+                    <i class="fas fa-times"></i> Limpiar
+                </button>
+            </form>
+        </div>
     </div>
 
     <!-- Main Content -->
@@ -433,7 +406,7 @@
         <!-- Top Navbar -->
         <div class="top-navbar">
             <div class="admin-header">
-                <h4>Gestión de Vuelos</h4>
+                <h4>Gestión de Viajes</h4>
             </div>
 
             <div class="admin-user">
@@ -451,352 +424,364 @@
             <div class="page-header">
                 <div class="d-flex justify-content-between align-items-center">
                     <div>
-                        <h1 class="page-title">Gestión de Vuelos</h1>
-                        <p class="page-subtitle">Administra el inventario de vuelos y horarios</p>
+                        <h1 class="page-title">Gestión de Viajes</h1>
+                        <p class="page-subtitle">Administra todos los viajes disponibles</p>
                     </div>
-                    <a href="#" class="btn-admin orange">
+                    <button type="button" class="btn-admin orange" data-bs-toggle="modal" data-bs-target="#viajeModal">
                         <i class="fas fa-plus"></i>
-                        Nuevo Vuelo
-                    </a>
+                        Nuevo Viaje
+                    </button>
                 </div>
             </div>
 
             <!-- Stats Row -->
             <div class="stats-row">
                 <div class="stat-card">
-                    <div class="stat-number">1,847</div>
-                    <div class="stat-label">Total Vuelos</div>
+                    <div class="stat-number">{{ $viajes->count() }}</div>
+                    <div class="stat-label">Total Viajes</div>
                 </div>
                 <div class="stat-card" style="border-left-color: #28a745;">
-                    <div class="stat-number">1,654</div>
-                    <div class="stat-label">Vuelos Activos</div>
+                    <div class="stat-number">{{ $viajes->where('tipo', 'aereo')->count() }}</div>
+                    <div class="stat-label">Viajes Aéreos</div>
                 </div>
                 <div class="stat-card" style="border-left-color: #ffc107;">
-                    <div class="stat-number">123</div>
-                    <div class="stat-label">Vuelos Retrasados</div>
+                    <div class="stat-number">{{ $viajes->where('tipo', 'terrestre')->count() }}</div>
+                    <div class="stat-label">Viajes Terrestres</div>
                 </div>
                 <div class="stat-card" style="border-left-color: #dc3545;">
-                    <div class="stat-number">70</div>
-                    <div class="stat-label">Vuelos Cancelados</div>
+                    <div class="stat-number">{{ $viajes->where('tipo', 'maritimo')->count() }}</div>
+                    <div class="stat-label">Viajes Marítimos</div>
                 </div>
             </div>
 
-            <!-- Filters -->
-            <div class="content-card">
-                <div class="search-filters">
-                    <div class="filter-row">
-                        <div class="filter-group">
-                            <label class="form-label">Número de Vuelo</label>
-                            <input type="text" class="form-control" placeholder="Ej: AA1205, LA533">
-                        </div>
-                        <div class="filter-group">
-                            <label class="form-label">Aerolínea</label>
-                            <select class="form-select">
-                                <option value="">Todas las aerolíneas</option>
-                                <option value="american">American Airlines</option>
-                                <option value="latam">LATAM</option>
-                                <option value="aerolineas">Aerolíneas Argentinas</option>
-                                <option value="united">United Airlines</option>
+            <!-- Tabla de viajes -->
+            <div class="table-responsive">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Imagen</th>
+                            <th>Tipo</th>
+                            <th>Origen</th>
+                            <th>Destino</th>
+                            <th>Fecha Salida</th>
+                            <th>Fecha Llegada</th>
+                            <th>Precio</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach($viajes as $viaje)
+                        <tr>
+                            <td>
+                                @if($viaje->imagen)
+                                    <img src="data:image/jpeg;base64,{{ $viaje->imagen }}" 
+                                         alt="Imagen del viaje" 
+                                         class="imagen-viaje">
+                                @else
+                                    <img src="{{ asset('img/no-image.png') }}" 
+                                         alt="Sin imagen" 
+                                         class="imagen-viaje">
+                                @endif
+                            </td>
+                            <td>{{ ucfirst($viaje->tipo) }}</td>
+                            <td>{{ $viaje->origen }}</td>
+                            <td>{{ $viaje->destino }}</td>
+                            <td>{{ $viaje->fecha_salida->format('d/m/Y H:i') }}</td>
+                            <td>{{ $viaje->fecha_llegada->format('d/m/Y H:i') }}</td>
+                            <td>${{ number_format($viaje->precio, 2) }}</td>
+                            <td>
+                                <div class="action-buttons">
+                                    <button class="action-btn view" onclick="verDetalles({{ $viaje->id }})" title="Ver detalles">
+                                        <i class="fas fa-eye"></i>
+                                    </button>
+                                    <button class="action-btn edit" onclick="editarViaje({{ $viaje->id }})" title="Editar">
+                                        <i class="fas fa-edit"></i>
+                                    </button>
+                                    <button class="action-btn delete" onclick="eliminarViaje({{ $viaje->id }})" title="Eliminar">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal para crear/editar viaje -->
+    <div class="modal fade" id="viajeModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="viajeModalLabel">Nuevo Viaje</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="viajeForm" enctype="multipart/form-data">
+                        <input type="hidden" id="viaje_id" name="viaje_id">
+                        
+                        <div class="mb-3">
+                            <label for="tipo" class="form-label">Tipo de Viaje</label>
+                            <select class="form-select" id="tipo" name="tipo" required>
+                                <option value="aereo">Aéreo</option>
+                                <option value="terrestre">Terrestre</option>
+                                <option value="maritimo">Marítimo</option>
                             </select>
                         </div>
-                        <div class="filter-group">
-                            <label class="form-label">Origen</label>
-                            <input type="text" class="form-control" placeholder="Ciudad o código aeropuerto">
+
+                        <div class="mb-3">
+                            <label for="origen" class="form-label">Origen</label>
+                            <input type="text" class="form-control" id="origen" name="origen" required>
                         </div>
-                        <div class="filter-group">
-                            <label class="form-label">Destino</label>
-                            <input type="text" class="form-control" placeholder="Ciudad o código aeropuerto">
+
+                        <div class="mb-3">
+                            <label for="destino" class="form-label">Destino</label>
+                            <input type="text" class="form-control" id="destino" name="destino" required>
                         </div>
-                        <div class="filter-group">
-                            <label class="form-label">Estado</label>
-                            <select class="form-select">
-                                <option value="">Todos los estados</option>
-                                <option value="active">Activo</option>
-                                <option value="delayed">Retrasado</option>
-                                <option value="cancelled">Cancelado</option>
-                            </select>
+
+                        <div class="mb-3">
+                            <label for="fecha_salida" class="form-label">Fecha de Salida</label>
+                            <input type="datetime-local" class="form-control" id="fecha_salida" name="fecha_salida" required>
                         </div>
-                        <div class="filter-group">
-                            <label class="form-label">&nbsp;</label>
-                            <div class="d-flex gap-2">
-                                <button class="btn-admin">
-                                    <i class="fas fa-search"></i>
-                                    Buscar
-                                </button>
-                                <button class="btn-admin" style="background-color: #6c757d;">
-                                    <i class="fas fa-times"></i>
-                                    Limpiar
-                                </button>
+
+                        <div class="mb-3">
+                            <label for="fecha_llegada" class="form-label">Fecha de Llegada</label>
+                            <input type="datetime-local" class="form-control" id="fecha_llegada" name="fecha_llegada" required>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="precio" class="form-label">Precio</label>
+                            <input type="number" class="form-control" id="precio" name="precio" step="0.01" required>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="descripcion" class="form-label">Descripción</label>
+                            <textarea class="form-control" id="descripcion" name="descripcion" rows="3"></textarea>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="imagen" class="form-label">Imagen</label>
+                            <input type="file" class="form-control" id="imagen" name="imagen" accept="image/*">
+                            <div id="imagenPreview" class="mt-2"></div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="button" class="btn btn-primary" onclick="guardarViaje()">Guardar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal para ver detalles -->
+    <div class="modal fade" id="detallesModal" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Detalles del Viaje</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div id="imagenDetalle" class="text-center mb-3">
+                                <img src="" alt="Imagen del viaje" class="imagen-detalle">
                             </div>
                         </div>
+                        <div class="col-md-6">
+                            <h4 id="detalleTipo"></h4>
+                            <p><strong>Origen:</strong> <span id="detalleOrigen"></span></p>
+                            <p><strong>Destino:</strong> <span id="detalleDestino"></span></p>
+                            <p><strong>Fecha de Salida:</strong> <span id="detalleFechaSalida"></span></p>
+                            <p><strong>Fecha de Llegada:</strong> <span id="detalleFechaLlegada"></span></p>
+                            <p><strong>Precio:</strong> <span id="detallePrecio"></span></p>
+                            <p><strong>Descripción:</strong></p>
+                            <p id="detalleDescripcion"></p>
+                        </div>
                     </div>
                 </div>
-            </div>
-
-            <!-- Flights Table -->
-            <div class="content-card">
-                <div class="card-header">
-                    <h5 class="card-title">Lista de Vuelos</h5>
-                    <div class="d-flex gap-2">
-                        <a href="#" class="btn-admin">
-                            <i class="fas fa-download"></i>
-                            Exportar
-                        </a>
-                        <a href="#" class="btn-admin warning">
-                            <i class="fas fa-sync"></i>
-                            Sincronizar
-                        </a>
-                        <a href="#" class="btn-admin success">
-                            <i class="fas fa-upload"></i>
-                            Importar
-                        </a>
-                    </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
                 </div>
-
-                <div class="table-container">
-                    <table class="table">
-                        <thead>
-                            <tr>
-                                <th>Vuelo</th>
-                                <th>Ruta</th>
-                                <th>Horarios</th>
-                                <th>Aeronave</th>
-                                <th>Capacidad</th>
-                                <th>Precio Base</th>
-                                <th>Estado</th>
-                                <th>Acciones</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>
-                                    <div class="flight-info">
-                                        <div class="airline-logo">
-                                            <i class="fas fa-plane"></i>
-                                        </div>
-                                        <div class="flight-details">
-                                            <h6>AA 1205</h6>
-                                            <small>American Airlines</small>
-                                        </div>
-                                    </div>
-                                </td>
-                                <td>
-                                    <div class="route-info">EZE → MIA</div>
-                                    <small class="text-muted">Buenos Aires - Miami</small>
-                                </td>
-                                <td>
-                                    <div><strong>Salida:</strong> 08:30</div>
-                                    <div><strong>Llegada:</strong> 14:15</div>
-                                    <small class="text-muted">8h 45m</small>
-                                </td>
-                                <td>
-                                    <div>Boeing 777-300ER</div>
-                                    <small class="text-muted">Vuelo directo</small>
-                                </td>
-                                <td>
-                                    <div><strong>368</strong> asientos</div>
-                                    <small class="text-success">245 disponibles</small>
-                                </td>
-                                <td>
-                                    <div class="price-info">
-                                        <div class="price-amount">$899</div>
-                                        <small class="text-muted">USD</small>
-                                    </div>
-                                </td>
-                                <td><span class="status-badge status-active">Activo</span></td>
-                                <td>
-                                    <div class="action-buttons">
-                                        <button class="action-btn view" title="Ver detalles">
-                                            <i class="fas fa-eye"></i>
-                                        </button>
-                                        <button class="action-btn edit" title="Editar">
-                                            <i class="fas fa-edit"></i>
-                                        </button>
-                                        <button class="action-btn delete" title="Cancelar">
-                                            <i class="fas fa-ban"></i>
-                                        </button>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <div class="flight-info">
-                                        <div class="airline-logo">
-                                            <i class="fas fa-plane"></i>
-                                        </div>
-                                        <div class="flight-details">
-                                            <h6>LA 533</h6>
-                                            <small>LATAM Airlines</small>
-                                        </div>
-                                    </div>
-                                </td>
-                                <td>
-                                    <div class="route-info">EZE → MIA</div>
-                                    <small class="text-muted">Buenos Aires - Miami</small>
-                                </td>
-                                <td>
-                                    <div><strong>Salida:</strong> 14:20</div>
-                                    <div><strong>Llegada:</strong> 20:35</div>
-                                    <small class="text-muted">9h 15m</small>
-                                </td>
-                                <td>
-                                    <div>Airbus A350-900</div>
-                                    <small class="text-muted">Vuelo directo</small>
-                                </td>
-                                <td>
-                                    <div><strong>325</strong> asientos</div>
-                                    <small class="text-warning">89 disponibles</small>
-                                </td>
-                                <td>
-                                    <div class="price-info">
-                                        <div class="price-amount">$1,150</div>
-                                        <small class="text-muted">USD</small>
-                                    </div>
-                                </td>
-                                <td><span class="status-badge status-delayed">Retrasado</span></td>
-                                <td>
-                                    <div class="action-buttons">
-                                        <button class="action-btn view" title="Ver detalles">
-                                            <i class="fas fa-eye"></i>
-                                        </button>
-                                        <button class="action-btn edit" title="Editar">
-                                            <i class="fas fa-edit"></i>
-                                        </button>
-                                        <button class="action-btn delete" title="Cancelar">
-                                            <i class="fas fa-ban"></i>
-                                        </button>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <div class="flight-info">
-                                        <div class="airline-logo">
-                                            <i class="fas fa-plane"></i>
-                                        </div>
-                                        <div class="flight-details">
-                                            <h6>AR 1303</h6>
-                                            <small>Aerolíneas Argentinas</small>
-                                        </div>
-                                    </div>
-                                </td>
-                                <td>
-                                    <div class="route-info">EZE → MAD</div>
-                                    <small class="text-muted">Buenos Aires - Madrid</small>
-                                </td>
-                                <td>
-                                    <div><strong>Salida:</strong> 23:55</div>
-                                    <div><strong>Llegada:</strong> 18:30+1</div>
-                                    <small class="text-muted">12h 35m</small>
-                                </td>
-                                <td>
-                                    <div>Airbus A330-200</div>
-                                    <small class="text-muted">Vuelo directo</small>
-                                </td>
-                                <td>
-                                    <div><strong>272</strong> asientos</div>
-                                    <small class="text-danger">12 disponibles</small>
-                                </td>
-                                <td>
-                                    <div class="price-info">
-                                        <div class="price-amount">$1,450</div>
-                                        <small class="text-muted">USD</small>
-                                    </div>
-                                </td>
-                                <td><span class="status-badge status-active">Activo</span></td>
-                                <td>
-                                    <div class="action-buttons">
-                                        <button class="action-btn view" title="Ver detalles">
-                                            <i class="fas fa-eye"></i>
-                                        </button>
-                                        <button class="action-btn edit" title="Editar">
-                                            <i class="fas fa-edit"></i>
-                                        </button>
-                                        <button class="action-btn delete" title="Cancelar">
-                                            <i class="fas fa-ban"></i>
-                                        </button>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <div class="flight-info">
-                                        <div class="airline-logo">
-                                            <i class="fas fa-plane"></i>
-                                        </div>
-                                        <div class="flight-details">
-                                            <h6>UA 845</h6>
-                                            <small>United Airlines</small>
-                                        </div>
-                                    </div>
-                                </td>
-                                <td>
-                                    <div class="route-info">EZE → IAH → MIA</div>
-                                    <small class="text-muted">Buenos Aires - Miami</small>
-                                </td>
-                                <td>
-                                    <div><strong>Salida:</strong> 22:45</div>
-                                    <div><strong>Llegada:</strong> 16:15+1</div>
-                                    <small class="text-muted">12h 30m</small>
-                                </td>
-                                <td>
-                                    <div>Boeing 787-9</div>
-                                    <small class="text-muted">1 escala</small>
-                                </td>
-                                <td>
-                                    <div><strong>296</strong> asientos</div>
-                                    <small class="text-success">178 disponibles</small>
-                                </td>
-                                <td>
-                                    <div class="price-info">
-                                        <div class="price-amount">$1,299</div>
-                                        <small class="text-muted">USD</small>
-                                    </div>
-                                </td>
-                                <td><span class="status-badge status-cancelled">Cancelado</span></td>
-                                <td>
-                                    <div class="action-buttons">
-                                        <button class="action-btn view" title="Ver detalles">
-                                            <i class="fas fa-eye"></i>
-                                        </button>
-                                        <button class="action-btn edit" title="Editar">
-                                            <i class="fas fa-edit"></i>
-                                        </button>
-                                        <button class="action-btn delete" title="Eliminar">
-                                            <i class="fas fa-trash"></i>
-                                        </button>
-                                    </div>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-
-                <!-- Pagination -->
-                <nav>
-                    <ul class="pagination">
-                        <li class="page-item disabled">
-                            <a class="page-link" href="#" tabindex="-1">Anterior</a>
-                        </li>
-                        <li class="page-item active">
-                            <a class="page-link" href="#">1</a>
-                        </li>
-                        <li class="page-item">
-                            <a class="page-link" href="#">2</a>
-                        </li>
-                        <li class="page-item">
-                            <a class="page-link" href="#">3</a>
-                        </li>
-                        <li class="page-item">
-                            <a class="page-link" href="#">Siguiente</a>
-                        </li>
-                    </ul>
-                </nav>
             </div>
         </div>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-</body>
+    <script>
+    let viajeModal;
+    let detallesModal;
 
+    document.addEventListener('DOMContentLoaded', function() {
+        viajeModal = new bootstrap.Modal(document.getElementById('viajeModal'));
+        detallesModal = new bootstrap.Modal(document.getElementById('detallesModal'));
+        
+        // Preview de imagen
+        document.getElementById('imagen').addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    document.getElementById('imagenPreview').innerHTML = `
+                        <img src="${e.target.result}" class="imagen-preview">
+                    `;
+                }
+                reader.readAsDataURL(file);
+            }
+        });
+    });
+
+    function aplicarFiltros() {
+        const buscar = document.getElementById('buscar').value.toLowerCase();
+        const tipo = document.getElementById('filtroTipo').value;
+        const fecha = document.getElementById('filtroFecha').value;
+        const precio = document.getElementById('filtroPrecio').value;
+
+        const filas = document.querySelectorAll('tbody tr');
+        filas.forEach(fila => {
+            const texto = fila.textContent.toLowerCase();
+            const tipoViaje = fila.children[1].textContent.toLowerCase();
+            const fechaViaje = fila.children[4].textContent;
+            const precioViaje = parseFloat(fila.children[6].textContent.replace('$', '').replace(',', ''));
+
+            let mostrar = true;
+
+            if (buscar && !texto.includes(buscar)) mostrar = false;
+            if (tipo && tipoViaje !== tipo) mostrar = false;
+            if (fecha && !fechaViaje.includes(fecha)) mostrar = false;
+            if (precio) {
+                const [min, max] = precio.split('-').map(p => p === '+' ? Infinity : parseFloat(p));
+                if (precioViaje < min || (max !== Infinity && precioViaje > max)) mostrar = false;
+            }
+
+            fila.style.display = mostrar ? '' : 'none';
+        });
+    }
+
+    function limpiarFiltros() {
+        document.getElementById('filtroForm').reset();
+        document.querySelectorAll('tbody tr').forEach(fila => fila.style.display = '');
+    }
+
+    function verDetalles(id) {
+        fetch(`/administracion/viajes/${id}`)
+            .then(response => response.json())
+            .then(viaje => {
+                document.getElementById('detalleTipo').textContent = `Viaje ${viaje.tipo.charAt(0).toUpperCase() + viaje.tipo.slice(1)}`;
+                document.getElementById('detalleOrigen').textContent = viaje.origen;
+                document.getElementById('detalleDestino').textContent = viaje.destino;
+                document.getElementById('detalleFechaSalida').textContent = new Date(viaje.fecha_salida).toLocaleString();
+                document.getElementById('detalleFechaLlegada').textContent = new Date(viaje.fecha_llegada).toLocaleString();
+                document.getElementById('detallePrecio').textContent = `$${parseFloat(viaje.precio).toLocaleString('es-ES', {minimumFractionDigits: 2})}`;
+                document.getElementById('detalleDescripcion').textContent = viaje.descripcion || 'Sin descripción';
+                
+                const imgDetalle = document.querySelector('#imagenDetalle img');
+                if (viaje.imagen) {
+                    imgDetalle.src = `data:image/jpeg;base64,${viaje.imagen}`;
+                } else {
+                    imgDetalle.src = "{{ asset('img/no-image.png') }}";
+                }
+                
+                detallesModal.show();
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Error al cargar los detalles del viaje');
+            });
+    }
+
+    function resetForm() {
+        document.getElementById('viajeForm').reset();
+        document.getElementById('viaje_id').value = '';
+        document.getElementById('imagenPreview').innerHTML = '';
+        document.getElementById('viajeModalLabel').textContent = 'Nuevo Viaje';
+    }
+
+    function guardarViaje() {
+        const form = document.getElementById('viajeForm');
+        const formData = new FormData(form);
+        const viajeId = document.getElementById('viaje_id').value;
+        
+        const url = viajeId ? `/administracion/viajes/${viajeId}` : '/administracion/viajes';
+        const method = viajeId ? 'PUT' : 'POST';
+
+        fetch(url, {
+            method: method,
+            body: formData,
+            headers: {
+                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.errors) {
+                alert('Por favor, corrija los errores en el formulario.');
+                return;
+            }
+            viajeModal.hide();
+            location.reload();
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('Error al guardar el viaje');
+        });
+    }
+
+    function editarViaje(id) {
+        fetch(`/administracion/viajes/${id}`)
+            .then(response => response.json())
+            .then(viaje => {
+                document.getElementById('viaje_id').value = viaje.id;
+                document.getElementById('tipo').value = viaje.tipo;
+                document.getElementById('origen').value = viaje.origen;
+                document.getElementById('destino').value = viaje.destino;
+                document.getElementById('fecha_salida').value = viaje.fecha_salida;
+                document.getElementById('fecha_llegada').value = viaje.fecha_llegada;
+                document.getElementById('precio').value = viaje.precio;
+                document.getElementById('descripcion').value = viaje.descripcion;
+                
+                if (viaje.imagen) {
+                    document.getElementById('imagenPreview').innerHTML = `
+                        <img src="data:image/jpeg;base64,${viaje.imagen}" 
+                             class="imagen-preview">
+                    `;
+                }
+                
+                document.getElementById('viajeModalLabel').textContent = 'Editar Viaje';
+                viajeModal.show();
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Error al cargar los datos del viaje');
+            });
+    }
+
+    function eliminarViaje(id) {
+        if (confirm('¿Está seguro de eliminar este viaje?')) {
+            fetch(`/administracion/viajes/${id}`, {
+                method: 'DELETE',
+                headers: {
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                location.reload();
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Error al eliminar el viaje');
+            });
+        }
+    }
+
+    // Resetear el formulario cuando se cierra el modal
+    document.getElementById('viajeModal').addEventListener('hidden.bs.modal', function () {
+        resetForm();
+    });
+    </script>
+</body>
 </html>
