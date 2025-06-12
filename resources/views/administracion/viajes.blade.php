@@ -1132,7 +1132,8 @@
                         url: `/administracion/viajes/${id}`,
                         method: 'POST',
                         data: {
-                            _method: 'DELETE'
+                            _method: 'DELETE',
+                            _token: $('meta[name="csrf-token"]').attr('content')
                         },
                         success: function(response) {
                             console.log('Respuesta de eliminación:', response);

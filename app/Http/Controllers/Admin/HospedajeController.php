@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Models\Hospedaje;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\DB;
 
 class HospedajeController extends Controller
 {
@@ -21,167 +22,71 @@ class HospedajeController extends Controller
         }
     }
 
-    public function agregar(Request $request)
+    public function HospedajeAgregar(Request $request)
     {
-        try {
-            $validator = Validator::make($request->all(), [
-                'nombre' => 'required|string|max:255',
-                'tipo' => 'required|in:hotel,hostal,apartamento,casa,cabaña,resort',
-                'pais' => 'required|string|max:100',
-                'ciudad' => 'required|string|max:100',
-                'ubicacion' => 'required|string|max:255',
-                'codigo_postal' => 'nullable|string|max:20',
-                'estrellas' => 'nullable|integer|between:1,5',
-                'disponibilidad' => 'boolean',
-                'descripcion' => 'nullable|text',
-                'servicios' => 'nullable|array',
-                'imagenes' => 'nullable|array',
-                'telefono' => 'nullable|string|max:20',
-                'email' => 'nullable|email|max:100',
-                'sitio_web' => 'nullable|url|max:255',
-                'check_in' => 'required|date_format:H:i',
-                'check_out' => 'required|date_format:H:i',
-                'check_in_24h' => 'boolean',
-                'calificacion' => 'nullable|numeric|between:0,5',
-                'politicas' => 'nullable|array',
-                'observaciones' => 'nullable|text'
-            ]);
-
-            if ($validator->fails()) {
-                return response()->json([
-                    'success' => false,
-                    'errors' => $validator->errors()
-                ], 422);
-            }
-
-            $hospedaje = new Hospedaje();
-            $hospedaje->nombre = $request->nombre;
-            $hospedaje->tipo = $request->tipo;
-            $hospedaje->pais = $request->pais;
-            $hospedaje->ciudad = $request->ciudad;
-            $hospedaje->ubicacion = $request->ubicacion;
-            $hospedaje->codigo_postal = $request->codigo_postal;
-            $hospedaje->estrellas = $request->estrellas;
-            $hospedaje->disponibilidad = $request->disponibilidad ?? true;
-            $hospedaje->descripcion = $request->descripcion;
-            $hospedaje->servicios = $request->servicios;
-            $hospedaje->imagenes = $request->imagenes;
-            $hospedaje->telefono = $request->telefono;
-            $hospedaje->email = $request->email;
-            $hospedaje->sitio_web = $request->sitio_web;
-            $hospedaje->check_in = $request->check_in;
-            $hospedaje->check_out = $request->check_out;
-            $hospedaje->check_in_24h = $request->check_in_24h ?? false;
-            $hospedaje->calificacion = $request->calificacion;
-            $hospedaje->politicas = $request->politicas;
-            $hospedaje->observaciones = $request->observaciones;
-            $hospedaje->save();
-
-            Log::info('Hospedaje creado exitosamente: ' . $hospedaje->id);
-
-            return response()->json([
-                'success' => true,
-                'message' => 'Hospedaje creado exitosamente'
-            ]);
-        } catch (\Exception $e) {
-            Log::error('Error al crear hospedaje: ' . $e->getMessage());
-            return response()->json([
-                'success' => false,
-                'message' => 'Error al crear el hospedaje: ' . $e->getMessage()
-            ], 500);
-        }
+        $hospedaje = new Hospedaje();
+        $hospedaje->nombre = $request->nombre;
+        $hospedaje->tipo = $request->tipo;
+        $hospedaje->ubicacion = $request->ubicacion;
+        $hospedaje->pais = $request->pais;
+        $hospedaje->ciudad = $request->ciudad;
+        $hospedaje->codigo_postal = $request->codigo_postal;
+        $hospedaje->estrellas = $request->estrellas;
+        $hospedaje->calificacion = $request->calificacion;
+        $hospedaje->descripcion = $request->descripcion;
+        $hospedaje->servicios = $request->servicios;
+        $hospedaje->politicas = $request->politicas;
+        $hospedaje->imagenes = $request->imagenes;
+        $hospedaje->telefono = $request->telefono;
+        $hospedaje->email = $request->email;
+        $hospedaje->sitio_web = $request->sitio_web;
+        $hospedaje->check_in = $request->check_in;
+        $hospedaje->check_out = $request->check_out;
+        $hospedaje->check_in_24h = $request->check_in_24h;
+        $hospedaje->disponibilidad = $request->disponibilidad;
+        $hospedaje->observaciones = $request->observaciones;
+        $hospedaje->save();
+        return redirect()->route('administracion.hospedaje')->with('success', 'Hospedaje agregado correctamente');
     }
-
-    public function editar(Request $request)
+    public function HospedajeEditar(Request $request)
     {
-        try {
-            $validator = Validator::make($request->all(), [
-                'id' => 'required|exists:hospedajes,id',
-                'nombre' => 'required|string|max:255',
-                'tipo' => 'required|in:hotel,hostal,apartamento,casa,cabaña,resort',
-                'pais' => 'required|string|max:100',
-                'ciudad' => 'required|string|max:100',
-                'ubicacion' => 'required|string|max:255',
-                'codigo_postal' => 'nullable|string|max:20',
-                'estrellas' => 'nullable|integer|between:1,5',
-                'disponibilidad' => 'boolean',
-                'descripcion' => 'nullable|text',
-                'servicios' => 'nullable|array',
-                'imagenes' => 'nullable|array',
-                'telefono' => 'nullable|string|max:20',
-                'email' => 'nullable|email|max:100',
-                'sitio_web' => 'nullable|url|max:255',
-                'check_in' => 'required|date_format:H:i',
-                'check_out' => 'required|date_format:H:i',
-                'check_in_24h' => 'boolean',
-                'calificacion' => 'nullable|numeric|between:0,5',
-                'politicas' => 'nullable|array',
-                'observaciones' => 'nullable|text'
-            ]);
-
-            if ($validator->fails()) {
-                return response()->json([
-                    'success' => false,
-                    'errors' => $validator->errors()
-                ], 422);
-            }
-
-            $hospedaje = Hospedaje::findOrFail($request->id);
-            $hospedaje->nombre = $request->nombre;
-            $hospedaje->tipo = $request->tipo;
-            $hospedaje->pais = $request->pais;
-            $hospedaje->ciudad = $request->ciudad;
-            $hospedaje->ubicacion = $request->ubicacion;
-            $hospedaje->codigo_postal = $request->codigo_postal;
-            $hospedaje->estrellas = $request->estrellas;
-            $hospedaje->disponibilidad = $request->disponibilidad;
-            $hospedaje->descripcion = $request->descripcion;
-            $hospedaje->servicios = $request->servicios;
-            $hospedaje->imagenes = $request->imagenes;
-            $hospedaje->telefono = $request->telefono;
-            $hospedaje->email = $request->email;
-            $hospedaje->sitio_web = $request->sitio_web;
-            $hospedaje->check_in = $request->check_in;
-            $hospedaje->check_out = $request->check_out;
-            $hospedaje->check_in_24h = $request->check_in_24h;
-            $hospedaje->calificacion = $request->calificacion;
-            $hospedaje->politicas = $request->politicas;
-            $hospedaje->observaciones = $request->observaciones;
-            $hospedaje->save();
-
-            Log::info('Hospedaje actualizado exitosamente: ' . $hospedaje->id);
-
-            return response()->json([
-                'success' => true,
-                'message' => 'Hospedaje actualizado exitosamente'
-            ]);
-        } catch (\Exception $e) {
-            Log::error('Error al actualizar hospedaje: ' . $e->getMessage());
-            return response()->json([
-                'success' => false,
-                'message' => 'Error al actualizar el hospedaje: ' . $e->getMessage()
-            ], 500);
+        $hospedaje = Hospedaje::find($request->id);
+        
+        if (!$hospedaje) {
+            return redirect()->route('administracion.hospedaje')->with('error', 'El hospedaje no existe');
         }
-    }
 
-    public function eliminar($id)
+        $hospedaje->nombre = $request->nombre;
+        $hospedaje->tipo = $request->tipo;
+        $hospedaje->ubicacion = $request->ubicacion;
+        $hospedaje->pais = $request->pais;
+        $hospedaje->ciudad = $request->ciudad;
+        $hospedaje->codigo_postal = $request->codigo_postal;
+        $hospedaje->estrellas = $request->estrellas;
+        $hospedaje->calificacion = $request->calificacion;
+        $hospedaje->descripcion = $request->descripcion;
+        $hospedaje->servicios = $request->servicios;
+        $hospedaje->politicas = $request->politicas;
+        $hospedaje->imagenes = $request->imagenes;
+        $hospedaje->telefono = $request->telefono;
+        $hospedaje->email = $request->email;
+        $hospedaje->sitio_web = $request->sitio_web;
+        $hospedaje->check_in = $request->check_in;
+        $hospedaje->check_out = $request->check_out;
+        if ($request->check_in_24h == 1) {
+            $hospedaje->check_in_24h = 1;
+        } else {
+            $hospedaje->check_in_24h = 0;
+        }
+        $hospedaje->disponibilidad = $request->disponibilidad;
+        $hospedaje->observaciones = $request->observaciones;
+        $hospedaje->save();
+        return redirect()->route('administracion.hospedaje')->with('success', 'Hospedaje actualizado correctamente');
+    }
+    public function EliminarHospedaje($id)
     {
-        try {
-            $hospedaje = Hospedaje::findOrFail($id);
-            $hospedaje->delete();
-
-            Log::info('Hospedaje eliminado exitosamente: ' . $id);
-
-            return response()->json([
-                'success' => true,
-                'message' => 'Hospedaje eliminado exitosamente'
-            ]);
-        } catch (\Exception $e) {
-            Log::error('Error al eliminar hospedaje: ' . $e->getMessage());
-            return response()->json([
-                'success' => false,
-                'message' => 'Error al eliminar el hospedaje: ' . $e->getMessage()
-            ], 500);
-        }
+        $hospedaje = Hospedaje::find($id);
+        $hospedaje->delete();
+        return redirect()->route('administracion.hospedaje')->with('success', 'Hospedaje eliminado correctamente');
     }
-} 
+}

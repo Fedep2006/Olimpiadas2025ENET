@@ -41,9 +41,9 @@ Route::prefix('administracion')->middleware('auth')->group(function () {
     Route::get('/vehiculos', [AdministracionController::class, 'vehiculos'])->name('administracion.vehiculos');
 
     Route::get('/hospedajes', [HospedajeController::class, 'index'])->name('administracion.hospedaje');
-    Route::post('/hospedaje/store', [HospedajeController::class, 'storeHospedaje'])->name('administracion.hospedaje.Agregar');
-    Route::post('/hospedaje/edit', [HospedajeController::class, 'EditHospedaje'])->name('administracion.hospedaje.Editar');
-    Route::delete('/hospedaje/delete/{id}', [HospedajeController::class, 'destroyHospedaje'])->name('administracion.hospedaje.Borrar');
+    Route::post('/hospedaje/store', [HospedajeController::class, 'HospedajeAgregar'])->name('administracion.hospedaje.Agregar');
+    Route::post('/hospedaje/edit', [HospedajeController::class, 'HospedajeEditar'])->name('administracion.hospedaje.Editar');
+    Route::delete('/hospedaje/delete/{id}', [HospedajeController::class, 'EliminarHospedaje'])->name('administracion.hospedaje.Borrar');
     Route::get('/paquetes', [AdministracionController::class, 'paquetes'])->name('administracion.paquetes');
 
     Route::get('/reservas', [AdministracionController::class, 'reservas'])->name('administracion.reservas');
