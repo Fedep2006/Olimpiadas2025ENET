@@ -5,18 +5,6 @@
     @include('administracion.partials.head')
     <title>Gestión de Autos - Frategar Admin</title>
     <style>
-        :root {
-            --despegar-blue: #0066cc;
-            --despegar-orange: #ff6600;
-            --despegar-light-blue: #e6f3ff;
-            --sidebar-width: 280px;
-        }
-
-        body {
-            background-color: #f8f9fa;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
-
         .page-header {
             background: white;
             border-radius: 15px;
@@ -308,473 +296,426 @@
 
 <body>
 
-    @include('administracion.partials.sidebar')
+    <!-- Sidebar -->
+    <x-layouts.administracion.sidebar vehiculos="active" />
 
     <!-- Main Content -->
-    <div class="main-content" id="mainContent">
-        <!-- Top Navbar -->
-        <div class="top-navbar">
-            <div class="admin-header">
-                <button class="toggle-sidebar" id="toggleSidebar">
-                    <i class="fas fa-bars"></i>
-                </button>
-                <h4>Gestión de Vehículos</h4>
-            </div>
-
-            <div class="admin-user">
-                <div class="user-avatar">{{ substr(Auth::user()->name, 0, 2) }}</div>
+    <x-layouts.administracion.main nameHeader="Gestion de Vehiculos">
+        <!-- Page Header -->
+        <div class="page-header">
+            <div class="d-flex justify-content-between align-items-center">
                 <div>
-                    <div class="fw-bold">{{ Auth::user()->name }}</div>
-                    <small class="text-muted">{{ Auth::user()->role }}</small>
+                    <h1 class="page-title">Gestión de Autos</h1>
+                    <p class="page-subtitle">Administra la flota de vehículos de alquiler</p>
                 </div>
-                <form method="POST" action="{{ route('logout') }}" class="d-inline">
-                    @csrf
-                    <button type="submit" class="btn btn-link text-decoration-none p-0 ms-2">
-                        <i class="fas fa-sign-out-alt"></i>
-                    </button>
-                </form>
+                <a href="#" class="btn-admin orange">
+                    <i class="fas fa-plus"></i>
+                    Nuevo Vehículo
+                </a>
             </div>
         </div>
 
-        <!-- Dashboard Content -->
-        <div class="dashboard-content">
-            <!-- Page Header -->
-            <div class="page-header">
-                <div class="d-flex justify-content-between align-items-center">
-                    <div>
-                        <h1 class="page-title">Gestión de Autos</h1>
-                        <p class="page-subtitle">Administra la flota de vehículos de alquiler</p>
+        <!-- Stats Row -->
+        <div class="stats-row">
+            <div class="stat-card">
+                <div class="stat-number">1,247</div>
+                <div class="stat-label">Total Vehículos</div>
+            </div>
+            <div class="stat-card" style="border-left-color: #28a745;">
+                <div class="stat-number">892</div>
+                <div class="stat-label">Disponibles</div>
+            </div>
+            <div class="stat-card" style="border-left-color: #ffc107;">
+                <div class="stat-number">234</div>
+                <div class="stat-label">Alquilados</div>
+            </div>
+            <div class="stat-card" style="border-left-color: #dc3545;">
+                <div class="stat-number">121</div>
+                <div class="stat-label">En Mantenimiento</div>
+            </div>
+        </div>
+
+        <!-- Filters -->
+        <div class="content-card">
+            <div class="search-filters">
+                <div class="filter-row">
+                    <div class="filter-group">
+                        <label class="form-label">Modelo del Vehículo</label>
+                        <input type="text" class="form-control" placeholder="Buscar por marca o modelo">
                     </div>
-                    <a href="#" class="btn-admin orange">
-                        <i class="fas fa-plus"></i>
-                        Nuevo Vehículo
+                    <div class="filter-group">
+                        <label class="form-label">Categoría</label>
+                        <select class="form-select">
+                            <option value="">Todas las categorías</option>
+                            <option value="economy">Económico</option>
+                            <option value="compact">Compacto</option>
+                            <option value="suv">SUV</option>
+                            <option value="luxury">Lujo</option>
+                        </select>
+                    </div>
+                    <div class="filter-group">
+                        <label class="form-label">Ubicación</label>
+                        <select class="form-select">
+                            <option value="">Todas las ubicaciones</option>
+                            <option value="miami">Miami</option>
+                            <option value="paris">París</option>
+                            <option value="madrid">Madrid</option>
+                            <option value="cancun">Cancún</option>
+                            <option value="nyc">Nueva York</option>
+                        </select>
+                    </div>
+                    <div class="filter-group">
+                        <label class="form-label">Estado</label>
+                        <select class="form-select">
+                            <option value="">Todos los estados</option>
+                            <option value="available">Disponible</option>
+                            <option value="rented">Alquilado</option>
+                            <option value="maintenance">Mantenimiento</option>
+                        </select>
+                    </div>
+                    <div class="filter-group">
+                        <label class="form-label">Año</label>
+                        <select class="form-select">
+                            <option value="">Todos los años</option>
+                            <option value="2024">2024</option>
+                            <option value="2023">2023</option>
+                            <option value="2022">2022</option>
+                            <option value="2021">2021</option>
+                        </select>
+                    </div>
+                    <div class="filter-group">
+                        <label class="form-label">&nbsp;</label>
+                        <div class="d-flex gap-2">
+                            <button class="btn-admin">
+                                <i class="fas fa-search"></i>
+                                Buscar
+                            </button>
+                            <button class="btn-admin" style="background-color: #6c757d;">
+                                <i class="fas fa-times"></i>
+                                Limpiar
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Cars Table -->
+        <div class="content-card">
+            <div class="card-header">
+                <h5 class="card-title">Lista de Vehículos</h5>
+                <div class="d-flex gap-2">
+                    <a href="#" class="btn-admin success">
+                        <i class="fas fa-file-excel"></i>
+                        Excel
                     </a>
                 </div>
             </div>
 
-            <!-- Stats Row -->
-            <div class="stats-row">
-                <div class="stat-card">
-                    <div class="stat-number">1,247</div>
-                    <div class="stat-label">Total Vehículos</div>
-                </div>
-                <div class="stat-card" style="border-left-color: #28a745;">
-                    <div class="stat-number">892</div>
-                    <div class="stat-label">Disponibles</div>
-                </div>
-                <div class="stat-card" style="border-left-color: #ffc107;">
-                    <div class="stat-number">234</div>
-                    <div class="stat-label">Alquilados</div>
-                </div>
-                <div class="stat-card" style="border-left-color: #dc3545;">
-                    <div class="stat-number">121</div>
-                    <div class="stat-label">En Mantenimiento</div>
-                </div>
+            <div class="table-container">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Vehículo</th>
+                            <th>Categoría</th>
+                            <th>Ubicación</th>
+                            <th>Características</th>
+                            <th>Precio/Día</th>
+                            <th>Kilometraje</th>
+                            <th>Estado</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>
+                                <div class="car-info">
+                                    <div class="car-image">
+                                        <i class="fas fa-car"></i>
+                                    </div>
+                                    <div class="car-details">
+                                        <h6>Toyota Corolla 2024</h6>
+                                        <small>Placa: ABC-123</small>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                                <span class="category-badge category-economy">Económico</span>
+                            </td>
+                            <td>
+                                <div><strong>Miami Airport</strong></div>
+                                <small class="text-muted">Terminal 1</small>
+                            </td>
+                            <td>
+                                <div class="features-list">
+                                    <span class="feature-item">5 asientos</span>
+                                    <span class="feature-item">A/C</span>
+                                    <span class="feature-item">Automático</span>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="price-info">
+                                    <div class="price-amount">$45</div>
+                                    <small class="text-muted">por día</small>
+                                </div>
+                            </td>
+                            <td>
+                                <div><strong>15,420</strong> km</div>
+                                <small class="text-muted">Último servicio: 10/03</small>
+                            </td>
+                            <td><span class="status-badge status-available">Disponible</span></td>
+                            <td>
+                                <div class="action-buttons">
+                                    <button class="action-btn view" title="Ver detalles">
+                                        <i class="fas fa-eye"></i>
+                                    </button>
+                                    <button class="action-btn edit" title="Editar">
+                                        <i class="fas fa-edit"></i>
+                                    </button>
+                                    <button class="action-btn delete" title="Dar de baja">
+                                        <i class="fas fa-ban"></i>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div class="car-info">
+                                    <div class="car-image">
+                                        <i class="fas fa-car"></i>
+                                    </div>
+                                    <div class="car-details">
+                                        <h6>Honda CR-V 2023</h6>
+                                        <small>Placa: DEF-456</small>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                                <span class="category-badge category-suv">SUV</span>
+                            </td>
+                            <td>
+                                <div><strong>París CDG</strong></div>
+                                <small class="text-muted">Terminal 2E</small>
+                            </td>
+                            <td>
+                                <div class="features-list">
+                                    <span class="feature-item">7 asientos</span>
+                                    <span class="feature-item">A/C</span>
+                                    <span class="feature-item">4WD</span>
+                                    <span class="feature-item">GPS</span>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="price-info">
+                                    <div class="price-amount">$85</div>
+                                    <small class="text-muted">por día</small>
+                                </div>
+                            </td>
+                            <td>
+                                <div><strong>28,750</strong> km</div>
+                                <small class="text-muted">Último servicio: 05/03</small>
+                            </td>
+                            <td><span class="status-badge status-rented">Alquilado</span></td>
+                            <td>
+                                <div class="action-buttons">
+                                    <button class="action-btn view" title="Ver detalles">
+                                        <i class="fas fa-eye"></i>
+                                    </button>
+                                    <button class="action-btn edit" title="Editar">
+                                        <i class="fas fa-edit"></i>
+                                    </button>
+                                    <button class="action-btn delete" title="Dar de baja">
+                                        <i class="fas fa-ban"></i>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div class="car-info">
+                                    <div class="car-image">
+                                        <i class="fas fa-car"></i>
+                                    </div>
+                                    <div class="car-details">
+                                        <h6>BMW Serie 3 2024</h6>
+                                        <small>Placa: GHI-789</small>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                                <span class="category-badge category-luxury">Lujo</span>
+                            </td>
+                            <td>
+                                <div><strong>Madrid Barajas</strong></div>
+                                <small class="text-muted">Terminal 4</small>
+                            </td>
+                            <td>
+                                <div class="features-list">
+                                    <span class="feature-item">5 asientos</span>
+                                    <span class="feature-item">Cuero</span>
+                                    <span class="feature-item">Automático</span>
+                                    <span class="feature-item">Premium</span>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="price-info">
+                                    <div class="price-amount">$120</div>
+                                    <small class="text-muted">por día</small>
+                                </div>
+                            </td>
+                            <td>
+                                <div><strong>8,200</strong> km</div>
+                                <small class="text-muted">Último servicio: 20/03</small>
+                            </td>
+                            <td><span class="status-badge status-maintenance">Mantenimiento</span></td>
+                            <td>
+                                <div class="action-buttons">
+                                    <button class="action-btn view" title="Ver detalles">
+                                        <i class="fas fa-eye"></i>
+                                    </button>
+                                    <button class="action-btn edit" title="Editar">
+                                        <i class="fas fa-edit"></i>
+                                    </button>
+                                    <button class="action-btn delete" title="Dar de baja">
+                                        <i class="fas fa-ban"></i>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div class="car-info">
+                                    <div class="car-image">
+                                        <i class="fas fa-car"></i>
+                                    </div>
+                                    <div class="car-details">
+                                        <h6>Nissan Sentra 2023</h6>
+                                        <small>Placa: JKL-012</small>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                                <span class="category-badge category-compact">Compacto</span>
+                            </td>
+                            <td>
+                                <div><strong>Cancún Airport</strong></div>
+                                <small class="text-muted">Terminal 3</small>
+                            </td>
+                            <td>
+                                <div class="features-list">
+                                    <span class="feature-item">5 asientos</span>
+                                    <span class="feature-item">A/C</span>
+                                    <span class="feature-item">Manual</span>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="price-info">
+                                    <div class="price-amount">$35</div>
+                                    <small class="text-muted">por día</small>
+                                </div>
+                            </td>
+                            <td>
+                                <div><strong>22,340</strong> km</div>
+                                <small class="text-muted">Último servicio: 15/03</small>
+                            </td>
+                            <td><span class="status-badge status-available">Disponible</span></td>
+                            <td>
+                                <div class="action-buttons">
+                                    <button class="action-btn view" title="Ver detalles">
+                                        <i class="fas fa-eye"></i>
+                                    </button>
+                                    <button class="action-btn edit" title="Editar">
+                                        <i class="fas fa-edit"></i>
+                                    </button>
+                                    <button class="action-btn delete" title="Dar de baja">
+                                        <i class="fas fa-ban"></i>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div class="car-info">
+                                    <div class="car-image">
+                                        <i class="fas fa-car"></i>
+                                    </div>
+                                    <div class="car-details">
+                                        <h6>Mercedes-Benz C-Class 2024</h6>
+                                        <small>Placa: MNO-345</small>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                                <span class="category-badge category-luxury">Lujo</span>
+                            </td>
+                            <td>
+                                <div><strong>JFK Airport</strong></div>
+                                <small class="text-muted">Terminal 1</small>
+                            </td>
+                            <td>
+                                <div class="features-list">
+                                    <span class="feature-item">5 asientos</span>
+                                    <span class="feature-item">Cuero</span>
+                                    <span class="feature-item">Automático</span>
+                                    <span class="feature-item">Premium</span>
+                                    <span class="feature-item">GPS</span>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="price-info">
+                                    <div class="price-amount">$150</div>
+                                    <small class="text-muted">por día</small>
+                                </div>
+                            </td>
+                            <td>
+                                <div><strong>5,890</strong> km</div>
+                                <small class="text-muted">Último servicio: 25/03</small>
+                            </td>
+                            <td><span class="status-badge status-rented">Alquilado</span></td>
+                            <td>
+                                <div class="action-buttons">
+                                    <button class="action-btn view" title="Ver detalles">
+                                        <i class="fas fa-eye"></i>
+                                    </button>
+                                    <button class="action-btn edit" title="Editar">
+                                        <i class="fas fa-edit"></i>
+                                    </button>
+                                    <button class="action-btn delete" title="Dar de baja">
+                                        <i class="fas fa-ban"></i>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
 
-            <!-- Filters -->
-            <div class="content-card">
-                <div class="search-filters">
-                    <div class="filter-row">
-                        <div class="filter-group">
-                            <label class="form-label">Modelo del Vehículo</label>
-                            <input type="text" class="form-control" placeholder="Buscar por marca o modelo">
-                        </div>
-                        <div class="filter-group">
-                            <label class="form-label">Categoría</label>
-                            <select class="form-select">
-                                <option value="">Todas las categorías</option>
-                                <option value="economy">Económico</option>
-                                <option value="compact">Compacto</option>
-                                <option value="suv">SUV</option>
-                                <option value="luxury">Lujo</option>
-                            </select>
-                        </div>
-                        <div class="filter-group">
-                            <label class="form-label">Ubicación</label>
-                            <select class="form-select">
-                                <option value="">Todas las ubicaciones</option>
-                                <option value="miami">Miami</option>
-                                <option value="paris">París</option>
-                                <option value="madrid">Madrid</option>
-                                <option value="cancun">Cancún</option>
-                                <option value="nyc">Nueva York</option>
-                            </select>
-                        </div>
-                        <div class="filter-group">
-                            <label class="form-label">Estado</label>
-                            <select class="form-select">
-                                <option value="">Todos los estados</option>
-                                <option value="available">Disponible</option>
-                                <option value="rented">Alquilado</option>
-                                <option value="maintenance">Mantenimiento</option>
-                            </select>
-                        </div>
-                        <div class="filter-group">
-                            <label class="form-label">Año</label>
-                            <select class="form-select">
-                                <option value="">Todos los años</option>
-                                <option value="2024">2024</option>
-                                <option value="2023">2023</option>
-                                <option value="2022">2022</option>
-                                <option value="2021">2021</option>
-                            </select>
-                        </div>
-                        <div class="filter-group">
-                            <label class="form-label">&nbsp;</label>
-                            <div class="d-flex gap-2">
-                                <button class="btn-admin">
-                                    <i class="fas fa-search"></i>
-                                    Buscar
-                                </button>
-                                <button class="btn-admin" style="background-color: #6c757d;">
-                                    <i class="fas fa-times"></i>
-                                    Limpiar
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Cars Table -->
-            <div class="content-card">
-                <div class="card-header">
-                    <h5 class="card-title">Lista de Vehículos</h5>
-                    <div class="d-flex gap-2">
-                        <a href="#" class="btn-admin success">
-                            <i class="fas fa-file-excel"></i>
-                            Excel
-                        </a>
-                    </div>
-                </div>
-
-                <div class="table-container">
-                    <table class="table">
-                        <thead>
-                            <tr>
-                                <th>Vehículo</th>
-                                <th>Categoría</th>
-                                <th>Ubicación</th>
-                                <th>Características</th>
-                                <th>Precio/Día</th>
-                                <th>Kilometraje</th>
-                                <th>Estado</th>
-                                <th>Acciones</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>
-                                    <div class="car-info">
-                                        <div class="car-image">
-                                            <i class="fas fa-car"></i>
-                                        </div>
-                                        <div class="car-details">
-                                            <h6>Toyota Corolla 2024</h6>
-                                            <small>Placa: ABC-123</small>
-                                        </div>
-                                    </div>
-                                </td>
-                                <td>
-                                    <span class="category-badge category-economy">Económico</span>
-                                </td>
-                                <td>
-                                    <div><strong>Miami Airport</strong></div>
-                                    <small class="text-muted">Terminal 1</small>
-                                </td>
-                                <td>
-                                    <div class="features-list">
-                                        <span class="feature-item">5 asientos</span>
-                                        <span class="feature-item">A/C</span>
-                                        <span class="feature-item">Automático</span>
-                                    </div>
-                                </td>
-                                <td>
-                                    <div class="price-info">
-                                        <div class="price-amount">$45</div>
-                                        <small class="text-muted">por día</small>
-                                    </div>
-                                </td>
-                                <td>
-                                    <div><strong>15,420</strong> km</div>
-                                    <small class="text-muted">Último servicio: 10/03</small>
-                                </td>
-                                <td><span class="status-badge status-available">Disponible</span></td>
-                                <td>
-                                    <div class="action-buttons">
-                                        <button class="action-btn view" title="Ver detalles">
-                                            <i class="fas fa-eye"></i>
-                                        </button>
-                                        <button class="action-btn edit" title="Editar">
-                                            <i class="fas fa-edit"></i>
-                                        </button>
-                                        <button class="action-btn delete" title="Dar de baja">
-                                            <i class="fas fa-ban"></i>
-                                        </button>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <div class="car-info">
-                                        <div class="car-image">
-                                            <i class="fas fa-car"></i>
-                                        </div>
-                                        <div class="car-details">
-                                            <h6>Honda CR-V 2023</h6>
-                                            <small>Placa: DEF-456</small>
-                                        </div>
-                                    </div>
-                                </td>
-                                <td>
-                                    <span class="category-badge category-suv">SUV</span>
-                                </td>
-                                <td>
-                                    <div><strong>París CDG</strong></div>
-                                    <small class="text-muted">Terminal 2E</small>
-                                </td>
-                                <td>
-                                    <div class="features-list">
-                                        <span class="feature-item">7 asientos</span>
-                                        <span class="feature-item">A/C</span>
-                                        <span class="feature-item">4WD</span>
-                                        <span class="feature-item">GPS</span>
-                                    </div>
-                                </td>
-                                <td>
-                                    <div class="price-info">
-                                        <div class="price-amount">$85</div>
-                                        <small class="text-muted">por día</small>
-                                    </div>
-                                </td>
-                                <td>
-                                    <div><strong>28,750</strong> km</div>
-                                    <small class="text-muted">Último servicio: 05/03</small>
-                                </td>
-                                <td><span class="status-badge status-rented">Alquilado</span></td>
-                                <td>
-                                    <div class="action-buttons">
-                                        <button class="action-btn view" title="Ver detalles">
-                                            <i class="fas fa-eye"></i>
-                                        </button>
-                                        <button class="action-btn edit" title="Editar">
-                                            <i class="fas fa-edit"></i>
-                                        </button>
-                                        <button class="action-btn delete" title="Dar de baja">
-                                            <i class="fas fa-ban"></i>
-                                        </button>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <div class="car-info">
-                                        <div class="car-image">
-                                            <i class="fas fa-car"></i>
-                                        </div>
-                                        <div class="car-details">
-                                            <h6>BMW Serie 3 2024</h6>
-                                            <small>Placa: GHI-789</small>
-                                        </div>
-                                    </div>
-                                </td>
-                                <td>
-                                    <span class="category-badge category-luxury">Lujo</span>
-                                </td>
-                                <td>
-                                    <div><strong>Madrid Barajas</strong></div>
-                                    <small class="text-muted">Terminal 4</small>
-                                </td>
-                                <td>
-                                    <div class="features-list">
-                                        <span class="feature-item">5 asientos</span>
-                                        <span class="feature-item">Cuero</span>
-                                        <span class="feature-item">Automático</span>
-                                        <span class="feature-item">Premium</span>
-                                    </div>
-                                </td>
-                                <td>
-                                    <div class="price-info">
-                                        <div class="price-amount">$120</div>
-                                        <small class="text-muted">por día</small>
-                                    </div>
-                                </td>
-                                <td>
-                                    <div><strong>8,200</strong> km</div>
-                                    <small class="text-muted">Último servicio: 20/03</small>
-                                </td>
-                                <td><span class="status-badge status-maintenance">Mantenimiento</span></td>
-                                <td>
-                                    <div class="action-buttons">
-                                        <button class="action-btn view" title="Ver detalles">
-                                            <i class="fas fa-eye"></i>
-                                        </button>
-                                        <button class="action-btn edit" title="Editar">
-                                            <i class="fas fa-edit"></i>
-                                        </button>
-                                        <button class="action-btn delete" title="Dar de baja">
-                                            <i class="fas fa-ban"></i>
-                                        </button>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <div class="car-info">
-                                        <div class="car-image">
-                                            <i class="fas fa-car"></i>
-                                        </div>
-                                        <div class="car-details">
-                                            <h6>Nissan Sentra 2023</h6>
-                                            <small>Placa: JKL-012</small>
-                                        </div>
-                                    </div>
-                                </td>
-                                <td>
-                                    <span class="category-badge category-compact">Compacto</span>
-                                </td>
-                                <td>
-                                    <div><strong>Cancún Airport</strong></div>
-                                    <small class="text-muted">Terminal 3</small>
-                                </td>
-                                <td>
-                                    <div class="features-list">
-                                        <span class="feature-item">5 asientos</span>
-                                        <span class="feature-item">A/C</span>
-                                        <span class="feature-item">Manual</span>
-                                    </div>
-                                </td>
-                                <td>
-                                    <div class="price-info">
-                                        <div class="price-amount">$35</div>
-                                        <small class="text-muted">por día</small>
-                                    </div>
-                                </td>
-                                <td>
-                                    <div><strong>22,340</strong> km</div>
-                                    <small class="text-muted">Último servicio: 15/03</small>
-                                </td>
-                                <td><span class="status-badge status-available">Disponible</span></td>
-                                <td>
-                                    <div class="action-buttons">
-                                        <button class="action-btn view" title="Ver detalles">
-                                            <i class="fas fa-eye"></i>
-                                        </button>
-                                        <button class="action-btn edit" title="Editar">
-                                            <i class="fas fa-edit"></i>
-                                        </button>
-                                        <button class="action-btn delete" title="Dar de baja">
-                                            <i class="fas fa-ban"></i>
-                                        </button>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <div class="car-info">
-                                        <div class="car-image">
-                                            <i class="fas fa-car"></i>
-                                        </div>
-                                        <div class="car-details">
-                                            <h6>Mercedes-Benz C-Class 2024</h6>
-                                            <small>Placa: MNO-345</small>
-                                        </div>
-                                    </div>
-                                </td>
-                                <td>
-                                    <span class="category-badge category-luxury">Lujo</span>
-                                </td>
-                                <td>
-                                    <div><strong>JFK Airport</strong></div>
-                                    <small class="text-muted">Terminal 1</small>
-                                </td>
-                                <td>
-                                    <div class="features-list">
-                                        <span class="feature-item">5 asientos</span>
-                                        <span class="feature-item">Cuero</span>
-                                        <span class="feature-item">Automático</span>
-                                        <span class="feature-item">Premium</span>
-                                        <span class="feature-item">GPS</span>
-                                    </div>
-                                </td>
-                                <td>
-                                    <div class="price-info">
-                                        <div class="price-amount">$150</div>
-                                        <small class="text-muted">por día</small>
-                                    </div>
-                                </td>
-                                <td>
-                                    <div><strong>5,890</strong> km</div>
-                                    <small class="text-muted">Último servicio: 25/03</small>
-                                </td>
-                                <td><span class="status-badge status-rented">Alquilado</span></td>
-                                <td>
-                                    <div class="action-buttons">
-                                        <button class="action-btn view" title="Ver detalles">
-                                            <i class="fas fa-eye"></i>
-                                        </button>
-                                        <button class="action-btn edit" title="Editar">
-                                            <i class="fas fa-edit"></i>
-                                        </button>
-                                        <button class="action-btn delete" title="Dar de baja">
-                                            <i class="fas fa-ban"></i>
-                                        </button>
-                                    </div>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-
-                <!-- Pagination -->
-                <nav>
-                    <ul class="pagination">
-                        <li class="page-item disabled">
-                            <a class="page-link" href="#" tabindex="-1">Anterior</a>
-                        </li>
-                        <li class="page-item active">
-                            <a class="page-link" href="#">1</a>
-                        </li>
-                        <li class="page-item">
-                            <a class="page-link" href="#">2</a>
-                        </li>
-                        <li class="page-item">
-                            <a class="page-link" href="#">3</a>
-                        </li>
-                        <li class="page-item">
-                            <a class="page-link" href="#">Siguiente</a>
-                        </li>
-                    </ul>
-                </nav>
-            </div>
+            <!-- Pagination -->
+            <nav>
+                <ul class="pagination">
+                    <li class="page-item disabled">
+                        <a class="page-link" href="#" tabindex="-1">Anterior</a>
+                    </li>
+                    <li class="page-item active">
+                        <a class="page-link" href="#">1</a>
+                    </li>
+                    <li class="page-item">
+                        <a class="page-link" href="#">2</a>
+                    </li>
+                    <li class="page-item">
+                        <a class="page-link" href="#">3</a>
+                    </li>
+                    <li class="page-item">
+                        <a class="page-link" href="#">Siguiente</a>
+                    </li>
+                </ul>
+            </nav>
         </div>
-    </div>
+    </x-layouts.administracion.main>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const sidebar = document.getElementById('sidebar');
-            const mainContent = document.getElementById('mainContent');
-            const toggleBtn = document.getElementById('toggleSidebar');
 
-            toggleBtn.addEventListener('click', function() {
-                sidebar.classList.toggle('show');
-                mainContent.classList.toggle('expanded');
-            });
-
-            // Cerrar el menú al hacer clic fuera de él
-            document.addEventListener('click', function(event) {
-                const isClickInsideSidebar = sidebar.contains(event.target);
-                const isClickOnToggle = toggleBtn.contains(event.target);
-
-                if (!isClickInsideSidebar && !isClickOnToggle && sidebar.classList.contains('show')) {
-                    sidebar.classList.remove('show');
-                    mainContent.classList.remove('expanded');
-                }
-            });
-        });
-    </script>
+    @vite('resources/js/sidebar.js')
 </body>
 
 </html>

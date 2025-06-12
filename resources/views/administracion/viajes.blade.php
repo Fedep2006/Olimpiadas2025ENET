@@ -13,18 +13,6 @@
         });
     </script>
     <style>
-        :root {
-            --despegar-blue: #0066cc;
-            --despegar-orange: #ff6600;
-            --despegar-light-blue: #e6f3ff;
-            --sidebar-width: 280px;
-        }
-
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #f8f9fa;
-        }
-
         .page-header {
             margin-bottom: 30px;
         }
@@ -426,35 +414,11 @@
 
 <body>
 
-    @include('administracion.partials.sidebar')
+    <!-- Sidebar -->
+    <x-layouts.administracion.sidebar viajes="active" />
 
-    <!-- Top Navbar -->
-    <div class="top-navbar">
-        <div class="admin-header">
-            <button class="toggle-sidebar" id="toggleSidebar">
-                <i class="fas fa-bars"></i>
-            </button>
-            <h4>Gestión de Viajes</h4>
-        </div>
-
-        <div class="admin-user">
-            <div class="user-avatar">{{ substr(Auth::user()->name, 0, 2) }}</div>
-            <div>
-                <div class="fw-bold">{{ Auth::user()->name }}</div>
-                <small class="text-muted">{{ Auth::user()->role }}</small>
-            </div>
-            <form method="POST" action="{{ route('logout') }}" class="d-inline">
-                @csrf
-                <button type="submit" class="btn btn-link text-decoration-none p-0 ms-2">
-                    <i class="fas fa-sign-out-alt"></i>
-                </button>
-            </form>
-        </div>
-    </div>
-
-    <!-- Dashboard Content -->
-    <div class="dashboard-content">
-        <!-- Page Header -->
+    <!-- Main Content -->
+    <x-layouts.administracion.main nameHeader="Gestion de Viajes">
         <div class="page-header">
             <div class="d-flex justify-content-between align-items-center">
                 <div>
@@ -603,8 +567,7 @@
                 </tbody>
             </table>
         </div>
-    </div>
-    </div>
+    </x-layouts.administracion.main>
 
     <!-- Modal para crear/editar viaje -->
     <div class="modal fade" id="viajeModal" tabindex="-1" aria-labelledby="viajeModalLabel" aria-hidden="true">
@@ -1347,56 +1310,9 @@
             document.getElementById('viajeModalLabel').textContent = 'Nuevo Viaje';
         }
     </script>
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const sidebar = document.getElementById('sidebar');
-            const mainContent = document.getElementById('mainContent');
-            const toggleBtn = document.getElementById('toggleSidebar');
 
-            if (toggleBtn && sidebar && mainContent) {
-                toggleBtn.addEventListener('click', function() {
-                    sidebar.classList.toggle('show');
-                    mainContent.classList.toggle('expanded');
-                });
+    @vite('resources/js/sidebar.js')
 
-                // Cerrar el menú al hacer clic fuera de él
-                document.addEventListener('click', function(event) {
-                    const isClickInsideSidebar = sidebar.contains(event.target);
-                    const isClickOnToggle = toggleBtn.contains(event.target);
-
-                    if (!isClickInsideSidebar && !isClickOnToggle && sidebar.classList.contains('show')) {
-                        sidebar.classList.remove('show');
-                        mainContent.classList.remove('expanded');
-                    }
-                });
-            }
-        });
-    </script>
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const sidebar = document.getElementById('sidebar');
-            const mainContent = document.getElementById('mainContent');
-            const toggleBtn = document.getElementById('toggleSidebar');
-
-            if (toggleBtn && sidebar && mainContent) {
-                toggleBtn.addEventListener('click', function() {
-                    sidebar.classList.toggle('show');
-                    mainContent.classList.toggle('expanded');
-                });
-
-                // Cerrar el menú al hacer clic fuera de él
-                document.addEventListener('click', function(event) {
-                    const isClickInsideSidebar = sidebar.contains(event.target);
-                    const isClickOnToggle = toggleBtn.contains(event.target);
-
-                    if (!isClickInsideSidebar && !isClickOnToggle && sidebar.classList.contains('show')) {
-                        sidebar.classList.remove('show');
-                        mainContent.classList.remove('expanded');
-                    }
-                });
-            }
-        });
-    </script>
 </body>
 
 </html>

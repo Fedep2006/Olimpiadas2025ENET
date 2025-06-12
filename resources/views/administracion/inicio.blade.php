@@ -5,18 +5,6 @@
     @include('administracion.partials.head')
     <title>Panel Administrativo - Frategar</title>
     <style>
-        :root {
-            --despegar-blue: #0066cc;
-            --despegar-orange: #ff6600;
-            --despegar-light-blue: #e6f3ff;
-            --sidebar-width: 280px;
-        }
-
-        body {
-            background-color: #f8f9fa;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
-
         .notification-badge {
             position: relative;
             color: var(--despegar-blue);
@@ -313,10 +301,10 @@
 <body>
 
     <!-- Sidebar -->
-    <x-layouts.administracion.sidebar hospedajes="active" />
+    <x-layouts.administracion.sidebar inicio="active" />
 
     <!-- Main Content -->
-    <x-layouts.administracion.main nameHeader="Gestión de Hospedajes">
+    <x-layouts.administracion.main nameHeader="Administracion">
         <!-- Stats Cards -->
         <div class="row mb-4">
             <div class="col-lg-3 col-md-6 mb-4">
@@ -673,29 +661,7 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const sidebar = document.getElementById('sidebar');
-            const mainContent = document.getElementById('mainContent');
-            const toggleBtn = document.getElementById('toggleSidebar');
-
-            toggleBtn.addEventListener('click', function() {
-                sidebar.classList.toggle('show');
-                mainContent.classList.toggle('expanded');
-            });
-
-            // Cerrar el menú al hacer clic fuera de él
-            document.addEventListener('click', function(event) {
-                const isClickInsideSidebar = sidebar.contains(event.target);
-                const isClickOnToggle = toggleBtn.contains(event.target);
-
-                if (!isClickInsideSidebar && !isClickOnToggle && sidebar.classList.contains('show')) {
-                    sidebar.classList.remove('show');
-                    mainContent.classList.remove('expanded');
-                }
-            });
-        });
-    </script>
+    @vite('resources/js/sidebar.js')
 </body>
 
 </html>

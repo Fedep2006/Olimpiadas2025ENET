@@ -5,6 +5,18 @@
     @include('administracion.partials.head')
 
     <style>
+        :root {
+            --despegar-blue: #0066cc;
+            --despegar-orange: #ff6600;
+            --despegar-light-blue: #e6f3ff;
+            --sidebar-width: 300px;
+        }
+
+        body {
+            background-color: #f8f9fa;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
         .admin-sidebar {
             position: fixed;
             top: 0;
@@ -184,7 +196,7 @@
                     <i class="fas fa-plane"></i>
                     <span class="menu-text">Viajes</span>
                 </a>
-                <a href="/administracion/hospedajes" class="menu-item {{ $hospedaje ?? '' }}">
+                <a href="/administracion/hospedajes" class="menu-item {{ $hospedajes ?? '' }}">
                     <i class="fas fa-bed"></i>
                     <span class="menu-text">Hospedaje</span>
                 </a>

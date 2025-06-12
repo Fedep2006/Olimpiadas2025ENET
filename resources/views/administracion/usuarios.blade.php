@@ -5,18 +5,6 @@
     @include('administracion.partials.head')
     <title>Gestión de Usuarios - Frategar Admin</title>
     <style>
-        :root {
-            --despegar-blue: #0066cc;
-            --despegar-orange: #ff6600;
-            --despegar-light-blue: #e6f3ff;
-            --sidebar-width: 300px;
-        }
-
-        body {
-            background-color: #f8f9fa;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
-
         .page-header {
             background: white;
             border-radius: 15px;
