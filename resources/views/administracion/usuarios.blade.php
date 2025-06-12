@@ -33,21 +33,6 @@
             margin-bottom: 25px;
         }
 
-        .card-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 20px;
-            padding-bottom: 15px;
-            border-bottom: 1px solid #e9ecef;
-        }
-
-        .card-title {
-            color: var(--despegar-blue);
-            font-weight: bold;
-            margin: 0;
-        }
-
         .btn-admin {
             background-color: var(--despegar-blue);
             border: none;
@@ -78,28 +63,6 @@
             background-color: #dc3545;
         }
 
-        .status-badge {
-            padding: 6px 12px;
-            border-radius: 20px;
-            font-size: 0.8rem;
-            font-weight: bold;
-        }
-
-        .status-active {
-            background-color: #d4edda;
-            color: #155724;
-        }
-
-        .status-inactive {
-            background-color: #f8d7da;
-            color: #721c24;
-        }
-
-        .status-pending {
-            background-color: #fff3cd;
-            color: #856404;
-        }
-
         .search-filters {
             background: #f8f9fa;
             border-radius: 10px;
@@ -117,142 +80,6 @@
         .filter-group {
             flex: 1;
             min-width: 200px;
-        }
-
-        .table-container {
-            overflow-x: auto;
-        }
-
-        .table th {
-            background-color: var(--despegar-light-blue);
-            color: var(--despegar-blue);
-            font-weight: bold;
-            border: none;
-            padding: 15px 12px;
-        }
-
-        .table td {
-            padding: 15px 12px;
-            vertical-align: middle;
-            border-bottom: 1px solid #e9ecef;
-        }
-
-        .table tbody tr:hover {
-            background-color: #f8f9fa;
-        }
-
-        .action-buttons {
-            display: flex;
-            gap: 5px;
-        }
-
-        .action-btn {
-            width: 32px;
-            height: 32px;
-            border: none;
-            border-radius: 6px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            font-size: 0.9rem;
-        }
-
-        .action-btn.view {
-            background-color: #17a2b8;
-            color: white;
-        }
-
-        .action-btn.edit {
-            background-color: #ffc107;
-            color: #212529;
-        }
-
-        .action-btn.delete {
-            background-color: #dc3545;
-            color: white;
-        }
-
-        .action-btn.message {
-            background-color: #28a745;
-            color: white;
-        }
-
-        .stats-row {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 20px;
-            margin-bottom: 25px;
-        }
-
-        .stat-card {
-            background: white;
-            border-radius: 10px;
-            padding: 20px;
-            text-align: center;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
-            border-left: 4px solid var(--despegar-blue);
-        }
-
-        .stat-number {
-            font-size: 2rem;
-            font-weight: bold;
-            color: var(--despegar-blue);
-        }
-
-        .stat-label {
-            color: #6c757d;
-            font-size: 0.9rem;
-        }
-
-        .user-profile {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-
-        .user-profile-avatar {
-            width: 45px;
-            height: 45px;
-            border-radius: 50%;
-            background: var(--despegar-light-blue);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: var(--despegar-blue);
-            font-weight: bold;
-            font-size: 1.1rem;
-        }
-
-        .user-info h6 {
-            margin: 0;
-            font-weight: bold;
-        }
-
-        .user-info small {
-            color: #6c757d;
-        }
-
-        .role-badge {
-            padding: 4px 8px;
-            border-radius: 12px;
-            font-size: 0.75rem;
-            font-weight: bold;
-        }
-
-        .role-admin {
-            background-color: #dc3545;
-            color: white;
-        }
-
-        .role-user {
-            background-color: #007bff;
-            color: white;
-        }
-
-        .role-premium {
-            background-color: #ffc107;
-            color: #212529;
         }
 
         /* Toast Notification Styles */
@@ -286,121 +113,6 @@
 
         .toast-body {
             padding: 1rem;
-        }
-
-        .pagination {
-            display: flex;
-            gap: 4px;
-            align-items: center;
-            margin: 0;
-            padding: 0;
-            flex-wrap: wrap;
-            justify-content: center;
-        }
-
-        .pagination .page-item {
-            list-style: none;
-            margin: 0;
-        }
-
-        .pagination .page-link {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            min-width: 36px;
-            height: 36px;
-            padding: 0 8px;
-            border-radius: 6px;
-            border: 1px solid #e9ecef;
-            background-color: white;
-            color: var(--despegar-blue);
-            font-weight: 500;
-            text-decoration: none;
-            transition: all 0.2s ease;
-            font-size: 0.9rem;
-        }
-
-        .pagination .page-link:hover {
-            background-color: var(--despegar-light-blue);
-            border-color: var(--despegar-blue);
-            transform: translateY(-1px);
-        }
-
-        .pagination .page-item.active .page-link {
-            background-color: var(--despegar-blue);
-            border-color: var(--despegar-blue);
-            color: white;
-        }
-
-        .pagination .page-item.disabled .page-link {
-            background-color: #f8f9fa;
-            border-color: #e9ecef;
-            color: #6c757d;
-            cursor: not-allowed;
-        }
-
-        .pagination-info {
-            color: #6c757d;
-            font-size: 0.9rem;
-            margin: 0 15px;
-            text-align: center;
-        }
-
-        .pagination .page-link i {
-            font-size: 0.8rem;
-        }
-
-        .pagination .page-link.prev,
-        .pagination .page-link.next {
-            padding: 0 12px;
-            white-space: nowrap;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            gap: 6px;
-            min-width: 100px;
-            height: 36px;
-            font-size: 0.9rem;
-            font-weight: 500;
-        }
-
-        .pagination .page-link.prev i,
-        .pagination .page-link.next i {
-            font-size: 0.8rem;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            width: 1em;
-            height: 1em;
-            line-height: 1;
-        }
-
-        .pagination .page-link.prev span,
-        .pagination .page-link.next span {
-            display: inline-flex;
-            align-items: center;
-            line-height: 1;
-        }
-
-        .pagination .page-item.disabled .page-link.prev,
-        .pagination .page-item.disabled .page-link.next {
-            background-color: #f8f9fa;
-            border-color: #e9ecef;
-            color: #6c757d;
-            cursor: not-allowed;
-            opacity: 0.65;
-        }
-
-        .pagination .page-item.disabled .page-link.prev i,
-        .pagination .page-item.disabled .page-link.next i {
-            opacity: 0.65;
-        }
-
-        .pagination-container {
-            display: flex;
-            justify-content: center;
-            width: 100%;
-            margin-top: 1rem;
         }
     </style>
 </head>
@@ -464,42 +176,7 @@
         </div>
 
         <!-- Users Table -->
-        <div class="content-card">
-            <div class="card-header">
-                <h5 class="card-title">Lista de Usuarios</h5>
-            </div>
-
-            <div class="table-container">
-                <table class="table">
-                    <thead>
-                        <tr>
-                            <th>Usuario</th>
-                            <th>Email</th>
-                            <th>Fecha Registro</th>
-                            <th>Acciones</th>
-                        </tr>
-                    </thead>
-                    <tbody id="usersTableBody">
-                        @include('administracion.partials.users-table')
-                    </tbody>
-                </table>
-            </div>
-
-            <!-- Pagination -->
-            <div class="d-flex justify-content-between align-items-center mt-4">
-                <div class="pagination-info">
-                    @if ($users->total() > 0)
-                        Mostrando {{ $users->firstItem() }} - {{ $users->lastItem() }} de {{ $users->total() }}
-                        usuarios
-                    @else
-                        No hay usuarios para mostrar
-                    @endif
-                </div>
-                <div class="pagination-container">
-                    @include('administracion.partials.pagination')
-                </div>
-            </div>
-        </div>
+        @include('administracion.partials.tabla')
     </x-layouts.administracion.main>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
@@ -619,8 +296,6 @@
                             });
                     }
                 });
-
-
 
             }, 100);
         });

@@ -10,11 +10,12 @@ setTimeout(function () {
     );
 
     // Handle delete button click
+    let registroId = null;
     document.addEventListener("click", function (e) {
         const deleteBtn = e.target.closest(".action-btn.delete");
         if (deleteBtn) {
-            usuarioAEliminar = deleteBtn.dataset.userId;
             confirmarEliminacionModal.show();
+            registroId = deleteBtn.dataset.registroId;
         }
     });
 
@@ -22,7 +23,7 @@ setTimeout(function () {
     document
         .getElementById("confirmarEliminacion")
         .addEventListener("click", async function () {
-            if (!usuarioAEliminar) return;
+            if (!registroId) return;
 
             try {
                 const token = document
@@ -30,7 +31,7 @@ setTimeout(function () {
                     ?.getAttribute("content");
                 if (!token) throw new Error("Token CSRF no encontrado");
 
-                const response = await fetch(`/usuarios/${usuarioAEliminar}`, {
+                const response = await fetch(`/usuarios/${registroId}`, {
                     method: "DELETE",
                     headers: {
                         Accept: "application/json",

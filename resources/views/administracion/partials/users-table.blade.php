@@ -1,3 +1,59 @@
+<style>
+    .action-buttons {
+        display: flex;
+        gap: 5px;
+    }
+
+    .action-btn {
+        width: 32px;
+        height: 32px;
+        border: none;
+        border-radius: 6px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        font-size: 0.9rem;
+    }
+
+    .action-btn.edit {
+        background-color: #ffc107;
+        color: #212529;
+    }
+
+    .action-btn.delete {
+        background-color: #dc3545;
+        color: white;
+    }
+
+    .user-profile {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+    }
+
+    .user-profile-avatar {
+        width: 45px;
+        height: 45px;
+        border-radius: 50%;
+        background: var(--despegar-light-blue);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: var(--despegar-blue);
+        font-weight: bold;
+        font-size: 1.1rem;
+    }
+
+    .user-info h6 {
+        margin: 0;
+        font-weight: bold;
+    }
+
+    .user-info small {
+        color: #6c757d;
+    }
+</style>
 @if ($users->isEmpty())
     <tr>
         <td colspan="4" class="text-center">No se encontraron usuarios</td>
