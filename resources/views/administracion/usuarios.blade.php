@@ -5,56 +5,6 @@
     @include('administracion.partials.head')
     <title>Gestión de Usuarios - Frategar Admin</title>
     <style>
-        .page-header {
-            background: white;
-            border-radius: 15px;
-            padding: 25px;
-            margin-bottom: 25px;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
-        }
-
-        .page-title {
-            color: var(--despegar-blue);
-            font-size: 1.8rem;
-            font-weight: bold;
-            margin: 0;
-        }
-
-        .page-subtitle {
-            color: #6c757d;
-            margin: 5px 0 0 0;
-        }
-
-        .btn-admin {
-            background-color: var(--despegar-blue);
-            border: none;
-            color: white;
-            padding: 10px 20px;
-            border-radius: 8px;
-            font-weight: bold;
-            text-decoration: none;
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .btn-admin:hover {
-            background-color: #0052a3;
-            color: white;
-        }
-
-        .btn-admin.orange {
-            background-color: var(--despegar-orange);
-        }
-
-        .btn-admin.success {
-            background-color: #28a745;
-        }
-
-        .btn-admin.danger {
-            background-color: #dc3545;
-        }
-
         /* Toast Notification Styles */
         .toast-container {
             position: fixed;
@@ -96,20 +46,15 @@
 
     <!-- Main Content -->
     <x-layouts.administracion.main nameHeader="Gestion de Usuarios">
-        <!-- Page Header -->
-        <div class="page-header">
-            <div class="d-flex justify-content-between align-items-center">
-                <div>
-                    <h1 class="page-title">Gestión de Usuarios</h1>
-                    <p class="page-subtitle">Administra todos los usuarios registrados en el sistema</p>
-                </div>
-                <button class="btn-admin orange">
-                    <i class="fas fa-user-plus"></i>
-                    Nuevo Usuario
-                </button>
-            </div>
-        </div>
 
+        <!-- Page Header -->
+        <x-layouts.administracion.page-header 
+            titulo="Gestion de Usuarios" 
+            contenido="Administra y gestiona los usuarios"
+            botonIcono="fas fa-user-plus" 
+            botonNombre="Nuevo Usuario" />
+
+        <!-- Search Bar -->
         <x-layouts.administracion.search-bar />
 
         <!-- Users Table -->
