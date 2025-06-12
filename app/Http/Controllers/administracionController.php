@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Hospedaje;
 use Illuminate\Http\Request;
 
 
@@ -22,42 +21,11 @@ class AdministracionController extends Controller
     }
 
     //Seccion Hospedaje
-    public function hoteles()
+    public function hospedaje()
     {
 
-        $hoteles = Hospedaje::all(); // Puedes agregar paginación o filtros si lo deseas
-        return view('administracion.hoteles', compact('hoteles'));
+        return view('administracion.hospedaje');
     }
-
-    public function EditHoteles(Request $request)
-    {
-        $request->validate([
-            'id' => 'required|exists:hospedajes,id', // Asegúrate de que el ID del hospedaje exista
-            'nombre' => 'required|string|max:255',
-            'ubicacion' => 'required|string|max:255',
-            'descripcion' => 'required|string|max:255',
-            'habitaciones' =>  'required|integer|min:1',
-            'precio_por_noche' =>  'required|numeric|min:0',
-            'disponibilidad' =>  'required',
-        ]);
-
-        $hospedaje = Hospedaje::findOrFail($request->id);
-        $disponibilidad = filter_var($request->disponibilidad, FILTER_VALIDATE_BOOLEAN);
-        $hospedaje->update([
-            'nombre' => $request->nombre,
-            'ubicacion' => $request->ubicacion,
-            'descripcion' => $request->descripcion,
-            'habitaciones' => $request->habitaciones,
-            'precio_por_noche' => $request->precio_por_noche,
-            'disponibilidad' => $disponibilidad,
-        ]);
-
-        return redirect()->route('administracion.hoteles')->with('success', 'Hotel updated successfully.');
-    }
-
-
-
-
 
     //Seccion Paquetes
     public function paquetes()
