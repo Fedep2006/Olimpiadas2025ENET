@@ -500,7 +500,7 @@
                 <i class="fas fa-tags"></i>
                 <span class="menu-text">Paquetes</span>
             </a>
-              <a href="/administracion/empleados" class="menu-item ">
+            <a href="/administracion/empleados" class="menu-item ">
                 <i class="fas fa-users"></i>
                 <span class="menu-text">Empleados</span>
             </a>
