@@ -10,10 +10,50 @@ use Illuminate\Support\Facades\DB;
 
 class ViajeController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $viajes = Viaje::all();
-        
+        $query = Viaje::query();
+
+        // Filtro de búsqueda general (nombre, origen, destino, empresa, número de viaje)
+        if ($request->filled('search')) {
+            $search = $request->input('search');
+            $query->where(function ($q) use ($search) {
+                $q->where('nombre', 'like', "%$search%")
+                    ->orWhere('origen', 'like', "%$search%")
+                    ->orWhere('destino', 'like', "%$search%")
+                    ->orWhere('empresa', 'like', "%$search%")
+                    ->orWhere('numero_viaje', 'like', "%$search%")
+                ;
+            });
+        }
+
+        // Filtro por tipo de viaje
+        if ($request->filled('tipo')) {
+            $query->where('tipo', $request->input('tipo'));
+        }
+
+        // Filtro por rango de fechas
+        if ($request->filled('fecha_inicio')) {
+            $query->whereDate('fecha_salida', '>=', $request->input('fecha_inicio'));
+        }
+        if ($request->filled('fecha_fin')) {
+            $query->whereDate('fecha_llegada', '<=', $request->input('fecha_fin'));
+        }
+
+        // Filtro por rango de precio
+        if ($request->filled('precio')) {
+            $precio = $request->input('precio');
+            if ($precio === '0-1000') {
+                $query->whereBetween('precio_base', [0, 1000]);
+            } elseif ($precio === '1000-5000') {
+                $query->whereBetween('precio_base', [1000, 5000]);
+            } elseif ($precio === '5000+') {
+                $query->where('precio_base', '>', 5000);
+            }
+        }
+
+        $viajes = $query->orderByDesc('fecha_salida')->get();
+
         // Opciones de clases (esto debería venir de un modelo en producción)
         $clases = [
             ['id' => 'economy', 'nombre' => 'Económica'],
@@ -21,7 +61,6 @@ class ViajeController extends Controller
             ['id' => 'first', 'nombre' => 'Primera Clase'],
             ['id' => 'premium', 'nombre' => 'Premium Economy']
         ];
-        
         // Opciones de servicios (esto debería venir de un modelo en producción)
         $servicios = [
             ['id' => 'wifi', 'nombre' => 'WiFi a bordo'],
@@ -30,7 +69,6 @@ class ViajeController extends Controller
             ['id' => 'luggage', 'nombre' => 'Equipaje incluido'],
             ['id' => 'priority', 'nombre' => 'Embarque prioritario']
         ];
-        
         $tipos = ['Nacional' => 'Nacional', 'Internacional' => 'Internacional'];
         return view('administracion.viajes', compact('viajes', 'clases', 'servicios', 'tipos'));
     }

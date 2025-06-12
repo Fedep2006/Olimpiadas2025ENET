@@ -624,30 +624,31 @@
             </form>
         </nav>
     </div>
-
+    <div class="main-content" id="mainContent">
         <!-- Top Navbar -->
         <div class="top-navbar">
-            <div class="admin-header">
-                <button class="toggle-sidebar" id="toggleSidebar">
-                    <i class="fas fa-bars"></i>
-                </button>
-                <h4>Gestión de Viajes</h4>
-            </div>
-
-            <div class="admin-user">
-                <div class="user-avatar">{{ substr(Auth::user()->name, 0, 2) }}</div>
-                <div>
-                    <div class="fw-bold">{{ Auth::user()->name }}</div>
-                    <small class="text-muted">{{ Auth::user()->role }}</small>
-                </div>
-                <form method="POST" action="{{ route('logout') }}" class="d-inline">
-                    @csrf
-                    <button type="submit" class="btn btn-link text-decoration-none p-0 ms-2">
-                        <i class="fas fa-sign-out-alt"></i>
-                    </button>
-                </form>
-            </div>
+    <div class="admin-header d-flex justify-content-between align-items-center w-100">
+        <div class="d-flex align-items-center">
+            <button class="toggle-sidebar" id="toggleSidebar">
+                <i class="fas fa-bars"></i>
+            </button>
+            <h4 class="mb-0 ms-2">Panel Administrativo</h4>
         </div>
+        <div class="admin-user d-flex align-items-center">
+            <div class="user-avatar">{{ substr(Auth::user()->name, 0, 2) }}</div>
+            <div class="ms-2">
+                <div class="fw-bold">{{ Auth::user()->name }}</div>
+                <small class="text-muted">{{ Auth::user()->role }}</small>
+            </div>
+            <form method="POST" action="{{ route('logout') }}" class="d-inline ms-2">
+                @csrf
+                <button type="submit" class="btn btn-link text-decoration-none p-0 ms-2">
+                    <i class="fas fa-sign-out-alt"></i>
+                </button>
+            </form>
+        </div>
+    </div>
+</div>
 
         <!-- Dashboard Content -->
         <div class="dashboard-content">
@@ -701,108 +702,150 @@
 
             <!-- Filtros horizontales -->
             <div class="filtros-horizontales">
-                <form id="filtroForm">
+                <form id="filtroForm" method="GET" action="{{ url()->current() }}" class="mb-2">
+
                     <div class="row g-3">
                         <div class="col-md-3">
                             <label for="searchText" class="form-label">Buscar</label>
-                            <input type="text" class="form-control" id="searchText" placeholder="Buscar...">
+                            <input type="text" class="form-control" id="searchText" name="search" placeholder="Buscar..." value="{{ request('search') }}">
                         </div>
                         <div class="col-md-2">
                             <label for="tipoViaje" class="form-label">Tipo de Viaje</label>
-                            <select class="form-select" id="tipoViaje">
-                                <option value="">Todos</option>
-                                <option value="Nacional">Nacional</option>
-                                <option value="Internacional">Internacional</option>
-                            </select>
+                            <select class="form-select" id="tipoViaje" name="tipo">
+    <option value="">Todos</option>
+    <option value="Nacional" {{ request('tipo') == 'Nacional' ? 'selected' : '' }}>Nacional</option>
+    <option value="Internacional" {{ request('tipo') == 'Internacional' ? 'selected' : '' }}>Internacional</option>
+</select>
                         </div>
                         <div class="col-md-2">
                             <label for="fechaInicio" class="form-label">Fecha Inicio</label>
-                            <input type="date" class="form-control" id="fechaInicio">
+                            <input type="date" class="form-control" id="fechaInicio" name="fecha_inicio" value="{{ request('fecha_inicio') }}">
                         </div>
                         <div class="col-md-2">
                             <label for="fechaFin" class="form-label">Fecha Fin</label>
-                            <input type="date" class="form-control" id="fechaFin">
+                            <input type="date" class="form-control" id="fechaFin" name="fecha_fin" value="{{ request('fecha_fin') }}">
                         </div>
                         <div class="col-md-2">
                             <label for="filtroPrecio" class="form-label">Rango de Precio</label>
-                            <select class="form-select" id="filtroPrecio">
-                                <option value="">Todos</option>
-                                <option value="0-1000">$0 - $1,000</option>
-                                <option value="1000-5000">$1,000 - $5,000</option>
-                                <option value="5000+">$5,000+</option>
-                            </select>
+                            <select class="form-select" id="filtroPrecio" name="precio">
+    <option value="">Todos</option>
+    <option value="0-1000" {{ request('precio') == '0-1000' ? 'selected' : '' }}>$0 - $1,000</option>
+    <option value="1000-5000" {{ request('precio') == '1000-5000' ? 'selected' : '' }}>$1,000 - $5,000</option>
+    <option value="5000+" {{ request('precio') == '5000+' ? 'selected' : '' }}>$5,000+</option>
+</select>
                         </div>
                         <div class="col-md-1 d-flex align-items-end">
-                            <button type="button" class="btn btn-secondary w-100" onclick="limpiarFiltros()">
-                                <i class="fas fa-times"></i> Limpiar
-                            </button>
+                            <button type="reset" class="btn btn-secondary w-100" id="btnLimpiarFiltros">
+    <i class="fas fa-times"></i> Limpiar
+</button>
                         </div>
-                    </div>
-                </form>
+    <div class="col-md-1 d-flex align-items-end">
+        <button type="submit" class="btn btn-primary w-100">
+            <i class="fas fa-search"></i> Buscar
+        </button>
+    </div>
+</div>
+</form>
             </div>
 
-            <!-- Tabla de viajes -->
-            <div class="table-responsive">
-                <table class="table table-striped">
-                    <thead>
-                        <tr>
-                            <th>ID</th>
-                            <th>Nombre</th>
-                            <th>Tipo</th>
-                            <th>Origen</th>
-                            <th>Destino</th>
-                            <th>Fecha Salida</th>
-                            <th>Fecha Llegada</th>
-                            <th>Empresa</th>
-                            <th>Número</th>
-                            <th>Capacidad</th>
-                            <th>Disponibles</th>
-                            <th>Precio</th>
-                            <th>Estado</th>
-                            <th>Acciones</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach($viajes as $viaje)
-                        <tr>
-                            <td>{{ $viaje->id }}</td>
-                            <td>{{ $viaje->nombre }}</td>
-                            <td>{{ $viaje->tipo }}</td>
-                            <td>{{ $viaje->origen }}</td>
-                            <td>{{ $viaje->destino }}</td>
-                            <td>{{ $viaje->fecha_salida->format('d/m/Y H:i') }}</td>
-                            <td>{{ $viaje->fecha_llegada->format('d/m/Y H:i') }}</td>
-                            <td>{{ $viaje->empresa }}</td>
-                            <td>{{ $viaje->numero_viaje }}</td>
-                            <td>{{ $viaje->capacidad_total }}</td>
-                            <td>{{ $viaje->asientos_disponibles }}</td>
-                            <td>${{ number_format($viaje->precio_base, 2) }}</td>
-                            <td>
-                                <span class="badge bg-{{ $viaje->activo ? 'success' : 'danger' }}">
-                                    {{ $viaje->activo ? 'Activo' : 'Inactivo' }}
-                                </span>
-                            </td>
-                            <td>
-                                <div class="action-buttons">
-                                    <button type="button"
-                                            class="btn btn-sm btn-primary btn-edit"
-                                            data-id="{{ $viaje->id }}"
-                                            data-bs-toggle="modal"
-                                            data-bs-target="#viajeModal">
-                                        <i class="fas fa-edit"></i>
-                                    </button>
-                                    <button type="button"
-                                            class="btn btn-sm btn-danger"
-                                            onclick="eliminarViaje({{ $viaje->id }})">
-                                        <i class="fas fa-trash"></i>
-                                    </button>
-                                </div>
-                            </td>
-                        </tr>
-                        @endforeach
-                    </tbody>
-                </table>
+            <!-- Vista de tarjetas de viajes -->
+<div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4 mb-4">
+    @foreach($viajes as $viaje)
+    <div class="col">
+        <div class="card h-100 shadow-sm viaje-card" style="cursor:pointer" data-bs-toggle="modal" data-bs-target="#modalViajeDetalle{{ $viaje->id }}">
+            <div class="card-body">
+                <div class="d-flex justify-content-between align-items-center mb-2">
+                    <span class="badge bg-{{ $viaje->activo ? 'success' : 'danger' }}">{{ $viaje->activo ? 'Activo' : 'Inactivo' }}</span>
+                    <span class="badge bg-info">{{ $viaje->tipo }}</span>
+                </div>
+                <h5 class="card-title mb-1">{{ $viaje->nombre }}</h5>
+                <p class="mb-1"><strong>Empresa:</strong> {{ $viaje->empresa }}</p>
+                <p class="mb-1"><strong>Origen:</strong> {{ $viaje->origen }} <br> <strong>Destino:</strong> {{ $viaje->destino }}</p>
+                <p class="mb-1"><strong>Salida:</strong> {{ $viaje->fecha_salida->format('d/m/Y H:i') }}</p>
+                <p class="mb-1"><strong>Llegada:</strong> {{ $viaje->fecha_llegada->format('d/m/Y H:i') }}</p>
+                <p class="mb-1"><strong>Precio:</strong> ${{ number_format($viaje->precio_base, 2) }}</p>
             </div>
+        </div>
+    </div>
+
+    <!-- Modal de detalles del viaje -->
+    <div class="modal fade" id="modalViajeDetalle{{ $viaje->id }}" tabindex="-1" aria-labelledby="modalViajeDetalleLabel{{ $viaje->id }}" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modalViajeDetalleLabel{{ $viaje->id }}">Detalle del Viaje: {{ $viaje->nombre }}</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-6 mb-2">
+                            <strong>Tipo:</strong> {{ $viaje->tipo }}
+                        </div>
+                        <div class="col-md-6 mb-2">
+                            <strong>Estado:</strong> <span class="badge bg-{{ $viaje->activo ? 'success' : 'danger' }}">{{ $viaje->activo ? 'Activo' : 'Inactivo' }}</span>
+                        </div>
+                        <div class="col-md-6 mb-2">
+                            <strong>Origen:</strong> {{ $viaje->origen }}
+                        </div>
+                        <div class="col-md-6 mb-2">
+                            <strong>Destino:</strong> {{ $viaje->destino }}
+                        </div>
+                        <div class="col-md-6 mb-2">
+                            <strong>Fecha de Salida:</strong> {{ $viaje->fecha_salida->format('d/m/Y H:i') }}
+                        </div>
+                        <div class="col-md-6 mb-2">
+                            <strong>Fecha de Llegada:</strong> {{ $viaje->fecha_llegada->format('d/m/Y H:i') }}
+                        </div>
+                        <div class="col-md-6 mb-2">
+                            <strong>Empresa:</strong> {{ $viaje->empresa }}
+                        </div>
+                        <div class="col-md-6 mb-2">
+                            <strong>Número de Viaje:</strong> {{ $viaje->numero_viaje }}
+                        </div>
+                        <div class="col-md-6 mb-2">
+                            <strong>Capacidad Total:</strong> {{ $viaje->capacidad_total }}
+                        </div>
+                        <div class="col-md-6 mb-2">
+                            <strong>Asientos Disponibles:</strong> {{ $viaje->asientos_disponibles }}
+                        </div>
+                        <div class="col-md-6 mb-2">
+                            <strong>Precio Base:</strong> ${{ number_format($viaje->precio_base, 2) }}
+                        </div>
+                        <div class="col-md-12 mb-2">
+                            <strong>Descripción:</strong> {{ $viaje->descripcion ?? '-' }}
+                        </div>
+                        <div class="col-md-12 mb-2">
+                            <strong>Observaciones:</strong> {{ $viaje->observaciones ?? '-' }}
+                        </div>
+                        <div class="col-md-12 mb-2">
+                            <strong>Clases:</strong> 
+                            @php $clasesViaje = is_array($viaje->clases) ? $viaje->clases : (json_decode($viaje->clases, true) ?: []); @endphp
+                            @if(count($clasesViaje))
+                                {{ implode(', ', $clasesViaje) }}
+                            @else
+                                -
+                            @endif
+                        </div>
+                        <div class="col-md-12 mb-2">
+                            <strong>Servicios:</strong> 
+                            @php $serviciosViaje = is_array($viaje->servicios) ? $viaje->servicios : (json_decode($viaje->servicios, true) ?: []); @endphp
+                            @if(count($serviciosViaje))
+                                {{ implode(', ', $serviciosViaje) }}
+                            @else
+                                -
+                            @endif
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    @endforeach
+</div>
+
         </div>
     </div>
 
@@ -1457,21 +1500,18 @@
 
     // Inicializar event listeners cuando el DOM esté listo
     document.addEventListener('DOMContentLoaded', function() {
-        // Event listeners para los campos de filtro
-        const searchInput = document.getElementById('searchText');
-        const tipoSelect = document.getElementById('tipoViaje');
-        const fechaInicioInput = document.getElementById('fechaInicio');
-        const fechaFinInput = document.getElementById('fechaFin');
-        const precioSelect = document.getElementById('filtroPrecio');
-        
-        if (searchInput) searchInput.addEventListener('input', aplicarFiltrosEnTiempoReal);
-        if (tipoSelect) tipoSelect.addEventListener('change', aplicarFiltrosEnTiempoReal);
-        if (fechaInicioInput) fechaInicioInput.addEventListener('change', aplicarFiltrosEnTiempoReal);
-        if (fechaFinInput) fechaFinInput.addEventListener('change', aplicarFiltrosEnTiempoReal);
-        if (precioSelect) precioSelect.addEventListener('change', aplicarFiltrosEnTiempoReal);
+        // Filtros ahora se realizan en el backend mediante submit del formulario.
+// Código JS de filtrado en tiempo real deshabilitado.
 
-        // Aplicar filtros iniciales
-        aplicarFiltrosEnTiempoReal();
+// Limpiar filtros: redirige al mismo endpoint sin parámetros
+const btnLimpiar = document.getElementById('btnLimpiarFiltros');
+if (btnLimpiar) {
+    btnLimpiar.addEventListener('click', function(e) {
+        e.preventDefault();
+        window.location.href = window.location.pathname;
+    });
+}
+
     });
 
     // Función para limpiar filtros
@@ -1566,6 +1606,29 @@
                 }
             });
         }
+    });
+</script>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const sidebar = document.getElementById('sidebar');
+        const mainContent = document.getElementById('mainContent');
+        const toggleBtn = document.getElementById('toggleSidebar');
+
+        toggleBtn.addEventListener('click', function() {
+            sidebar.classList.toggle('show');
+            mainContent.classList.toggle('expanded');
+        });
+
+        // Cerrar el menú al hacer clic fuera de él
+        document.addEventListener('click', function(event) {
+            const isClickInsideSidebar = sidebar.contains(event.target);
+            const isClickOnToggle = toggleBtn.contains(event.target);
+
+            if (!isClickInsideSidebar && !isClickOnToggle && sidebar.classList.contains('show')) {
+                sidebar.classList.remove('show');
+                mainContent.classList.remove('expanded');
+            }
+        });
     });
 </script>
 </body>
