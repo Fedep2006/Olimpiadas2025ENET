@@ -365,113 +365,48 @@
         </div>
     </section>
 
-    <!-- Ofertas Destacadas -->
+    <!-- hospedaje -->
     <section class="py-5">
-        <div class="container">
-            <div class="row mb-4">
-                <div class="col-12 text-center">
-                    <h2 class="fw-bold">Ofertas destacadas</h2>
-                    <p class="text-muted">Los mejores precios para tu próximo viaje</p>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-md-4 mb-4">
-                    <a  href="/detalles"  style="text-decoration: none; color: inherit;">
-                    <div class="card offer-card h-100">
-                        <img src="/placeholder.svg?height=200&width=400" class="card-img-top" alt="Miami">
-                        <div class="card-body">
-                            <div class="d-flex justify-content-between align-items-start mb-2">
-                                <h5 class="card-title">Miami</h5>
-                                <span class="price-tag">$899</span>
-                            </div>
-                            <p class="card-text text-muted">Vuelo + Hotel por 7 noches</p>
-                            <p class="card-text"><small class="text-success">¡Oferta por tiempo limitado!</small></p>
-                        </div>
-                    </div>
-                    </a>
-                </div>
-                <div class="col-md-4 mb-4">
-                       <a  href="/detalles"  style="text-decoration: none; color: inherit;">
-                    <div class="card offer-card h-100">
-                        <img src="/placeholder.svg?height=200&width=400" class="card-img-top" alt="Cancún">
-                        <div class="card-body">
-                            <div class="d-flex justify-content-between align-items-start mb-2">
-                                <h5 class="card-title">Cancún</h5>
-                                <span class="price-tag">$750</span>
-                            </div>
-                            <p class="card-text text-muted">Paquete todo incluido</p>
-                            <p class="card-text"><small class="text-success">¡Últimas plazas disponibles!</small></p>
-                        </div>
-                    </div>
-                    </a>
-                </div>
-                <div class="col-md-4 mb-4">
-                      <a  href="/detalles" style="text-decoration: none; color: inherit;">
-                    <div class="card offer-card h-100">
-                        <img src="/placeholder.svg?height=200&width=400" class="card-img-top" alt="Europa">
-                        <div class="card-body">
-                            <div class="d-flex justify-content-between align-items-start mb-2">
-                                <h5 class="card-title">Europa</h5>
-                                <span class="price-tag">$1,299</span>
-                            </div>
-                            <p class="card-text text-muted">Tour por 3 ciudades</p>
-                            <p class="card-text"><small class="text-success">¡Incluye traslados!</small></p>
-                        </div>
-                    </div>
-                    </a>
-                </div>
-            </div>
+        <<div class="row">
+  @foreach($hospedajes as $h)
+    <div class="col-md-3 mb-4">
+      <div class="destination-card">
+        <img 
+          src="data:image/jpeg;base64,{{ $h->imagen }}" 
+          class="w-100 h-100 object-fit-cover" 
+          alt="{{ $h->nombre }}"
+        >
+        <div class="destination-overlay">
+          <h5 class="mb-1">{{ $h->nombre }}</h5>
+          <p class="mb-0">Desde ${{ number_format($h->precio_noche, 2) }} / noche</p>
         </div>
+      </div>
+    </div>
+  @endforeach
+</div>
+
     </section>
 
     <!-- Destinos Populares -->
     <section class="py-5 bg-light">
-        <div class="container">
-            <div class="row mb-4">
-                <div class="col-12 text-center">
-                    <h2 class="fw-bold">Destinos populares</h2>
-                    <p class="text-muted">Los lugares más elegidos por nuestros viajeros</p>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-md-3 mb-4">
-                    <div class="destination-card">
-                        <img src="/placeholder.svg?height=200&width=300" class="w-100 h-100 object-fit-cover" alt="París">
-                        <div class="destination-overlay">
-                            <h5 class="mb-1">París</h5>
-                            <p class="mb-0">Desde $1,200</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-3 mb-4">
-                    <div class="destination-card">
-                        <img src="/placeholder.svg?height=200&width=300" class="w-100 h-100 object-fit-cover" alt="Nueva York">
-                        <div class="destination-overlay">
-                            <h5 class="mb-1">Nueva York</h5>
-                            <p class="mb-0">Desde $950</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-3 mb-4">
-                    <div class="destination-card">
-                        <img src="/placeholder.svg?height=200&width=300" class="w-100 h-100 object-fit-cover" alt="Tokio">
-                        <div class="destination-overlay">
-                            <h5 class="mb-1">Tokio</h5>
-                            <p class="mb-0">Desde $1,800</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-3 mb-4">
-                    <div class="destination-card">
-                        <img src="/placeholder.svg?height=200&width=300" class="w-100 h-100 object-fit-cover" alt="Londres">
-                        <div class="destination-overlay">
-                            <h5 class="mb-1">Londres</h5>
-                            <p class="mb-0">Desde $1,100</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
+        <div class="row">
+  @foreach($viajes as $viaje)
+    <div class="col-md-3 mb-4">
+      <div class="destination-card">
+        <img 
+          src="data:image/jpeg;base64,{{ $viaje->imagen }}" 
+          class="w-100 h-100 object-fit-cover" 
+          alt="{{ $viaje->nombre }}"
+        >
+        <div class="destination-overlay">
+          <h5 class="mb-1">{{ $viaje->nombre }}</h5>
+          <p class="mb-0">Desde ${{ number_format($viaje->precio, 2) }}</p>
         </div>
+      </div>
+    </div>
+  @endforeach
+</div>
+
     </section>
 
     <!-- Servicios -->
@@ -509,6 +444,26 @@
             </div>
         </div>
     </section>
+
+    <div class="row">
+  @foreach($vehiculos as $v)
+    <div class="col-md-3 mb-4">
+      <div class="destination-card">
+        <img 
+          {{-- si guardas varias imágenes, tomo la primera --}}
+          src="data:image/jpeg;base64,{{ $v->imagenes[0] ?? '' }}" 
+          class="w-100 h-100 object-fit-cover" 
+          alt="{{ $v->marca }} {{ $v->modelo }}"
+        >
+        <div class="destination-overlay">
+          <h5 class="mb-1">{{ $v->marca }} {{ $v->modelo }}</h5>
+          <p class="mb-0">Desde ${{ number_format($v->precio_por_dia, 2) }} / día</p>
+        </div>
+      </div>
+    </div>
+  @endforeach
+</div>
+
 
     <!-- Footer -->
     <footer class="footer-section">
