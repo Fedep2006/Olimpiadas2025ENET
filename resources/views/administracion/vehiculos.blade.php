@@ -2,11 +2,8 @@
 <html lang="es">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    @include('administracion.partials.head')
     <title>Gestión de Autos - Frategar Admin</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <style>
         :root {
             --despegar-blue: #0066cc;
@@ -18,119 +15,6 @@
         body {
             background-color: #f8f9fa;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
-
-        .admin-sidebar {
-            position: fixed;
-            top: 0;
-            left: -280px;
-            height: 100vh;
-            width: var(--sidebar-width);
-            background: linear-gradient(180deg, var(--despegar-blue) 0%, #004499 100%);
-            color: white;
-            z-index: 1000;
-            overflow-y: auto;
-            transition: left 0.3s ease;
-        }
-
-        .admin-sidebar.show {
-            left: 0;
-        }
-
-        .sidebar-header {
-            padding: 20px;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-            text-align: center;
-        }
-
-        .sidebar-brand {
-            font-size: 1.5rem;
-            font-weight: bold;
-            color: white;
-            text-decoration: none;
-        }
-
-        .sidebar-menu {
-            padding: 20px 0;
-        }
-
-        .menu-item[type="submit"] {
-            background: none;
-            border: none;
-            border-left: 3px solid transparent;
-            box-shadow: none;
-            width: 100%;
-            text-align: left;
-            cursor: pointer;
-            font: inherit;
-
-        }
-
-        .menu-item {
-            display: block;
-            padding: 12px 20px;
-            color: rgba(255, 255, 255, 0.8);
-            text-decoration: none;
-            transition: all 0.3s ease;
-            border-left: 3px solid transparent;
-        }
-
-        .menu-item:hover,
-        .menu-item.active {
-            background-color: rgba(255, 255, 255, 0.1);
-            color: white;
-            border-left-color: var(--despegar-orange);
-        }
-
-        .menu-item i {
-            width: 20px;
-            margin-right: 15px;
-        }
-
-        .main-content {
-            margin-left: 0;
-            min-height: 100vh;
-            transition: margin-left 0.3s ease;
-        }
-
-        .main-content.expanded {
-            margin-left: var(--sidebar-width);
-        }
-
-        .top-navbar {
-            background: white;
-            padding: 15px 30px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .admin-header h4 {
-            color: var(--despegar-blue);
-            margin: 0;
-        }
-
-        .admin-user {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-        }
-
-        .user-avatar {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            background: var(--despegar-light-blue);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: var(--despegar-blue);
-            font-weight: bold;
-        }
-
-        .dashboard-content {
-            padding: 30px;
         }
 
         .page-header {
@@ -419,76 +303,12 @@
             font-size: 0.75rem;
             color: #6c757d;
         }
-
-        .toggle-sidebar {
-            background: none;
-            border: none;
-            color: var(--despegar-blue);
-            font-size: 1.2rem;
-            cursor: pointer;
-            padding: 0;
-            margin-right: 15px;
-        }
-
-        .toggle-sidebar:hover {
-            color: var(--despegar-orange);
-        }
     </style>
 </head>
 
 <body>
-    <!-- Sidebar -->
-    <div class="admin-sidebar" id="sidebar">
-        <div class="sidebar-header">
-            <a href="/administracion" class="sidebar-brand">
-                <i class="fas fa-plane me-2"></i>
-                Frategar Admin
-            </a>
-        </div>
 
-
-        <nav class="sidebar-menu">
-            <a href="/administracion" class="menu-item ">
-                <i class="fas fa-tachometer-alt"></i>
-                <span class="menu-text">Inicio</span>
-            </a>
-            <a href="/administracion/reservas" class="menu-item">
-                <i class="fas fa-calendar-check"></i>
-                <span class="menu-text">Reservas</span>
-            </a>
-            <a href="/administracion/usuarios" class="menu-item">
-                <i class="fas fa-users"></i>
-                <span class="menu-text">Usuarios</span>
-            </a>
-            <a href="/administracion/viajes" class="menu-item">
-                <i class="fas fa-plane"></i>
-                <span class="menu-text">Viajes</span>
-            </a>
-            <a href="/administracion/hoteles" class="menu-item">
-                <i class="fas fa-bed"></i>
-                <span class="menu-text">Hospedaje</span>
-            </a>
-            <a href="/administracion/vehiculos" class="menu-item active">
-                <i class="fas fa-car"></i>
-                <span class="menu-text">Vehiculos</span>
-            </a>
-            <a href="/administracion/paquetes" class="menu-item">
-                <i class="fas fa-tags"></i>
-                <span class="menu-text">Paquetes</span>
-            </a>
-              <a href="/administracion/empleados" class="menu-item ">
-                <i class="fas fa-users"></i>
-                <span class="menu-text">Empleados</span>
-            </a>
-            <form method="POST" action="{{ route('logout') }}">
-                @csrf
-                <button type="submit" class="menu-item">
-                    <i class="fas fa-sign-out-alt"></i>
-                    <span class="menu-text">Cerrar Sesión</span>
-                </button>
-            </form>
-        </nav>
-    </div>
+    @include('administracion.partials.sidebar')
 
     <!-- Main Content -->
     <div class="main-content" id="mainContent">
