@@ -498,29 +498,29 @@
                 <div class="row">
                     <div class="col-md-4">
                         <div class="form-check">
-                            <input class="form-check-input" type="checkbox" name="servicios[]" value="wifi" id="servicio_wifi" {{ is_array($hospedaje->servicios) && in_array('wifi', $hospedaje->servicios) ? 'checked' : '' }}>
+                            <input class="form-check-input" type="checkbox" name="servicios[]" value="wifi" id="servicio_wifi" {{ (isset($hospedaje) && is_array($hospedaje->servicios) && in_array('wifi', $hospedaje->servicios)) || (is_array(old('servicios')) && in_array('wifi', old('servicios'))) ? 'checked' : '' }}>
                             <label class="form-check-label" for="servicio_wifi">WiFi</label>
                         </div>
                         <div class="form-check">
-                            <input class="form-check-input" type="checkbox" name="servicios[]" value="piscina" id="servicio_piscina" {{ is_array($hospedaje->servicios) && in_array('piscina', $hospedaje->servicios) ? 'checked' : '' }}>
+                            <input class="form-check-input" type="checkbox" name="servicios[]" value="piscina" id="servicio_piscina" {{ (isset($hospedaje) && is_array($hospedaje->servicios) && in_array('piscina', $hospedaje->servicios)) || (is_array(old('servicios')) && in_array('piscina', old('servicios'))) ? 'checked' : '' }}>
                             <label class="form-check-label" for="servicio_piscina">Piscina</label>
                         </div>
                         <div class="form-check">
-                            <input class="form-check-input" type="checkbox" name="servicios[]" value="restaurante" id="servicio_restaurante" {{ is_array($hospedaje->servicios) && in_array('restaurante', $hospedaje->servicios) ? 'checked' : '' }}>
+                            <input class="form-check-input" type="checkbox" name="servicios[]" value="restaurante" id="servicio_restaurante" {{ (isset($hospedaje) && is_array($hospedaje->servicios) && in_array('restaurante', $hospedaje->servicios)) || (is_array(old('servicios')) && in_array('restaurante', old('servicios'))) ? 'checked' : '' }}>
                             <label class="form-check-label" for="servicio_restaurante">Restaurante</label>
                         </div>
                     </div>
                     <div class="col-md-4">
                         <div class="form-check">
-                            <input class="form-check-input" type="checkbox" name="servicios[]" value="gimnasio" id="servicio_gimnasio" {{ is_array($hospedaje->servicios) && in_array('gimnasio', $hospedaje->servicios) ? 'checked' : '' }}>
+                            <input class="form-check-input" type="checkbox" name="servicios[]" value="gimnasio" id="servicio_gimnasio" {{ (isset($hospedaje) && is_array($hospedaje->servicios) && in_array('gimnasio', $hospedaje->servicios)) || (is_array(old('servicios')) && in_array('gimnasio', old('servicios'))) ? 'checked' : '' }}>
                             <label class="form-check-label" for="servicio_gimnasio">Gimnasio</label>
                         </div>
                         <div class="form-check">
-                            <input class="form-check-input" type="checkbox" name="servicios[]" value="spa" id="servicio_spa" {{ is_array($hospedaje->servicios) && in_array('spa', $hospedaje->servicios) ? 'checked' : '' }}>
+                            <input class="form-check-input" type="checkbox" name="servicios[]" value="spa" id="servicio_spa" {{ (isset($hospedaje) && is_array($hospedaje->servicios) && in_array('spa', $hospedaje->servicios)) || (is_array(old('servicios')) && in_array('spa', old('servicios'))) ? 'checked' : '' }}>
                             <label class="form-check-label" for="servicio_spa">Spa</label>
                         </div>
                         <div class="form-check">
-                            <input class="form-check-input" type="checkbox" name="servicios[]" value="estacionamiento" id="servicio_estacionamiento" {{ is_array($hospedaje->servicios) && in_array('estacionamiento', $hospedaje->servicios) ? 'checked' : '' }}>
+                            <input class="form-check-input" type="checkbox" name="servicios[]" value="estacionamiento" id="servicio_estacionamiento" {{ (isset($hospedaje) && is_array($hospedaje->servicios) && in_array('estacionamiento', $hospedaje->servicios)) || (is_array(old('servicios')) && in_array('estacionamiento', old('servicios'))) ? 'checked' : '' }}>
                             <label class="form-check-label" for="servicio_estacionamiento">Estacionamiento</label>
                         </div>
                     </div>
@@ -531,21 +531,21 @@
                 <div class="row">
                     <div class="col-md-4">
                         <div class="form-check">
-                            <input class="form-check-input" type="checkbox" name="politicas[]" value="mascotas" id="politica_mascotas" {{ is_array($hospedaje->politicas) && in_array('mascotas', $hospedaje->politicas) ? 'checked' : '' }}>
+                            <input class="form-check-input" type="checkbox" name="politicas[]" value="mascotas" id="politica_mascotas" {{ (isset($hospedaje) && is_array($hospedaje->politicas) && in_array('mascotas', $hospedaje->politicas)) || (is_array(old('politicas')) && in_array('mascotas', old('politicas'))) ? 'checked' : '' }}>
                             <label class="form-check-label" for="politica_mascotas">Permite mascotas</label>
                         </div>
                         <div class="form-check">
-                            <input class="form-check-input" type="checkbox" name="politicas[]" value="fumar" id="politica_fumar" {{ is_array($hospedaje->politicas) && in_array('fumar', $hospedaje->politicas) ? 'checked' : '' }}>
+                            <input class="form-check-input" type="checkbox" name="politicas[]" value="fumar" id="politica_fumar" {{ (isset($hospedaje) && is_array($hospedaje->politicas) && in_array('fumar', $hospedaje->politicas)) || (is_array(old('politicas')) && in_array('fumar', old('politicas'))) ? 'checked' : '' }}>
                             <label class="form-check-label" for="politica_fumar">Permite fumar</label>
                         </div>
                     </div>
                     <div class="col-md-4">
                         <div class="form-check">
-                            <input class="form-check-input" type="checkbox" name="politicas[]" value="ninios" id="politica_ninios" {{ is_array($hospedaje->politicas) && in_array('ninios', $hospedaje->politicas) ? 'checked' : '' }}>
+                            <input class="form-check-input" type="checkbox" name="politicas[]" value="ninios" id="politica_ninios" {{ (isset($hospedaje) && is_array($hospedaje->politicas) && in_array('ninios', $hospedaje->politicas)) || (is_array(old('politicas')) && in_array('ninios', old('politicas'))) ? 'checked' : '' }}>
                             <label class="form-check-label" for="politica_ninios">Apto para niños</label>
                         </div>
                         <div class="form-check">
-                            <input class="form-check-input" type="checkbox" name="politicas[]" value="cancelacion" id="politica_cancelacion" {{ is_array($hospedaje->politicas) && in_array('cancelacion', $hospedaje->politicas) ? 'checked' : '' }}>
+                            <input class="form-check-input" type="checkbox" name="politicas[]" value="cancelacion" id="politica_cancelacion" {{ (isset($hospedaje) && is_array($hospedaje->politicas) && in_array('cancelacion', $hospedaje->politicas)) || (is_array(old('politicas')) && in_array('cancelacion', old('politicas'))) ? 'checked' : '' }}>
                             <label class="form-check-label" for="politica_cancelacion">Política de cancelación flexible</label>
                         </div>
                     </div>
@@ -605,24 +605,24 @@
   </div>
 </div>
 
-<div class="modal fade" id="editarModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="editarModal" tabindex="-1" aria-labelledby="editarModalLabel" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
-        <h1 class="modal-title fs-5" id="exampleModalLabel">Editar Hospedaje</h1>
+        <h1 class="modal-title fs-5" id="editarModalLabel">Editar Hospedaje</h1>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
-        <form action="{{ route('administracion.hospedaje.Editar') }}" method="post" enctype="multipart/form-data">
+        <form id="editarHospedajeForm" action="{{ route('administracion.hospedaje.Editar') }}" method="post" enctype="multipart/form-data">
             @csrf
-            <input type="hidden" name="id" value="{{ $hospedaje->id }}">
+            <input type="hidden" name="id" id="editar_id">
             <div class="mb-3">
-                <label for="nombre" class="form-label">Nombre comercial del establecimiento</label>
-                <input type="text" class="form-control" id="nombre" name="nombre" value="{{ $hospedaje->nombre }}" required>
+                <label for="editar_nombre" class="form-label">Nombre comercial del establecimiento</label>
+                <input type="text" class="form-control" id="editar_nombre" name="nombre" required>
             </div>
             <div class="mb-3">
-                <label for="tipo" class="form-label">Tipo de establecimiento de hospedaje</label>
-                <select class="form-select" id="tipo" name="tipo" value="{{ $hospedaje->tipo }}" required>
+                <label for="editar_tipo" class="form-label">Tipo de establecimiento de hospedaje</label>
+                <select class="form-select" id="editar_tipo" name="tipo" required>
                     <option value="hotel">Hotel</option>
                     <option value="hostal">Hostal</option>
                     <option value="apartamento">Apartamento</option>
@@ -631,68 +631,68 @@
                 </select>
             </div>
             <div class="mb-3">
-                <label for="ubicacion" class="form-label">Dirección física del establecimiento</label>
-                <input type="text" class="form-control" id="ubicacion" name="ubicacion" value="{{ $hospedaje->ubicacion }}" required>
+                <label for="editar_ubicacion" class="form-label">Dirección física del establecimiento</label>
+                <input type="text" class="form-control" id="editar_ubicacion" name="ubicacion" required>
             </div>
             <div class="mb-3">
-                <label for="pais" class="form-label">País donde se encuentra el establecimiento</label>
-                <input type="text" class="form-control" id="pais" name="pais" value="{{ $hospedaje->pais }}" required>
+                <label for="editar_pais" class="form-label">País donde se encuentra el establecimiento</label>
+                <input type="text" class="form-control" id="editar_pais" name="pais" required>
             </div>
             <div class="mb-3">
-                <label for="ciudad" class="form-label">Ciudad donde se encuentra el establecimiento</label>
-                <input type="text" class="form-control" id="ciudad" name="ciudad" value="{{ $hospedaje->ciudad }}" required>
+                <label for="editar_ciudad" class="form-label">Ciudad donde se encuentra el establecimiento</label>
+                <input type="text" class="form-control" id="editar_ciudad" name="ciudad" required>
             </div>
             <div class="mb-3">
-                <label for="codigo_postal" class="form-label">Código postal de la ubicación</label>
-                <input type="text" class="form-control" id="codigo_postal" name="codigo_postal" value="{{ $hospedaje->codigo_postal }}" required>
+                <label for="editar_codigo_postal" class="form-label">Código postal de la ubicación</label>
+                <input type="text" class="form-control" id="editar_codigo_postal" name="codigo_postal" required>
             </div>
             <div class="mb-3">
-                <label for="estrellas" class="form-label">Clasificación del establecimiento (1 a 5 estrellas)</label>
-                <select class="form-select" id="estrellas" name="estrellas" required>
-                    <option value="1" {{ $hospedaje->estrellas == 1 ? 'selected' : '' }}>1 Estrella</option>
-                    <option value="2" {{ $hospedaje->estrellas == 2 ? 'selected' : '' }}>2 Estrellas</option>
-                    <option value="3" {{ $hospedaje->estrellas == 3 ? 'selected' : '' }}>3 Estrellas</option>
-                    <option value="4" {{ $hospedaje->estrellas == 4 ? 'selected' : '' }}>4 Estrellas</option>
-                    <option value="5" {{ $hospedaje->estrellas == 5 ? 'selected' : '' }}>5 Estrellas</option>
+                <label for="editar_estrellas" class="form-label">Clasificación del establecimiento (1 a 5 estrellas)</label>
+                <select class="form-select" id="editar_estrellas" name="estrellas" required>
+                    <option value="1">1 Estrella</option>
+                    <option value="2">2 Estrellas</option>
+                    <option value="3">3 Estrellas</option>
+                    <option value="4">4 Estrellas</option>
+                    <option value="5">5 Estrellas</option>
                 </select>
             </div>
             <div class="mb-3">
-                <label for="calificacion" class="form-label">Calificación promedio (0.00 a 5.00)</label>
-                <input type="number" class="form-control" id="calificacion" name="calificacion" step="0.01" min="0" max="5" value="{{ $hospedaje->calificacion }}" required>
+                <label for="editar_calificacion" class="form-label">Calificación promedio (0.00 a 5.00)</label>
+                <input type="number" class="form-control" id="editar_calificacion" name="calificacion" step="0.01" min="0" max="5" required>
             </div>
             <div class="mb-3">
-                <label for="descripcion" class="form-label">Descripción detallada del establecimiento y sus instalaciones</label>
-                <textarea class="form-control" id="descripcion" name="descripcion" rows="4" required>{{ $hospedaje->descripcion }}</textarea>
+                <label for="editar_descripcion" class="form-label">Descripción detallada del establecimiento y sus instalaciones</label>
+                <textarea class="form-control" id="editar_descripcion" name="descripcion" rows="4" required></textarea>
             </div>
             <div class="mb-3">
                 <label class="form-label">Servicios ofrecidos</label>
                 <div class="row">
                     <div class="col-md-4">
                         <div class="form-check">
-                            <input class="form-check-input" type="checkbox" name="servicios[]" value="wifi" id="servicio_wifi" {{ is_array($hospedaje->servicios) && in_array('wifi', $hospedaje->servicios) ? 'checked' : '' }}>
-                            <label class="form-check-label" for="servicio_wifi">WiFi</label>
+                            <input class="form-check-input" type="checkbox" name="servicios[]" value="wifi" id="editar_servicio_wifi">
+                            <label class="form-check-label" for="editar_servicio_wifi">WiFi</label>
                         </div>
                         <div class="form-check">
-                            <input class="form-check-input" type="checkbox" name="servicios[]" value="piscina" id="servicio_piscina" {{ is_array($hospedaje->servicios) && in_array('piscina', $hospedaje->servicios) ? 'checked' : '' }}>
-                            <label class="form-check-label" for="servicio_piscina">Piscina</label>
+                            <input class="form-check-input" type="checkbox" name="servicios[]" value="piscina" id="editar_servicio_piscina">
+                            <label class="form-check-label" for="editar_servicio_piscina">Piscina</label>
                         </div>
                         <div class="form-check">
-                            <input class="form-check-input" type="checkbox" name="servicios[]" value="restaurante" id="servicio_restaurante" {{ is_array($hospedaje->servicios) && in_array('restaurante', $hospedaje->servicios) ? 'checked' : '' }}>
-                            <label class="form-check-label" for="servicio_restaurante">Restaurante</label>
+                            <input class="form-check-input" type="checkbox" name="servicios[]" value="restaurante" id="editar_servicio_restaurante">
+                            <label class="form-check-label" for="editar_servicio_restaurante">Restaurante</label>
                         </div>
                     </div>
                     <div class="col-md-4">
                         <div class="form-check">
-                            <input class="form-check-input" type="checkbox" name="servicios[]" value="gimnasio" id="servicio_gimnasio" {{ is_array($hospedaje->servicios) && in_array('gimnasio', $hospedaje->servicios) ? 'checked' : '' }}>
-                            <label class="form-check-label" for="servicio_gimnasio">Gimnasio</label>
+                            <input class="form-check-input" type="checkbox" name="servicios[]" value="gimnasio" id="editar_servicio_gimnasio">
+                            <label class="form-check-label" for="editar_servicio_gimnasio">Gimnasio</label>
                         </div>
                         <div class="form-check">
-                            <input class="form-check-input" type="checkbox" name="servicios[]" value="spa" id="servicio_spa" {{ is_array($hospedaje->servicios) && in_array('spa', $hospedaje->servicios) ? 'checked' : '' }}>
-                            <label class="form-check-label" for="servicio_spa">Spa</label>
+                            <input class="form-check-input" type="checkbox" name="servicios[]" value="spa" id="editar_servicio_spa">
+                            <label class="form-check-label" for="editar_servicio_spa">Spa</label>
                         </div>
                         <div class="form-check">
-                            <input class="form-check-input" type="checkbox" name="servicios[]" value="estacionamiento" id="servicio_estacionamiento" {{ is_array($hospedaje->servicios) && in_array('estacionamiento', $hospedaje->servicios) ? 'checked' : '' }}>
-                            <label class="form-check-label" for="servicio_estacionamiento">Estacionamiento</label>
+                            <input class="form-check-input" type="checkbox" name="servicios[]" value="estacionamiento" id="editar_servicio_estacionamiento">
+                            <label class="form-check-label" for="editar_servicio_estacionamiento">Estacionamiento</label>
                         </div>
                     </div>
                 </div>
@@ -702,69 +702,67 @@
                 <div class="row">
                     <div class="col-md-4">
                         <div class="form-check">
-                            <input class="form-check-input" type="checkbox" name="politicas[]" value="mascotas" id="politica_mascotas" {{ is_array($hospedaje->politicas) && in_array('mascotas', $hospedaje->politicas) ? 'checked' : '' }}>
-                            <label class="form-check-label" for="politica_mascotas">Permite mascotas</label>
+                            <input class="form-check-input" type="checkbox" name="politicas[]" value="mascotas" id="editar_politica_mascotas">
+                            <label class="form-check-label" for="editar_politica_mascotas">Permite mascotas</label>
                         </div>
                         <div class="form-check">
-                            <input class="form-check-input" type="checkbox" name="politicas[]" value="fumar" id="politica_fumar" {{ is_array($hospedaje->politicas) && in_array('fumar', $hospedaje->politicas) ? 'checked' : '' }}>
-                            <label class="form-check-label" for="politica_fumar">Permite fumar</label>
+                            <input class="form-check-input" type="checkbox" name="politicas[]" value="fumar" id="editar_politica_fumar">
+                            <label class="form-check-label" for="editar_politica_fumar">Permite fumar</label>
                         </div>
                     </div>
                     <div class="col-md-4">
                         <div class="form-check">
-                            <input class="form-check-input" type="checkbox" name="politicas[]" value="ninios" id="politica_ninios" {{ is_array($hospedaje->politicas) && in_array('ninios', $hospedaje->politicas) ? 'checked' : '' }}>
-                            <label class="form-check-label" for="politica_ninios">Apto para niños</label>
+                            <input class="form-check-input" type="checkbox" name="politicas[]" value="ninios" id="editar_politica_ninios">
+                            <label class="form-check-label" for="editar_politica_ninios">Apto para niños</label>
                         </div>
                         <div class="form-check">
-                            <input class="form-check-input" type="checkbox" name="politicas[]" value="cancelacion" id="politica_cancelacion" {{ is_array($hospedaje->politicas) && in_array('cancelacion', $hospedaje->politicas) ? 'checked' : '' }}>
-                            <label class="form-check-label" for="politica_cancelacion">Política de cancelación flexible</label>
+                            <input class="form-check-input" type="checkbox" name="politicas[]" value="cancelacion" id="editar_politica_cancelacion">
+                            <label class="form-check-label" for="editar_politica_cancelacion">Política de cancelación flexible</label>
                         </div>
                     </div>
                 </div>
             </div>
             <div class="mb-3">
-                <label for="imagenes" class="form-label">URL de la imagen del establecimiento</label>
-                <input type="text" class="form-control" id="imagenes" name="imagenes" value="{{ $hospedaje->imagenes }}" required>
+                <label for="editar_imagenes" class="form-label">URL de la imagen del establecimiento</label>
+                <input type="text" class="form-control" id="editar_imagenes" name="imagenes" required>
             </div>
             <div class="mb-3">
-                <label for="telefono" class="form-label">Número de teléfono de contacto</label>
-                <input type="tel" class="form-control" id="telefono" name="telefono" value="{{ $hospedaje->telefono }}" required>
+                <label for="editar_telefono" class="form-label">Número de teléfono de contacto</label>
+                <input type="tel" class="form-control" id="editar_telefono" name="telefono" required>
             </div>
             <div class="mb-3">
-                <label for="email" class="form-label">Correo electrónico de contacto</label>
-                <input type="email" class="form-control" id="email" name="email" value="{{ $hospedaje->email }}" required>
+                <label for="editar_email" class="form-label">Correo electrónico de contacto</label>
+                <input type="email" class="form-control" id="editar_email" name="email" required>
             </div>
             <div class="mb-3">
-                <label for="sitio_web" class="form-label">URL del sitio web oficial</label>
-                <input type="text" class="form-control" id="sitio_web" name="sitio_web" value="{{ $hospedaje->sitio_web }}">
+                <label for="editar_sitio_web" class="form-label">URL del sitio web oficial</label>
+                <input type="text" class="form-control" id="editar_sitio_web" name="sitio_web">
             </div>
             <div class="mb-3">
                 <div class="form-check">
-                    <input class="form-check-input" type="checkbox" id="check_in_24h" name="check_in_24h" value="1">
-                    <label class="form-check-label" for="check_in_24h">
+                    <input class="form-check-input" type="checkbox" id="editar_check_in_24h" name="check_in_24h" value="1">
+                    <label class="form-check-label" for="editar_check_in_24h">
                         Permite check-in las 24 horas
                     </label>
                 </div>
             </div>
             <div class="mb-3">
-                <label for="check_in" class="form-label">Hora estándar de check-in</label>
-                <input type="time" class="form-control" id="check_in" name="check_in" value="{{ $hospedaje->check_in }}" required>
+                <label for="editar_check_in" class="form-label">Hora estándar de check-in</label>
+                <input type="time" class="form-control" id="editar_check_in" name="check_in" required>
             </div>
             <div class="mb-3">
-                <label for="check_out" class="form-label">Hora estándar de check-out</label>
-                <input type="time" class="form-control" id="check_out" name="check_out" value="{{ $hospedaje->check_out }}" required>
+                <label for="editar_check_out" class="form-label">Hora estándar de check-out</label>
+                <input type="time" class="form-control" id="editar_check_out" name="check_out" required>
             </div>
             <div class="mb-3">
-                <label for="observaciones" class="form-label">Notas adicionales sobre el establecimiento</label>
-                <textarea class="form-control" id="observaciones" name="observaciones" rows="3">{{ $hospedaje->observaciones }}</textarea>
+                <label for="editar_observaciones" class="form-label">Notas adicionales sobre el establecimiento</label>
+                <textarea class="form-control" id="editar_observaciones" name="observaciones" rows="3"></textarea>
             </div>
             <div class="mb-3">
-            
-                    <select class="form-select" id="disponibilidad" name="disponibilidad" required>
-                    <option value="1" {{ $hospedaje->disponibilidad == 1 ? 'selected' : '' }}>Disponible</option>
-                    <option value="0" {{ $hospedaje->disponibilidad == 0 ? 'selected' : '' }}>No Disponible</option>
+                <select class="form-select" id="editar_disponibilidad" name="disponibilidad" required>
+                    <option value="1">Disponible</option>
+                    <option value="0">No Disponible</option>
                 </select>
-                </div>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
@@ -777,14 +775,16 @@
 </div>
 <div class="modal fade" id="eliminarModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog">
+<div class="modal fade" id="eliminarModal" tabindex="-1" aria-labelledby="eliminarModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">  
-                <h1 class="modal-title fs-5" id="exampleModalLabel">Eliminar Hospedaje</h1>
+                <h1 class="modal-title fs-5" id="eliminarModalLabel">Eliminar Hospedaje</h1>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
                 <p>¿Estás seguro de querer eliminar este hospedaje?</p>
-                <form action="{{ route('administracion.hospedaje.Borrar', $hospedaje->id) }}" method="post">
+                <form id="eliminarHospedajeForm" method="post">
                     @csrf
                     @method('DELETE')
                     <button type="submit" class="btn btn-danger">Eliminar</button>
@@ -793,14 +793,58 @@
         </div>
     </div>
 </div>
-</body>
-<script>
     const myModal = document.getElementById('myModal')
-const myInput = document.getElementById('myInput')
+<script>
+    // Editar Modal: rellenar campos dinámicamente
+    document.addEventListener('DOMContentLoaded', function () {
+        const editarModal = document.getElementById('editarModal');
+        editarModal.addEventListener('show.bs.modal', function (event) {
+            const button = event.relatedTarget;
+            const hospedajeId = button.getAttribute('data-hospedaje-id');
+            // Busca el hospedaje en la lista JS (debes exponer los datos en JS)
+            const hospedaje = window.hospedajes.find(h => h.id == hospedajeId);
+            if (!hospedaje) return;
+            document.getElementById('editar_id').value = hospedaje.id;
+            document.getElementById('editar_nombre').value = hospedaje.nombre;
+            document.getElementById('editar_tipo').value = hospedaje.tipo;
+            document.getElementById('editar_ubicacion').value = hospedaje.ubicacion;
+            document.getElementById('editar_pais').value = hospedaje.pais;
+            document.getElementById('editar_ciudad').value = hospedaje.ciudad;
+            document.getElementById('editar_codigo_postal').value = hospedaje.codigo_postal;
+            document.getElementById('editar_estrellas').value = hospedaje.estrellas;
+            document.getElementById('editar_calificacion').value = hospedaje.calificacion;
+            document.getElementById('editar_descripcion').value = hospedaje.descripcion;
+            document.getElementById('editar_imagenes').value = Array.isArray(hospedaje.imagenes) ? hospedaje.imagenes[0] : hospedaje.imagenes;
+            document.getElementById('editar_telefono').value = hospedaje.telefono;
+            document.getElementById('editar_email').value = hospedaje.email;
+            document.getElementById('editar_sitio_web').value = hospedaje.sitio_web;
+            document.getElementById('editar_check_in').value = hospedaje.check_in;
+            document.getElementById('editar_check_out').value = hospedaje.check_out;
+            document.getElementById('editar_observaciones').value = hospedaje.observaciones;
+            document.getElementById('editar_disponibilidad').value = hospedaje.disponibilidad;
 
-myModal.addEventListener('shown.bs.modal', () => {
-  myInput.focus()
-})
+            // Servicios
+            ['wifi','piscina','restaurante','gimnasio','spa','estacionamiento'].forEach(servicio => {
+                document.getElementById('editar_servicio_' + servicio).checked = Array.isArray(hospedaje.servicios) && hospedaje.servicios.includes(servicio);
+            });
+            // Políticas
+            ['mascotas','fumar','ninios','cancelacion'].forEach(politica => {
+                document.getElementById('editar_politica_' + politica).checked = Array.isArray(hospedaje.politicas) && hospedaje.politicas.includes(politica);
+            });
+            // Check-in 24h
+            document.getElementById('editar_check_in_24h').checked = hospedaje.check_in_24h == 1;
+        });
+
+        // Eliminar Modal: set form action dinámicamente
+        const eliminarModal = document.getElementById('eliminarModal');
+        eliminarModal.addEventListener('show.bs.modal', function (event) {
+            const button = event.relatedTarget;
+            const hospedajeId = button.getAttribute('data-hospedaje-id');
+            const form = document.getElementById('eliminarHospedajeForm');
+            form.action = "{{ url('administracion/hospedaje/Borrar') }}/" + hospedajeId;
+        });
+    });
+
+    // Exponer hospedajes en JS
+    window.hospedajes = @json($hospedajes);
 </script>
-
-</html>
