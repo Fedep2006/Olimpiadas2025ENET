@@ -52,7 +52,8 @@
             titulo="Gestion de Usuarios" 
             contenido="Administra y gestiona los usuarios"
             botonIcono="fas fa-user-plus" 
-            botonNombre="Nuevo Usuario" />
+            botonNombre="Nuevo Usuario" 
+        />
 
         <!-- Search Bar -->
         <x-layouts.administracion.search-bar />
