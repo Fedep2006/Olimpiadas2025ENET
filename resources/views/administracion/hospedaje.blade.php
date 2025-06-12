@@ -421,7 +421,7 @@
                                         <button class="action-btn edit" title="Editar" data-bs-toggle="modal" data-bs-target="#editarModal" data-hospedaje-id="{{ $hospedaje->id }}">
                                             <i class="fas fa-edit"></i>
                                         </button>
-                                        <button class="action-btn delete" title="Desactivar">
+                                        <button class="action-btn delete" title="Desactivar" data-bs-toggle="modal" data-bs-target="#eliminarModal" data-hospedaje-id="{{ $hospedaje->id }}">
                                             <i class="fas fa-ban"></i>
                                         </button>
                                     </div>
@@ -775,6 +775,24 @@
       </div>
     </div>
   </div>
+</div>
+<div class="modal fade" id="eliminarModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">  
+                <h1 class="modal-title fs-5" id="exampleModalLabel">Eliminar Hospedaje</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>¿Estás seguro de querer eliminar este hospedaje?</p>
+                <form action="{{ route('administracion.hospedaje.Borrar', $hospedaje->id) }}" method="post">
+                    @csrf
+                    @method('DELETE')
+                    <button type="submit" class="btn btn-danger">Eliminar</button>
+                </form>
+            </div>
+        </div>
+    </div>
 </div>
 </body>
 <script>

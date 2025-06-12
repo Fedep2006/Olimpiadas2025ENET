@@ -79,7 +79,7 @@ class HospedajeController extends Controller
         $hospedaje->save();
         return redirect()->route('administracion.hospedaje')->with('success', 'Hospedaje actualizado correctamente');
     }
-    public function destroyHospedaje($id)
+    public function EliminarHospedaje($id)
     {
         $hospedaje = Hospedaje::find($id);
         $hospedaje->delete();
