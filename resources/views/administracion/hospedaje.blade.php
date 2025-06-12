@@ -391,12 +391,6 @@
                                     <small class="text-muted">{{ $hospedaje->email }}</small>
                                     <small class="text-muted">{{ $hospedaje->sitio_web }}</small>
                                 </td>
-                               <!-- <td>
-                                    <div class="price-info">
-                                        <div class="price-amount">${{ $hospedaje->precio_por_noche }}</div>
-                                        <small class="text-muted">por noche</small>
-                                    </div>
-                                </td>-->
                                 <td>
                                     @if ($hospedaje->check_in_24h == 1) 
                                         <div><strong>24 horas</strong></div>
@@ -773,8 +767,6 @@
     </div>
   </div>
 </div>
-<div class="modal fade" id="eliminarModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
 <div class="modal fade" id="eliminarModal" tabindex="-1" aria-labelledby="eliminarModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -793,7 +785,6 @@
         </div>
     </div>
 </div>
-    const myModal = document.getElementById('myModal')
 <script>
     // Editar Modal: rellenar campos dinámicamente
     document.addEventListener('DOMContentLoaded', function () {
@@ -841,7 +832,7 @@
             const button = event.relatedTarget;
             const hospedajeId = button.getAttribute('data-hospedaje-id');
             const form = document.getElementById('eliminarHospedajeForm');
-            form.action = "{{ url('administracion/hospedaje/Borrar') }}/" + hospedajeId;
+            form.action = "{{ url('administracion/hospedaje/delete') }}/" + hospedajeId;
         });
     });
 

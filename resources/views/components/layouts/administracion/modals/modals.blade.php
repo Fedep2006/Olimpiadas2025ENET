@@ -97,8 +97,30 @@
         padding: 10px 12px;
     }
 </style>
-
-<x-layouts.administracion.modals.crear-registro titulo="Crear Nuevo Usuario" />
+@php
+    $campos = [
+        (object)[
+            'id' => 'name',
+            'name' => 'name',
+            'type' => 'text',
+            'label' => 'Nombre de Usuario'
+        ],
+        (object)[
+            'id' => 'email',
+            'name' => 'email',
+            'type' => 'email',
+            'label' => 'Email'
+        ],
+        (object)[
+            'id' => 'password',
+            'name' => 'password',
+            'type' => 'password',
+            'label' => 'Contraseña'
+        ]
+    ];
+    
+@endphp
+<x-layouts.administracion.modals.crear-registro titulo="Crear Nuevo Usuario" :inputs="$campos" />
 
 <x-layouts.administracion.modals.editar-registro titulo="Crear Nuevo Usuario" />
 

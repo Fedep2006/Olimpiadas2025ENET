@@ -7,18 +7,21 @@
             </div>
             <div class="modal-body">
                 <form id="nuevoRegistroForm">
-                    <div class="mb-3">
-                        <label for="name" class="form-label">Nombre de Usuario</label>
-                        <input type="text" class="form-control" id="name" name="name" required>
-                    </div>
-                    <div class="mb-3">
-                        <label for="email" class="form-label">Email</label>
-                        <input type="email" class="form-control" id="email" name="email" required>
-                    </div>
-                    <div class="mb-3">
-                        <label for="password" class="form-label">Contraseña</label>
-                        <input type="password" class="form-control" id="password" name="password" required>
-                    </div>
+                    @foreach ( $inputs as $input)
+                        <div class="mb-3">
+                            <label 
+                                for="{{ $input->name ?? $input->name}}" 
+                                class="form-label">{{$input->label ?? ""}}
+                            </label>
+                            <input 
+                                type="{{$input->type ?? ""}}" 
+                                class="form-control" 
+                                id="{{$input->id  ?? ""}}" 
+                                name="{{$input->name ?? $input->id}}" 
+                                required
+                            > 
+                        </div>
+                    @endforeach
                 </form>
             </div>
             <div class="modal-footer">
