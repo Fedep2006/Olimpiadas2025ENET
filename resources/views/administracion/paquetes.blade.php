@@ -2,137 +2,10 @@
 <html lang="es">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    @include('administracion.partials.head')
     <title>Gestión de Promociones - Frategar Admin</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+
     <style>
-        :root {
-            --despegar-blue: #0066cc;
-            --despegar-orange: #ff6600;
-            --despegar-light-blue: #e6f3ff;
-            --sidebar-width: 280px;
-        }
-
-        body {
-            background-color: #f8f9fa;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
-
-        .admin-sidebar {
-            position: fixed;
-            top: 0;
-            left: -280px;
-            height: 100vh;
-            width: var(--sidebar-width);
-            background: linear-gradient(180deg, var(--despegar-blue) 0%, #004499 100%);
-            color: white;
-            z-index: 1000;
-            overflow-y: auto;
-            transition: left 0.3s ease;
-        }
-
-        .admin-sidebar.show {
-            left: 0;
-        }
-
-        .sidebar-header {
-            padding: 20px;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-            text-align: center;
-        }
-
-        .sidebar-brand {
-            font-size: 1.5rem;
-            font-weight: bold;
-            color: white;
-            text-decoration: none;
-        }
-
-        .sidebar-menu {
-            padding: 20px 0;
-        }
-
-        .menu-item[type="submit"] {
-            background: none;
-            border: none;
-            border-left: 3px solid transparent;
-            box-shadow: none;
-            width: 100%;
-            text-align: left;
-            cursor: pointer;
-            font: inherit;
-
-        }
-
-        .menu-item {
-            display: block;
-            padding: 12px 20px;
-            color: rgba(255, 255, 255, 0.8);
-            text-decoration: none;
-            transition: all 0.3s ease;
-            border-left: 3px solid transparent;
-        }
-
-        .menu-item:hover,
-        .menu-item.active {
-            background-color: rgba(255, 255, 255, 0.1);
-            color: white;
-            border-left-color: var(--despegar-orange);
-        }
-
-        .menu-item i {
-            width: 20px;
-            margin-right: 15px;
-        }
-
-        .main-content {
-            margin-left: 0;
-            min-height: 100vh;
-            transition: margin-left 0.3s ease;
-        }
-
-        .main-content.expanded {
-            margin-left: var(--sidebar-width);
-        }
-
-        .top-navbar {
-            background: white;
-            padding: 15px 30px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .admin-header h4 {
-            color: var(--despegar-blue);
-            margin: 0;
-        }
-
-        .admin-user {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-        }
-
-        .user-avatar {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            background: var(--despegar-light-blue);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: var(--despegar-blue);
-            font-weight: bold;
-        }
-
-        .dashboard-content {
-            padding: 30px;
-        }
-
         .page-header {
             background: white;
             border-radius: 15px;
@@ -439,20 +312,6 @@
             background-color: #e8f5e8;
             color: #2e7d32;
         }
-
-        .toggle-sidebar {
-            background: none;
-            border: none;
-            color: var(--despegar-blue);
-            font-size: 1.2rem;
-            cursor: pointer;
-            padding: 0;
-            margin-right: 15px;
-        }
-
-        .toggle-sidebar:hover {
-            color: var(--despegar-orange);
-        }
     </style>
 </head>
 
@@ -460,522 +319,424 @@
 
 
     <!-- Sidebar -->
-    <div class="admin-sidebar" id="sidebar">
-        <div class="sidebar-header">
-            <a href="/administracion" class="sidebar-brand">
-                <i class="fas fa-plane me-2"></i>
-                <span class="brand-text">Frategar Admin</span>
-            </a>
-        </div>
-
-
-        <nav class="sidebar-menu">
-            <a href="/administracion" class="menu-item ">
-                <i class="fas fa-tachometer-alt"></i>
-                <span class="menu-text">Inicio</span>
-            </a>
-            <a href="/administracion/reservas" class="menu-item">
-                <i class="fas fa-calendar-check"></i>
-                <span class="menu-text">Reservas</span>
-            </a>
-            <a href="/administracion/usuarios" class="menu-item">
-                <i class="fas fa-users"></i>
-                <span class="menu-text">Usuarios</span>
-            </a>
-            <a href="/administracion/viajes" class="menu-item">
-                <i class="fas fa-plane"></i>
-                <span class="menu-text">Viajes</span>
-            </a>
-            <a href="/administracion/hoteles" class="menu-item">
-                <i class="fas fa-bed"></i>
-                <span class="menu-text">Hospedaje</span>
-            </a>
-            <a href="/administracion/vehiculos" class="menu-item">
-                <i class="fas fa-car"></i>
-                <span class="menu-text">Vehiculos</span>
-            </a>
-            <a href="/administracion/paquetes" class="menu-item active">
-                <i class="fas fa-tags"></i>
-                <span class="menu-text">Paquetes</span>
-            </a>
-              <a href="/administracion/empleados" class="menu-item ">
-                <i class="fas fa-users"></i>
-                <span class="menu-text">Empleados</span>
-            </a>
-            <form method="POST" action="{{ route('logout') }}">
-                @csrf
-                <button type="submit" class="menu-item">
-                    <i class="fas fa-sign-out-alt"></i>
-                    <span class="menu-text">Cerrar Sesión</span>
-                </button>
-            </form>
-        </nav>
-    </div>
+    <x-layouts.administracion.sidebar paquetes="active" />
 
     <!-- Main Content -->
-    <div class="main-content" id="mainContent">
-        <!-- Top Navbar -->
-        <div class="top-navbar">
-            <div class="admin-header">
-                <button class="toggle-sidebar" id="toggleSidebar">
-                    <i class="fas fa-bars"></i>
-                </button>
-                <h4>Gestión de Paquetes</h4>
-            </div>
-
-            <div class="admin-user">
-                <div class="user-avatar">{{ substr(Auth::user()->name, 0, 2) }}</div>
+    <x-layouts.administracion.main nameHeader="Gestion de Paquetes">
+        <!-- Page Header -->
+        <div class="page-header">
+            <div class="d-flex justify-content-between align-items-center">
                 <div>
-                    <div class="fw-bold">{{ Auth::user()->name }}</div>
-                    <small class="text-muted">{{ Auth::user()->role }}</small>
+                    <h1 class="page-title">Gestión de Paquetes</h1>
+                    <p class="page-subtitle">Crea y administra ofertas especiales y descuentos</p>
                 </div>
-                <form method="POST" action="{{ route('logout') }}" class="d-inline">
-                    @csrf
-                    <button type="submit" class="btn btn-link text-decoration-none p-0 ms-2">
-                        <i class="fas fa-sign-out-alt"></i>
-                    </button>
-                </form>
+                <a href="#" class="btn-admin orange">
+                    <i class="fas fa-plus"></i>
+                    Nueva Promoción
+                </a>
             </div>
         </div>
 
-        <!-- Dashboard Content -->
-        <div class="dashboard-content">
-            <!-- Page Header -->
-            <div class="page-header">
-                <div class="d-flex justify-content-between align-items-center">
-                    <div>
-                        <h1 class="page-title">Gestión de Paquetes</h1>
-                        <p class="page-subtitle">Crea y administra ofertas especiales y descuentos</p>
+        <!-- Stats Row -->
+        <div class="stats-row">
+            <div class="stat-card">
+                <div class="stat-number">47</div>
+                <div class="stat-label">Total Paquetes</div>
+            </div>
+            <div class="stat-card" style="border-left-color: #28a745;">
+                <div class="stat-number">32</div>
+                <div class="stat-label">Paquetes Activas</div>
+            </div>
+            <div class="stat-card" style="border-left-color: #ffc107;">
+                <div class="stat-number">8</div>
+                <div class="stat-label">Programadas</div>
+            </div>
+            <div class="stat-card" style="border-left-color: #dc3545;">
+                <div class="stat-number">7</div>
+                <div class="stat-label">Expiradas</div>
+            </div>
+        </div>
+
+        <!-- Filters -->
+        <div class="content-card">
+            <div class="search-filters">
+                <div class="filter-row">
+                    <div class="filter-group">
+                        <label class="form-label">Nombre de la PAquete</label>
+                        <input type="text" class="form-control" placeholder="Buscar por nombre o código">
                     </div>
-                    <a href="#" class="btn-admin orange">
-                        <i class="fas fa-plus"></i>
-                        Nueva Promoción
+                    <div class="filter-group">
+                        <label class="form-label">Tipo</label>
+                        <select class="form-select">
+                            <option value="">Todos los tipos</option>
+                            <option value="percentage">Descuento %</option>
+                            <option value="fixed">Descuento fijo</option>
+                            <option value="bogo">2x1</option>
+                            <option value="free">Gratis</option>
+                        </select>
+                    </div>
+                    <div class="filter-group">
+                        <label class="form-label">Categoría</label>
+                        <select class="form-select">
+                            <option value="">Todas las categorías</option>
+                            <option value="flights">Vuelos</option>
+                            <option value="hotels">Hoteles</option>
+                            <option value="cars">Autos</option>
+                            <option value="packages">Paquetes</option>
+                        </select>
+                    </div>
+                    <div class="filter-group">
+                        <label class="form-label">Estado</label>
+                        <select class="form-select">
+                            <option value="">Todos los estados</option>
+                            <option value="active">Activa</option>
+                            <option value="scheduled">Programada</option>
+                            <option value="paused">Pausada</option>
+                            <option value="expired">Expirada</option>
+                        </select>
+                    </div>
+                    <div class="filter-group">
+                        <label class="form-label">Fecha de Vencimiento</label>
+                        <input type="date" class="form-control">
+                    </div>
+                    <div class="filter-group">
+                        <label class="form-label">&nbsp;</label>
+                        <div class="d-flex gap-2">
+                            <button class="btn-admin">
+                                <i class="fas fa-search"></i>
+                                Buscar
+                            </button>
+                            <button class="btn-admin" style="background-color: #6c757d;">
+                                <i class="fas fa-times"></i>
+                                Limpiar
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Promotions Table -->
+        <div class="content-card">
+            <div class="card-header">
+                <h5 class="card-title">Lista de Paquetes</h5>
+                <div class="d-flex gap-2">
+                    <a href="#" class="btn-admin success">
+                        <i class="fas fa-file-excel"></i>
+                        Excel
                     </a>
                 </div>
             </div>
 
-            <!-- Stats Row -->
-            <div class="stats-row">
-                <div class="stat-card">
-                    <div class="stat-number">47</div>
-                    <div class="stat-label">Total Paquetes</div>
-                </div>
-                <div class="stat-card" style="border-left-color: #28a745;">
-                    <div class="stat-number">32</div>
-                    <div class="stat-label">Paquetes Activas</div>
-                </div>
-                <div class="stat-card" style="border-left-color: #ffc107;">
-                    <div class="stat-number">8</div>
-                    <div class="stat-label">Programadas</div>
-                </div>
-                <div class="stat-card" style="border-left-color: #dc3545;">
-                    <div class="stat-number">7</div>
-                    <div class="stat-label">Expiradas</div>
-                </div>
+            <div class="table-container">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Promoción</th>
+                            <th>Tipo</th>
+                            <th>Descuento</th>
+                            <th>Categoría</th>
+                            <th>Vigencia</th>
+                            <th>Uso</th>
+                            <th>Estado</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>
+                                <div class="promo-info">
+                                    <div class="promo-icon">
+                                        <i class="fas fa-percentage"></i>
+                                    </div>
+                                    <div class="promo-details">
+                                        <h6>Descuento Verano 2024</h6>
+                                        <small>Código: VERANO24</small>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                                <span class="type-badge type-percentage">Descuento %</span>
+                            </td>
+                            <td>
+                                <div class="discount-badge">25% OFF</div>
+                            </td>
+                            <td>
+                                <div><strong>Vuelos</strong></div>
+                                <small class="text-muted">Destinos internacionales</small>
+                            </td>
+                            <td>
+                                <div><strong>01/03 - 31/03</strong></div>
+                                <small class="text-muted">30 días restantes</small>
+                            </td>
+                            <td>
+                                <div class="usage-stats">
+                                    <div class="usage-number">847/1000</div>
+                                    <div class="usage-bar">
+                                        <div class="usage-fill" style="width: 84.7%;"></div>
+                                    </div>
+                                    <small class="text-muted">84.7% usado</small>
+                                </div>
+                            </td>
+                            <td><span class="status-badge status-active">Activa</span></td>
+                            <td>
+                                <div class="action-buttons">
+                                    <button class="action-btn view" title="Ver detalles">
+                                        <i class="fas fa-eye"></i>
+                                    </button>
+                                    <button class="action-btn edit" title="Editar">
+                                        <i class="fas fa-edit"></i>
+                                    </button>
+                                    <button class="action-btn pause" title="Pausar">
+                                        <i class="fas fa-pause"></i>
+                                    </button>
+                                    <button class="action-btn delete" title="Eliminar">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div class="promo-info">
+                                    <div class="promo-icon">
+                                        <i class="fas fa-dollar-sign"></i>
+                                    </div>
+                                    <div class="promo-details">
+                                        <h6>Descuento Fijo Hoteles</h6>
+                                        <small>Código: HOTEL100</small>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                                <span class="type-badge type-fixed">Descuento Fijo</span>
+                            </td>
+                            <td>
+                                <div class="discount-badge">$100 OFF</div>
+                            </td>
+                            <td>
+                                <div><strong>Hoteles</strong></div>
+                                <small class="text-muted">Reservas +$500</small>
+                            </td>
+                            <td>
+                                <div><strong>15/03 - 15/04</strong></div>
+                                <small class="text-muted">15 días restantes</small>
+                            </td>
+                            <td>
+                                <div class="usage-stats">
+                                    <div class="usage-number">234/500</div>
+                                    <div class="usage-bar">
+                                        <div class="usage-fill" style="width: 46.8%;"></div>
+                                    </div>
+                                    <small class="text-muted">46.8% usado</small>
+                                </div>
+                            </td>
+                            <td><span class="status-badge status-active">Activa</span></td>
+                            <td>
+                                <div class="action-buttons">
+                                    <button class="action-btn view" title="Ver detalles">
+                                        <i class="fas fa-eye"></i>
+                                    </button>
+                                    <button class="action-btn edit" title="Editar">
+                                        <i class="fas fa-edit"></i>
+                                    </button>
+                                    <button class="action-btn pause" title="Pausar">
+                                        <i class="fas fa-pause"></i>
+                                    </button>
+                                    <button class="action-btn delete" title="Eliminar">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div class="promo-info">
+                                    <div class="promo-icon">
+                                        <i class="fas fa-gift"></i>
+                                    </div>
+                                    <div class="promo-details">
+                                        <h6>2x1 en Autos</h6>
+                                        <small>Código: AUTO2X1</small>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                                <span class="type-badge type-bogo">2x1</span>
+                            </td>
+                            <td>
+                                <div class="discount-badge">2x1</div>
+                            </td>
+                            <td>
+                                <div><strong>Autos</strong></div>
+                                <small class="text-muted">Fines de semana</small>
+                            </td>
+                            <td>
+                                <div><strong>01/04 - 30/04</strong></div>
+                                <small class="text-success">Programada</small>
+                            </td>
+                            <td>
+                                <div class="usage-stats">
+                                    <div class="usage-number">0/200</div>
+                                    <div class="usage-bar">
+                                        <div class="usage-fill" style="width: 0%;"></div>
+                                    </div>
+                                    <small class="text-muted">0% usado</small>
+                                </div>
+                            </td>
+                            <td><span class="status-badge status-scheduled">Programada</span></td>
+                            <td>
+                                <div class="action-buttons">
+                                    <button class="action-btn view" title="Ver detalles">
+                                        <i class="fas fa-eye"></i>
+                                    </button>
+                                    <button class="action-btn edit" title="Editar">
+                                        <i class="fas fa-edit"></i>
+                                    </button>
+                                    <button class="action-btn pause" title="Pausar">
+                                        <i class="fas fa-pause"></i>
+                                    </button>
+                                    <button class="action-btn delete" title="Eliminar">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div class="promo-info">
+                                    <div class="promo-icon">
+                                        <i class="fas fa-star"></i>
+                                    </div>
+                                    <div class="promo-details">
+                                        <h6>Envío Gratis Paquetes</h6>
+                                        <small>Código: FREEPACK</small>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                                <span class="type-badge type-free">Gratis</span>
+                            </td>
+                            <td>
+                                <div class="discount-badge">Envío Gratis</div>
+                            </td>
+                            <td>
+                                <div><strong>Paquetes</strong></div>
+                                <small class="text-muted">Todos los destinos</small>
+                            </td>
+                            <td>
+                                <div><strong>10/02 - 10/03</strong></div>
+                                <small class="text-warning">Pausada</small>
+                            </td>
+                            <td>
+                                <div class="usage-stats">
+                                    <div class="usage-number">156/300</div>
+                                    <div class="usage-bar">
+                                        <div class="usage-fill" style="width: 52%;"></div>
+                                    </div>
+                                    <small class="text-muted">52% usado</small>
+                                </div>
+                            </td>
+                            <td><span class="status-badge status-paused">Pausada</span></td>
+                            <td>
+                                <div class="action-buttons">
+                                    <button class="action-btn view" title="Ver detalles">
+                                        <i class="fas fa-eye"></i>
+                                    </button>
+                                    <button class="action-btn edit" title="Editar">
+                                        <i class="fas fa-edit"></i>
+                                    </button>
+                                    <button class="action-btn pause" title="Reanudar"
+                                        style="background-color: #28a745;">
+                                        <i class="fas fa-play"></i>
+                                    </button>
+                                    <button class="action-btn delete" title="Eliminar">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div class="promo-info">
+                                    <div class="promo-icon">
+                                        <i class="fas fa-clock"></i>
+                                    </div>
+                                    <div class="promo-details">
+                                        <h6>Early Bird 2024</h6>
+                                        <small>Código: EARLY2024</small>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                                <span class="type-badge type-percentage">Descuento %</span>
+                            </td>
+                            <td>
+                                <div class="discount-badge">15% OFF</div>
+                            </td>
+                            <td>
+                                <div><strong>Vuelos</strong></div>
+                                <small class="text-muted">Reservas anticipadas</small>
+                            </td>
+                            <td>
+                                <div><strong>01/01 - 28/02</strong></div>
+                                <small class="text-danger">Expirada</small>
+                            </td>
+                            <td>
+                                <div class="usage-stats">
+                                    <div class="usage-number">1000/1000</div>
+                                    <div class="usage-bar">
+                                        <div class="usage-fill" style="width: 100%;"></div>
+                                    </div>
+                                    <small class="text-muted">100% usado</small>
+                                </div>
+                            </td>
+                            <td><span class="status-badge status-expired">Expirada</span></td>
+                            <td>
+                                <div class="action-buttons">
+                                    <button class="action-btn view" title="Ver detalles">
+                                        <i class="fas fa-eye"></i>
+                                    </button>
+                                    <button class="action-btn edit" title="Duplicar"
+                                        style="background-color: #17a2b8;">
+                                        <i class="fas fa-copy"></i>
+                                    </button>
+                                    <button class="action-btn delete" title="Eliminar">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
 
-            <!-- Filters -->
-            <div class="content-card">
-                <div class="search-filters">
-                    <div class="filter-row">
-                        <div class="filter-group">
-                            <label class="form-label">Nombre de la PAquete</label>
-                            <input type="text" class="form-control" placeholder="Buscar por nombre o código">
-                        </div>
-                        <div class="filter-group">
-                            <label class="form-label">Tipo</label>
-                            <select class="form-select">
-                                <option value="">Todos los tipos</option>
-                                <option value="percentage">Descuento %</option>
-                                <option value="fixed">Descuento fijo</option>
-                                <option value="bogo">2x1</option>
-                                <option value="free">Gratis</option>
-                            </select>
-                        </div>
-                        <div class="filter-group">
-                            <label class="form-label">Categoría</label>
-                            <select class="form-select">
-                                <option value="">Todas las categorías</option>
-                                <option value="flights">Vuelos</option>
-                                <option value="hotels">Hoteles</option>
-                                <option value="cars">Autos</option>
-                                <option value="packages">Paquetes</option>
-                            </select>
-                        </div>
-                        <div class="filter-group">
-                            <label class="form-label">Estado</label>
-                            <select class="form-select">
-                                <option value="">Todos los estados</option>
-                                <option value="active">Activa</option>
-                                <option value="scheduled">Programada</option>
-                                <option value="paused">Pausada</option>
-                                <option value="expired">Expirada</option>
-                            </select>
-                        </div>
-                        <div class="filter-group">
-                            <label class="form-label">Fecha de Vencimiento</label>
-                            <input type="date" class="form-control">
-                        </div>
-                        <div class="filter-group">
-                            <label class="form-label">&nbsp;</label>
-                            <div class="d-flex gap-2">
-                                <button class="btn-admin">
-                                    <i class="fas fa-search"></i>
-                                    Buscar
-                                </button>
-                                <button class="btn-admin" style="background-color: #6c757d;">
-                                    <i class="fas fa-times"></i>
-                                    Limpiar
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Promotions Table -->
-            <div class="content-card">
-                <div class="card-header">
-                    <h5 class="card-title">Lista de Paquetes</h5>
-                    <div class="d-flex gap-2">
-                        <a href="#" class="btn-admin success">
-                            <i class="fas fa-file-excel"></i>
-                            Excel
-                        </a>
-                    </div>
-                </div>
-
-                <div class="table-container">
-                    <table class="table">
-                        <thead>
-                            <tr>
-                                <th>Promoción</th>
-                                <th>Tipo</th>
-                                <th>Descuento</th>
-                                <th>Categoría</th>
-                                <th>Vigencia</th>
-                                <th>Uso</th>
-                                <th>Estado</th>
-                                <th>Acciones</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>
-                                    <div class="promo-info">
-                                        <div class="promo-icon">
-                                            <i class="fas fa-percentage"></i>
-                                        </div>
-                                        <div class="promo-details">
-                                            <h6>Descuento Verano 2024</h6>
-                                            <small>Código: VERANO24</small>
-                                        </div>
-                                    </div>
-                                </td>
-                                <td>
-                                    <span class="type-badge type-percentage">Descuento %</span>
-                                </td>
-                                <td>
-                                    <div class="discount-badge">25% OFF</div>
-                                </td>
-                                <td>
-                                    <div><strong>Vuelos</strong></div>
-                                    <small class="text-muted">Destinos internacionales</small>
-                                </td>
-                                <td>
-                                    <div><strong>01/03 - 31/03</strong></div>
-                                    <small class="text-muted">30 días restantes</small>
-                                </td>
-                                <td>
-                                    <div class="usage-stats">
-                                        <div class="usage-number">847/1000</div>
-                                        <div class="usage-bar">
-                                            <div class="usage-fill" style="width: 84.7%;"></div>
-                                        </div>
-                                        <small class="text-muted">84.7% usado</small>
-                                    </div>
-                                </td>
-                                <td><span class="status-badge status-active">Activa</span></td>
-                                <td>
-                                    <div class="action-buttons">
-                                        <button class="action-btn view" title="Ver detalles">
-                                            <i class="fas fa-eye"></i>
-                                        </button>
-                                        <button class="action-btn edit" title="Editar">
-                                            <i class="fas fa-edit"></i>
-                                        </button>
-                                        <button class="action-btn pause" title="Pausar">
-                                            <i class="fas fa-pause"></i>
-                                        </button>
-                                        <button class="action-btn delete" title="Eliminar">
-                                            <i class="fas fa-trash"></i>
-                                        </button>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <div class="promo-info">
-                                        <div class="promo-icon">
-                                            <i class="fas fa-dollar-sign"></i>
-                                        </div>
-                                        <div class="promo-details">
-                                            <h6>Descuento Fijo Hoteles</h6>
-                                            <small>Código: HOTEL100</small>
-                                        </div>
-                                    </div>
-                                </td>
-                                <td>
-                                    <span class="type-badge type-fixed">Descuento Fijo</span>
-                                </td>
-                                <td>
-                                    <div class="discount-badge">$100 OFF</div>
-                                </td>
-                                <td>
-                                    <div><strong>Hoteles</strong></div>
-                                    <small class="text-muted">Reservas +$500</small>
-                                </td>
-                                <td>
-                                    <div><strong>15/03 - 15/04</strong></div>
-                                    <small class="text-muted">15 días restantes</small>
-                                </td>
-                                <td>
-                                    <div class="usage-stats">
-                                        <div class="usage-number">234/500</div>
-                                        <div class="usage-bar">
-                                            <div class="usage-fill" style="width: 46.8%;"></div>
-                                        </div>
-                                        <small class="text-muted">46.8% usado</small>
-                                    </div>
-                                </td>
-                                <td><span class="status-badge status-active">Activa</span></td>
-                                <td>
-                                    <div class="action-buttons">
-                                        <button class="action-btn view" title="Ver detalles">
-                                            <i class="fas fa-eye"></i>
-                                        </button>
-                                        <button class="action-btn edit" title="Editar">
-                                            <i class="fas fa-edit"></i>
-                                        </button>
-                                        <button class="action-btn pause" title="Pausar">
-                                            <i class="fas fa-pause"></i>
-                                        </button>
-                                        <button class="action-btn delete" title="Eliminar">
-                                            <i class="fas fa-trash"></i>
-                                        </button>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <div class="promo-info">
-                                        <div class="promo-icon">
-                                            <i class="fas fa-gift"></i>
-                                        </div>
-                                        <div class="promo-details">
-                                            <h6>2x1 en Autos</h6>
-                                            <small>Código: AUTO2X1</small>
-                                        </div>
-                                    </div>
-                                </td>
-                                <td>
-                                    <span class="type-badge type-bogo">2x1</span>
-                                </td>
-                                <td>
-                                    <div class="discount-badge">2x1</div>
-                                </td>
-                                <td>
-                                    <div><strong>Autos</strong></div>
-                                    <small class="text-muted">Fines de semana</small>
-                                </td>
-                                <td>
-                                    <div><strong>01/04 - 30/04</strong></div>
-                                    <small class="text-success">Programada</small>
-                                </td>
-                                <td>
-                                    <div class="usage-stats">
-                                        <div class="usage-number">0/200</div>
-                                        <div class="usage-bar">
-                                            <div class="usage-fill" style="width: 0%;"></div>
-                                        </div>
-                                        <small class="text-muted">0% usado</small>
-                                    </div>
-                                </td>
-                                <td><span class="status-badge status-scheduled">Programada</span></td>
-                                <td>
-                                    <div class="action-buttons">
-                                        <button class="action-btn view" title="Ver detalles">
-                                            <i class="fas fa-eye"></i>
-                                        </button>
-                                        <button class="action-btn edit" title="Editar">
-                                            <i class="fas fa-edit"></i>
-                                        </button>
-                                        <button class="action-btn pause" title="Pausar">
-                                            <i class="fas fa-pause"></i>
-                                        </button>
-                                        <button class="action-btn delete" title="Eliminar">
-                                            <i class="fas fa-trash"></i>
-                                        </button>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <div class="promo-info">
-                                        <div class="promo-icon">
-                                            <i class="fas fa-star"></i>
-                                        </div>
-                                        <div class="promo-details">
-                                            <h6>Envío Gratis Paquetes</h6>
-                                            <small>Código: FREEPACK</small>
-                                        </div>
-                                    </div>
-                                </td>
-                                <td>
-                                    <span class="type-badge type-free">Gratis</span>
-                                </td>
-                                <td>
-                                    <div class="discount-badge">Envío Gratis</div>
-                                </td>
-                                <td>
-                                    <div><strong>Paquetes</strong></div>
-                                    <small class="text-muted">Todos los destinos</small>
-                                </td>
-                                <td>
-                                    <div><strong>10/02 - 10/03</strong></div>
-                                    <small class="text-warning">Pausada</small>
-                                </td>
-                                <td>
-                                    <div class="usage-stats">
-                                        <div class="usage-number">156/300</div>
-                                        <div class="usage-bar">
-                                            <div class="usage-fill" style="width: 52%;"></div>
-                                        </div>
-                                        <small class="text-muted">52% usado</small>
-                                    </div>
-                                </td>
-                                <td><span class="status-badge status-paused">Pausada</span></td>
-                                <td>
-                                    <div class="action-buttons">
-                                        <button class="action-btn view" title="Ver detalles">
-                                            <i class="fas fa-eye"></i>
-                                        </button>
-                                        <button class="action-btn edit" title="Editar">
-                                            <i class="fas fa-edit"></i>
-                                        </button>
-                                        <button class="action-btn pause" title="Reanudar"
-                                            style="background-color: #28a745;">
-                                            <i class="fas fa-play"></i>
-                                        </button>
-                                        <button class="action-btn delete" title="Eliminar">
-                                            <i class="fas fa-trash"></i>
-                                        </button>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <div class="promo-info">
-                                        <div class="promo-icon">
-                                            <i class="fas fa-clock"></i>
-                                        </div>
-                                        <div class="promo-details">
-                                            <h6>Early Bird 2024</h6>
-                                            <small>Código: EARLY2024</small>
-                                        </div>
-                                    </div>
-                                </td>
-                                <td>
-                                    <span class="type-badge type-percentage">Descuento %</span>
-                                </td>
-                                <td>
-                                    <div class="discount-badge">15% OFF</div>
-                                </td>
-                                <td>
-                                    <div><strong>Vuelos</strong></div>
-                                    <small class="text-muted">Reservas anticipadas</small>
-                                </td>
-                                <td>
-                                    <div><strong>01/01 - 28/02</strong></div>
-                                    <small class="text-danger">Expirada</small>
-                                </td>
-                                <td>
-                                    <div class="usage-stats">
-                                        <div class="usage-number">1000/1000</div>
-                                        <div class="usage-bar">
-                                            <div class="usage-fill" style="width: 100%;"></div>
-                                        </div>
-                                        <small class="text-muted">100% usado</small>
-                                    </div>
-                                </td>
-                                <td><span class="status-badge status-expired">Expirada</span></td>
-                                <td>
-                                    <div class="action-buttons">
-                                        <button class="action-btn view" title="Ver detalles">
-                                            <i class="fas fa-eye"></i>
-                                        </button>
-                                        <button class="action-btn edit" title="Duplicar"
-                                            style="background-color: #17a2b8;">
-                                            <i class="fas fa-copy"></i>
-                                        </button>
-                                        <button class="action-btn delete" title="Eliminar">
-                                            <i class="fas fa-trash"></i>
-                                        </button>
-                                    </div>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-
-                <!-- Pagination -->
-                <nav>
-                    <ul class="pagination">
-                        <li class="page-item disabled">
-                            <a class="page-link" href="#" tabindex="-1">Anterior</a>
-                        </li>
-                        <li class="page-item active">
-                            <a class="page-link" href="#">1</a>
-                        </li>
-                        <li class="page-item">
-                            <a class="page-link" href="#">2</a>
-                        </li>
-                        <li class="page-item">
-                            <a class="page-link" href="#">3</a>
-                        </li>
-                        <li class="page-item">
-                            <a class="page-link" href="#">Siguiente</a>
-                        </li>
-                    </ul>
-                </nav>
-            </div>
+            <!-- Pagination -->
+            <nav>
+                <ul class="pagination">
+                    <li class="page-item disabled">
+                        <a class="page-link" href="#" tabindex="-1">Anterior</a>
+                    </li>
+                    <li class="page-item active">
+                        <a class="page-link" href="#">1</a>
+                    </li>
+                    <li class="page-item">
+                        <a class="page-link" href="#">2</a>
+                    </li>
+                    <li class="page-item">
+                        <a class="page-link" href="#">3</a>
+                    </li>
+                    <li class="page-item">
+                        <a class="page-link" href="#">Siguiente</a>
+                    </li>
+                </ul>
+            </nav>
         </div>
-    </div>
+    </x-layouts.administracion.main>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const sidebar = document.getElementById('sidebar');
-            const mainContent = document.getElementById('mainContent');
-            const toggleBtn = document.getElementById('toggleSidebar');
 
-            toggleBtn.addEventListener('click', function() {
-                sidebar.classList.toggle('show');
-                mainContent.classList.toggle('expanded');
-            });
-
-            // Cerrar el menú al hacer clic fuera de él
-            document.addEventListener('click', function(event) {
-                const isClickInsideSidebar = sidebar.contains(event.target);
-                const isClickOnToggle = toggleBtn.contains(event.target);
-
-                if (!isClickInsideSidebar && !isClickOnToggle && sidebar.classList.contains('show')) {
-                    sidebar.classList.remove('show');
-                    mainContent.classList.remove('expanded');
-                }
-            });
-        });
-    </script>
+    @vite('resources/js/sidebar.js')
 </body>
 
 </html>

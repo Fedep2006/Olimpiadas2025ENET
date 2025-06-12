@@ -2,193 +2,9 @@
 <html lang="es">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="csrf-token" content="{{ csrf_token() }}">
+    @include('administracion.partials.head')
     <title>Gestión de Usuarios - Frategar Admin</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <style>
-        :root {
-            --despegar-blue: #0066cc;
-            --despegar-orange: #ff6600;
-            --despegar-light-blue: #e6f3ff;
-            --sidebar-width: 300px;
-        }
-
-        body {
-            background-color: #f8f9fa;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
-
-        .admin-sidebar {
-            position: fixed;
-            top: 0;
-            left: 0;
-            height: 100vh;
-            width: var(--sidebar-width);
-            background: linear-gradient(180deg, var(--despegar-blue) 0%, #004499 100%);
-            color: white;
-            z-index: 1000;
-            overflow-y: auto;
-            transition: all 0.3s ease;
-        }
-
-        .admin-sidebar.collapsed {
-            width: 70px;
-        }
-
-        .admin-sidebar.collapsed .menu-text {
-            display: none;
-        }
-
-        .admin-sidebar.collapsed .sidebar-brand {
-            display: none;
-        }
-
-        .admin-sidebar.collapsed .sidebar-header {
-            justify-content: center;
-        }
-
-        .admin-sidebar.collapsed .toggle-sidebar {
-            margin-right: 0;
-        }
-
-        .admin-sidebar.collapsed .menu-item {
-            display: flex;
-            width: 100%;
-            justify-content: center;
-            text-align: center;
-            padding: 1vw 1vw;
-        }
-
-        .admin-sidebar.collapsed .menu-item i {
-            margin-right: 0;
-            font-size: 1.2rem;
-        }
-
-        .admin-sidebar.show {
-            left: 0;
-        }
-
-        .sidebar-header {
-            padding: 20px;
-            height: 7.5vh;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            min-height: 60px;
-        }
-
-        .sidebar-brand {
-            font-size: 1.5rem;
-            font-weight: bold;
-            color: white;
-            text-decoration: none;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            padding-right: 10px;
-        }
-
-        .sidebar-brand i {
-            flex-shrink: 0;
-        }
-
-        .sidebar-menu {
-            display: flex;
-            padding: 20px 0 0 0;
-            height: 92.5vh;
-            flex-direction: column;
-            justify-content: space-between;
-        }
-
-        .menu-item[type="submit"] {
-            background: none;
-            border: none;
-            border-left: 3px solid transparent;
-            box-shadow: none;
-            width: 100%;
-            text-align: left;
-            cursor: pointer;
-            font: inherit;
-
-        }
-
-        .menu-item {
-            display: flex;
-            align-items: center;
-            padding: 12px 20px;
-            color: rgba(255, 255, 255, 0.8);
-            text-decoration: none;
-            transition: all 0.3s ease;
-            border-left: 3px solid transparent;
-            white-space: nowrap;
-        }
-
-        .menu-item:hover,
-        .menu-item.active {
-            background-color: rgba(255, 255, 255, 0.1);
-            color: white;
-            border-left-color: var(--despegar-orange);
-        }
-
-        .menu-item i {
-            width: 20px;
-            margin-right: 15px;
-            text-align: center;
-        }
-
-        .main-content {
-            margin-left: var(--sidebar-width);
-            min-height: 100vh;
-            transition: margin-left 0.3s ease;
-        }
-
-        .main-content.collapsed {
-            margin-left: 70px;
-        }
-
-        .top-navbar {
-            background: white;
-            padding: 15px 30px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .admin-header h4 {
-            color: var(--despegar-blue);
-            margin: 0;
-        }
-
-        .admin-user {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-        }
-
-        .user-avatar {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            background: var(--despegar-light-blue);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: var(--despegar-blue);
-            font-weight: bold;
-        }
-
-        .dashboard-content {
-            padding: 30px;
-        }
-
         .page-header {
             background: white;
             border-radius: 15px;
@@ -684,197 +500,105 @@
             width: 100%;
             margin-top: 1rem;
         }
-
-        .toggle-sidebar {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            background: none;
-            margin-top: 1.6%;
-            border: none;
-            color: white;
-            font-size: 1.2rem;
-            cursor: pointer;
-            padding: 0;
-            transition: color 0.3s ease;
-        }
-
-        .toggle-sidebar:hover {
-            color: var(--despegar-orange);
-        }
     </style>
 </head>
 
 <body>
     <!-- Sidebar -->
-    <div class="admin-sidebar" id="sidebar">
-        <div class="sidebar-header">
-            <a href="/administracion" class="sidebar-brand">
-                <i class="fas fa-plane me-2"></i>
-                Frategar Admin
-            </a>
-            <button class="toggle-sidebar" id="toggleSidebar">
-                <i class="fas fa-bars"></i>
-            </button>
-        </div>
-
-        <!-- Sidebar -->
-
-        <nav class="sidebar-menu">
-            <div>
-                <a href="/administracion" class="menu-item ">
-                    <i class="fas fa-tachometer-alt"></i>
-                    <span class="menu-text">Inicio</span>
-                </a>
-                <a href="/administracion/reservas" class="menu-item">
-                    <i class="fas fa-calendar-check"></i>
-                    <span class="menu-text">Reservas</span>
-                </a>
-                <a href="/administracion/usuarios" class="menu-item active">
-                    <i class="fas fa-users"></i>
-                    <span class="menu-text">Usuarios</span>
-                </a>
-                <a href="/administracion/viajes" class="menu-item ">
-                    <i class="fas fa-plane"></i>
-                    <span class="menu-text">Viajes</span>
-                </a>
-                <a href="/administracion/hoteles" class="menu-item">
-                    <i class="fas fa-bed"></i>
-                    <span class="menu-text">Hospedaje</span>
-                </a>
-                <a href="/administracion/vehiculos" class="menu-item">
-                    <i class="fas fa-car"></i>
-                    <span class="menu-text">Vehiculos</span>
-                </a>
-                <a href="/administracion/paquetes" class="menu-item">
-                    <i class="fas fa-tags"></i>
-                    <span class="menu-text">Paquetes</span>
-                </a>
-                <a href="/administracion/empleados" class="menu-item ">
-                    <i class="fas fa-users"></i>
-                    <span class="menu-text">Empleados</span>
-                </a>
-            </div>
-            <form method="POST" action="{{ route('logout') }}">
-                @csrf
-                <button type="submit" class="menu-item" style="height: 6vh;">
-                    <i class="fas fa-sign-out-alt"></i>
-                    <span class="menu-text">Cerrar Sesión</span>
-                </button>
-            </form>
-        </nav>
-    </div>
+    <x-layouts.administracion.sidebar usuarios="active" />
 
     <!-- Main Content -->
-    <div class="main-content" id="mainContent">
-        <!-- Top Navbar -->
-        <div class="top-navbar">
-            <div class="admin-header">
-                <h4>Gestión de Usuarios</h4>
-            </div>
-
-            <div class="admin-user">
-                <div class="user-avatar">{{ substr(Auth::user()->name, 0, 2) }}</div>
+    <x-layouts.administracion.main nameHeader="Gestion de Usuarios">
+        <!-- Page Header -->
+        <div class="page-header">
+            <div class="d-flex justify-content-between align-items-center">
                 <div>
-                    <div class="fw-bold">{{ Auth::user()->name }}</div>
-                    <small class="text-muted">{{ Auth::user()->role }}</small>
+                    <h1 class="page-title">Gestión de Usuarios</h1>
+                    <p class="page-subtitle">Administra todos los usuarios registrados en el sistema</p>
                 </div>
+                <button class="btn-admin orange">
+                    <i class="fas fa-user-plus"></i>
+                    Nuevo Usuario
+                </button>
             </div>
         </div>
 
-        <!-- Dashboard Content -->
-        <div class="dashboard-content">
-            <!-- Page Header -->
-            <div class="page-header">
-                <div class="d-flex justify-content-between align-items-center">
-                    <div>
-                        <h1 class="page-title">Gestión de Usuarios</h1>
-                        <p class="page-subtitle">Administra todos los usuarios registrados en el sistema</p>
+        <!-- Filters -->
+        <div class="content-card">
+            <div class="search-filters">
+                <form id="searchForm" class="filter-row">
+                    <div class="filter-group">
+                        <label class="form-label">Buscar Usuario</label>
+                        <div class="input-group">
+                            <input type="text" class="form-control" name="search" id="searchInput"
+                                placeholder="Nombre, email o ID de usuario" value="{{ request('search') }}"
+                                autocomplete="off">
+                            <button class="btn btn-outline-secondary" type="button" id="clearSearch">
+                                <i class="fas fa-times"></i>
+                            </button>
+                        </div>
                     </div>
-                    <button class="btn-admin orange">
-                        <i class="fas fa-user-plus"></i>
-                        Nuevo Usuario
-                    </button>
-                </div>
+                    <div class="filter-group">
+                        <label class="form-label">Fecha de Registro</label>
+                        <input type="date" class="form-control" name="registration_date"
+                            value="{{ request('registration_date') }}">
+                    </div>
+                    <div class="filter-group">
+                        <label class="form-label">&nbsp;</label>
+                        <div class="d-flex gap-2">
+                            <button type="submit" class="btn-admin">
+                                <i class="fas fa-search"></i>
+                                Buscar
+                            </button>
+                            <button type="button" class="btn-admin" style="background-color: #6c757d;"
+                                id="clearFilters">
+                                <i class="fas fa-times"></i>
+                                Limpiar
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Users Table -->
+        <div class="content-card">
+            <div class="card-header">
+                <h5 class="card-title">Lista de Usuarios</h5>
             </div>
 
-            <!-- Filters -->
-            <div class="content-card">
-                <div class="search-filters">
-                    <form id="searchForm" class="filter-row">
-                        <div class="filter-group">
-                            <label class="form-label">Buscar Usuario</label>
-                            <div class="input-group">
-                                <input type="text" class="form-control" name="search" id="searchInput"
-                                    placeholder="Nombre, email o ID de usuario" value="{{ request('search') }}"
-                                    autocomplete="off">
-                                <button class="btn btn-outline-secondary" type="button" id="clearSearch">
-                                    <i class="fas fa-times"></i>
-                                </button>
-                            </div>
-                        </div>
-                        <div class="filter-group">
-                            <label class="form-label">Fecha de Registro</label>
-                            <input type="date" class="form-control" name="registration_date"
-                                value="{{ request('registration_date') }}">
-                        </div>
-                        <div class="filter-group">
-                            <label class="form-label">&nbsp;</label>
-                            <div class="d-flex gap-2">
-                                <button type="submit" class="btn-admin">
-                                    <i class="fas fa-search"></i>
-                                    Buscar
-                                </button>
-                                <button type="button" class="btn-admin" style="background-color: #6c757d;"
-                                    id="clearFilters">
-                                    <i class="fas fa-times"></i>
-                                    Limpiar
-                                </button>
-                            </div>
-                        </div>
-                    </form>
-                </div>
+            <div class="table-container">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Usuario</th>
+                            <th>Email</th>
+                            <th>Fecha Registro</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody id="usersTableBody">
+                        @include('administracion.partials.users-table')
+                    </tbody>
+                </table>
             </div>
 
-            <!-- Users Table -->
-            <div class="content-card">
-                <div class="card-header">
-                    <h5 class="card-title">Lista de Usuarios</h5>
+            <!-- Pagination -->
+            <div class="d-flex justify-content-between align-items-center mt-4">
+                <div class="pagination-info">
+                    @if ($users->total() > 0)
+                        Mostrando {{ $users->firstItem() }} - {{ $users->lastItem() }} de {{ $users->total() }}
+                        usuarios
+                    @else
+                        No hay usuarios para mostrar
+                    @endif
                 </div>
-
-                <div class="table-container">
-                    <table class="table">
-                        <thead>
-                            <tr>
-                                <th>Usuario</th>
-                                <th>Email</th>
-                                <th>Fecha Registro</th>
-                                <th>Acciones</th>
-                            </tr>
-                        </thead>
-                        <tbody id="usersTableBody">
-                            @include('administracion.partials.users-table')
-                        </tbody>
-                    </table>
-                </div>
-
-                <!-- Pagination -->
-                <div class="d-flex justify-content-between align-items-center mt-4">
-                    <div class="pagination-info">
-                        @if ($users->total() > 0)
-                            Mostrando {{ $users->firstItem() }} - {{ $users->lastItem() }} de {{ $users->total() }}
-                            usuarios
-                        @else
-                            No hay usuarios para mostrar
-                        @endif
-                    </div>
-                    <div class="pagination-container">
-                        @include('administracion.partials.pagination')
-                    </div>
+                <div class="pagination-container">
+                    @include('administracion.partials.pagination')
                 </div>
             </div>
         </div>
-    </div>
+    </x-layouts.administracion.main>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
@@ -961,27 +685,9 @@
     <!-- Toast Container -->
     <div class="toast-container"></div>
 
+    @vite('resources/js/sidebar.js')
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            const sidebar = document.getElementById('sidebar');
-            const mainContent = document.getElementById('mainContent');
-            const toggleBtn = document.getElementById('toggleSidebar');
-
-            toggleBtn.addEventListener('click', function() {
-                sidebar.classList.toggle('collapsed');
-                mainContent.classList.toggle('collapsed');
-            });
-
-            // Cerrar el menú al hacer clic fuera de él en dispositivos móviles
-            document.addEventListener('click', function(event) {
-                const isClickInsideSidebar = sidebar.contains(event.target);
-                const isClickOnToggle = toggleBtn.contains(event.target);
-
-                if (!isClickInsideSidebar && !isClickOnToggle && window.innerWidth < 768) {
-                    sidebar.classList.add('collapsed');
-                    mainContent.classList.add('collapsed');
-                }
-            });
 
             // Wait for DOM to be fully loaded
             setTimeout(function() {
