@@ -1,4 +1,4 @@
-import { updateTable, showToast } from "./modals/modals";
+import { updateTable, showToast } from "./utils";
 setTimeout(function () {
     // Search functionality
     let searchTimeout;

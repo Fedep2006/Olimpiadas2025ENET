@@ -1,4 +1,4 @@
-import { showToast, updateTable } from "./modals.js";
+import { updateTable, showToast } from "../utils";
 
 setTimeout(function () {
     const confirmarEliminacionModal = new bootstrap.Modal(

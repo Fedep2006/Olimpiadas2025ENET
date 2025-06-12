@@ -1,4 +1,5 @@
-import { showToast, updateTable } from "./modals.js";
+import { updateTable, showToast } from "../utils";
+
 setTimeout(function () {
     // Initialize modal after a small delay
     const nuevoRegistroModal = new bootstrap.Modal(
