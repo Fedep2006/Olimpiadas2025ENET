@@ -6,12 +6,21 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\Admin\HospedajeController;
 use App\Models\User;
+use App\Models\Viaje;
+use App\Models\Hospedaje;
+use App\Models\Vehiculo;
+
 
 use Illuminate\Support\Facades\Auth;
 
 Route::get('/', function () {
-    return view('index');
+    $viajes     = Viaje::all();
+    $hospedajes = Hospedaje::all();
+    $vehiculos  = Vehiculo::all();
+
+    return view('index', compact('viajes', 'hospedajes', 'vehiculos'));
 });
+
 Route::get('/login', function () {
     return view('login.login');
 });
