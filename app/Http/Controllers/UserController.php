@@ -39,19 +39,19 @@ class UserController extends Controller
                     'message' => 'Error de validación',
                     'errors' => $validator->errors()
                 ], 422);
+            } else {
+                // Create the user
+                $user = User::create([
+                    'name' => $request->name,
+                    'email' => $request->email,
+                    'password' => Hash::make($request->password),
+                ]);
+
+                return response()->json([
+                    'success' => true,
+                    'message' => 'Usuario creado exitosamente'
+                ], 201);
             }
-
-            // Create the user
-            $user = User::create([
-                'name' => $request->name,
-                'email' => $request->email,
-                'password' => Hash::make($request->password),
-            ]);
-
-            return response()->json([
-                'success' => true,
-                'message' => 'Usuario creado exitosamente'
-            ], 201);
         } catch (\Exception $e) {
             return response()->json([
                 'success' => false,
