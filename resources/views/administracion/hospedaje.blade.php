@@ -3,6 +3,8 @@
 
 <head>
     @include('administracion.partials.head')
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4Q6Gf2aSP4eDXB8Miphtr37CMZZQ5oXLH2yaXMJ2w8e2ZtHTl7GptT4jmndRuHDT" crossorigin="anonymous">
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/js/bootstrap.bundle.min.js" integrity="sha384-j1CDi7MgGQ12Z7Qab0qlWQ/Qqz24Gc6BM0thvEMVjHnfYGF0rmFCozFSxQBxwHKO" crossorigin="anonymous"></script>
     <title>Gestión de Hospedaje - Frategar Admin</title>
     <style>
         .page-header {
@@ -303,7 +305,7 @@
                     <h1 class="page-title">Gestión de Hospedaje</h1>
                     <p class="page-subtitle">Administra el inventario de hoteles y habitaciones</p>
                 </div>
-                <a href="#" class="btn-admin orange" data-bs-toggle="modal" data-bs-target="#createModal">
+                <a href="#" class="btn-admin orange" data-bs-toggle="modal" data-bs-target="#agregarModal">
                     <i class="fas fa-plus"></i>
                     Nuevo Hotel
                 </a>
@@ -334,7 +336,6 @@
                             <th>Politicas</th>
                             <th>Descripcion</th> <!-- Habitaciones del hospedaje -->
                             <th>Contacto</th> <!-- Habitaciones del hospedaje -->
-                            <th>Precio Por Noche</th>
                             <th>Horario</th>
                             <th>Estado</th>
                             <th>Acciones</th>
@@ -346,17 +347,13 @@
                                 <td>
                                     <div class="hotel-info">
                                         <div class="hotel-image">
-                                            <img src="{{ $hospedaje->imagen }}" alt="Imagen del hospedaje">
+                                            <img src="{{ is_array($hospedaje->imagenes) ? $hospedaje->imagenes[0] : $hospedaje->imagenes }}" alt="Imagen del hospedaje" height="45" width="60">
                                         </div>
                                         <div class="hotel-details">
                                             <h6>{{ $hospedaje->nombre }}</h6>
                                             <small>ID:</small>
                                         </div>
                                     </div>
-                                </td>
-                                <td>
-                                    <div><strong></strong></div>
-                                    <small class="text-muted"></small>
                                 </td>
                                 <td>
                                     <div class="rating-stars">
@@ -381,8 +378,11 @@
                                     <div><strong>{{ $hospedaje->tipo }}</strong></div>
                                 </td>
                                 <td>
-                                    <small class="text-muted">Servicios: {{ $hospedaje->servicios }}</small>
-                                    <small class="text-muted">Politicas: {{ $hospedaje->politicas }}</small>
+                                    <small class="text-muted">{{ is_array($hospedaje->servicios) ? implode(', ', $hospedaje->servicios) : $hospedaje->servicios }}</small>
+                                   
+                                </td>
+                                <td>
+                                <small class="text-muted">{{ is_array($hospedaje->politicas) ? implode(', ', $hospedaje->politicas) : $hospedaje->politicas }}</small>
                                 </td>
                                 <td>
                                     <div><strong>{{ $hospedaje->descripcion }}</strong></div>
@@ -392,16 +392,19 @@
                                     <small class="text-muted">{{ $hospedaje->email }}</small>
                                     <small class="text-muted">{{ $hospedaje->sitio_web }}</small>
                                 </td>
-                                <td>
+                               <!-- <td>
                                     <div class="price-info">
                                         <div class="price-amount">${{ $hospedaje->precio_por_noche }}</div>
                                         <small class="text-muted">por noche</small>
                                     </div>
-                                </td>
+                                </td>-->
                                 <td>
-                                    <div><strong>{{ $hospedaje->check_in_24h }}</strong></div>
-                                    <small class="text-muted">{{ $hospedaje->check_in }}</small>
-                                    <small class="text-muted">{{ $hospedaje->check_out }}</small>
+                                    @if ($hospedaje->check_in_24h == 1) 
+                                        <div><strong>24 horas</strong></div>
+                                    @else
+                                        <div><small class="text-muted">{{ $hospedaje->check_in }}</small></div>
+                                        <div><small class="text-muted">{{ $hospedaje->check_out }}</small></div>
+                                    @endif
                                 </td>
                                 <td>
                                     @if ($hospedaje->disponibilidad == 1)
@@ -415,7 +418,7 @@
                                         <button class="action-btn view" title="Ver detalles">
                                             <i class="fas fa-eye"></i>
                                         </button>
-                                        <button class="action-btn edit" title="Editar">
+                                        <button class="action-btn edit" title="Editar" data-bs-toggle="modal" data-bs-target="#editarModal" data-hospedaje-id="{{ $hospedaje->id }}">
                                             <i class="fas fa-edit"></i>
                                         </button>
                                         <button class="action-btn delete" title="Desactivar">
@@ -431,525 +434,356 @@
         </div>
     </x-layouts.administracion.main>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
-    <!-- Modal Crear -->
-    <div class="modal fade" id="createModal" tabindex="-1" aria-labelledby="createModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-lg">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="createModalLabel">Nuevo Hospedaje</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <form id="createForm">
-                    <div class="modal-body">
-                        <div class="row">
-                            <div class="col-md-6">
-                                <div class="mb-3">
-                                    <label for="nombre" class="form-label">Nombre de Hospedaje</label>
-                                    <input type="text" class="form-control" id="nombre" name="nombre" required
-                                        maxlength="255">
-                                </div>
-                                <div class="mb-3">
-                                    <label for="tipo" class="form-label">Tipo</label>
-                                    <select class="form-select" id="tipo" name="tipo" required>
-                                        <option value="">Seleccione un tipo</option>
-                                        <option value="hotel">Hotel</option>
-                                        <option value="hostal">Hostal</option>
-                                        <option value="apartamento">Apartamento</option>
-                                        <option value="casa">Casa</option>
-                                        <option value="cabaña">Cabaña</option>
-                                        <option value="resort">Resort</option>
-                                    </select>
-                                </div>
-                                <div class="mb-3">
-                                    <label for="pais" class="form-label">País</label>
-                                    <input type="text" class="form-control" id="pais" name="pais"
-                                        required maxlength="100">
-                                </div>
-                                <div class="mb-3">
-                                    <label for="ciudad" class="form-label">Ciudad</label>
-                                    <input type="text" class="form-control" id="ciudad" name="ciudad"
-                                        required maxlength="100">
-                                </div>
-                                <div class="mb-3">
-                                    <label for="ubicacion" class="form-label">Ubicación</label>
-                                    <input type="text" class="form-control" id="ubicacion" name="ubicacion"
-                                        required maxlength="255">
-                                </div>
-                                <div class="mb-3">
-                                    <label for="codigo_postal" class="form-label">Código Postal</label>
-                                    <input type="text" class="form-control" id="codigo_postal"
-                                        name="codigo_postal" maxlength="20">
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="mb-3">
-                                    <label for="estrellas" class="form-label">Estrellas</label>
-                                    <select class="form-select" id="estrellas" name="estrellas">
-                                        <option value="">Seleccione una cantidad de estrellas</option>
-                                        <option value="1">1 Estrella</option>
-                                        <option value="2">2 Estrellas</option>
-                                        <option value="3">3 Estrellas</option>
-                                        <option value="4">4 Estrellas</option>
-                                        <option value="5">5 Estrellas</option>
-                                    </select>
-                                </div>
-                                <div class="mb-3">
-                                    <label for="disponibilidad" class="form-label">Disponibilidad</label>
-                                    <select class="form-select" id="disponibilidad" name="disponibilidad">
-                                        <option value="1">Disponible</option>
-                                        <option value="0">No Disponible</option>
-                                    </select>
-                                </div>
-                                <div class="mb-3">
-                                    <label for="telefono" class="form-label">Teléfono</label>
-                                    <input type="text" class="form-control" id="telefono" name="telefono"
-                                        maxlength="20">
-                                </div>
-                                <div class="mb-3">
-                                    <label for="email" class="form-label">Email</label>
-                                    <input type="email" class="form-control" id="email" name="email"
-                                        maxlength="100">
-                                </div>
-                                <div class="mb-3">
-                                    <label for="sitio_web" class="form-label">Sitio Web</label>
-                                    <input type="text" class="form-control" id="sitio_web" name="sitio_web"
-                                        maxlength="255">
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-12">
-                                <div class="mb-3">
-                                    <label for="descripcion" class="form-label">Descripción</label>
-                                    <textarea class="form-control" id="descripcion" name="descripcion" rows="3"></textarea>
-                                </div>
-                                <div class="mb-3">
-                                    <label for="servicios" class="form-label">Servicios</label>
-                                    <select class="form-select" id="servicios" name="servicios[]" multiple>
-                                        <option value="wifi">WiFi</option>
-                                        <option value="piscina">Piscina</option>
-                                        <option value="restaurante">Restaurante</option>
-                                        <option value="gimnasio">Gimnasio</option>
-                                        <option value="spa">Spa</option>
-                                        <option value="estacionamiento">Estacionamiento</option>
-                                        <option value="aire_acondicionado">Aire Acondicionado</option>
-                                        <option value="servicio_habitacion">Servicio a la Habitación</option>
-                                    </select>
-                                </div>
-                                <div class="mb-3">
-                                    <label for="imagenes" class="form-label">URLs de Imágenes</label>
-                                    <select class="form-select" id="imagenes" name="imagenes[]" multiple>
-                                        <!-- Las URLs se pueden agregar dinámicamente -->
-                                    </select>
-                                    <div class="mt-2">
-                                        <input type="text" class="form-control" id="nueva_imagen"
-                                            placeholder="Agregar URL de imagen" maxlength="255">
-                                        <button type="button" class="btn btn-sm btn-primary mt-2"
-                                            onclick="agregarImagen()">Agregar Imagen</button>
-                                    </div>
-                                </div>
-                                <div class="mb-3">
-                                    <label for="check_in" class="form-label">Horario de Check-in</label>
-                                    <input type="time" class="form-control" id="check_in" name="check_in"
-                                        required>
-                                </div>
-                                <div class="mb-3">
-                                    <label for="check_out" class="form-label">Horario de Check-out</label>
-                                    <input type="time" class="form-control" id="check_out" name="check_out"
-                                        required>
-                                </div>
-                                <div class="mb-3">
-                                    <label for="check_in_24h" class="form-label">Check-in 24 horas</label>
-                                    <select class="form-select" id="check_in_24h" name="check_in_24h">
-                                        <option value="0">No</option>
-                                        <option value="1">Sí</option>
-                                    </select>
-                                </div>
-                                <div class="mb-3">
-                                    <label for="calificacion" class="form-label">Calificación</label>
-                                    <input type="number" class="form-control" id="calificacion" name="calificacion"
-                                        min="0" max="5" step="0.01">
-                                </div>
-                                <div class="mb-3">
-                                    <label for="politicas" class="form-label">Políticas</label>
-                                    <select class="form-select" id="politicas" name="politicas[]" multiple>
-                                        <option value="mascotas">Mascotas Permitidas</option>
-                                        <option value="fumar">Fumar Permitido</option>
-                                        <option value="ninos">Niños Bienvenidos</option>
-                                        <option value="cancelacion">Política de Cancelación</option>
-                                        <option value="pago">Política de Pago</option>
-                                    </select>
-                                </div>
-                                <div class="mb-3">
-                                    <label for="observaciones" class="form-label">Observaciones</label>
-                                    <textarea class="form-control" id="observaciones" name="observaciones" rows="3"></textarea>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                        <button type="submit" class="btn btn-primary">Guardar</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
-
-    <!-- Modal Editar -->
-    <div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-lg">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="editModalLabel">Editar Hospedaje</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <form id="editForm">
-                    <div class="modal-body">
-                        <input type="hidden" id="edit_id" name="id">
-                        <div class="row">
-                            <div class="col-md-6">
-                                <div class="mb-3">
-                                    <label for="edit_nombre" class="form-label">Nombre de Hospedaje</label>
-                                    <input type="text" class="form-control" id="edit_nombre" name="nombre"
-                                        required>
-                                </div>
-                                <div class="mb-3">
-                                    <label for="edit_tipo" class="form-label">Tipo</label>
-                                    <select class="form-select" id="edit_tipo" name="tipo" required>
-                                        <option value="">Seleccione un tipo</option>
-                                        <option value="hotel">Hotel</option>
-                                        <option value="hostal">Hostal</option>
-                                        <option value="apartamento">Apartamento</option>
-                                        <option value="casa">Casa</option>
-                                        <option value="cabaña">Cabaña</option>
-                                        <option value="resort">Resort</option>
-                                    </select>
-                                </div>
-                                <div class="mb-3">
-                                    <label for="edit_pais" class="form-label">País</label>
-                                    <input type="text" class="form-control" id="edit_pais" name="pais"
-                                        required>
-                                </div>
-                                <div class="mb-3">
-                                    <label for="edit_ciudad" class="form-label">Ciudad</label>
-                                    <input type="text" class="form-control" id="edit_ciudad" name="ciudad"
-                                        required>
-                                </div>
-                                <div class="mb-3">
-                                    <label for="edit_ubicacion" class="form-label">Ubicación</label>
-                                    <input type="text" class="form-control" id="edit_ubicacion" name="ubicacion"
-                                        required>
-                                </div>
-                                <div class="mb-3">
-                                    <label for="edit_codigo_postal" class="form-label">Código Postal</label>
-                                    <input type="text" class="form-control" id="edit_codigo_postal"
-                                        name="codigo_postal" required>
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="mb-3">
-                                    <label for="edit_estrellas" class="form-label">Estrellas</label>
-                                    <select class="form-select" id="edit_estrellas" name="estrellas" required>
-                                        <option value="">Seleccione una cantidad de estrellas</option>
-                                        <option value="1">1 Estrella</option>
-                                        <option value="2">2 Estrellas</option>
-                                        <option value="3">3 Estrellas</option>
-                                        <option value="4">4 Estrellas</option>
-                                        <option value="5">5 Estrellas</option>
-                                    </select>
-                                </div>
-                                <div class="mb-3">
-                                    <label for="edit_disponibilidad" class="form-label">Disponibilidad</label>
-                                    <select class="form-select" id="edit_disponibilidad" name="disponibilidad"
-                                        required>
-                                        <option value="1">Disponible</option>
-                                        <option value="0">No Disponible</option>
-                                    </select>
-                                </div>
-                                <div class="mb-3">
-                                    <label for="edit_telefono" class="form-label">Teléfono</label>
-                                    <input type="text" class="form-control" id="edit_telefono" name="telefono"
-                                        required>
-                                </div>
-                                <div class="mb-3">
-                                    <label for="edit_email" class="form-label">Email</label>
-                                    <input type="email" class="form-control" id="edit_email" name="email"
-                                        required>
-                                </div>
-                                <div class="mb-3">
-                                    <label for="edit_sitio_web" class="form-label">Sitio Web</label>
-                                    <input type="text" class="form-control" id="edit_sitio_web" name="sitio_web"
-                                        required>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-12">
-                                <div class="mb-3">
-                                    <label for="edit_descripcion" class="form-label">Descripción</label>
-                                    <textarea class="form-control" id="edit_descripcion" name="descripcion" rows="3" required></textarea>
-                                </div>
-                                <div class="mb-3">
-                                    <label for="edit_servicios" class="form-label">Servicios</label>
-                                    <select class="form-select" id="edit_servicios" name="servicios[]" multiple>
-                                        <option value="wifi">WiFi</option>
-                                        <option value="piscina">Piscina</option>
-                                        <option value="restaurante">Restaurante</option>
-                                        <option value="gimnasio">Gimnasio</option>
-                                        <option value="spa">Spa</option>
-                                        <option value="estacionamiento">Estacionamiento</option>
-                                        <option value="aire_acondicionado">Aire Acondicionado</option>
-                                        <option value="servicio_habitacion">Servicio a la Habitación</option>
-                                    </select>
-                                </div>
-                                <div class="mb-3">
-                                    <label for="edit_imagenes" class="form-label">URLs de Imágenes</label>
-                                    <select class="form-select" id="edit_imagenes" name="imagenes[]" multiple>
-                                        <!-- Las URLs se pueden agregar dinámicamente -->
-                                    </select>
-                                    <div class="mt-2">
-                                        <input type="url" class="form-control" id="nueva_imagen_edit"
-                                            placeholder="Agregar URL de imagen">
-                                        <button type="button" class="btn btn-sm btn-primary mt-2"
-                                            onclick="agregarImagenEdit()">Agregar Imagen</button>
-                                    </div>
-                                </div>
-                                <div class="mb-3">
-                                    <label for="edit_check_in" class="form-label">Horario de Check-in</label>
-                                    <input type="time" class="form-control" id="edit_check_in" name="check_in"
-                                        required>
-                                </div>
-                                <div class="mb-3">
-                                    <label for="edit_check_out" class="form-label">Horario de Check-out</label>
-                                    <input type="time" class="form-control" id="edit_check_out" name="check_out"
-                                        required>
-                                </div>
-                                <div class="mb-3">
-                                    <label for="edit_check_in_24h" class="form-label">Check-in 24 horas</label>
-                                    <select class="form-select" id="edit_check_in_24h" name="check_in_24h">
-                                        <option value="0">No</option>
-                                        <option value="1">Sí</option>
-                                    </select>
-                                </div>
-                                <div class="mb-3">
-                                    <label for="edit_calificacion" class="form-label">Calificación</label>
-                                    <input type="number" class="form-control" id="edit_calificacion"
-                                        name="calificacion" min="0" max="5" step="0.01">
-                                </div>
-                                <div class="mb-3">
-                                    <label for="edit_politicas" class="form-label">Políticas</label>
-                                    <select class="form-select" id="edit_politicas" name="politicas[]" multiple>
-                                        <option value="mascotas">Mascotas Permitidas</option>
-                                        <option value="fumar">Fumar Permitido</option>
-                                        <option value="ninos">Niños Bienvenidos</option>
-                                        <option value="cancelacion">Política de Cancelación</option>
-                                        <option value="pago">Política de Pago</option>
-                                    </select>
-                                </div>
-                                <div class="mb-3">
-                                    <label for="edit_observaciones" class="form-label">Observaciones</label>
-                                    <textarea class="form-control" id="edit_observaciones" name="observaciones" rows="3"></textarea>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                        <button type="submit" class="btn btn-primary">Actualizar</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
     @vite('resources/js/sidebar.js')
-    @push('scripts')
-        <script>
-            $(document).ready(function() {
-                // Configurar CSRF token para todas las peticiones AJAX
-                $.ajaxSetup({
-                    headers: {
-                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
-                    }
-                });
+    <!-- Modal -->
+<div class="modal fade" id="agregarModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="exampleModalLabel">Agregar Hospedaje</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form action="{{ route('administracion.hospedaje.Agregar') }}" method="post" enctype="multipart/form-data">
+            @csrf
+            <div class="mb-3">
+                <label for="nombre" class="form-label">Nombre comercial del establecimiento</label>
+                <input type="text" class="form-control" id="nombre" name="nombre" required>
+            </div>
+            <div class="mb-3">
+                <label for="tipo" class="form-label">Tipo de establecimiento de hospedaje</label>
+                <select class="form-select" id="tipo" name="tipo" required>
+                    <option value="hotel">Hotel</option>
+                    <option value="hostal">Hostal</option>
+                    <option value="apartamento">Apartamento</option>
+                    <option value="resort">Resort</option>
+                    <option value="bed_and_breakfast">Bed & Breakfast</option>
+                </select>
+            </div>
+            <div class="mb-3">
+                <label for="ubicacion" class="form-label">Dirección física del establecimiento</label>
+                <input type="text" class="form-control" id="ubicacion" name="ubicacion" required>
+            </div>
+            <div class="mb-3">
+                <label for="pais" class="form-label">País donde se encuentra el establecimiento</label>
+                <input type="text" class="form-control" id="pais" name="pais" required>
+            </div>
+            <div class="mb-3">
+                <label for="ciudad" class="form-label">Ciudad donde se encuentra el establecimiento</label>
+                <input type="text" class="form-control" id="ciudad" name="ciudad" required>
+            </div>
+            <div class="mb-3">
+                <label for="codigo_postal" class="form-label">Código postal de la ubicación</label>
+                <input type="text" class="form-control" id="codigo_postal" name="codigo_postal" required>
+            </div>
+            <div class="mb-3">
+                <label for="estrellas" class="form-label">Clasificación del establecimiento (1 a 5 estrellas)</label>
+                <select class="form-select" id="estrellas" name="estrellas" required>
+                    <option value="1">1 Estrella</option>
+                    <option value="2">2 Estrellas</option>
+                    <option value="3">3 Estrellas</option>
+                    <option value="4">4 Estrellas</option>
+                    <option value="5">5 Estrellas</option>
+                </select>
+            </div>
+            <div class="mb-3">
+                <label for="calificacion" class="form-label">Calificación promedio (0.00 a 5.00)</label>
+                <input type="number" class="form-control" id="calificacion" name="calificacion" step="0.01" min="0" max="5" required>
+            </div>
+            <div class="mb-3">
+                <label for="descripcion" class="form-label">Descripción detallada del establecimiento y sus instalaciones</label>
+                <textarea class="form-control" id="descripcion" name="descripcion" rows="4" required></textarea>
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Servicios ofrecidos</label>
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" name="servicios[]" value="wifi" id="servicio_wifi" {{ is_array($hospedaje->servicios) && in_array('wifi', $hospedaje->servicios) ? 'checked' : '' }}>
+                            <label class="form-check-label" for="servicio_wifi">WiFi</label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" name="servicios[]" value="piscina" id="servicio_piscina" {{ is_array($hospedaje->servicios) && in_array('piscina', $hospedaje->servicios) ? 'checked' : '' }}>
+                            <label class="form-check-label" for="servicio_piscina">Piscina</label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" name="servicios[]" value="restaurante" id="servicio_restaurante" {{ is_array($hospedaje->servicios) && in_array('restaurante', $hospedaje->servicios) ? 'checked' : '' }}>
+                            <label class="form-check-label" for="servicio_restaurante">Restaurante</label>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" name="servicios[]" value="gimnasio" id="servicio_gimnasio" {{ is_array($hospedaje->servicios) && in_array('gimnasio', $hospedaje->servicios) ? 'checked' : '' }}>
+                            <label class="form-check-label" for="servicio_gimnasio">Gimnasio</label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" name="servicios[]" value="spa" id="servicio_spa" {{ is_array($hospedaje->servicios) && in_array('spa', $hospedaje->servicios) ? 'checked' : '' }}>
+                            <label class="form-check-label" for="servicio_spa">Spa</label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" name="servicios[]" value="estacionamiento" id="servicio_estacionamiento" {{ is_array($hospedaje->servicios) && in_array('estacionamiento', $hospedaje->servicios) ? 'checked' : '' }}>
+                            <label class="form-check-label" for="servicio_estacionamiento">Estacionamiento</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Políticas del establecimiento</label>
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" name="politicas[]" value="mascotas" id="politica_mascotas" {{ is_array($hospedaje->politicas) && in_array('mascotas', $hospedaje->politicas) ? 'checked' : '' }}>
+                            <label class="form-check-label" for="politica_mascotas">Permite mascotas</label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" name="politicas[]" value="fumar" id="politica_fumar" {{ is_array($hospedaje->politicas) && in_array('fumar', $hospedaje->politicas) ? 'checked' : '' }}>
+                            <label class="form-check-label" for="politica_fumar">Permite fumar</label>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" name="politicas[]" value="ninios" id="politica_ninios" {{ is_array($hospedaje->politicas) && in_array('ninios', $hospedaje->politicas) ? 'checked' : '' }}>
+                            <label class="form-check-label" for="politica_ninios">Apto para niños</label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" name="politicas[]" value="cancelacion" id="politica_cancelacion" {{ is_array($hospedaje->politicas) && in_array('cancelacion', $hospedaje->politicas) ? 'checked' : '' }}>
+                            <label class="form-check-label" for="politica_cancelacion">Política de cancelación flexible</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="mb-3">
+                <label for="imagenes" class="form-label">URL de la imagen del establecimiento</label>
+                <input type="text" class="form-control" id="imagenes" name="imagenes" required>
+            </div>
+            <div class="mb-3">
+                <label for="telefono" class="form-label">Número de teléfono de contacto</label>
+                <input type="tel" class="form-control" id="telefono" name="telefono" required>
+            </div>
+            <div class="mb-3">
+                <label for="email" class="form-label">Correo electrónico de contacto</label>
+                <input type="email" class="form-control" id="email" name="email" required>
+            </div>
+            <div class="mb-3">
+                <label for="sitio_web" class="form-label">URL del sitio web oficial</label>
+                <input type="text" class="form-control" id="sitio_web" name="sitio_web">
+            </div>
+            <div class="mb-3">
+                <label for="check_in" class="form-label">Hora estándar de check-in</label>
+                <input type="time" class="form-control" id="check_in" name="check_in" required>
+            </div>
+            <div class="mb-3">
+                <label for="check_out" class="form-label">Hora estándar de check-out</label>
+                <input type="time" class="form-control" id="check_out" name="check_out" required>
+            </div>
+            <div class="mb-3">
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" id="check_in_24h" name="check_in_24h" value="1">
+                    <label class="form-check-label" for="check_in_24h">
+                        Permite check-in las 24 horas
+                    </label>
+                </div>
+            </div>
+            <div class="mb-3">
+                <label for="observaciones" class="form-label">Notas adicionales sobre el establecimiento</label>
+                <textarea class="form-control" id="observaciones" name="observaciones" rows="3"></textarea>
+            </div>
+            <div class="mb-3">
+            
+                    <select class="form-select" id="disponibilidad" name="disponibilidad" required>
+                    <option value="1">Disponible</option>
+                    <option value="0">No Disponible</option>
+                </select>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                <button type="submit" class="btn btn-primary">Guardar Hospedaje</button>
+            </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
 
-                // Inicializar select2 para campos múltiples
-                $('#servicios, #politicas, #edit_servicios, #edit_politicas, #imagenes').select2({
-                    theme: 'bootstrap-5',
-                    width: '100%',
-                    placeholder: 'Seleccione las opciones'
-                });
-
-                // Función para agregar imágenes
-                window.agregarImagen = function() {
-                    let nuevaUrl = $('#nueva_imagen').val();
-                    if (nuevaUrl) {
-                        let option = new Option(nuevaUrl, nuevaUrl, true, true);
-                        $('#imagenes').append(option).trigger('change');
-                        $('#nueva_imagen').val('');
-                    }
-                };
-
-                // Función para agregar imágenes en el modal de edición
-                window.agregarImagenEdit = function() {
-                    let nuevaUrl = $('#nueva_imagen_edit').val();
-                    if (nuevaUrl) {
-                        let option = new Option(nuevaUrl, nuevaUrl, true, true);
-                        $('#edit_imagenes').append(option).trigger('change');
-                        $('#nueva_imagen_edit').val('');
-                    }
-                };
-
-                // Crear hospedaje
-                $('#createForm').on('submit', function(e) {
-                    e.preventDefault();
-
-                    let formData = $(this).serializeArray();
-
-                    $.ajax({
-                        url: '{{ route('administracion.hospedaje.Agregar') }}',
-                        method: 'POST',
-                        data: formData,
-                        success: function(response) {
-                            if (response.success) {
-                                $('#createModal').modal('hide');
-                                location.reload();
-                            }
-                        },
-                        error: function(xhr) {
-                            if (xhr.status === 422) {
-                                let errors = xhr.responseJSON.errors;
-                                let errorMessage = '';
-                                for (let field in errors) {
-                                    errorMessage += errors[field].join('\n') + '\n';
-                                }
-                                alert(errorMessage);
-                            } else {
-                                alert('Error al crear el hospedaje');
-                            }
-                        }
-                    });
-                });
-
-                // Editar hospedaje
-                $('.edit-btn').click(function() {
-                    let id = $(this).data('id');
-                    let nombre = $(this).data('nombre');
-                    let tipo = $(this).data('tipo');
-                    let pais = $(this).data('pais');
-                    let ciudad = $(this).data('ciudad');
-                    let ubicacion = $(this).data('ubicacion');
-                    let codigo_postal = $(this).data('codigo_postal');
-                    let estrellas = $(this).data('estrellas');
-                    let disponibilidad = $(this).data('disponibilidad');
-                    let telefono = $(this).data('telefono');
-                    let email = $(this).data('email');
-                    let sitio_web = $(this).data('sitio_web');
-                    let descripcion = $(this).data('descripcion');
-                    let servicios = JSON.parse($(this).data('servicios') || '[]');
-                    let politicas = JSON.parse($(this).data('politicas') || '[]');
-                    let imagenes = JSON.parse($(this).data('imagenes') || '[]');
-                    let check_in = $(this).data('check_in');
-                    let check_out = $(this).data('check_out');
-                    let check_in_24h = $(this).data('check_in_24h');
-                    let calificacion = $(this).data('calificacion');
-
-                    $('#edit_id').val(id);
-                    $('#edit_nombre').val(nombre);
-                    $('#edit_tipo').val(tipo);
-                    $('#edit_pais').val(pais);
-                    $('#edit_ciudad').val(ciudad);
-                    $('#edit_ubicacion').val(ubicacion);
-                    $('#edit_codigo_postal').val(codigo_postal);
-                    $('#edit_estrellas').val(estrellas);
-                    $('#edit_disponibilidad').val(disponibilidad);
-                    $('#edit_telefono').val(telefono);
-                    $('#edit_email').val(email);
-                    $('#edit_sitio_web').val(sitio_web);
-                    $('#edit_descripcion').val(descripcion);
-                    $('#edit_servicios').val(servicios).trigger('change');
-                    $('#edit_politicas').val(politicas).trigger('change');
-                    $('#edit_imagenes').empty().append(imagenes.map(url => new Option(url, url, true, true))
-                        .join('')).trigger('change');
-                    $('#edit_check_in').val(check_in);
-                    $('#edit_check_out').val(check_out);
-                    $('#edit_check_in_24h').val(check_in_24h);
-                    $('#edit_calificacion').val(calificacion);
-                });
-
-                $('#editForm').on('submit', function(e) {
-                    e.preventDefault();
-
-                    let formData = $(this).serializeArray();
-
-                    $.ajax({
-                        url: '{{ route('administracion.hospedaje.Editar') }}',
-                        method: 'POST',
-                        data: formData,
-                        success: function(response) {
-                            if (response.success) {
-                                $('#editModal').modal('hide');
-                                location.reload();
-                            }
-                        },
-                        error: function(xhr) {
-                            if (xhr.status === 422) {
-                                let errors = xhr.responseJSON.errors;
-                                let errorMessage = '';
-                                for (let field in errors) {
-                                    errorMessage += errors[field].join('\n') + '\n';
-                                }
-                                alert(errorMessage);
-                            } else {
-                                alert('Error al actualizar el hospedaje');
-                            }
-                        }
-                    });
-                });
-
-                // Eliminar hospedaje
-                $('.delete-btn').click(function() {
-                    if (confirm('¿Está seguro de eliminar este hospedaje?')) {
-                        let id = $(this).data('id');
-                        $.ajax({
-                            url: '{{ url('administracion/hospedaje/eliminar') }}/' + id,
-                            method: 'DELETE',
-                            success: function(response) {
-                                if (response.success) {
-                                    location.reload();
-                                }
-                            },
-                            error: function(xhr) {
-                                alert('Error al eliminar el hospedaje');
-                            }
-                        });
-                    }
-                });
-
-                // Manejar cambio en disponibilidad
-                $('#disponibilidad, #edit_disponibilidad').change(function() {
-                    let horarioInputs = $('#check_in, #check_out');
-                    if ($(this).val() === '1') {
-                        horarioInputs.prop('disabled', true);
-                    } else {
-                        horarioInputs.prop('disabled', false);
-                    }
-                });
-
-                // Manejar cambio en check-in 24h
-                $('#check_in_24h, #edit_check_in_24h').change(function() {
-                    let horarioInputs = $('#check_in, #check_out');
-                    if ($(this).val() === '1') {
-                        horarioInputs.prop('disabled', true);
-                    } else {
-                        horarioInputs.prop('disabled', false);
-                    }
-                });
-            });
-        </script>
-    @endpush
+<div class="modal fade" id="editarModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="exampleModalLabel">Editar Hospedaje</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form action="{{ route('administracion.hospedaje.Editar') }}" method="post" enctype="multipart/form-data">
+            @csrf
+            <input type="hidden" name="id" value="{{ $hospedaje->id }}">
+            <div class="mb-3">
+                <label for="nombre" class="form-label">Nombre comercial del establecimiento</label>
+                <input type="text" class="form-control" id="nombre" name="nombre" value="{{ $hospedaje->nombre }}" required>
+            </div>
+            <div class="mb-3">
+                <label for="tipo" class="form-label">Tipo de establecimiento de hospedaje</label>
+                <select class="form-select" id="tipo" name="tipo" value="{{ $hospedaje->tipo }}" required>
+                    <option value="hotel">Hotel</option>
+                    <option value="hostal">Hostal</option>
+                    <option value="apartamento">Apartamento</option>
+                    <option value="resort">Resort</option>
+                    <option value="bed_and_breakfast">Bed & Breakfast</option>
+                </select>
+            </div>
+            <div class="mb-3">
+                <label for="ubicacion" class="form-label">Dirección física del establecimiento</label>
+                <input type="text" class="form-control" id="ubicacion" name="ubicacion" value="{{ $hospedaje->ubicacion }}" required>
+            </div>
+            <div class="mb-3">
+                <label for="pais" class="form-label">País donde se encuentra el establecimiento</label>
+                <input type="text" class="form-control" id="pais" name="pais" value="{{ $hospedaje->pais }}" required>
+            </div>
+            <div class="mb-3">
+                <label for="ciudad" class="form-label">Ciudad donde se encuentra el establecimiento</label>
+                <input type="text" class="form-control" id="ciudad" name="ciudad" value="{{ $hospedaje->ciudad }}" required>
+            </div>
+            <div class="mb-3">
+                <label for="codigo_postal" class="form-label">Código postal de la ubicación</label>
+                <input type="text" class="form-control" id="codigo_postal" name="codigo_postal" value="{{ $hospedaje->codigo_postal }}" required>
+            </div>
+            <div class="mb-3">
+                <label for="estrellas" class="form-label">Clasificación del establecimiento (1 a 5 estrellas)</label>
+                <select class="form-select" id="estrellas" name="estrellas" required>
+                    <option value="1" {{ $hospedaje->estrellas == 1 ? 'selected' : '' }}>1 Estrella</option>
+                    <option value="2" {{ $hospedaje->estrellas == 2 ? 'selected' : '' }}>2 Estrellas</option>
+                    <option value="3" {{ $hospedaje->estrellas == 3 ? 'selected' : '' }}>3 Estrellas</option>
+                    <option value="4" {{ $hospedaje->estrellas == 4 ? 'selected' : '' }}>4 Estrellas</option>
+                    <option value="5" {{ $hospedaje->estrellas == 5 ? 'selected' : '' }}>5 Estrellas</option>
+                </select>
+            </div>
+            <div class="mb-3">
+                <label for="calificacion" class="form-label">Calificación promedio (0.00 a 5.00)</label>
+                <input type="number" class="form-control" id="calificacion" name="calificacion" step="0.01" min="0" max="5" value="{{ $hospedaje->calificacion }}" required>
+            </div>
+            <div class="mb-3">
+                <label for="descripcion" class="form-label">Descripción detallada del establecimiento y sus instalaciones</label>
+                <textarea class="form-control" id="descripcion" name="descripcion" rows="4" required>{{ $hospedaje->descripcion }}</textarea>
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Servicios ofrecidos</label>
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" name="servicios[]" value="wifi" id="servicio_wifi" {{ is_array($hospedaje->servicios) && in_array('wifi', $hospedaje->servicios) ? 'checked' : '' }}>
+                            <label class="form-check-label" for="servicio_wifi">WiFi</label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" name="servicios[]" value="piscina" id="servicio_piscina" {{ is_array($hospedaje->servicios) && in_array('piscina', $hospedaje->servicios) ? 'checked' : '' }}>
+                            <label class="form-check-label" for="servicio_piscina">Piscina</label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" name="servicios[]" value="restaurante" id="servicio_restaurante" {{ is_array($hospedaje->servicios) && in_array('restaurante', $hospedaje->servicios) ? 'checked' : '' }}>
+                            <label class="form-check-label" for="servicio_restaurante">Restaurante</label>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" name="servicios[]" value="gimnasio" id="servicio_gimnasio" {{ is_array($hospedaje->servicios) && in_array('gimnasio', $hospedaje->servicios) ? 'checked' : '' }}>
+                            <label class="form-check-label" for="servicio_gimnasio">Gimnasio</label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" name="servicios[]" value="spa" id="servicio_spa" {{ is_array($hospedaje->servicios) && in_array('spa', $hospedaje->servicios) ? 'checked' : '' }}>
+                            <label class="form-check-label" for="servicio_spa">Spa</label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" name="servicios[]" value="estacionamiento" id="servicio_estacionamiento" {{ is_array($hospedaje->servicios) && in_array('estacionamiento', $hospedaje->servicios) ? 'checked' : '' }}>
+                            <label class="form-check-label" for="servicio_estacionamiento">Estacionamiento</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Políticas del establecimiento</label>
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" name="politicas[]" value="mascotas" id="politica_mascotas" {{ is_array($hospedaje->politicas) && in_array('mascotas', $hospedaje->politicas) ? 'checked' : '' }}>
+                            <label class="form-check-label" for="politica_mascotas">Permite mascotas</label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" name="politicas[]" value="fumar" id="politica_fumar" {{ is_array($hospedaje->politicas) && in_array('fumar', $hospedaje->politicas) ? 'checked' : '' }}>
+                            <label class="form-check-label" for="politica_fumar">Permite fumar</label>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" name="politicas[]" value="ninios" id="politica_ninios" {{ is_array($hospedaje->politicas) && in_array('ninios', $hospedaje->politicas) ? 'checked' : '' }}>
+                            <label class="form-check-label" for="politica_ninios">Apto para niños</label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" name="politicas[]" value="cancelacion" id="politica_cancelacion" {{ is_array($hospedaje->politicas) && in_array('cancelacion', $hospedaje->politicas) ? 'checked' : '' }}>
+                            <label class="form-check-label" for="politica_cancelacion">Política de cancelación flexible</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="mb-3">
+                <label for="imagenes" class="form-label">URL de la imagen del establecimiento</label>
+                <input type="text" class="form-control" id="imagenes" name="imagenes" value="{{ $hospedaje->imagenes }}" required>
+            </div>
+            <div class="mb-3">
+                <label for="telefono" class="form-label">Número de teléfono de contacto</label>
+                <input type="tel" class="form-control" id="telefono" name="telefono" value="{{ $hospedaje->telefono }}" required>
+            </div>
+            <div class="mb-3">
+                <label for="email" class="form-label">Correo electrónico de contacto</label>
+                <input type="email" class="form-control" id="email" name="email" value="{{ $hospedaje->email }}" required>
+            </div>
+            <div class="mb-3">
+                <label for="sitio_web" class="form-label">URL del sitio web oficial</label>
+                <input type="text" class="form-control" id="sitio_web" name="sitio_web" value="{{ $hospedaje->sitio_web }}">
+            </div>
+            <div class="mb-3">
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" id="check_in_24h" name="check_in_24h" value="1">
+                    <label class="form-check-label" for="check_in_24h">
+                        Permite check-in las 24 horas
+                    </label>
+                </div>
+            </div>
+            <div class="mb-3">
+                <label for="check_in" class="form-label">Hora estándar de check-in</label>
+                <input type="time" class="form-control" id="check_in" name="check_in" value="{{ $hospedaje->check_in }}" required>
+            </div>
+            <div class="mb-3">
+                <label for="check_out" class="form-label">Hora estándar de check-out</label>
+                <input type="time" class="form-control" id="check_out" name="check_out" value="{{ $hospedaje->check_out }}" required>
+            </div>
+            <div class="mb-3">
+                <label for="observaciones" class="form-label">Notas adicionales sobre el establecimiento</label>
+                <textarea class="form-control" id="observaciones" name="observaciones" rows="3">{{ $hospedaje->observaciones }}</textarea>
+            </div>
+            <div class="mb-3">
+            
+                    <select class="form-select" id="disponibilidad" name="disponibilidad" required>
+                    <option value="1" {{ $hospedaje->disponibilidad == 1 ? 'selected' : '' }}>Disponible</option>
+                    <option value="0" {{ $hospedaje->disponibilidad == 0 ? 'selected' : '' }}>No Disponible</option>
+                </select>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                <button type="submit" class="btn btn-primary">Guardar Hospedaje</button>
+            </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
 </body>
+<script>
+    const myModal = document.getElementById('myModal')
+const myInput = document.getElementById('myInput')
+
+myModal.addEventListener('shown.bs.modal', () => {
+  myInput.focus()
+})
+</script>
 
 </html>
