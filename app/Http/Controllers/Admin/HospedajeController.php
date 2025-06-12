@@ -73,7 +73,11 @@ class HospedajeController extends Controller
         $hospedaje->sitio_web = $request->sitio_web;
         $hospedaje->check_in = $request->check_in;
         $hospedaje->check_out = $request->check_out;
-        $hospedaje->check_in_24h = $request->check_in_24h;
+        if ($request->check_in_24h == 1) {
+            $hospedaje->check_in_24h = 1;
+        } else {
+            $hospedaje->check_in_24h = 0;
+        }
         $hospedaje->disponibilidad = $request->disponibilidad;
         $hospedaje->observaciones = $request->observaciones;
         $hospedaje->save();
