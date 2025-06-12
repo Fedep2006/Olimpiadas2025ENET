@@ -55,6 +55,7 @@ Route::prefix('administracion')->middleware('auth')->group(function () {
 
     Route::get('/viajes', [App\Http\Controllers\Admin\ViajeController::class, 'index'])->name('administracion.viajes');
     Route::post('/viajes', [App\Http\Controllers\Admin\ViajeController::class, 'store'])->name('viajes.store');
+    Route::get('/viajes/{id}/edit', [App\Http\Controllers\Admin\ViajeController::class, 'edit'])->name('viajes.edit');
     Route::put('/viajes/{id}', [App\Http\Controllers\Admin\ViajeController::class, 'update'])->name('viajes.update');
     Route::delete('/viajes/{id}', [App\Http\Controllers\Admin\ViajeController::class, 'destroy'])->name('viajes.destroy');
 

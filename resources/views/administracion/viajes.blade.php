@@ -4,10 +4,34 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Administración de Viajes</title>
+    
+    <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>Gestión de Viajes - Frategar Admin</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    
+    <!-- jQuery primero -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Select2 -->
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+    <!-- SweetAlert2 -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+    
+    <!-- Configuración global de AJAX -->
+    <script>
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        });
+    </script>
     <style>
         :root {
             --despegar-blue: #0066cc;
@@ -246,30 +270,10 @@
         .action-btn {
             width: 32px;
             height: 32px;
-            border: none;
-            border-radius: 4px;
+            padding: 0;
             display: flex;
             align-items: center;
             justify-content: center;
-            color: white;
-            cursor: pointer;
-            transition: all 0.3s;
-        }
-
-        .action-btn.view {
-            background-color: var(--despegar-blue);
-        }
-
-        .action-btn.edit {
-            background-color: #ffc107;
-        }
-
-        .action-btn.delete {
-            background-color: #dc3545;
-        }
-
-        .action-btn:hover {
-            opacity: 0.8;
         }
 
         .filtros-sidebar {
@@ -559,6 +563,13 @@
             background-color: var(--despegar-blue);
             border-color: var(--despegar-blue);
         }
+
+        .select2-container {
+            width: 100% !important;
+        }
+        .table th, .table td {
+            vertical-align: middle;
+        }
     </style>
 </head>
 
@@ -657,6 +668,20 @@
                 </div>
             </div>
 
+            @if(session('success'))
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                    {{ session('success') }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            @endif
+
+            @if(session('error'))
+                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    {{ session('error') }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            @endif
+
             <!-- Stats Row -->
             <div class="stats-row">
                 <div class="stat-card">
@@ -721,7 +746,7 @@
 
             <!-- Tabla de viajes -->
             <div class="table-responsive">
-                <table class="table">
+                <table class="table table-striped">
                     <thead>
                         <tr>
                             <th>ID</th>
@@ -730,9 +755,12 @@
                             <th>Origen</th>
                             <th>Destino</th>
                             <th>Fecha Salida</th>
+                            <th>Fecha Llegada</th>
                             <th>Empresa</th>
-                            <th>Asientos Disp.</th>
-                            <th>Precio Base</th>
+                            <th>Número</th>
+                            <th>Capacidad</th>
+                            <th>Disponibles</th>
+                            <th>Precio</th>
                             <th>Estado</th>
                             <th>Acciones</th>
                         </tr>
@@ -742,44 +770,33 @@
                         <tr>
                             <td>{{ $viaje->id }}</td>
                             <td>{{ $viaje->nombre }}</td>
-                            <td>
-                                @switch($viaje->tipo)
-                                    @case('bus')
-                                        <span class="badge bg-primary">Bus</span>
-                                        @break
-                                    @case('avion')
-                                        <span class="badge bg-info">Avión</span>
-                                        @break
-                                    @case('tren')
-                                        <span class="badge bg-success">Tren</span>
-                                        @break
-                                    @case('barco')
-                                        <span class="badge bg-warning">Barco</span>
-                                        @break
-                                    @case('transporte_privado')
-                                        <span class="badge bg-secondary">Transporte Privado</span>
-                                        @break
-                                @endswitch
-                            </td>
+                            <td>{{ $viaje->tipo }}</td>
                             <td>{{ $viaje->origen }}</td>
                             <td>{{ $viaje->destino }}</td>
                             <td>{{ $viaje->fecha_salida->format('d/m/Y H:i') }}</td>
+                            <td>{{ $viaje->fecha_llegada->format('d/m/Y H:i') }}</td>
                             <td>{{ $viaje->empresa }}</td>
-                            <td>{{ $viaje->asientos_disponibles }}/{{ $viaje->capacidad_total }}</td>
+                            <td>{{ $viaje->numero_viaje }}</td>
+                            <td>{{ $viaje->capacidad_total }}</td>
+                            <td>{{ $viaje->asientos_disponibles }}</td>
                             <td>${{ number_format($viaje->precio_base, 2) }}</td>
                             <td>
-                                @if($viaje->activo)
-                                    <span class="badge bg-success">Activo</span>
-                                @else
-                                    <span class="badge bg-danger">Inactivo</span>
-                                @endif
+                                <span class="badge bg-{{ $viaje->activo ? 'success' : 'danger' }}">
+                                    {{ $viaje->activo ? 'Activo' : 'Inactivo' }}
+                                </span>
                             </td>
                             <td>
                                 <div class="action-buttons">
-                                    <button class="action-btn btn-edit" data-id="{{ $viaje->id }}" title="Editar">
+                                    <button type="button"
+                                            class="btn btn-sm btn-primary btn-edit"
+                                            data-id="{{ $viaje->id }}"
+                                            data-bs-toggle="modal"
+                                            data-bs-target="#viajeModal">
                                         <i class="fas fa-edit"></i>
                                     </button>
-                                    <button class="action-btn btn-delete" data-id="{{ $viaje->id }}" title="Eliminar">
+                                    <button type="button"
+                                            class="btn btn-sm btn-danger"
+                                            onclick="eliminarViaje({{ $viaje->id }})">
                                         <i class="fas fa-trash"></i>
                                     </button>
                                 </div>
@@ -793,121 +810,164 @@
     </div>
 
     <!-- Modal para crear/editar viaje -->
-    <div class="modal fade" id="viajeModal" tabindex="-1">
-        <div class="modal-dialog">
+    <div class="modal fade" id="viajeModal" tabindex="-1" aria-labelledby="viajeModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="viajeModalLabel">Nuevo Viaje</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <form id="viajeForm" enctype="multipart/form-data">
-                        <input type="hidden" id="viaje_id" name="viaje_id">
+                    <form id="viajeForm" onsubmit="guardarViaje(); return false;">
+                        @csrf
+                        <input type="hidden" name="_method" id="method" value="POST">
+                        <input type="hidden" name="id" id="viaje_id">
                         
-                        <div class="mb-3">
-                            <label for="nombre" class="form-label">Nombre del Viaje</label>
-                            <input type="text" class="form-control" id="nombre" name="nombre" required>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label for="nombre" class="form-label">Nombre *</label>
+                                    <input type="text" class="form-control" id="nombre" name="nombre" required>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label for="tipo" class="form-label">Tipo *</label>
+                                    <select class="form-control" id="tipo" name="tipo" required>
+                                        <option value="">Seleccione un tipo</option>
+                                        <option value="Nacional">Nacional</option>
+                                        <option value="Internacional">Internacional</option>
+                                    </select>
+                                </div>
+                            </div>
                         </div>
 
-                        <div class="mb-3">
-                            <label for="tipo" class="form-label">Tipo de Transporte</label>
-                            <select class="form-select" id="tipo" name="tipo" required>
-                                <option value="bus">Bus</option>
-                                <option value="avion">Avión</option>
-                                <option value="tren">Tren</option>
-                                <option value="barco">Barco</option>
-                                <option value="transporte_privado">Transporte Privado</option>
-                            </select>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label for="origen" class="form-label">Origen *</label>
+                                    <input type="text" class="form-control" id="origen" name="origen" required>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label for="destino" class="form-label">Destino *</label>
+                                    <input type="text" class="form-control" id="destino" name="destino" required>
+                                </div>
+                            </div>
                         </div>
 
-                        <div class="mb-3">
-                            <label for="origen" class="form-label">Origen</label>
-                            <input type="text" class="form-control" id="origen" name="origen" required>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label for="fecha_salida" class="form-label">Fecha Salida *</label>
+                                    <input type="datetime-local" class="form-control" id="fecha_salida" name="fecha_salida" required>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label for="fecha_llegada" class="form-label">Fecha Llegada *</label>
+                                    <input type="datetime-local" class="form-control" id="fecha_llegada" name="fecha_llegada" required>
+                                </div>
+                            </div>
                         </div>
 
-                        <div class="mb-3">
-                            <label for="destino" class="form-label">Destino</label>
-                            <input type="text" class="form-control" id="destino" name="destino" required>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label for="empresa" class="form-label">Empresa *</label>
+                                    <input type="text" class="form-control" id="empresa" name="empresa" required>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label for="numero_viaje" class="form-label">Número de Viaje *</label>
+                                    <input type="text" class="form-control" id="numero_viaje" name="numero_viaje" required>
+                                </div>
+                            </div>
                         </div>
 
-                        <div class="mb-3">
-                            <label for="fecha_salida" class="form-label">Fecha y Hora de Salida</label>
-                            <input type="datetime-local" class="form-control" id="fecha_salida" name="fecha_salida" required>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label for="capacidad_total" class="form-label">Capacidad Total *</label>
+                                    <input type="number" class="form-control" id="capacidad_total" name="capacidad_total" required min="1">
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label for="asientos_disponibles" class="form-label">Asientos Disponibles *</label>
+                                    <input type="number" class="form-control" id="asientos_disponibles" name="asientos_disponibles" required min="0">
+                                </div>
+                            </div>
                         </div>
 
-                        <div class="mb-3">
-                            <label for="fecha_llegada" class="form-label">Fecha y Hora de Llegada</label>
-                            <input type="datetime-local" class="form-control" id="fecha_llegada" name="fecha_llegada" required>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label for="precio_base" class="form-label">Precio Base *</label>
+                                    <input type="number" class="form-control" id="precio_base" name="precio_base" required min="0" step="0.01">
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label for="clases" class="form-label">Clases Disponibles *</label>
+                                    <select class="form-control select2" id="clases" name="clases[]" multiple required>
+                                        <option value="Economy">Economy</option>
+                                        <option value="Business">Business</option>
+                                        <option value="First">First</option>
+                                        <option value="Premium Economy">Premium Economy</option>
+                                    </select>
+                                </div>
+                            </div>
                         </div>
 
-                        <div class="mb-3">
-                            <label for="empresa" class="form-label">Empresa de Transporte</label>
-                            <input type="text" class="form-control" id="empresa" name="empresa" required>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label for="servicios" class="form-label">Servicios Incluidos *</label>
+                                    <select class="form-control select2" id="servicios" name="servicios[]" multiple required>
+                                        <option value="WiFi">WiFi</option>
+                                        <option value="Comida">Comida</option>
+                                        <option value="Entretenimiento">Entretenimiento</option>
+                                        <option value="Equipaje">Equipaje</option>
+                                        <option value="Asistencia">Asistencia</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label for="activo" class="form-label">Estado</label>
+                                    <div class="form-check">
+                                        <input type="checkbox" class="form-check-input" id="activo" name="activo" value="1" checked>
+                                        <label class="form-check-label" for="activo">Activo</label>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
 
-                        <div class="mb-3">
-                            <label for="numero_viaje" class="form-label">Número de Viaje</label>
-                            <input type="text" class="form-control" id="numero_viaje" name="numero_viaje" required>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="mb-3">
+                                    <label for="descripcion" class="form-label">Descripción *</label>
+                                    <textarea class="form-control" id="descripcion" name="descripcion" rows="3" required></textarea>
+                                </div>
+                            </div>
                         </div>
 
-                        <div class="mb-3">
-                            <label for="capacidad_total" class="form-label">Capacidad Total</label>
-                            <input type="number" class="form-control" id="capacidad_total" name="capacidad_total" required min="1">
-                        </div>
-
-                        <div class="mb-3">
-                            <label for="asientos_disponibles" class="form-label">Asientos Disponibles</label>
-                            <input type="number" class="form-control" id="asientos_disponibles" name="asientos_disponibles" required min="0">
-                        </div>
-
-                        <div class="mb-3">
-                            <label for="precio_base" class="form-label">Precio Base</label>
-                            <input type="number" class="form-control" id="precio_base" name="precio_base" required min="0" step="0.01">
-                        </div>
-
-                        <div class="mb-3">
-                            <label for="clases" class="form-label">Clases Disponibles</label>
-                            <select class="form-select" id="clases" name="clases[]" multiple>
-                                <option value="economica">Económica</option>
-                                <option value="business">Business</option>
-                                <option value="primera">Primera</option>
-                            </select>
-                        </div>
-
-                        <div class="mb-3">
-                            <label for="servicios" class="form-label">Servicios Incluidos</label>
-                            <select class="form-select" id="servicios" name="servicios[]" multiple>
-                                <option value="wifi">WiFi</option>
-                                <option value="comida">Comida</option>
-                                <option value="entretenimiento">Entretenimiento</option>
-                                <option value="aire_acondicionado">Aire Acondicionado</option>
-                                <option value="baño">Baño</option>
-                            </select>
-                        </div>
-
-                        <div class="mb-3">
-                            <label for="descripcion" class="form-label">Descripción</label>
-                            <textarea class="form-control" id="descripcion" name="descripcion" rows="3"></textarea>
-                        </div>
-
-                        <div class="mb-3">
-                            <label for="observaciones" class="form-label">Observaciones</label>
-                            <textarea class="form-control" id="observaciones" name="observaciones" rows="3"></textarea>
-                        </div>
-
-                        <div class="mb-3">
-                            <div class="form-check">
-                                <input class="form-check-input" type="checkbox" id="activo" name="activo" checked>
-                                <label class="form-check-label" for="activo">
-                                    Viaje Activo
-                                </label>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="mb-3">
+                                    <label for="observaciones" class="form-label">Observaciones</label>
+                                    <textarea class="form-control" id="observaciones" name="observaciones" rows="2"></textarea>
+                                </div>
                             </div>
                         </div>
                     </form>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                    <button type="button" class="btn btn-primary" onclick="guardarViaje()">Guardar</button>
+                    <button type="submit" class="btn btn-primary">Guardar</button>
                 </div>
             </div>
         </div>
@@ -965,158 +1025,183 @@
         </div>
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
-    let viajeModal;
-    let detallesModal;
-
-    document.addEventListener('DOMContentLoaded', function() {
-        viajeModal = new bootstrap.Modal(document.getElementById('viajeModal'));
-        detallesModal = new bootstrap.Modal(document.getElementById('detallesModal'));
-        
-        // Preview de imagen
-        document.getElementById('imagen').addEventListener('change', function(e) {
-            const file = e.target.files[0];
-            if (file) {
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    document.getElementById('imagenPreview').innerHTML = `
-                        <img src="${e.target.result}" class="imagen-preview">
-                    `;
-                }
-                reader.readAsDataURL(file);
-            }
-        });
-
-        const sidebar = document.getElementById('sidebar');
-        const mainContent = document.getElementById('mainContent');
-        const toggleBtn = document.getElementById('toggleSidebar');
-
-        toggleBtn.addEventListener('click', function() {
-            sidebar.classList.toggle('show');
-            mainContent.classList.toggle('expanded');
-        });
-
-        // Cerrar el menú al hacer clic fuera de él
-        document.addEventListener('click', function(event) {
-            const isClickInsideSidebar = sidebar.contains(event.target);
-            const isClickOnToggle = toggleBtn.contains(event.target);
-
-            if (!isClickInsideSidebar && !isClickOnToggle && sidebar.classList.contains('show')) {
-                sidebar.classList.remove('show');
-                mainContent.classList.remove('expanded');
-            }
-        });
-
-        // Inicializar selects múltiples
-        $('#clases, #servicios').select2({
-            theme: 'bootstrap-5',
+    $(document).ready(function() {
+        // Inicializar Select2
+        $('.select2').select2({
+            theme: 'bootstrap4',
             width: '100%'
         });
 
-        // Manejar el envío del formulario
-        document.getElementById('viajeForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-            const formData = new FormData(this);
-            
-            // Convertir arrays de clases y servicios a JSON
-            formData.set('clases', JSON.stringify(Array.from(document.getElementById('clases').selectedOptions).map(option => option.value)));
-            formData.set('servicios', JSON.stringify(Array.from(document.getElementById('servicios').selectedOptions).map(option => option.value)));
-            
-            const viajeId = document.getElementById('viaje_id').value;
-            const url = viajeId ? `/admin/viajes/${viajeId}` : '/admin/viajes';
-            const method = viajeId ? 'PUT' : 'POST';
+        // Cuando hacen clic en "Editar"
+        $('.btn-edit').on('click', function() {
+            const id = $(this).data('id');
 
-            fetch(url, {
-                method: method,
-                body: formData,
-                headers: {
-                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
-                }
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
-                    location.reload();
-                } else {
-                    alert('Error al guardar el viaje');
-                }
-            })
-            .catch(error => {
-                console.error('Error:', error);
-                alert('Error al guardar el viaje');
-            });
-        });
+            // Limpiar validaciones anteriores
+            $('#viajeForm')[0].reset();
+            $('#viajeForm input[name="_method"]').val('PUT');
+            $('#viajeForm').attr('action', `/administracion/viajes/${id}`);
+            $('#viajeModalLabel').text('Editar Viaje');
 
-        // Manejar edición de viaje
-        document.querySelectorAll('.btn-edit').forEach(button => {
-            button.addEventListener('click', function() {
-                const viajeId = this.dataset.id;
-                fetch(`/admin/viajes/${viajeId}`)
-                    .then(response => response.json())
-                    .then(viaje => {
-                        document.getElementById('viaje_id').value = viaje.id;
-                        document.getElementById('nombre').value = viaje.nombre;
-                        document.getElementById('tipo').value = viaje.tipo;
-                        document.getElementById('origen').value = viaje.origen;
-                        document.getElementById('destino').value = viaje.destino;
-                        document.getElementById('fecha_salida').value = viaje.fecha_salida;
-                        document.getElementById('fecha_llegada').value = viaje.fecha_llegada;
-                        document.getElementById('empresa').value = viaje.empresa;
-                        document.getElementById('numero_viaje').value = viaje.numero_viaje;
-                        document.getElementById('capacidad_total').value = viaje.capacidad_total;
-                        document.getElementById('asientos_disponibles').value = viaje.asientos_disponibles;
-                        document.getElementById('precio_base').value = viaje.precio_base;
-                        
-                        // Actualizar selects múltiples
-                        $('#clases').val(viaje.clases).trigger('change');
-                        $('#servicios').val(viaje.servicios).trigger('change');
-                        
-                        document.getElementById('descripcion').value = viaje.descripcion;
-                        document.getElementById('observaciones').value = viaje.observaciones;
-                        document.getElementById('activo').checked = viaje.activo;
-                        
-                        document.getElementById('viajeModalLabel').textContent = 'Editar Viaje';
-                        new bootstrap.Modal(document.getElementById('viajeModal')).show();
-                    });
-            });
-        });
+            // Traer datos del viaje
+            $.getJSON(`/administracion/viajes/${id}/edit`, function(viaje) {
+                // Rellenar inputs básicos
+                $('#viaje_id').val(viaje.id);
+                $('#nombre').val(viaje.nombre);
+                $('#tipo').val(viaje.tipo);
+                $('#origen').val(viaje.origen);
+                $('#destino').val(viaje.destino);
+                $('#fecha_salida').val(viaje.fecha_salida);
+                $('#fecha_llegada').val(viaje.fecha_llegada);
+                $('#empresa').val(viaje.empresa);
+                $('#numero_viaje').val(viaje.numero_viaje);
+                $('#capacidad_total').val(viaje.capacidad_total);
+                $('#asientos_disponibles').val(viaje.asientos_disponibles);
+                $('#precio_base').val(viaje.precio_base);
+                $('#descripcion').val(viaje.descripcion);
+                $('#observaciones').val(viaje.observaciones);
 
-        // Manejar eliminación de viaje
-        document.querySelectorAll('.btn-delete').forEach(button => {
-            button.addEventListener('click', function() {
-                if (confirm('¿Está seguro de eliminar este viaje?')) {
-                    const viajeId = this.dataset.id;
-                    fetch(`/admin/viajes/${viajeId}`, {
-                        method: 'DELETE',
-                        headers: {
-                            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
-                        }
-                    })
-                    .then(response => response.json())
-                    .then(data => {
-                        if (data.success) {
-                            location.reload();
-                        } else {
-                            alert('Error al eliminar el viaje');
-                        }
-                    })
-                    .catch(error => {
-                        console.error('Error:', error);
-                        alert('Error al eliminar el viaje');
-                    });
+                // Checkbox "activo"
+                $('#activo').prop('checked', viaje.activo);
+
+                // Selects múltiples (si existen)
+                try {
+                    const clases = JSON.parse(viaje.clases || '[]');
+                    const servicios = JSON.parse(viaje.servicios || '[]');
+                    $('#clases').val(clases).trigger('change');
+                    $('#servicios').val(servicios).trigger('change');
+                } catch(e) { 
+                    console.warn('Error al parsear JSON:', e);
                 }
             });
         });
 
-        // Limpiar formulario al abrir modal para nuevo viaje
-        document.querySelector('[data-bs-target="#viajeModal"]').addEventListener('click', function() {
-            document.getElementById('viajeForm').reset();
-            document.getElementById('viaje_id').value = '';
-            document.getElementById('viajeModalLabel').textContent = 'Nuevo Viaje';
-            $('#clases, #servicios').val(null).trigger('change');
+        // Cuando abres el modal para CREAR un nuevo viaje
+        $('#viajeModal').on('show.bs.modal', function(e) {
+            // Si el disparador NO tiene data-id, es creación
+            if (!$(e.relatedTarget).data('id')) {
+                $('#viajeForm')[0].reset();
+                $('#viajeForm').attr('action', '/administracion/viajes');
+                $('#viajeForm input[name="_method"]').val('POST');
+                $('#viajeModalLabel').text('Nuevo Viaje');
+                $('.select2').val(null).trigger('change');
+            }
         });
     });
+
+    // Función para guardar viaje
+    function guardarViaje() {
+        const form = $('#viajeForm');
+        const formData = new FormData(form[0]);
+        
+        // Convertir los selects múltiples a arrays
+        formData.set('clases', JSON.stringify($('#clases').val() || []));
+        formData.set('servicios', JSON.stringify($('#servicios').val() || []));
+        
+        // Asegurarse de que activo sea booleano
+        formData.set('activo', $('#activo').is(':checked') ? '1' : '0');
+        
+        // Determinar la URL y método
+        const id = $('#viaje_id').val();
+        const url = id ? `/administracion/viajes/${id}` : '/administracion/viajes';
+        const method = id ? 'PUT' : 'POST';
+        
+        // Si es actualización, añadir _method
+        if (id) {
+            formData.append('_method', 'PUT');
+        }
+        
+        console.log('Enviando datos:', Object.fromEntries(formData));
+        
+        $.ajax({
+            url: url,
+            method: 'POST',
+            data: formData,
+            processData: false,
+            contentType: false,
+            success: function(response) {
+                console.log('Respuesta:', response);
+                if (response.success) {
+                    Swal.fire({
+                        title: '¡Éxito!',
+                        text: response.message,
+                        icon: 'success'
+                    }).then(() => {
+                        window.location.reload();
+                    });
+                } else {
+                    Swal.fire({
+                        title: 'Error',
+                        text: response.message,
+                        icon: 'error'
+                    });
+                }
+            },
+            error: function(xhr, status, error) {
+                console.error('Error:', error);
+                console.error('Detalles:', xhr.responseText);
+                let errorMessage = 'Error al procesar la solicitud';
+                if (xhr.responseJSON && xhr.responseJSON.message) {
+                    errorMessage = xhr.responseJSON.message;
+                }
+                Swal.fire({
+                    title: 'Error',
+                    text: errorMessage,
+                    icon: 'error'
+                });
+            }
+        });
+    }
+
+    // Función para eliminar viaje
+    function eliminarViaje(id) {
+        console.log('Eliminando viaje:', id);
+        Swal.fire({
+            title: '¿Está seguro?',
+            text: "Esta acción no se puede deshacer",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Sí, eliminar',
+            cancelButtonText: 'Cancelar'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                $.ajax({
+                    url: `/administracion/viajes/${id}`,
+                    method: 'POST',
+                    data: { _method: 'DELETE' },
+                    success: function(response) {
+                        console.log('Respuesta de eliminación:', response);
+                        if (response.success) {
+                            Swal.fire({
+                                title: '¡Eliminado!',
+                                text: response.message,
+                                icon: 'success'
+                            }).then(() => {
+                                window.location.reload();
+                            });
+                        } else {
+                            Swal.fire({
+                                title: 'Error',
+                                text: response.message,
+                                icon: 'error'
+                            });
+                        }
+                    },
+                    error: function(xhr, status, error) {
+                        console.error('Error al eliminar:', error);
+                        console.error('Detalles del error:', xhr.responseText);
+                        Swal.fire({
+                            title: 'Error',
+                            text: 'Error al eliminar el viaje: ' + (xhr.responseJSON?.message || error),
+                            icon: 'error'
+                        });
+                    }
+                });
+            }
+        });
+    }
 
     function aplicarFiltrosEnTiempoReal() {
         const searchText = document.getElementById('searchText').value.toLowerCase();
@@ -1222,98 +1307,6 @@
         document.getElementById('imagenPreview').innerHTML = '';
         document.getElementById('viajeModalLabel').textContent = 'Nuevo Viaje';
     }
-
-    function guardarViaje() {
-        const form = document.getElementById('viajeForm');
-        const formData = new FormData(form);
-        const viajeId = document.getElementById('viaje_id').value;
-        
-        const url = viajeId ? `/administracion/viajes/${viajeId}` : '/administracion/viajes';
-        const method = viajeId ? 'PUT' : 'POST';
-
-        fetch(url, {
-            method: method,
-            body: formData,
-            headers: {
-                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
-            }
-        })
-        .then(response => response.json())
-        .then(data => {
-            if (data.errors) {
-                alert('Por favor, corrija los errores en el formulario.');
-                return;
-            }
-            viajeModal.hide();
-            location.reload();
-        })
-        .catch(error => {
-            console.error('Error:', error);
-            alert('Error al guardar el viaje');
-        });
-    }
-
-    function editarViaje(id) {
-        fetch(`/administracion/viajes/${id}`)
-            .then(response => response.json())
-            .then(viaje => {
-                document.getElementById('viaje_id').value = viaje.id;
-                document.getElementById('nombre').value = viaje.nombre;
-                document.getElementById('tipo').value = viaje.tipo;
-                document.getElementById('origen').value = viaje.origen;
-                document.getElementById('destino').value = viaje.destino;
-                document.getElementById('fecha_salida').value = viaje.fecha_salida;
-                document.getElementById('fecha_llegada').value = viaje.fecha_llegada;
-                document.getElementById('empresa').value = viaje.empresa;
-                document.getElementById('numero_viaje').value = viaje.numero_viaje;
-                document.getElementById('capacidad_total').value = viaje.capacidad_total;
-                document.getElementById('asientos_disponibles').value = viaje.asientos_disponibles;
-                document.getElementById('precio_base').value = viaje.precio_base;
-                document.getElementById('clases').value = viaje.clases.map(clase => clase.id);
-                document.getElementById('servicios').value = viaje.servicios.map(servicio => servicio.id);
-                document.getElementById('descripcion').value = viaje.descripcion;
-                document.getElementById('observaciones').value = viaje.observaciones;
-                document.getElementById('activo').checked = viaje.activo;
-                
-                if (viaje.imagen) {
-                    document.getElementById('imagenPreview').innerHTML = `
-                        <img src="data:image/jpeg;base64,${viaje.imagen}" 
-                             class="imagen-preview">
-                    `;
-                }
-                
-                document.getElementById('viajeModalLabel').textContent = 'Editar Viaje';
-                viajeModal.show();
-            })
-            .catch(error => {
-                console.error('Error:', error);
-                alert('Error al cargar los datos del viaje');
-            });
-    }
-
-    function eliminarViaje(id) {
-        if (confirm('¿Está seguro de eliminar este viaje?')) {
-            fetch(`/administracion/viajes/${id}`, {
-                method: 'DELETE',
-                headers: {
-                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
-                }
-            })
-            .then(response => response.json())
-            .then(data => {
-                location.reload();
-            })
-            .catch(error => {
-                console.error('Error:', error);
-                alert('Error al eliminar el viaje');
-            });
-        }
-    }
-
-    // Resetear el formulario cuando se cierra el modal
-    document.getElementById('viajeModal').addEventListener('hidden.bs.modal', function () {
-        resetForm();
-    });
     </script>
 </body>
 </html>
