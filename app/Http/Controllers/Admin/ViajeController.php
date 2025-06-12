@@ -13,7 +13,26 @@ class ViajeController extends Controller
     public function index()
     {
         $viajes = Viaje::all();
-        return view('administracion.viajes', compact('viajes'));
+        
+        // Opciones de clases (esto debería venir de un modelo en producción)
+        $clases = [
+            ['id' => 'economy', 'nombre' => 'Económica'],
+            ['id' => 'business', 'nombre' => 'Ejecutiva'],
+            ['id' => 'first', 'nombre' => 'Primera Clase'],
+            ['id' => 'premium', 'nombre' => 'Premium Economy']
+        ];
+        
+        // Opciones de servicios (esto debería venir de un modelo en producción)
+        $servicios = [
+            ['id' => 'wifi', 'nombre' => 'WiFi a bordo'],
+            ['id' => 'food', 'nombre' => 'Comida incluida'],
+            ['id' => 'entertainment', 'nombre' => 'Entretenimiento a bordo'],
+            ['id' => 'luggage', 'nombre' => 'Equipaje incluido'],
+            ['id' => 'priority', 'nombre' => 'Embarque prioritario']
+        ];
+        
+        $tipos = ['Nacional' => 'Nacional', 'Internacional' => 'Internacional'];
+        return view('administracion.viajes', compact('viajes', 'clases', 'servicios', 'tipos'));
     }
 
     public function store(Request $request)
@@ -88,6 +107,20 @@ class ViajeController extends Controller
     {
         try {
             $viaje = Viaje::findOrFail($id);
+            
+            // Formatear fechas para los campos datetime-local
+            $viaje->fecha_salida = $viaje->fecha_salida->format('Y-m-d\TH:i');
+            $viaje->fecha_llegada = $viaje->fecha_llegada->format('Y-m-d\TH:i');
+            
+            // Asegurarse de que los campos de array estén en el formato correcto
+            if (!is_array($viaje->clases) && !empty($viaje->clases)) {
+                $viaje->clases = json_decode($viaje->clases, true) ?: [];
+            }
+            
+            if (!is_array($viaje->servicios) && !empty($viaje->servicios)) {
+                $viaje->servicios = json_decode($viaje->servicios, true) ?: [];
+            }
+            
             return response()->json($viaje);
         } catch (\Exception $e) {
             Log::error('Error al obtener viaje: ' . $e->getMessage());

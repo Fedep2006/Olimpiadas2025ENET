@@ -582,7 +582,6 @@
                 <span class="brand-text">Frategar Admin</span>
             </a>
         </div>
-
         <nav class="sidebar-menu">
             <a href="/administracion" class="menu-item">
                 <i class="fas fa-tachometer-alt"></i>
@@ -626,8 +625,6 @@
         </nav>
     </div>
 
-    <!-- Main Content -->
-    <div class="main-content" id="mainContent">
         <!-- Top Navbar -->
         <div class="top-navbar">
             <div class="admin-header">
@@ -818,7 +815,7 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <form id="viajeForm" onsubmit="guardarViaje(); return false;">
+                    <form id="viajeForm">
                         @csrf
                         <input type="hidden" name="_method" id="method" value="POST">
                         <input type="hidden" name="id" id="viaje_id">
@@ -834,10 +831,11 @@
                                 <div class="mb-3">
                                     <label for="tipo" class="form-label">Tipo *</label>
                                     <select class="form-control" id="tipo" name="tipo" required>
-                                        <option value="">Seleccione un tipo</option>
-                                        <option value="Nacional">Nacional</option>
-                                        <option value="Internacional">Internacional</option>
-                                    </select>
+    <option value="">Seleccione un tipo</option>
+    @foreach($tipos as $key => $label)
+        <option value="{{ $key }}">{{ $label }}</option>
+    @endforeach
+</select>
                                 </div>
                             </div>
                         </div>
@@ -912,12 +910,17 @@
                             <div class="col-md-6">
                                 <div class="mb-3">
                                     <label for="clases" class="form-label">Clases Disponibles *</label>
-                                    <select class="form-control select2" id="clases" name="clases[]" multiple required>
-                                        <option value="Economy">Economy</option>
-                                        <option value="Business">Business</option>
-                                        <option value="First">First</option>
-                                        <option value="Premium Economy">Premium Economy</option>
-                                    </select>
+                                    <div class="mb-3">
+    <label class="form-label">Clases Disponibles *</label>
+    <div>
+        @foreach($clases as $clase)
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" type="checkbox" name="clases[]" id="clase_{{ $clase['id'] }}" value="{{ $clase['id'] }}">
+                <label class="form-check-label" for="clase_{{ $clase['id'] }}">{{ $clase['nombre'] }}</label>
+            </div>
+        @endforeach
+    </div>
+</div>
                                 </div>
                             </div>
                         </div>
@@ -926,13 +929,17 @@
                             <div class="col-md-6">
                                 <div class="mb-3">
                                     <label for="servicios" class="form-label">Servicios Incluidos *</label>
-                                    <select class="form-control select2" id="servicios" name="servicios[]" multiple required>
-                                        <option value="WiFi">WiFi</option>
-                                        <option value="Comida">Comida</option>
-                                        <option value="Entretenimiento">Entretenimiento</option>
-                                        <option value="Equipaje">Equipaje</option>
-                                        <option value="Asistencia">Asistencia</option>
-                                    </select>
+                                    <div class="mb-3">
+    <label class="form-label">Servicios Incluidos *</label>
+    <div>
+        @foreach($servicios as $servicio)
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" type="checkbox" name="servicios[]" id="servicio_{{ $servicio['id'] }}" value="{{ $servicio['id'] }}">
+                <label class="form-check-label" for="servicio_{{ $servicio['id'] }}">{{ $servicio['nombre'] }}</label>
+            </div>
+        @endforeach
+    </div>
+</div>
                                 </div>
                             </div>
                             <div class="col-md-6">
@@ -967,7 +974,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                    <button type="submit" class="btn btn-primary">Guardar</button>
+                    <button type="button" id="guardarViajeBtn" class="btn btn-primary">Guardar</button>
                 </div>
             </div>
         </div>
@@ -1026,6 +1033,18 @@
     </div>
 
     <script>
+    // Manejador del botón guardar
+    $(document).on('click', '#guardarViajeBtn', function(e) {
+        e.preventDefault();
+        guardarViaje();
+    });
+
+    // Manejador del envío del formulario
+    $('#viajeForm').on('submit', function(e) {
+        e.preventDefault();
+        guardarViaje();
+    });
+
     $(document).ready(function() {
         // Inicializar Select2
         $('.select2').select2({
@@ -1033,48 +1052,7 @@
             width: '100%'
         });
 
-        // Cuando hacen clic en "Editar"
-        $('.btn-edit').on('click', function() {
-            const id = $(this).data('id');
 
-            // Limpiar validaciones anteriores
-            $('#viajeForm')[0].reset();
-            $('#viajeForm input[name="_method"]').val('PUT');
-            $('#viajeForm').attr('action', `/administracion/viajes/${id}`);
-            $('#viajeModalLabel').text('Editar Viaje');
-
-            // Traer datos del viaje
-            $.getJSON(`/administracion/viajes/${id}/edit`, function(viaje) {
-                // Rellenar inputs básicos
-                $('#viaje_id').val(viaje.id);
-                $('#nombre').val(viaje.nombre);
-                $('#tipo').val(viaje.tipo);
-                $('#origen').val(viaje.origen);
-                $('#destino').val(viaje.destino);
-                $('#fecha_salida').val(viaje.fecha_salida);
-                $('#fecha_llegada').val(viaje.fecha_llegada);
-                $('#empresa').val(viaje.empresa);
-                $('#numero_viaje').val(viaje.numero_viaje);
-                $('#capacidad_total').val(viaje.capacidad_total);
-                $('#asientos_disponibles').val(viaje.asientos_disponibles);
-                $('#precio_base').val(viaje.precio_base);
-                $('#descripcion').val(viaje.descripcion);
-                $('#observaciones').val(viaje.observaciones);
-
-                // Checkbox "activo"
-                $('#activo').prop('checked', viaje.activo);
-
-                // Selects múltiples (si existen)
-                try {
-                    const clases = JSON.parse(viaje.clases || '[]');
-                    const servicios = JSON.parse(viaje.servicios || '[]');
-                    $('#clases').val(clases).trigger('change');
-                    $('#servicios').val(servicios).trigger('change');
-                } catch(e) { 
-                    console.warn('Error al parsear JSON:', e);
-                }
-            });
-        });
 
         // Cuando abres el modal para CREAR un nuevo viaje
         $('#viajeModal').on('show.bs.modal', function(e) {
@@ -1084,71 +1062,270 @@
                 $('#viajeForm').attr('action', '/administracion/viajes');
                 $('#viajeForm input[name="_method"]').val('POST');
                 $('#viajeModalLabel').text('Nuevo Viaje');
-                $('.select2').val(null).trigger('change');
+                
+                // Inicializar selects múltiples
+                $('.select2').select2({
+                    theme: 'bootstrap4',
+                    width: '100%'
+                });
             }
+        });
+
+        // Evento click para los botones de editar
+        $(document).on('click', '.btn-edit', function() {
+            const id = $(this).data('id');
+            
+            // Mostrar modal
+            const $modal = $('#viajeModal');
+            
+            // Resetear el formulario
+            const $form = $('#viajeForm');
+            $form[0].reset();
+            
+            // Configurar para edición
+            $modal.find('.modal-title').text('Editar Viaje');
+            $form.attr('action', `/administracion/viajes/${id}`);
+            $form.find('input[name="_method"]').val('PUT');
+            
+            // Mostrar el modal
+            $modal.modal('show');
+            
+            // Mostrar loading en el botón de guardar
+            const $submitBtn = $form.find('button[type="submit"]');
+            const originalBtnText = $submitBtn.html();
+            $submitBtn.prop('disabled', true).html('<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Cargando...');
+            
+            // Traer datos del viaje
+            $.ajax({
+                url: `/administracion/viajes/${id}/edit`,
+                method: 'GET',
+                success: function(viaje) {
+                    try {
+                        // Rellenar inputs básicos
+                        $('#viaje_id').val(viaje.id);
+                        $('#nombre').val(viaje.nombre);
+                        $('#tipo').val(viaje.tipo).trigger('change');
+                        $('#origen').val(viaje.origen).trigger('change');
+                        $('#destino').val(viaje.destino).trigger('change');
+                        $('#fecha_salida').val(viaje.fecha_salida);
+                        $('#fecha_llegada').val(viaje.fecha_llegada);
+                        $('#empresa').val(viaje.empresa);
+                        $('#numero_viaje').val(viaje.numero_viaje);
+                        $('#capacidad_total').val(viaje.capacidad_total);
+                        $('#asientos_disponibles').val(viaje.asientos_disponibles);
+                        $('#precio_base').val(viaje.precio_base);
+                        $('#descripcion').val(viaje.descripcion);
+                        $('#observaciones').val(viaje.observaciones);
+                        
+                        // Checkbox "activo"
+                        $('#activo').prop('checked', viaje.activo);
+                        
+                        // Procesar selects múltiples
+                        let clases = [];
+                        let servicios = [];
+                        // Corregido: usar directamente los arrays si ya lo son
+                        if (Array.isArray(viaje.clases)) {
+                            clases = viaje.clases;
+                        } else if (typeof viaje.clases === 'string') {
+                            try {
+                                clases = JSON.parse(viaje.clases);
+                                if (!Array.isArray(clases)) clases = [];
+                            } catch (e) {
+                                clases = [];
+                            }
+                        }
+                        if (Array.isArray(viaje.servicios)) {
+                            servicios = viaje.servicios;
+                        } else if (typeof viaje.servicios === 'string') {
+                            try {
+                                servicios = JSON.parse(viaje.servicios);
+                                if (!Array.isArray(servicios)) servicios = [];
+                            } catch (e) {
+                                servicios = [];
+                            }
+                        }
+                        
+                        // Inicializar selects múltiples
+                        const opcionesClases = {!! json_encode(collect($clases)->pluck('nombre', 'id')) !!};
+                        const opcionesServicios = {!! json_encode(collect($servicios)->pluck('nombre', 'id')) !!};
+                        
+                        // Marcar checkboxes de clases
+                        $('input[name="clases[]"]').prop('checked', false);
+                        clases.forEach(function(id) {
+                            $('#clase_' + id).prop('checked', true);
+                        });
+                        // Marcar checkboxes de servicios
+                        $('input[name="servicios[]"]').prop('checked', false);
+                        servicios.forEach(function(id) {
+                            $('#servicio_' + id).prop('checked', true);
+                        });
+                        
+                    } catch (error) {
+                        console.error('Error al procesar los datos del viaje:', error);
+                        Swal.fire({
+                            title: 'Error',
+                            text: 'Ocurrió un error al cargar los datos del viaje.',
+                            icon: 'error'
+                        });
+                        $modal.modal('hide');
+                    }
+                },
+                error: function(xhr, status, error) {
+                    console.error('Error al cargar el viaje:', error);
+                    Swal.fire({
+                        title: 'Error',
+                        text: 'No se pudo cargar el viaje. Por favor, inténtelo nuevamente.',
+                        icon: 'error'
+                    });
+                    $modal.modal('hide');
+                },
+                complete: function() {
+                    // Restaurar el botón
+                    $submitBtn.prop('disabled', false).html(originalBtnText);
+                }
+            });
         });
     });
 
     // Función para guardar viaje
     function guardarViaje() {
-        const form = $('#viajeForm');
-        const formData = new FormData(form[0]);
+        // 1) Obtener el formulario y sus datos
+        const $form = $('#viajeForm');
         
-        // Convertir los selects múltiples a arrays
-        formData.set('clases', JSON.stringify($('#clases').val() || []));
-        formData.set('servicios', JSON.stringify($('#servicios').val() || []));
+        // Crear un objeto para almacenar los datos del formulario
+        const formData = {};
         
-        // Asegurarse de que activo sea booleano
-        formData.set('activo', $('#activo').is(':checked') ? '1' : '0');
+        // Obtener todos los campos del formulario
+        $form.serializeArray().forEach(field => {
+            formData[field.name] = field.value;
+        });
         
-        // Determinar la URL y método
-        const id = $('#viaje_id').val();
-        const url = id ? `/administracion/viajes/${id}` : '/administracion/viajes';
-        const method = id ? 'PUT' : 'POST';
+        // Agregar campos especiales
+        formData.clases = $('#clases').val() || [];
+        formData.servicios = $('#servicios').val() || [];
+        formData.activo = $('#activo').is(':checked') ? '1' : '0';
+        // Asegurarse de que los arrays se envían como arrays, no como strings
+        // No serializar a JSON, solo enviar como array para Laravel
         
-        // Si es actualización, añadir _method
-        if (id) {
-            formData.append('_method', 'PUT');
+        // Verificar que los campos requeridos tengan valor
+        const camposRequeridos = ['nombre', 'tipo', 'origen', 'destino', 'fecha_salida', 
+                                'fecha_llegada', 'empresa', 'numero_viaje', 'capacidad_total', 
+                                'asientos_disponibles', 'precio_base', 'descripcion'];
+        
+        let faltanCampos = [];
+        camposRequeridos.forEach(campo => {
+            if (!formData[campo] && formData[campo] !== 0) {
+                // Resaltar el campo que falta
+                const $campo = $(`[name="${campo}"]`);
+                $campo.addClass('is-invalid');
+                $campo.after(`<div class="invalid-feedback">Este campo es requerido</div>`);
+                faltanCampos.push(campo);
+            } else {
+                // Remover clases de error si el campo está completo
+                const $campo = $(`[name="${campo}"]`);
+                $campo.removeClass('is-invalid');
+                $campo.next('.invalid-feedback').remove();
+            }
+        });
+        
+        if (faltanCampos.length > 0) {
+            // Hacer scroll al primer campo con error
+            const primerCampo = faltanCampos[0];
+            $(`[name="${primerCampo}"]`).get(0).scrollIntoView({
+                behavior: 'smooth',
+                block: 'center'
+            });
+            
+            // Mostrar mensaje de error
+            Swal.fire({
+                title: 'Campos requeridos',
+                html: `Por favor complete los siguientes campos obligatorios: <br><strong>${faltanCampos.join(', ')}</strong>`,
+                icon: 'error'
+            });
+            return;
         }
         
-        console.log('Enviando datos:', Object.fromEntries(formData));
+        // 2) Determinar la URL y el método
+        const viajeId = $('#viaje_id').val();
+        const url = viajeId ? `/administracion/viajes/${viajeId}` : '/administracion/viajes';
+        const method = viajeId ? 'PUT' : 'POST';
         
+        // 3) Mostrar loading
+        const $submitBtn = $('#guardarViajeBtn');
+        const originalBtnText = $submitBtn.html();
+        $submitBtn.prop('disabled', true).html('<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Procesando...');
+        
+        // 4) Enviar la petición AJAX
         $.ajax({
             url: url,
-            method: 'POST',
-            data: formData,
-            processData: false,
-            contentType: false,
+            type: method,
+            data: JSON.stringify(formData),
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
             success: function(response) {
-                console.log('Respuesta:', response);
                 if (response.success) {
                     Swal.fire({
                         title: '¡Éxito!',
-                        text: response.message,
-                        icon: 'success'
+                        text: response.message || 'Operación realizada correctamente',
+                        icon: 'success',
+                        timer: 1500,
+                        showConfirmButton: false
                     }).then(() => {
                         window.location.reload();
                     });
                 } else {
                     Swal.fire({
                         title: 'Error',
-                        text: response.message,
+                        text: response.message || 'Ocurrió un error al procesar la solicitud',
                         icon: 'error'
                     });
                 }
             },
-            error: function(xhr, status, error) {
-                console.error('Error:', error);
-                console.error('Detalles:', xhr.responseText);
+            error: function(xhr) {
                 let errorMessage = 'Error al procesar la solicitud';
-                if (xhr.responseJSON && xhr.responseJSON.message) {
+                
+                if (xhr.status === 422) {
+                    // Errores de validación
+                    const errors = xhr.responseJSON.errors;
+                    $form.find('.is-invalid').removeClass('is-invalid');
+                    $form.find('.invalid-feedback').remove();
+                    
+                    let firstError = '';
+                    Object.keys(errors).forEach(field => {
+                        const $input = $form.find(`[name="${field}"]`);
+                        const $formGroup = $input.closest('.form-group') || $input.parent();
+                        $input.addClass('is-invalid');
+                        const errorMsg = errors[field][0];
+                        $formGroup.append(`<div class="invalid-feedback">${errorMsg}</div>`);
+                        
+                        // Guardar el primer error para mostrarlo en el alert
+                        if (!firstError) firstError = errorMsg;
+                    });
+                    
+                    errorMessage = firstError || 'Por favor, complete todos los campos requeridos';
+                } else if (xhr.responseJSON && xhr.responseJSON.message) {
                     errorMessage = xhr.responseJSON.message;
                 }
+                
                 Swal.fire({
                     title: 'Error',
                     text: errorMessage,
                     icon: 'error'
                 });
+                
+                // Hacer scroll al primer campo con error
+                const $firstError = $form.find('.is-invalid').first();
+                if ($firstError.length) {
+                    $('html, body').animate({
+                        scrollTop: $firstError.offset().top - 100
+                    }, 500);
+                }
+            },
+            complete: function() {
+                $submitBtn.prop('disabled', false).html(originalBtnText);
             }
         });
     }
@@ -1204,63 +1381,96 @@
     }
 
     function aplicarFiltrosEnTiempoReal() {
-        const searchText = document.getElementById('searchText').value.toLowerCase();
-        const tipoViaje = document.getElementById('tipoViaje').value;
-        const fechaInicio = document.getElementById('fechaInicio').value;
-        const fechaFin = document.getElementById('fechaFin').value;
-        const rangoPrecio = document.getElementById('filtroPrecio').value;
-
-        const filas = document.querySelectorAll('tbody tr');
-        let contador = 0;
-
-        filas.forEach(fila => {
-            const destino = fila.querySelector('td:nth-child(2)').textContent.toLowerCase();
-            const tipo = fila.querySelector('td:nth-child(3)').textContent;
-            const fecha = fila.querySelector('td:nth-child(4)').textContent;
-            const precioTexto = fila.querySelector('td:nth-child(5)').textContent;
-            const precio = parseFloat(precioTexto.replace(/[^0-9.-]+/g, ''));
-
-            const cumpleBusqueda = destino.includes(searchText);
-            const cumpleTipo = tipoViaje === '' || tipo === tipoViaje;
-            const cumpleFecha = (!fechaInicio || fecha >= fechaInicio) && (!fechaFin || fecha <= fechaFin);
+        try {
+            // Verificar si los elementos existen antes de acceder a sus propiedades
+            const searchInput = document.getElementById('searchText');
+            const tipoSelect = document.getElementById('tipoViaje');
+            const fechaInicioInput = document.getElementById('fechaInicio');
+            const fechaFinInput = document.getElementById('fechaFin');
+            const precioSelect = document.getElementById('filtroPrecio');
+            const contadorElement = document.getElementById('contadorResultados');
             
-            let cumplePrecio = true;
-            if (rangoPrecio) {
-                switch(rangoPrecio) {
-                    case '0-1000':
-                        cumplePrecio = precio >= 0 && precio <= 1000;
-                        break;
-                    case '1000-5000':
-                        cumplePrecio = precio > 1000 && precio <= 5000;
-                        break;
-                    case '5000+':
-                        cumplePrecio = precio > 5000;
-                        break;
+            // Si algún elemento no existe, salir de la función
+            if (!searchInput || !tipoSelect || !fechaInicioInput || !fechaFinInput || !precioSelect || !contadorElement) {
+                console.warn('No se encontraron todos los elementos necesarios para aplicar los filtros');
+                return;
+            }
+            
+            const searchText = searchInput.value.toLowerCase();
+            const tipoViaje = tipoSelect.value;
+            const fechaInicio = fechaInicioInput.value;
+            const fechaFin = fechaFinInput.value;
+            const rangoPrecio = precioSelect.value;
+
+            const filas = document.querySelectorAll('tbody tr');
+            let contador = 0;
+
+            filas.forEach(fila => {
+                try {
+                    const celdas = fila.querySelectorAll('td');
+                    // Verificar que la fila tenga suficientes celdas
+                    if (celdas.length < 5) return;
+                    
+                    const destino = celdas[1]?.textContent?.toLowerCase() || '';
+                    const tipo = celdas[2]?.textContent || '';
+                    const fecha = celdas[3]?.textContent || '';
+                    const precioTexto = celdas[4]?.textContent || '0';
+                    const precio = parseFloat(precioTexto.replace(/[^0-9.-]+/g, '')) || 0;
+
+                    const cumpleBusqueda = !searchText || destino.includes(searchText);
+                    const cumpleTipo = !tipoViaje || tipo === tipoViaje;
+                    const cumpleFecha = (!fechaInicio || fecha >= fechaInicio) && 
+                                       (!fechaFin || fecha <= fechaFin);
+                    
+                    let cumplePrecio = true;
+                    if (rangoPrecio) {
+                        switch(rangoPrecio) {
+                            case '0-1000':
+                                cumplePrecio = precio >= 0 && precio <= 1000;
+                                break;
+                            case '1000-5000':
+                                cumplePrecio = precio > 1000 && precio <= 5000;
+                                break;
+                            case '5000+':
+                                cumplePrecio = precio > 5000;
+                                break;
+                        }
+                    }
+
+                    if (cumpleBusqueda && cumpleTipo && cumpleFecha && cumplePrecio) {
+                        fila.style.display = '';
+                        contador++;
+                    } else {
+                        fila.style.display = 'none';
+                    }
+                } catch (error) {
+                    console.error('Error al procesar fila:', error);
                 }
-            }
+            });
 
-            if (cumpleBusqueda && cumpleTipo && cumpleFecha && cumplePrecio) {
-                fila.style.display = '';
-                contador++;
-            } else {
-                fila.style.display = 'none';
-            }
-        });
-
-        // Actualizar contador
-        document.getElementById('totalViajes').textContent = contador;
+            // Actualizar el contador de resultados
+            contadorElement.textContent = contador;
+        } catch (error) {
+            console.error('Error en aplicarFiltrosEnTiempoReal:', error);
+        }
     }
 
-    // Agregar event listeners cuando el DOM esté listo
+    // Inicializar event listeners cuando el DOM esté listo
     document.addEventListener('DOMContentLoaded', function() {
         // Event listeners para los campos de filtro
-        document.getElementById('searchText').addEventListener('input', aplicarFiltrosEnTiempoReal);
-        document.getElementById('tipoViaje').addEventListener('change', aplicarFiltrosEnTiempoReal);
-        document.getElementById('fechaInicio').addEventListener('change', aplicarFiltrosEnTiempoReal);
-        document.getElementById('fechaFin').addEventListener('change', aplicarFiltrosEnTiempoReal);
-        document.getElementById('filtroPrecio').addEventListener('change', aplicarFiltrosEnTiempoReal);
+        const searchInput = document.getElementById('searchText');
+        const tipoSelect = document.getElementById('tipoViaje');
+        const fechaInicioInput = document.getElementById('fechaInicio');
+        const fechaFinInput = document.getElementById('fechaFin');
+        const precioSelect = document.getElementById('filtroPrecio');
+        
+        if (searchInput) searchInput.addEventListener('input', aplicarFiltrosEnTiempoReal);
+        if (tipoSelect) tipoSelect.addEventListener('change', aplicarFiltrosEnTiempoReal);
+        if (fechaInicioInput) fechaInicioInput.addEventListener('change', aplicarFiltrosEnTiempoReal);
+        if (fechaFinInput) fechaFinInput.addEventListener('change', aplicarFiltrosEnTiempoReal);
+        if (precioSelect) precioSelect.addEventListener('change', aplicarFiltrosEnTiempoReal);
 
-        // Inicializar contador
+        // Aplicar filtros iniciales
         aplicarFiltrosEnTiempoReal();
     });
 
@@ -1308,5 +1518,55 @@
         document.getElementById('viajeModalLabel').textContent = 'Nuevo Viaje';
     }
     </script>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const sidebar = document.getElementById('sidebar');
+        const mainContent = document.getElementById('mainContent');
+        const toggleBtn = document.getElementById('toggleSidebar');
+
+        if (toggleBtn && sidebar && mainContent) {
+            toggleBtn.addEventListener('click', function() {
+                sidebar.classList.toggle('show');
+                mainContent.classList.toggle('expanded');
+            });
+
+            // Cerrar el menú al hacer clic fuera de él
+            document.addEventListener('click', function(event) {
+                const isClickInsideSidebar = sidebar.contains(event.target);
+                const isClickOnToggle = toggleBtn.contains(event.target);
+
+                if (!isClickInsideSidebar && !isClickOnToggle && sidebar.classList.contains('show')) {
+                    sidebar.classList.remove('show');
+                    mainContent.classList.remove('expanded');
+                }
+            });
+        }
+    });
+</script>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const sidebar = document.getElementById('sidebar');
+        const mainContent = document.getElementById('mainContent');
+        const toggleBtn = document.getElementById('toggleSidebar');
+
+        if (toggleBtn && sidebar && mainContent) {
+            toggleBtn.addEventListener('click', function() {
+                sidebar.classList.toggle('show');
+                mainContent.classList.toggle('expanded');
+            });
+
+            // Cerrar el menú al hacer clic fuera de él
+            document.addEventListener('click', function(event) {
+                const isClickInsideSidebar = sidebar.contains(event.target);
+                const isClickOnToggle = toggleBtn.contains(event.target);
+
+                if (!isClickInsideSidebar && !isClickOnToggle && sidebar.classList.contains('show')) {
+                    sidebar.classList.remove('show');
+                    mainContent.classList.remove('expanded');
+                }
+            });
+        }
+    });
+</script>
 </body>
 </html>
