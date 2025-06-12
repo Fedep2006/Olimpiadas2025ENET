@@ -357,7 +357,6 @@
                                 </td>
                                 <td>
                                     <div class="rating-stars">
-                                        <i class="fas fa-star"></i>
                                         @for ($i = 0; $i < $hospedaje->estrellas; $i++)
                                             <i class="fas fa-star"></i>
                                         @endfor
