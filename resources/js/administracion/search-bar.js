@@ -2,9 +2,38 @@ import { updateTable, showToast } from "./utils";
 setTimeout(function () {
     // Search functionality
     let searchTimeout;
-    let inputs = null;
-    for (i = 0; inputs !== null; i++) {
-        console.log(i);
+
+    const form = document.getElementById("searchForm");
+    let inputs;
+
+    if (typeof form.dataset.inputs === "string") {
+        try {
+            inputs = JSON.parse(form.dataset.inputs);
+        } catch (e) {
+            console.error("Error al buscar:", e);
+            return;
+        }
+    }
+
+    let inputsElementos = [];
+    for (let i = 0; i < inputs.length; i++) {
+        inputsElementos[i] = document.getElementById(inputs[i].id);
+
+        switch (inputsElementos[i].type) {
+            case "date":
+                inputsElementos[i].addEventListener("change", function () {
+                    performSearch();
+                });
+                break;
+            case "text":
+                inputsElementos[i].addEventListener("input", function () {
+                    clearTimeout(searchTimeout);
+                    searchTimeout = setTimeout(performSearch, 500);
+                });
+                break;
+            default:
+                break;
+        }
     }
     const searchInput = document.getElementById("searchInput");
     const dateInput = document.querySelector('input[name="registration_date"]');
@@ -13,7 +42,7 @@ setTimeout(function () {
 
     // Function to perform search
     function performSearch() {
-        const formData = new FormData(document.getElementById("searchForm"));
+        const formData = new FormData(form);
         const searchParams = new URLSearchParams(formData);
 
         console.log(searchParams);
@@ -37,17 +66,6 @@ setTimeout(function () {
                 showToast("Error al buscar usuarios", "error");
             });
     }
-
-    // Real-time search with debounce
-    searchInput.addEventListener("input", function () {
-        clearTimeout(searchTimeout);
-        searchTimeout = setTimeout(performSearch, 500);
-    });
-
-    // Date input change handler
-    dateInput.addEventListener("change", function () {
-        performSearch();
-    });
 
     // Handle form submission
     document

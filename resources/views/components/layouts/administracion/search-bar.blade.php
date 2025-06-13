@@ -29,10 +29,9 @@
 <!-- Filters -->
 <div class="content-card">
     <div class="search-filters">
-        <form id="searchForm" class="filter-row" data-inputs=@json($inputs)>
+        <form id="searchForm" class="filter-row" data-inputs='@json($inputs)'>
             @php $i = 0; @endphp
             @foreach ( $inputs as $input)
-
                 <div class="filter-group">
                     <label class="form-label">{{$input->label ?? ''}}</label>
                     <div class="input-group" data-input-id-{{$i}}="{{$input->id}}">
@@ -42,24 +41,12 @@
                             name="{{$input->name ?? ''}}" 
                             id="{{$input->id ?? ''}}"
                             placeholder="{{$input->placeholder ?? ''}}" 
-                            value="{{ request('search') }}" 
+                            value="{{request($input->value)}}" 
                             autocomplete="off">
                     </div>
                 </div>
                 @php $i++; @endphp
             @endforeach
-            <div class="filter-group">
-                <label class="form-label">Buscar Usuario</label>
-                <div class="input-group">
-                    <input type="text" class="form-control" name="search" id="searchInput"
-                        placeholder="Nombre, email o ID de usuario" value="{{ request('search') }}" autocomplete="off">
-                </div>
-            </div>
-            <div class="filter-group">
-                <label class="form-label">Fecha de Registro</label>
-                <input type="date" class="form-control" name="registration_date"
-                    value="{{ request('registration_date') }}">
-            </div>
             <div class="filter-group">
                 <label class="form-label">&nbsp;</label>
                 <div class="d-flex gap-2">

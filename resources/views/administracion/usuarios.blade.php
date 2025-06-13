@@ -45,17 +45,19 @@
 
         $camposBuscar = [
             (object)[
-                'label' => 'Buscar Usuario1',
+                'label' => 'Buscar Usuario',
                 'type' => 'text',
-                'name' => 'search1',
-                'id' => 'searchInput1',
-                'placeholder' => 'Nombre, email o ID de usuario1'
+                'name' => 'search',
+                'id' => 'searchInput',
+                'placeholder' => 'Nombre, email o ID de usuario',
+                'value' => 'search'
             ],
             (object)[
-                'label' => 'Fecha de Registro1',
+                'label' => 'Fecha de Registro',
                 'type' => 'date',
-                'name' => 'registration_date1',
-                'id' => 'registrationDate1'
+                'name' => 'registration_date',
+                'id' => 'registrationDate',
+                'value' => 'registration_date'
             ]
         ]
         
