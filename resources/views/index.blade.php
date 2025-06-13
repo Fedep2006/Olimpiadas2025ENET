@@ -166,21 +166,12 @@
                 <div class="col-lg-10 mx-auto">
 <div class="search-card">
   <ul class="nav nav-tabs mb-3" id="searchModeTab" role="tablist">
-    <li class="nav-item" role="presentation">
-      <button class="nav-link active" id="text-tab" data-bs-toggle="tab" data-bs-target="#text" type="button">Texto</button>
-    </li>
+
     <li class="nav-item" role "presentation">
       <button class="nav-link" id="advanced-tab" data-bs-toggle="tab" data-bs-target="#advanced" type="button">Preferencias</button>
     </li>
   </ul>
   <div class="tab-content" id="searchModeTabContent">
-    {{-- Búsqueda por texto --}}
-    <div class="tab-pane fade show active" id="text" role="tabpanel">
-      <form action="{{ url('/results') }}" method="GET" class="d-flex">
-        <input type="text" name="search" value="{{ request('search') }}" class="form-control me-2" placeholder="Busca destino, hotel, auto o paquete…" />
-        <button class="btn btn-primary" type="submit"><i class="fas fa-search me-1"></i> Buscar</button>
-      </form>
-    </div>
 
     {{-- Búsqueda avanzada --}}
     <div class="tab-pane fade" id="advanced" role="tabpanel">
