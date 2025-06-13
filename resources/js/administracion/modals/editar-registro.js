@@ -10,28 +10,32 @@ setTimeout(function () {
         }
     );
 
+    const pathname = window.location.pathname;
+
     // Handle edit button click
     document.addEventListener("click", function (e) {
         const editBtn = e.target.closest(".action-btn.edit");
         if (editBtn) {
-            const registro = editBtn.dataset.registro;
-            console.log(registro);
-            const registroRow = editBtn.closest("tr");
-
-            const form = document.getElementById("editarRegistroForm");
-            if (form.checkValidity()) {
-                const formData = new FormData(form);
-                const data = Object.fromEntries(formData.entries());
-            }
-            Object.entries(valores).forEach(([key, value]) => {
-                const input = document.querySelector(`[name="${key}"]`);
-                if (input) {
-                    input.value = value;
+            // Si el dataset es un string JSON, parsea:
+            let registro = editBtn.dataset.registro;
+            if (typeof registro === "string") {
+                try {
+                    registro = JSON.parse(registro);
+                } catch (e) {
+                    console.error("Error al parsear registro:", e);
+                    return;
                 }
-            });
-            document.getElementById("editRegistroId").value = registroId;
-            document.getElementById("editName").value = registroName;
-            document.getElementById("editEmail").value = registroEmail;
+            }
+            Object.keys(registro)
+                .sort()
+                .forEach((key) => {
+                    const input = document.getElementById(
+                        "edit" + key.charAt(0).toUpperCase() + key.slice(1)
+                    );
+                    if (input) {
+                        input.value = registro[key];
+                    }
+                });
 
             editarRegistroModal.show();
         }
@@ -53,7 +57,7 @@ setTimeout(function () {
                         ?.getAttribute("content");
                     if (!token) throw new Error("Token CSRF no encontrado");
 
-                    const response = await fetch(`/usuarios/${registroId}`, {
+                    const response = await fetch(pathname + `/${registroId}`, {
                         method: "PUT",
                         headers: {
                             "Content-Type": "application/json",
@@ -83,11 +87,7 @@ setTimeout(function () {
                     showToast(result.message);
                     editarRegistroModal.hide();
 
-                    // Refresh the user list
-                    const currentUrl = new URL(window.location.href);
-                    const searchParams = new URLSearchParams(currentUrl.search);
-
-                    fetch(`/usuarios?${searchParams.toString()}`, {
+                    fetch(pathname, {
                         headers: {
                             "X-Requested-With": "XMLHttpRequest",
                         },
