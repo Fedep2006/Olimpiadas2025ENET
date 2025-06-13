@@ -349,18 +349,6 @@
                                 </div>
                                 <div class="form-text" id="emailFeedback"></div>
                             </div>
-
-                            <div class="mb-3">
-                                <label for="phone" class="form-label">Teléfono</label>
-                                <div class="input-group">
-                                    <span class="input-group-text">
-                                        <i class="fas fa-phone"></i>
-                                    </span>
-                                    <input type="tel" class="form-control" id="phone" name="phone" placeholder="+54 11 1234-5678" required>
-                                </div>
-                                <div class="form-text" id="phoneFeedback"></div>
-                            </div>
-
                             <div class="mb-3">
                                 <label for="password" class="form-label">Contraseña</label>
                                 <div class="input-group">
@@ -402,7 +390,7 @@
                                 <div class="form-check">
                                     <input class="form-check-input" type="checkbox" id="terms" name="terms" required>
                                     <label class="form-check-label" for="terms">
-                                        Acepto los <a href="#" class="terms-link">Términos y Condiciones</a> y la <a href="#" class="terms-link">Política de Privacidad</a>
+                                        Acepto los <a href="{{ route('terminos') }}" class="text-muted">Términos y Condiciones</a> y la <a href="#" class="terms-link">Política de Privacidad</a>
                                     </label>
                                 </div>
                             </div>
