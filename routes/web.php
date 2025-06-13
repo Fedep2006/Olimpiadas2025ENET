@@ -11,6 +11,11 @@ use App\Models\Hospedaje;
 use App\Models\Vehiculo;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
+use App\Http\Controllers\PreferenciasController;
+
+Route::get('/preferencias/buscar', [PreferenciasController::class, 'buscar'])
+     ->name('preferencias.buscar');
+
 Route::get('/', function (Request $request) {
     $viajes     = Viaje::all();
     $hospedajes = Hospedaje::all();

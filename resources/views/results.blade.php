@@ -7,10 +7,7 @@
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
   <style>
-    :root {
-      --primary: #0066cc;
-      --light: #f8f9fa;
-    }
+    :root { --primary: #0066cc; --light: #f8f9fa; }
     body { background: var(--light); }
     .navbar-brand { font-weight: 700; font-size: 1.75rem; color: var(--primary) !important; }
     .hero { position: relative; background: url('/images/hero-bg.jpg') center/cover no-repeat; height: 300px; }
@@ -21,8 +18,9 @@
     .result-body { padding: 1rem; display: flex; justify-content: space-between; align-items: center; }
     .result-info { flex: 1; }
     .badge-type { background: var(--primary); text-transform: uppercase; font-size: .75rem; }
-    .footer { background: #2c3e50; color: #fff; padding: 2rem 0; }
-    .footer a { color: #ccc; }
+    .item-price { font-size: 1.1rem; font-weight: 600; }
+    .footer-section { background: #2c3e50; color: #fff; padding: 2rem 0; }
+    .features-section .fas { color: var(--primary); }
   </style>
 </head>
 <body>
@@ -56,156 +54,189 @@
     <div class="search-card">
       <ul class="nav nav-tabs mb-3" id="searchModeTab" role="tablist">
         <li class="nav-item" role="presentation">
-          <button class="nav-link active" id="text-tab" data-bs-toggle="tab" data-bs-target="#text" type="button">Texto</button>
+          <button class="nav-link {{ request()->has('q') ? '' : 'active' }}" id="text-tab" data-bs-toggle="tab" data-bs-target="#text" type="button">Texto</button>
         </li>
         <li class="nav-item" role="presentation">
-          <button class="nav-link" id="advanced-tab" data-bs-toggle="tab" data-bs-target="#advanced" type="button">Preferencias</button>
+          <button class="nav-link {{ request()->has('q') ? 'active' : '' }}" id="advanced-tab" data-bs-toggle="tab" data-bs-target="#advanced" type="button">Preferencias</button>
         </li>
       </ul>
       <div class="tab-content" id="searchModeTabContent">
-        <div class="tab-pane fade show active" id="text" role="tabpanel">
+        <div class="tab-pane fade {{ request()->has('q') ? '' : 'show active' }}" id="text" role="tabpanel">
           <form action="{{ url('/results') }}" method="GET" class="d-flex">
             <input type="text" name="search" value="{{ request('search') }}" class="form-control me-2" placeholder="Busca destino, hotel, auto o paquete" />
             <button class="btn btn-primary" type="submit"><i class="fas fa-search me-1"></i> Buscar</button>
           </form>
         </div>
-        <div class="tab-pane fade" id="advanced" role="tabpanel">
-          <form action="{{ url('/results') }}" method="GET">
-            <div class="row g-2 align-items-center">
-              <div class="col-md-3">
-                <label class="form-label small">Origen</label>
-                <div class="input-group">
-                  <span class="input-group-text"><i class="fas fa-dot-circle"></i></span>
-                  <input type="text" name="origin" class="form-control" placeholder="Ciudad de origen" value="{{ request('origin') }}" />
-                </div>
-              </div>
-              <div class="col-md-3">
-                <label class="form-label small">Destino</label>
-                <div class="input-group">
-                  <span class="input-group-text"><i class="fas fa-map-marker-alt"></i></span>
-                  <input type="text" name="destination" class="form-control" placeholder="Ciudad de destino" value="{{ request('destination') }}" />
-                </div>
-              </div>
-              <div class="col-md-2">
-                <label class="form-label small">Entrada</label>
-                <input type="date" name="checkin" class="form-control" value="{{ request('checkin') }}" />
-              </div>
-              <div class="col-md-2">
-                <label class="form-label small">Salida</nobr></label>
-                <input type="date" name="checkout" class="form-control" value="{{ request('checkout') }}" />
-              </div>
-              <div class="col-md-2">
-                <label class="form-label small">Huéspedes</label>
-                <div class="input-group">
-                  <span class="input-group-text"><i class="fas fa-user-friends"></i></span>
-                  <input type="number" name="guests" min="1" class="form-control" value="{{ request('guests',1) }}" />
-                </div>
-              </div>
-            </div>
-            <div class="text-end mt-3">
-              <button class="btn btn-primary"><i class="fas fa-search me-1"></i> Buscar</button>
-            </div>
-          </form>
+        <div class="tab-pane fade {{ request()->has(['origin','destination','checkin','checkout','guests']) ? 'show active' : '' }}" id="advanced" role="tabpanel">
+  <form action="{{ route('preferencias.buscar') }}" method="GET">
+    <div class="row g-2 align-items-center">
+      <div class="col-md-3">
+        <label class="form-label small">Origen</label>
+        <div class="input-group">
+          <span class="input-group-text"><i class="fas fa-dot-circle"></i></span>
+          <input type="text" name="origin" class="form-control" placeholder="Ciudad de origen" value="{{ request('origin') }}" />
         </div>
+      </div>
+      <div class="col-md-3">
+        <label class="form-label small">Destino</label>
+        <div class="input-group">
+          <span class="input-group-text"><i class="fas fa-map-marker-alt"></i></span>
+          <input type="text" name="destination" class="form-control" placeholder="Ciudad de destino" value="{{ request('destination') }}" />
+        </div>
+      </div>
+      <div class="col-md-2">
+        <label class="form-label small">Entrada</label>
+        <input type="date" name="checkin" class="form-control" value="{{ request('checkin') }}" />
+      </div>
+      <div class="col-md-2">
+        <label class="form-label small">Salida</label>
+        <input type="date" name="checkout" class="form-control" value="{{ request('checkout') }}" />
+      </div>
+      <div class="col-md-2">
+        <label class="form-label small">Huéspedes</label>
+        <div class="input-group">
+          <span class="input-group-text"><i class="fas fa-user-friends"></i></span>
+          <input type="number" name="guests" min="1" class="form-control" value="{{ request('guests',1) }}" />
+        </div>
+      </div>
+    </div>
+    <div class="row g-2 align-items-center mt-3">
+      <div class="col-md-3">
+        <label class="form-label small">Precio mínimo</label>
+        <div class="input-group">
+          <span class="input-group-text">$</span>
+          <input type="number" name="price_min" class="form-control" placeholder="0" value="{{ request('price_min') }}" />
+        </div>
+      </div>
+      <div class="col-md-3">
+        <label class="form-label small">Precio máximo</label>
+        <div class="input-group">
+          <span class="input-group-text">$</span>
+          <input type="number" name="price_max" class="form-control" placeholder="0" value="{{ request('price_max') }}" />
+        </div>
+      </div>
+      <div class="col-md-6 text-end">
+        <button class="btn btn-primary mt-4"><i class="fas fa-filter me-1"></i> Aplicar filtros</button>
+      </div>
+    </div>
+  </form>
+</div>
       </div>
     </div>
   </section>
 
   <!-- Results -->
   <section class="results-section container">
-    <ul class="nav nav-tabs mb-4" id="tabs">
-      @php $total=collect($results)->map->count()->sum(); @endphp
-      <li class="nav-item"><button class="nav-link active" data-bs-target="#tab-all" data-bs-toggle="tab">Todos ({{ $total }})</button></li>
-      <li class="nav-item"><button class="nav-link" data-bs-target="#tab-v" data-bs-toggle="tab">Vehículos ({{ $results['vehiculos']->count() ?? 0 }})</button></li>
-      <li class="nav-item"><button class="nav-link" data-bs-target="#tab-tr" data-bs-toggle="tab">Viajes ({{ $results['viajes']->count() ?? 0 }})</button></li>
-      <li class="nav-item"><button class="nav-link" data-bs-target="#tab-h" data-bs-toggle="tab">Hospedajes ({{ $results['hospedajes']->count() ?? 0 }})</button></li>
-      <li class="nav-item"><button class="nav-link" data-bs-target="#tab-p" data-bs-toggle="tab">Paquetes ({{ $results['paquetes']->count() ?? 0 }})</button></li>
-    </ul>
-    <div class="tab-content">
-      @foreach([['all','Todos'], ['vehiculos','Vehículos'], ['viajes','Viajes'], ['hospedajes','Hospedajes'], ['paquetes','Paquetes']] as $idx => [$key,$label])
-        <div class="tab-pane fade {{ $idx==0?'show active':'' }}" id="tab-{{ $key }}">
-          @php
-            $items = $key=='all'? collect($results)->flatten(1) : ($results[$key] ?? collect());
-          @endphp
-          @forelse($items as $item)
-            @php
-              $type = $item instanceof \App\Models\Viaje ? 'viajes' : ($item instanceof \App\Models\Hospedaje ? 'hospedajes' : ($item instanceof \App\Models\Vehiculo ? 'vehiculos' : 'paquetes'));
-            @endphp
-            <div class="result-card">
-              <a href="{{ url('/details', ['type'=>$type,'id'=>$item->id]) }}" class="text-decoration-none text-dark">
-                <div class="result-body">
-                  <div class="result-info">
-                    <span class="badge badge-pill bg-primary badge-type text-uppercase">{{ $type }}</span>
-                    <div class="fw-semibold">
-                      @if($type=='viajes')
-                        {{ $item->nombre }} ({{ $item->origen }} → {{ $item->destino }})
-                      @elseif($type=='hospedajes')
-                        {{ $item->nombre }}
-                      @elseif($type=='vehiculos')
-                        {{ $item->marca }} {{ $item->modelo }}
-                      @else
-                        {{ $item->nombre }}
-                      @endif
-                    </div>
-                    @if($type=='viajes')
-                      <small class="text-muted">Ida y vuelta • {{ $item->duracion ?? '?' }}</small>
-                    @endif
-                  </div>
-                  <div class="text-end">
-                    <div class="item-price">
-                      @if($type=='viajes')
-                        ${{ number_format($item->precio,2) }}
-                      @elseif($type=='hospedajes')
-                        ${{ number_format($item->precio_noche,2) }}/noche
-                      @elseif($type=='vehiculos')
-                        ${{ number_format($item->precio_por_dia,2) }}/día
-                      @else
-                        ${{ number_format($item->precio ?? 0,2) }}
-                      @endif
-                    </div>
-                  </div>
-                </div>
-              </a>
-            </div>
-          @empty
-            <p class="text-center text-muted">No hay resultados en {{ $label }}.</p>
-          @endforelse
+    @if(request()->has('q'))
+      <h2 class="mb-4">Resultados para: <strong>{{ request('q') }}</strong></h2>
+      @if($results->isEmpty())
+        <p class="text-muted">No se encontraron preferencias.</p>
+      @else
+        <div class="list-group">
+          @foreach($results as $pref)
+            <a href="#" class="list-group-item list-group-item-action">
+              <div class="d-flex w-100 justify-content-between">
+                <h5 class="mb-1">{{ $pref->nombre }}</h5>
+              </div>
+              <p class="mb-1 text-muted">{{ $pref->descripcion ?? 'Sin descripción' }}</p>
+            </a>
+          @endforeach
         </div>
-      @endforeach
-    </div>
-    <div class="text-center mt-4">
-      <a href="/" class="btn btn-outline-primary">← Volver al inicio</a>
-    </div>
+      @endif
+      <div class="text-center mt-4">
+        <a href="/" class="btn btn-outline-primary">← Volver al inicio</a>
+      </div>
+    @else
+      <ul class="nav nav-tabs mb-4" id="tabs">
+        @php $total = collect($results)->map->count()->sum(); @endphp
+        <li class="nav-item"><button class="nav-link active" data-bs-target="#tab-all" data-bs-toggle="tab">Todos ({{ $total }})</button></li>
+        @foreach(['vehiculos' => 'Vehículos', 'viajes' => 'Viajes', 'hospedajes' => 'Hospedajes', 'paquetes' => 'Paquetes'] as $key => $label)
+          <li class="nav-item"><button class="nav-link" data-bs-target="#tab-{{ $key }}" data-bs-toggle="tab">{{ $label }} ({{ $results[$key]->count() ?? 0 }})</button></li>
+        @endforeach
+      </ul>
+      <div class="tab-content">
+        @foreach(array_merge(['all' => 'Todos'], ['vehiculos' => 'Vehículos', 'viajes' => 'Viajes', 'hospedajes' => 'Hospedajes', 'paquetes' => 'Paquetes']) as $key => $label)
+          <div class="tab-pane fade {{ $loop->first ? 'show active' : '' }}" id="tab-{{ $key }}">
+            @php $items = $key === 'all' ? collect($results)->flatten(1) : ($results[$key] ?? collect()); @endphp
+            @forelse($items as $item)
+              @php
+                if($item instanceof \App\Models\Viaje) { $type='viajes'; }
+                elseif($item instanceof \App\Models\Hospedaje) { $type='hospedajes'; }
+                elseif($item instanceof \App\Models\Vehiculo) { $type='vehiculos'; }
+                else { $type='paquetes'; }
+              @endphp
+              <div class="result-card">
+                <a href="{{ url('/details', ['type'=>$type,'id'=>$item->id]) }}" class="text-decoration-none text-dark">
+                  <div class="result-body">
+                    <div class="result-info">
+                      <span class="badge badge-pill bg-primary badge-type text-uppercase">{{ $type }}</span>
+                      <div class="fw-semibold mt-1">
+                        @if($type=='viajes')
+                          {{ $item->nombre }} ({{ $item->origen }} → {{ $item->destino }})
+                        @elseif($type=='vehiculos')
+                          {{ $item->marca }} {{ $item->modelo }}
+                        @else
+                          {{ $item->nombre }}
+                        @endif
+                      </div>
+                      @if($type=='viajes')<small class="text-muted">Ida y vuelta • {{ $item->duracion ?? '?' }}</small>@endif
+                    </div>
+                    <div class="text-end">
+                      <div class="item-price">
+                        @if($type=='viajes')
+                          ${{ number_format($item->precio,2) }}
+                        @elseif($type=='hospedajes')
+                          ${{ number_format($item->precio_noche,2) }}<span class="small">/noche</span>
+                        @elseif($type=='vehiculos')
+                          ${{ number_format($item->precio_por_dia,2) }}<span class="small">/día</span>
+                        @else
+                          ${{ number_format($item->precio ?? 0,2) }}
+                        @endif
+                      </div>
+                    </div>
+                  </div>
+                </a>
+              </div>
+            @empty
+              <p class="text-center text-muted">No hay resultados en {{ $label }}.</p>
+            @endforelse
+          </div>
+        @endforeach
+      </div>
+      <div class="text-center mt-4">
+        <a href="/" class="btn btn-outline-primary">← Volver al inicio</a>
+      </div>
+    @endif
   </section>
 
-  <!-- Footer -->
+  <!-- Features -->
   <section class="features-section py-5 bg-white">
     <div class="container">
       <div class="row text-center">
         <div class="col-md-3 mb-4">
-          <i class="fas fa-shield-alt fa-2x text-primary mb-3"></i>
+          <i class="fas fa-shield-alt fa-2x mb-3"></i>
           <h6>Compra protegida</h6>
           <p class="small text-muted">Tu dinero está protegido con nosotros</p>
         </div>
         <div class="col-md-3 mb-4">
-          <i class="fas fa-headset fa-2x text-primary mb-3"></i>
+          <i class="fas fa-headset fa-2x mb-3"></i>
           <h6>Atención 24/7</h6>
           <p class="small text-muted">Te ayudamos cuando lo necesites</p>
         </div>
         <div class="col-md-3 mb-4">
-          <i class="fas fa-percent fa-2x text-primary mb-3"></i>
+          <i class="fas fa-percent fa-2x mb-3"></i>
           <h6>Mejores precios</h6>
           <p class="small text-muted">Garantizamos el mejor precio</p>
         </div>
         <div class="col-md-3 mb-4">
-          <i class="fas fa-car fa-2x text-primary mb-3"></i>
-          <h6>Autos y más</h6>
+          <i class="fas fa-car fa-2x mb-3"></i>
+          <h٦>Autos y más</h٦>
           <p class="small text-muted">Alquiler de autos y otros servicios</p>
         </div>
       </div>
     </div>
   </section>
-
+  <!-- Footer -->
   <footer class="footer-section bg-dark text-white py-5">
     <div class="container">
       <div class="row">
@@ -232,7 +263,7 @@
           <ul class="list-unstyled small">
             <li>Centro de ayuda</li>
             <li>Contacto</li>
-            <li>Términos y condiciones</li>
+            <li>>Términos y condiciones</li>
             <li>Privacidad</li>
           </ul>
         </div>

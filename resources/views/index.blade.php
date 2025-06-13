@@ -6,6 +6,9 @@
     <title>Frategar - Viajes, Vuelos, Hoteles y Paquetes</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
     <style>
         :root {
             --despegar-blue: #0066cc;
@@ -29,7 +32,7 @@
         }
         .hero-video-bg {
             position: absolute;
-            top: 0; left: 0; width: 100%; height: 100%;
+            top: 0; left: 0; width: 100%; height: 150%;
             object-fit: cover;
             z-index: 0;
         }
@@ -161,48 +164,67 @@
             </div>
             <div class="row">
                 <div class="col-lg-10 mx-auto">
-                    <div class="search-card">
-                        <!-- Tab Content -->
-                        <div class="tab-content">
-                            <!-- Vuelos Tab -->
-                            <div class="tab-pane fade show active" id="vuelos">
-                               <form action="{{ url('/results') }}" method="GET" class="mb-5">
-                                <div class="mb-3">
-                                    <label class="form-label">Filtrar por categoría:</label>
-                                    <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="checkbox" name="filters[]" id="f-viaje" value="viaje"
-                                        {{ in_array('viaje', request()->get('filters', [])) ? 'checked' : '' }}>
-                                    <label class="form-check-label" for="f-viaje">Viaje</label>
-                                    </div>
-                                    <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="checkbox" name="filters[]" id="f-hospedaje" value="hospedaje"
-                                        {{ in_array('hospedaje', request()->get('filters', [])) ? 'checked' : '' }}>
-                                    <label class="form-check-label" for="f-hospedaje">Hospedaje</label>
-                                    </div>
-                                    <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="checkbox" name="filters[]" id="f-vehiculo" value="vehiculo"
-                                        {{ in_array('vehiculo', request()->get('filters', [])) ? 'checked' : '' }}>
-                                    <label class="form-check-label" for="f-vehiculo">Vehículo</label>
-                                    </div>
-                                    <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="checkbox" name="filters[]" id="f-paquete" value="paquete"
-                                        {{ in_array('paquete', request()->get('filters', [])) ? 'checked' : '' }}>
-                                    <label class="form-check-label" for="f-paquete">Paquete</label>
-                                    </div>
-                                </div>
+<div class="search-card">
+  <ul class="nav nav-tabs mb-3" id="searchModeTab" role="tablist">
+    <li class="nav-item" role="presentation">
+      <button class="nav-link active" id="text-tab" data-bs-toggle="tab" data-bs-target="#text" type="button">Texto</button>
+    </li>
+    <li class="nav-item" role "presentation">
+      <button class="nav-link" id="advanced-tab" data-bs-toggle="tab" data-bs-target="#advanced" type="button">Preferencias</button>
+    </li>
+  </ul>
+  <div class="tab-content" id="searchModeTabContent">
+    {{-- Búsqueda por texto --}}
+    <div class="tab-pane fade show active" id="text" role="tabpanel">
+      <form action="{{ url('/results') }}" method="GET" class="d-flex">
+        <input type="text" name="search" value="{{ request('search') }}" class="form-control me-2" placeholder="Busca destino, hotel, auto o paquete…" />
+        <button class="btn btn-primary" type="submit"><i class="fas fa-search me-1"></i> Buscar</button>
+      </form>
+    </div>
 
-                                <div class="d-flex">
-                                    <input
-                                    type="text"
-                                    name="search"
-                                    value="{{ request('search') }}"
-                                    class="form-control me-2"
-                                    placeholder="Busca destino, hotel o vehículo..."
-                                    aria-label="Buscar"
-                                    >
-                                    <button class="btn btn-primary" type="submit">Buscar</button>
-                                </div>
-                                </form>
+    {{-- Búsqueda avanzada --}}
+    <div class="tab-pane fade" id="advanced" role="tabpanel">
+      <form action="{{ url('/results') }}" method="GET">
+        <div class="row g-2 align-items-end">
+          <div class="col-md-3">
+            <label class="form-label small">Origen</label>
+            <div class="input-group">
+              <span class="input-group-text"><i class="fas fa-dot-circle"></i></span>
+              <input type="text" name="origin" class="form-control" placeholder="Ciudad de origen" value="{{ request('origin') }}" />
+            </div>
+          </div>
+          <div class="col-md-3">
+            <label class="form-label small">Destino</label>
+            <div class="input-group">
+              <span class="input-group-text"><i class="fas fa-map-marker-alt"></i></span>
+              <input type="text" name="destination" class="form-control" placeholder="Ciudad de destino" value="{{ request('destination') }}" />
+            </div>
+          </div>
+          <div class="col-md-2">
+            <label class="form-label small">Entrada</label>
+            <input type="date" name="checkin" class="form-control" value="{{ request('checkin') }}" />
+          </div>
+          <div class="col-md-2">
+            <label class="form-label small">Salida</label>
+            <input type="date" name="checkout" class="form-control" value="{{ request('checkout') }}" />
+          </div>
+          <div class="col-md-2">
+            <label class="form-label small">Huéspedes</label>
+            <div class="input-group">
+              <span class="input-group-text"><i class="fas fa-user-friends"></i></span>
+              <input type="number" name="guests" min="1" class="form-control" value="{{ request('guests',1) }}" />
+            </div>
+          </div>
+        </div>
+        <div class="text-end mt-3">
+          <button class="btn btn-primary"><i class="fas fa-search me-1"></i> Buscar</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+
 
                             </div>
                             

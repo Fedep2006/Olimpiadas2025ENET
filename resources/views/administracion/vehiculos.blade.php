@@ -308,35 +308,19 @@
                     <h1 class="page-title">Gestión de Autos</h1>
                     <p class="page-subtitle">Administra la flota de vehículos de alquiler</p>
                 </div>
-                <a href="#" class="btn-admin orange">
+                <a href="{{ route('administracion.vehiculos') }}" class="btn-admin warning">
+                        <i class="fas fa-sync"></i>
+                        Sincronizar
+                    </a>
+                <a href="" class="btn-admin orange" data-bs-toggle="modal" data-bs-target="#AñadirVehiculo">
                     <i class="fas fa-plus"></i>
                     Nuevo Vehículo
                 </a>
             </div>
         </div>
 
-        <!-- Stats Row -->
-        <div class="stats-row">
-            <div class="stat-card">
-                <div class="stat-number">1,247</div>
-                <div class="stat-label">Total Vehículos</div>
-            </div>
-            <div class="stat-card" style="border-left-color: #28a745;">
-                <div class="stat-number">892</div>
-                <div class="stat-label">Disponibles</div>
-            </div>
-            <div class="stat-card" style="border-left-color: #ffc107;">
-                <div class="stat-number">234</div>
-                <div class="stat-label">Alquilados</div>
-            </div>
-            <div class="stat-card" style="border-left-color: #dc3545;">
-                <div class="stat-number">121</div>
-                <div class="stat-label">En Mantenimiento</div>
-            </div>
-        </div>
-
         <!-- Filters -->
-        <div class="content-card">
+  <!--      <div class="content-card">
             <div class="search-filters">
                 <div class="filter-row">
                     <div class="filter-group">
@@ -399,16 +383,12 @@
                 </div>
             </div>
         </div>
-
+    -->
         <!-- Cars Table -->
         <div class="content-card">
             <div class="card-header">
                 <h5 class="card-title">Lista de Vehículos</h5>
                 <div class="d-flex gap-2">
-                    <a href="#" class="btn-admin success">
-                        <i class="fas fa-file-excel"></i>
-                        Excel
-                    </a>
                 </div>
             </div>
 
@@ -416,282 +396,67 @@
                 <table class="table">
                     <thead>
                         <tr>
-                            <th>Vehículo</th>
-                            <th>Categoría</th>
-                            <th>Ubicación</th>
-                            <th>Características</th>
-                            <th>Precio/Día</th>
-                            <th>Kilometraje</th>
-                            <th>Estado</th>
-                            <th>Acciones</th>
+                        <th class="text-center"></th>
+                        <th class="text-center">ID</th>
+                        <th class="text-center">Tipo</th>
+                        <th class="text-center">Datos del Vehículo</th>
+                        <th class="text-center">Ubicación</th>
+                        <th class="text-center">Precio por Día</th>
+                        <th class="text-center">Características</th>
+                        <th class="text-center">Observaciones</th>
+                        <th class="text-center">Disponible</th>
+                        <th class="text-center">Acciones</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td>
-                                <div class="car-info">
-                                    <div class="car-image">
-                                        <i class="fas fa-car"></i>
+                    @foreach ($vehiculo as $vehiculos)
+                    <td class="text-center"><img src="{{ $vehiculos->imagenes[0] }}" alt="Imagen del vehículo" class="img-fluid" style="width: 100px; height: 100px;"></td>
+                    <td class="text-center">{{ $vehiculos->id }}</td>
+                    <td class="text-center">{{ $vehiculos->tipo }}</td>
+
+                    <td class="text-center"> 
+                    <small class="text-muted">Marca:{{ $vehiculos->marca }}</small>
+                    <br>
+                    <small class="text-muted">Modelo:{{ $vehiculos->modelo }}</small>
+                    <br>
+                    <small class="text-muted">Año:{{ $vehiculos->antiguedad }}</small>
+                    <br>
+                    <small class="text-muted">Patente:{{ $vehiculos->patente }}</small>
+                    <br>
+                    <small class="text-muted">Color:{{ $vehiculos->color }}</small>
+                    <br>
+                    <small class="text-muted">Capacidad:{{ $vehiculos->capacidad_pasajeros }}</small>
+                    <br>
+                    </td>
+                    <td class="text-center">{{ $vehiculos->ubicacion }}</td>
+                    <td class="text-center">{{ $vehiculos->precio_por_dia }}</td>
+                    <td class="text-center">{{ is_array($vehiculos->caracteristicas) ? implode(', ', $vehiculos->caracteristicas) : $vehiculos->caracteristicas }}</td>
+                    <td class="text-center">{{ $vehiculos->observaciones }}</td>
+                    <td class="text-center">{{ $vehiculos->disponible }}</td>
+                    <td class="text-center">
+
+                    
+                                    <div class="action-buttons">
+                                        <button class="action-btn view" title="Ver detalles">
+                                            <i class="fas fa-eye"></i>
+                                        </button>
+                                        <button class="action-btn edit" title="Editar" data-bs-toggle="modal" data-bs-target="#EditarVehiculo">
+                                            <i class="fas fa-edit"></i>
+                                        </button>
+                                        <button class="action-btn delete" title="Desactivar" data-bs-toggle="modal" data-bs-target="#EliminarVehiculo" >
+                                            <i class="fas fa-ban"></i>
+                                        </button>
                                     </div>
-                                    <div class="car-details">
-                                        <h6>Toyota Corolla 2024</h6>
-                                        <small>Placa: ABC-123</small>
-                                    </div>
-                                </div>
-                            </td>
-                            <td>
-                                <span class="category-badge category-economy">Económico</span>
-                            </td>
-                            <td>
-                                <div><strong>Miami Airport</strong></div>
-                                <small class="text-muted">Terminal 1</small>
-                            </td>
-                            <td>
-                                <div class="features-list">
-                                    <span class="feature-item">5 asientos</span>
-                                    <span class="feature-item">A/C</span>
-                                    <span class="feature-item">Automático</span>
-                                </div>
-                            </td>
-                            <td>
-                                <div class="price-info">
-                                    <div class="price-amount">$45</div>
-                                    <small class="text-muted">por día</small>
-                                </div>
-                            </td>
-                            <td>
-                                <div><strong>15,420</strong> km</div>
-                                <small class="text-muted">Último servicio: 10/03</small>
-                            </td>
-                            <td><span class="status-badge status-available">Disponible</span></td>
-                            <td>
-                                <div class="action-buttons">
-                                    <button class="action-btn view" title="Ver detalles">
-                                        <i class="fas fa-eye"></i>
-                                    </button>
-                                    <button class="action-btn edit" title="Editar">
-                                        <i class="fas fa-edit"></i>
-                                    </button>
-                                    <button class="action-btn delete" title="Dar de baja">
-                                        <i class="fas fa-ban"></i>
-                                    </button>
-                                </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <div class="car-info">
-                                    <div class="car-image">
-                                        <i class="fas fa-car"></i>
-                                    </div>
-                                    <div class="car-details">
-                                        <h6>Honda CR-V 2023</h6>
-                                        <small>Placa: DEF-456</small>
-                                    </div>
-                                </div>
-                            </td>
-                            <td>
-                                <span class="category-badge category-suv">SUV</span>
-                            </td>
-                            <td>
-                                <div><strong>París CDG</strong></div>
-                                <small class="text-muted">Terminal 2E</small>
-                            </td>
-                            <td>
-                                <div class="features-list">
-                                    <span class="feature-item">7 asientos</span>
-                                    <span class="feature-item">A/C</span>
-                                    <span class="feature-item">4WD</span>
-                                    <span class="feature-item">GPS</span>
-                                </div>
-                            </td>
-                            <td>
-                                <div class="price-info">
-                                    <div class="price-amount">$85</div>
-                                    <small class="text-muted">por día</small>
-                                </div>
-                            </td>
-                            <td>
-                                <div><strong>28,750</strong> km</div>
-                                <small class="text-muted">Último servicio: 05/03</small>
-                            </td>
-                            <td><span class="status-badge status-rented">Alquilado</span></td>
-                            <td>
-                                <div class="action-buttons">
-                                    <button class="action-btn view" title="Ver detalles">
-                                        <i class="fas fa-eye"></i>
-                                    </button>
-                                    <button class="action-btn edit" title="Editar">
-                                        <i class="fas fa-edit"></i>
-                                    </button>
-                                    <button class="action-btn delete" title="Dar de baja">
-                                        <i class="fas fa-ban"></i>
-                                    </button>
-                                </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <div class="car-info">
-                                    <div class="car-image">
-                                        <i class="fas fa-car"></i>
-                                    </div>
-                                    <div class="car-details">
-                                        <h6>BMW Serie 3 2024</h6>
-                                        <small>Placa: GHI-789</small>
-                                    </div>
-                                </div>
-                            </td>
-                            <td>
-                                <span class="category-badge category-luxury">Lujo</span>
-                            </td>
-                            <td>
-                                <div><strong>Madrid Barajas</strong></div>
-                                <small class="text-muted">Terminal 4</small>
-                            </td>
-                            <td>
-                                <div class="features-list">
-                                    <span class="feature-item">5 asientos</span>
-                                    <span class="feature-item">Cuero</span>
-                                    <span class="feature-item">Automático</span>
-                                    <span class="feature-item">Premium</span>
-                                </div>
-                            </td>
-                            <td>
-                                <div class="price-info">
-                                    <div class="price-amount">$120</div>
-                                    <small class="text-muted">por día</small>
-                                </div>
-                            </td>
-                            <td>
-                                <div><strong>8,200</strong> km</div>
-                                <small class="text-muted">Último servicio: 20/03</small>
-                            </td>
-                            <td><span class="status-badge status-maintenance">Mantenimiento</span></td>
-                            <td>
-                                <div class="action-buttons">
-                                    <button class="action-btn view" title="Ver detalles">
-                                        <i class="fas fa-eye"></i>
-                                    </button>
-                                    <button class="action-btn edit" title="Editar">
-                                        <i class="fas fa-edit"></i>
-                                    </button>
-                                    <button class="action-btn delete" title="Dar de baja">
-                                        <i class="fas fa-ban"></i>
-                                    </button>
-                                </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <div class="car-info">
-                                    <div class="car-image">
-                                        <i class="fas fa-car"></i>
-                                    </div>
-                                    <div class="car-details">
-                                        <h6>Nissan Sentra 2023</h6>
-                                        <small>Placa: JKL-012</small>
-                                    </div>
-                                </div>
-                            </td>
-                            <td>
-                                <span class="category-badge category-compact">Compacto</span>
-                            </td>
-                            <td>
-                                <div><strong>Cancún Airport</strong></div>
-                                <small class="text-muted">Terminal 3</small>
-                            </td>
-                            <td>
-                                <div class="features-list">
-                                    <span class="feature-item">5 asientos</span>
-                                    <span class="feature-item">A/C</span>
-                                    <span class="feature-item">Manual</span>
-                                </div>
-                            </td>
-                            <td>
-                                <div class="price-info">
-                                    <div class="price-amount">$35</div>
-                                    <small class="text-muted">por día</small>
-                                </div>
-                            </td>
-                            <td>
-                                <div><strong>22,340</strong> km</div>
-                                <small class="text-muted">Último servicio: 15/03</small>
-                            </td>
-                            <td><span class="status-badge status-available">Disponible</span></td>
-                            <td>
-                                <div class="action-buttons">
-                                    <button class="action-btn view" title="Ver detalles">
-                                        <i class="fas fa-eye"></i>
-                                    </button>
-                                    <button class="action-btn edit" title="Editar">
-                                        <i class="fas fa-edit"></i>
-                                    </button>
-                                    <button class="action-btn delete" title="Dar de baja">
-                                        <i class="fas fa-ban"></i>
-                                    </button>
-                                </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <div class="car-info">
-                                    <div class="car-image">
-                                        <i class="fas fa-car"></i>
-                                    </div>
-                                    <div class="car-details">
-                                        <h6>Mercedes-Benz C-Class 2024</h6>
-                                        <small>Placa: MNO-345</small>
-                                    </div>
-                                </div>
-                            </td>
-                            <td>
-                                <span class="category-badge category-luxury">Lujo</span>
-                            </td>
-                            <td>
-                                <div><strong>JFK Airport</strong></div>
-                                <small class="text-muted">Terminal 1</small>
-                            </td>
-                            <td>
-                                <div class="features-list">
-                                    <span class="feature-item">5 asientos</span>
-                                    <span class="feature-item">Cuero</span>
-                                    <span class="feature-item">Automático</span>
-                                    <span class="feature-item">Premium</span>
-                                    <span class="feature-item">GPS</span>
-                                </div>
-                            </td>
-                            <td>
-                                <div class="price-info">
-                                    <div class="price-amount">$150</div>
-                                    <small class="text-muted">por día</small>
-                                </div>
-                            </td>
-                            <td>
-                                <div><strong>5,890</strong> km</div>
-                                <small class="text-muted">Último servicio: 25/03</small>
-                            </td>
-                            <td><span class="status-badge status-rented">Alquilado</span></td>
-                            <td>
-                                <div class="action-buttons">
-                                    <button class="action-btn view" title="Ver detalles">
-                                        <i class="fas fa-eye"></i>
-                                    </button>
-                                    <button class="action-btn edit" title="Editar">
-                                        <i class="fas fa-edit"></i>
-                                    </button>
-                                    <button class="action-btn delete" title="Dar de baja">
-                                        <i class="fas fa-ban"></i>
-                                    </button>
-                                </div>
-                            </td>
-                        </tr>
+                                
+                    </td>
+                
                     </tbody>
+                    @endforeach
                 </table>
             </div>
 
             <!-- Pagination -->
-            <nav>
+            <nav class="d-flex justify-content-center">
                 <ul class="pagination">
                     <li class="page-item disabled">
                         <a class="page-link" href="#" tabindex="-1">Anterior</a>
@@ -716,6 +481,230 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
     @vite('resources/js/sidebar.js')
-</body>
 
+    <!-- Modal para editar vehículos -->
+    <div class="modal fade" id="EditarVehiculo" tabindex="-1" aria-labelledby="EditarVehiculoLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="EditarVehiculoLabel">Editar Vehículo</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form action="{{ route('administracion.vehiculos.editar') }}" method="post" enctype="multipart/form-data">
+                        @csrf
+                        <input type="hidden" name="id" value="{{ $vehiculos->id }}">
+                        <div class="mb-3">
+                            <label for="tipo" class="form-label">Tipo de vehículo</label>
+                            <select class="form-select" id="tipo" name="tipo" required>
+                                <option value="auto" {{ $vehiculos->tipo == 'auto' ? 'selected' : '' }}>Automovil</option>
+                                <option value="camioneta" {{ $vehiculos->tipo == 'camioneta' ? 'selected' : '' }}>Camioneta</option>
+                                <option value="moto" {{ $vehiculos->tipo == 'moto' ? 'selected' : '' }}>Moto</option>
+                                <option value="bicicleta" {{ $vehiculos->tipo == 'bicicleta' ? 'selected' : '' }}>Bicicleta</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="marca" class="form-label">Marca</label>
+                            <input type="text" class="form-control" id="marca" name="marca" value="{{ $vehiculos->marca }}" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="modelo" class="form-label">Modelo</label>
+                            <input type="text" class="form-control" id="modelo" name="modelo" value="{{ $vehiculos->modelo }}" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="antiguedad" class="form-label">Año de fabricación</label>
+                            <input type="number" class="form-control" id="antiguedad" name="antiguedad" value="{{ $vehiculos->antiguedad }}" min="1900" max="{{ date('Y') }}" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="patente" class="form-label">Patente / Matrícula</label>
+                            <input type="text" class="form-control" id="patente" name="patente" value="{{ $vehiculos->patente }}" maxlength="10" minlength="10" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="color" class="form-label">Color</label>
+                            <input type="text" class="form-control" id="color" name="color" value="{{ $vehiculos->color }}" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="capacidad_pasajeros" class="form-label">Capacidad de pasajeros</label>
+                            <input type="number" class="form-control" id="capacidad_pasajeros" name="capacidad_pasajeros" value="{{ $vehiculos->capacidad_pasajeros }}" min="1" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="ubicacion" class="form-label">Ubicación actual</label>
+                            <input type="text" class="form-control" id="ubicacion" name="ubicacion" value="{{ $vehiculos->ubicacion }}" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="precio_por_dia" class="form-label">Precio por día</label>
+                            <input type="number" class="form-control" id="precio_por_dia" name="precio_por_dia" value="{{ $vehiculos->precio_por_dia }}" max="10,2" step="0.01" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="disponible" class="form-label">¿Disponible para alquiler?</label>
+                            <select class="form-select" id="disponible" name="disponible" required>
+                                <option value="1" {{ $vehiculos->disponible == 1 ? 'selected' : '' }}>Sí</option>
+                                <option value="0" {{ $vehiculos->disponible == 0 ? 'selected' : '' }}>No</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="imagenes" class="form-label">Imágenes del vehículo (URLs, separadas por coma)</label>
+                            <input type="text" class="form-control" id="imagenes" name="imagenes[]" value="{{ is_array($vehiculos->imagenes) ? implode(', ', $vehiculos->imagenes) : $vehiculos->imagenes }}" placeholder="https://ejemplo.com/auto1.jpg, https://ejemplo.com/auto2.jpg">
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Características del vehículo</label>
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" name="caracteristicas[]" value="GPS" id="caracteristica_gps" {{ in_array('GPS', (array)$vehiculos->caracteristicas) ? 'checked' : '' }}>
+                                        <label class="form-check-label" for="caracteristica_gps">GPS</label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" name="caracteristicas[]" value="Bluetooth" id="caracteristica_bluetooth" {{ in_array('Bluetooth', (array)$vehiculos->caracteristicas) ? 'checked' : '' }}>
+                                        <label class="form-check-label" for="caracteristica_bluetooth">Bluetooth</label>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" name="caracteristicas[]" value="Aire Acondicionado" id="caracteristica_aire" {{ in_array('Aire Acondicionado', (array)$vehiculos->caracteristicas) ? 'checked' : '' }}>
+                                        <label class="form-check-label" for="caracteristica_aire">Aire Acondicionado</label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" name="caracteristicas[]" value="Camara de Reversa" id="caracteristica_camara" {{ in_array('Camara de Reversa', (array)$vehiculos->caracteristicas) ? 'checked' : '' }}>
+                                        <label class="form-check-label" for="caracteristica_camara">Camara de Reversa</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="observaciones" class="form-label">Observaciones</label>
+                            <textarea class="form-control" id="observaciones" name="observaciones" rows="3" value="{{ $vehiculos->observaciones }}"></textarea>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                            <button type="submit" class="btn btn-primary">Actualizar Vehículo</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal para eliminar vehículos -->
+    <div class="modal fade" id="EliminarVehiculo" tabindex="-1" aria-labelledby="EliminarVehiculoLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="EliminarVehiculoLabel">Desactivar Vehículo</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p>¿Estás seguro de que deseas desactivar este vehículo? Esta acción no se puede deshacer.</p>
+                    <form action="{{ route('administracion.vehiculos.borrar', ['id' => $vehiculos->id]) }}" method="post">
+    @csrf
+    @method('DELETE')   
+    <!-- El input hidden de id ya no es necesario -->
+    <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+        <button type="submit" class="btn btn-danger">Desactivar Vehículo</button>
+    </div>
+</form>
+
+    <!-- Modal para agregar vehículos -->
+    <div class="modal fade" id="AñadirVehiculo" tabindex="-1" aria-labelledby="AñadirVehiculoLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="AñadirVehiculoLabel">Agregar Vehículo</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form action="{{ route('administracion.vehiculos.añadir') }}" method="post" enctype="multipart/form-data">
+                        @csrf
+                        <div class="mb-3">
+                            <label for="tipo" class="form-label">Tipo de vehículo</label>
+                            <select class="form-select" id="tipo" name="tipo" required>
+                                <option value="auto" {{ $vehiculos->tipo == 'auto' ? 'selected' : '' }}>Automovil</option>
+                                <option value="camioneta" {{ $vehiculos->tipo == 'camioneta' ? 'selected' : '' }}>Camioneta</option>
+                                <option value="moto" {{ $vehiculos->tipo == 'moto' ? 'selected' : '' }}>Moto</option>
+                                <option value="bicicleta" {{ $vehiculos->tipo == 'bicicleta' ? 'selected' : '' }}>Bicicleta</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="marca" class="form-label">Marca</label>
+                            <input type="text" class="form-control" id="marca" name="marca" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="modelo" class="form-label">Modelo</label>
+                            <input type="text" class="form-control" id="modelo" name="modelo" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="antiguedad" class="form-label">Año de fabricación</label>
+                            <input type="number" class="form-control" id="antiguedad" name="antiguedad" min="1900" max="{{ date('Y') }}" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="patente" class="form-label">Patente / Matrícula</label>
+                            <input type="text" class="form-control" id="patente" name="patente" maxlength="10" minlength="10" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="color" class="form-label">Color</label>
+                            <input type="text" class="form-control" id="color" name="color" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="capacidad_pasajeros" class="form-label">Capacidad de pasajeros</label>
+                            <input type="number" class="form-control" id="capacidad_pasajeros" name="capacidad_pasajeros" min="1" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="ubicacion" class="form-label">Ubicación actual</label>
+                            <input type="text" class="form-control" id="ubicacion" name="ubicacion" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="precio_por_dia" class="form-label">Precio por día</label>
+                            <input type="number" class="form-control" id="precio_por_dia" name="precio_por_dia" min="0" step="0.01" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="disponible" class="form-label">¿Disponible para alquiler?</label>
+                            <select class="form-select" id="disponible" name="disponible" required>
+                                <option value="1" {{ $vehiculos->disponible == 1 ? 'selected' : '' }}>Sí</option>
+                                <option value="0" {{ $vehiculos->disponible == 0 ? 'selected' : '' }}>No</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="imagenes" class="form-label">Imágenes del vehículo (URLs, separadas por coma)</label>
+                            <input type="text" class="form-control" id="imagenes" name="imagenes[]" placeholder="https://ejemplo.com/auto1.jpg, https://ejemplo.com/auto2.jpg">
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Características del vehículo</label>
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" name="caracteristicas[]" value="GPS" id="caracteristicas">
+                                        <label class="form-check-label" for="caracteristicas">GPS</label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" name="caracteristicas[]" value="Bluetooth" id="caracteristicas">
+                                        <label class="form-check-label" for="caracteristicas">Bluetooth</label>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" name="caracteristicas[]" value="Aire Acondicionado" id="caracteristicas">
+                                        <label class="form-check-label" for="caracteristicas">Aire Acondicionado</label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" name="caracteristicas[]" value="Camara de Reversa" id="caracteristicas">
+                                        <label class="form-check-label" for="caracteristicas">Camara de Reversa</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="observaciones" class="form-label">Observaciones</label>
+                            <textarea class="form-control" id="observaciones" name="observaciones" rows="3"></textarea>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                            <button type="submit" class="btn btn-primary">Guardar Vehículo</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
 </html>
