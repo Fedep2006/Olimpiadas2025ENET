@@ -153,73 +153,60 @@
     </nav>
 
     <!-- Hero Section -->
-    <section class="hero-section">
-        <video class="hero-video-bg" src="{{ asset('img/fondo.mp4') }}" autoplay loop muted playsinline></video>
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-8 mx-auto text-center">
-                    <h1 class="display-4 fw-bold mb-3">¡Viajá como querés!</h1>
-                    <p class="lead mb-4">Encontrá vuelos, hoteles y paquetes al mejor precio</p>
+<section class="hero-section">
+    <video class="hero-video-bg" src="{{ asset('img/fondo.mp4') }}" autoplay loop muted playsinline></video>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 mx-auto text-center">
+                <h1 class="display-4 fw-bold mb-3">¡Viajá como querés!</h1>
+                <p class="lead mb-4">Encontrá vuelos, hoteles y paquetes al mejor precio</p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-10 mx-auto">
+                <div class="search-card">
+                    <form action="{{ url('/results') }}" method="GET">
+                        <div class="row g-2 align-items-end">
+                            <div class="col-md-3">
+                                <label class="form-label small">Origen</label>
+                                <div class="input-group">
+                                    <span class="input-group-text"><i class="fas fa-dot-circle"></i></span>
+                                    <input type="text" name="origin" class="form-control" placeholder="Ciudad de origen" value="{{ request('origin') }}" />
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <label class="form-label small">Destino</label>
+                                <div class="input-group">
+                                    <span class="input-group-text"><i class="fas fa-map-marker-alt"></i></span>
+                                    <input type="text" name="destination" class="form-control" placeholder="Ciudad de destino" value="{{ request('destination') }}" />
+                                </div>
+                            </div>
+                            <div class="col-md-2">
+                                <label class="form-label small">Entrada</label>
+                                <input type="date" name="checkin" class="form-control" value="{{ request('checkin') }}" />
+                            </div>
+                            <div class="col-md-2">
+                                <label class="form-label small">Salida</label>
+                                <input type="date" name="checkout" class="form-control" value="{{ request('checkout') }}" />
+                            </div>
+                            <div class="col-md-2">
+                                <label class="form-label small">Huéspedes</label>
+                                <div class="input-group">
+                                    <span class="input-group-text"><i class="fas fa-user-friends"></i></span>
+                                    <input type="number" name="guests" min="1" class="form-control" value="{{ request('guests',1) }}" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="text-end mt-3">
+                            <button class="btn btn-primary"><i class="fas fa-search me-1"></i> Buscar</button>
+                        </div>
+                    </form>
                 </div>
             </div>
-            <div class="row">
-                <div class="col-lg-10 mx-auto">
-<div class="search-card">
-  <ul class="nav nav-tabs mb-3" id="searchModeTab" role="tablist">
-
-    <li class="nav-item" role "presentation">
-      <button class="nav-link" id="advanced-tab" data-bs-toggle="tab" data-bs-target="#advanced" type="button">Preferencias</button>
-    </li>
-  </ul>
-  <div class="tab-content" id="searchModeTabContent">
-
-    {{-- Búsqueda avanzada --}}
-    <div class="tab-pane fade" id="advanced" role="tabpanel">
-      <form action="{{ url('/results') }}" method="GET">
-        <div class="row g-2 align-items-end">
-          <div class="col-md-3">
-            <label class="form-label small">Origen</label>
-            <div class="input-group">
-              <span class="input-group-text"><i class="fas fa-dot-circle"></i></span>
-              <input type="text" name="origin" class="form-control" placeholder="Ciudad de origen" value="{{ request('origin') }}" />
-            </div>
-          </div>
-          <div class="col-md-3">
-            <label class="form-label small">Destino</label>
-            <div class="input-group">
-              <span class="input-group-text"><i class="fas fa-map-marker-alt"></i></span>
-              <input type="text" name="destination" class="form-control" placeholder="Ciudad de destino" value="{{ request('destination') }}" />
-            </div>
-          </div>
-          <div class="col-md-2">
-            <label class="form-label small">Entrada</label>
-            <input type="date" name="checkin" class="form-control" value="{{ request('checkin') }}" />
-          </div>
-          <div class="col-md-2">
-            <label class="form-label small">Salida</label>
-            <input type="date" name="checkout" class="form-control" value="{{ request('checkout') }}" />
-          </div>
-          <div class="col-md-2">
-            <label class="form-label small">Huéspedes</label>
-            <div class="input-group">
-              <span class="input-group-text"><i class="fas fa-user-friends"></i></span>
-              <input type="number" name="guests" min="1" class="form-control" value="{{ request('guests',1) }}" />
-            </div>
-          </div>
         </div>
-        <div class="text-end mt-3">
-          <button class="btn btn-primary"><i class="fas fa-search me-1"></i> Buscar</button>
-        </div>
-      </form>
     </div>
-  </div>
-</div>
+</section>
 
-
-
-                            </div>
-                            
-    </section>
 
     <!-- hospedaje -->
     <section class="py-5">

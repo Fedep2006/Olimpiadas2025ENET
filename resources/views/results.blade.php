@@ -50,8 +50,6 @@
           <div class="col-md-2"><input type="number" name="guests" min="1" class="form-control" value="{{ request('guests',1) }}" placeholder="Huéspedes"></div>
         </div>
         <div class="row g-2 mt-3">
-          <div class="col-md-3"><input type="number" name="price_min" class="form-control" placeholder="Precio mín." value="{{ request('price_min') }}"></div>
-          <div class="col-md-3"><input type="number" name="price_max" class="form-control" placeholder="Precio máx." value="{{ request('price_max') }}"></div>
           <div class="col-md-6 text-end"><button class="btn btn-primary"><i class="fas fa-filter me-1"></i> Aplicar filtros</button></div>
         </div>
       </form>
