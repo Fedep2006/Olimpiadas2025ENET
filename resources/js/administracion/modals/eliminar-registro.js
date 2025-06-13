@@ -9,6 +9,8 @@ setTimeout(function () {
         }
     );
 
+    const pathname = window.location.pathname;
+
     // Handle delete button click
     let registroId = null;
     document.addEventListener("click", function (e) {
@@ -31,7 +33,7 @@ setTimeout(function () {
                     ?.getAttribute("content");
                 if (!token) throw new Error("Token CSRF no encontrado");
 
-                const response = await fetch(`/usuarios/${registroId}`, {
+                const response = await fetch(pathname + `/${registroId}`, {
                     method: "DELETE",
                     headers: {
                         Accept: "application/json",
@@ -44,18 +46,14 @@ setTimeout(function () {
 
                 if (!response.ok) {
                     throw new Error(
-                        result.message || "Error al eliminar el usuario"
+                        result.message || "Error al eliminar el registro"
                     );
                 }
 
                 showToast(result.message);
                 confirmarEliminacionModal.hide();
 
-                // Refresh the user list
-                const currentUrl = new URL(window.location.href);
-                const searchParams = new URLSearchParams(currentUrl.search);
-
-                fetch(`/usuarios?${searchParams.toString()}`, {
+                fetch(pathname, {
                     headers: {
                         "X-Requested-With": "XMLHttpRequest",
                     },
