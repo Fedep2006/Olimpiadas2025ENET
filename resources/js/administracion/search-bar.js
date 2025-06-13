@@ -3,8 +3,8 @@ setTimeout(function () {
     // Search functionality
     let searchTimeout;
     let inputs = null;
-    for(i = 0; i>){
-
+    for (i = 0; inputs !== null; i++) {
+        console.log(i);
     }
     const searchInput = document.getElementById("searchInput");
     const dateInput = document.querySelector('input[name="registration_date"]');
