@@ -337,27 +337,7 @@
             </div>
         </div>
 
-        <!-- Stats Row -->
-        <div class="stats-row">
-            <div class="stat-card">
-                <div class="stat-number">47</div>
-                <div class="stat-label">Total Paquetes</div>
-            </div>
-            <div class="stat-card" style="border-left-color: #28a745;">
-                <div class="stat-number">32</div>
-                <div class="stat-label">Paquetes Activas</div>
-            </div>
-            <div class="stat-card" style="border-left-color: #ffc107;">
-                <div class="stat-number">8</div>
-                <div class="stat-label">Programadas</div>
-            </div>
-            <div class="stat-card" style="border-left-color: #dc3545;">
-                <div class="stat-number">7</div>
-                <div class="stat-label">Expiradas</div>
-            </div>
-        </div>
-
-        <!-- Filters -->
+        <!-- Filters
         <div class="content-card">
             <div class="search-filters">
                 <div class="filter-row">
@@ -415,19 +395,15 @@
                 </div>
             </div>
         </div>
-
+    -->
         <!-- Promotions Table -->
         <div class="content-card">
             <div class="card-header">
                 <h5 class="card-title">Lista de Paquetes</h5>
                 <div class="d-flex gap-2">
-                    <a href="#" class="btn-admin success">
-                        <i class="fas fa-file-excel"></i>
-                        Excel
-                    </a>
                 </div>
             </div>
-
+<br>
             <div class="table-container">
                 <table class="table">
                     <thead>
