@@ -5,6 +5,7 @@ use App\Http\Controllers\administracionController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\Admin\HospedajeController;
+use App\Http\Controllers\Admin\VehiculosController;
 use App\Models\User;
 
 use Illuminate\Support\Facades\Auth;
@@ -38,12 +39,16 @@ Route::prefix('administracion')->middleware('auth')->group(function () {
 
     Route::get('/reportes', [AdministracionController::class, 'reportes'])->name('administracion.reportes');
 
-    Route::get('/vehiculos', [AdministracionController::class, 'vehiculos'])->name('administracion.vehiculos');
+    Route::get('/vehiculos', [VehiculosController::class, 'index'])->name('administracion.vehiculos');
+    Route::post('/vehiculos/añadir', [VehiculosController::class, 'AñadirVehiculo'])->name('administracion.vehiculos.añadir');
+    Route::post('/vehiculos/editar', [VehiculosController::class, 'EditarVehiculo'])->name('administracion.vehiculos.editar');
+    Route::delete('/vehiculos/borrar/{id}', [VehiculosController::class, 'EliminarVehiculo'])->name('administracion.vehiculos.borrar');
 
     Route::get('/hospedajes', [HospedajeController::class, 'index'])->name('administracion.hospedaje');
     Route::post('/hospedaje/store', [HospedajeController::class, 'HospedajeAgregar'])->name('administracion.hospedaje.Agregar');
     Route::post('/hospedaje/edit', [HospedajeController::class, 'HospedajeEditar'])->name('administracion.hospedaje.Editar');
     Route::delete('/hospedaje/delete/{id}', [HospedajeController::class, 'EliminarHospedaje'])->name('administracion.hospedaje.Borrar');
+
     Route::get('/paquetes', [AdministracionController::class, 'paquetes'])->name('administracion.paquetes');
 
     Route::get('/reservas', [AdministracionController::class, 'reservas'])->name('administracion.reservas');
