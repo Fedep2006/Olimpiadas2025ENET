@@ -305,6 +305,10 @@
                     <h1 class="page-title">Gestión de Hospedaje</h1>
                     <p class="page-subtitle">Administra el inventario de hoteles y habitaciones</p>
                 </div>
+                <a href="{{ route('administracion.hospedaje') }}" class="btn-admin warning">
+                        <i class="fas fa-sync"></i>
+                        Sincronizar
+                    </a>
                 <a href="#" class="btn-admin orange" data-bs-toggle="modal" data-bs-target="#agregarModal">
                     <i class="fas fa-plus"></i>
                     Nuevo Hotel
@@ -317,10 +321,6 @@
             <div class="card-header">
                 <h5 class="card-title">Lista de Hospedajes</h5>
                 <div class="d-flex gap-2">
-                    <a href="{{ route('administracion.hospedaje') }}" class="btn-admin warning">
-                        <i class="fas fa-sync"></i>
-                        Sincronizar
-                    </a>
                 </div>
             </div>
 
@@ -423,6 +423,25 @@
                         @endforeach
                     </tbody>
                 </table>
+                <nav class="d-flex justify-content-center">
+                <ul class="pagination">
+                    <li class="page-item disabled">
+                        <a class="page-link" href="#" tabindex="-1">Anterior</a>
+                    </li>
+                    <li class="page-item active">
+                        <a class="page-link" href="#">1</a>
+                    </li>
+                    <li class="page-item">
+                        <a class="page-link" href="#">2</a>
+                    </li>
+                    <li class="page-item">
+                        <a class="page-link" href="#">3</a>
+                    </li>
+                    <li class="page-item">
+                        <a class="page-link" href="#">Siguiente</a>
+                    </li>
+                </ul>
+            </nav>
             </div>
         </div>
     </x-layouts.administracion.main>
