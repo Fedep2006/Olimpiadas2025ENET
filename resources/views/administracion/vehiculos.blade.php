@@ -451,36 +451,9 @@
                     </td>
                 
                     </tbody>
-                    @endforeach
-                </table>
-            </div>
 
-            <!-- Pagination -->
-            <nav class="d-flex justify-content-center">
-                <ul class="pagination">
-                    <li class="page-item disabled">
-                        <a class="page-link" href="#" tabindex="-1">Anterior</a>
-                    </li>
-                    <li class="page-item active">
-                        <a class="page-link" href="#">1</a>
-                    </li>
-                    <li class="page-item">
-                        <a class="page-link" href="#">2</a>
-                    </li>
-                    <li class="page-item">
-                        <a class="page-link" href="#">3</a>
-                    </li>
-                    <li class="page-item">
-                        <a class="page-link" href="#">Siguiente</a>
-                    </li>
-                </ul>
-            </nav>
-        </div>
-    </x-layouts.administracion.main>
+                    
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-
-    @vite('resources/js/sidebar.js')
 
     <!-- Modal para editar vehículos -->
     <div class="modal fade" id="EditarVehiculo" tabindex="-1" aria-labelledby="EditarVehiculoLabel" aria-hidden="true">
@@ -573,7 +546,7 @@
                         </div>
                         <div class="mb-3">
                             <label for="observaciones" class="form-label">Observaciones</label>
-                            <textarea class="form-control" id="observaciones" name="observaciones" rows="3" value="{{ $vehiculos->observaciones }}"></textarea>
+                            <textarea class="form-control" id="observaciones" name="observaciones" rows="3">{{ $vehiculos->observaciones }}</textarea>
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
@@ -603,7 +576,36 @@
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
         <button type="submit" class="btn btn-danger">Desactivar Vehículo</button>
     </div>
-</form>
+                    @endforeach
+                </table>
+            </div>
+
+            <!-- Pagination -->
+            <nav class="d-flex justify-content-center">
+                <ul class="pagination">
+                    <li class="page-item disabled">
+                        <a class="page-link" href="#" tabindex="-1">Anterior</a>
+                    </li>
+                    <li class="page-item active">
+                        <a class="page-link" href="#">1</a>
+                    </li>
+                    <li class="page-item">
+                        <a class="page-link" href="#">2</a>
+                    </li>
+                    <li class="page-item">
+                        <a class="page-link" href="#">3</a>
+                    </li>
+                    <li class="page-item">
+                        <a class="page-link" href="#">Siguiente</a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </x-layouts.administracion.main>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    @vite('resources/js/sidebar.js')
 
     <!-- Modal para agregar vehículos -->
     <div class="modal fade" id="AñadirVehiculo" tabindex="-1" aria-labelledby="AñadirVehiculoLabel" aria-hidden="true" role="dialog">
@@ -706,5 +708,7 @@
             </div>
         </div>
     </div>
+
+</form>
 </body>
 </html>
