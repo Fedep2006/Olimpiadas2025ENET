@@ -176,7 +176,7 @@
 
     <div class="section">
       <h2>6. Derechos del usuario</h2>
-      <p>Podés solicitar acceso, rectificación o eliminación de tus datos personales escribiendo a <strong>frategar@gmil.com</strong>.</p>
+      <p>Podés solicitar acceso, rectificación o eliminación de tus datos personales escribiendo a <strong>frategar@gmail.com</strong>.</p>
     </div>
 
     <div class="section">
