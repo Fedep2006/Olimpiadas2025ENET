@@ -14,13 +14,21 @@ setTimeout(function () {
     document.addEventListener("click", function (e) {
         const editBtn = e.target.closest(".action-btn.edit");
         if (editBtn) {
-            const registroId = editBtn.dataset.registroId;
+            const registro = editBtn.dataset.registro;
+            console.log(registro);
             const registroRow = editBtn.closest("tr");
-            const registroName =
-                registroRow.querySelector(".user-info h6").textContent;
-            const registroEmail =
-                registroRow.querySelector("td:nth-child(2)").textContent;
 
+            const form = document.getElementById("editarRegistroForm");
+            if (form.checkValidity()) {
+                const formData = new FormData(form);
+                const data = Object.fromEntries(formData.entries());
+            }
+            Object.entries(valores).forEach(([key, value]) => {
+                const input = document.querySelector(`[name="${key}"]`);
+                if (input) {
+                    input.value = value;
+                }
+            });
             document.getElementById("editRegistroId").value = registroId;
             document.getElementById("editName").value = registroName;
             document.getElementById("editEmail").value = registroEmail;

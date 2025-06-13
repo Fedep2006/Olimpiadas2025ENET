@@ -59,7 +59,7 @@
                 </tr>
             </thead>
             <tbody id="usersTableBody">
-                @include('administracion.partials.users-table')
+                @include('administracion.partials.tabla-contenido')
             </tbody>
         </table>
     </div>
