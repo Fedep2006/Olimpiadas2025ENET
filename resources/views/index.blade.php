@@ -162,212 +162,55 @@
             <div class="row">
                 <div class="col-lg-10 mx-auto">
                     <div class="search-card">
-                        <!-- Tabs -->
-                        <ul class="nav nav-pills tab-pills mb-4" role="tablist">
-                            <li class="nav-item">
-                                <a class="nav-link active" data-bs-toggle="pill" href="#vuelos">
-                                    <i class="fas fa-plane me-2"></i>Vuelos
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" data-bs-toggle="pill" href="#hoteles">
-                                    <i class="fas fa-bed me-2"></i>Hoteles
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" data-bs-toggle="pill" href="#paquetes">
-                                    <i class="fas fa-suitcase me-2"></i>Paquetes
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" data-bs-toggle="pill" href="#autos">
-                                    <i class="fas fa-car me-2"></i>Autos
-                                </a>
-                            </li>
-                        </ul>
                         <!-- Tab Content -->
                         <div class="tab-content">
                             <!-- Vuelos Tab -->
                             <div class="tab-pane fade show active" id="vuelos">
-                                <form>
-                                    <div class="row mb-3">
-                                        <div class="col-md-6">
-                                            <label class="form-label">Origen</label>
-                                            <div class="input-group">
-                                                <span class="input-group-text"><i class="fas fa-plane-departure"></i></span>
-                                                <input type="text" class="form-control" placeholder="¿Desde dónde salís?" value="Buenos Aires (BUE)">
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <label class="form-label">Destino</label>
-                                            <div class="input-group">
-                                                <span class="input-group-text"><i class="fas fa-plane-arrival"></i></span>
-                                                <input type="text" class="form-control" placeholder="¿A dónde vas?">
-                                            </div>
-                                        </div>
+                               <form action="{{ url('/results') }}" method="GET" class="mb-5">
+                                <div class="mb-3">
+                                    <label class="form-label">Filtrar por categoría:</label>
+                                    <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="checkbox" name="filters[]" id="f-viaje" value="viaje"
+                                        {{ in_array('viaje', request()->get('filters', [])) ? 'checked' : '' }}>
+                                    <label class="form-check-label" for="f-viaje">Viaje</label>
                                     </div>
-                                    <div class="row mb-3">
-                                        <div class="col-md-3">
-                                            <label class="form-label">Ida</label>
-                                            <input type="date" class="form-control">
-                                        </div>
-                                        <div class="col-md-3">
-                                            <label class="form-label">Vuelta</label>
-                                            <input type="date" class="form-control">
-                                        </div>
-                                        <div class="col-md-3">
-                                            <label class="form-label">Pasajeros</label>
-                                            <select class="form-select">
-                                                <option>1 adulto</option>
-                                                <option>2 adultos</option>
-                                                <option>3 adultos</option>
-                                                <option>4 adultos</option>
-                                            </select>
-                                        </div>
-                                        <div class="col-md-3">
-                                            <label class="form-label">Clase</label>
-                                            <select class="form-select">
-                                                <option>Económica</option>
-                                                <option>Premium</option>
-                                                <option>Business</option>
-                                                <option>Primera</option>
-                                            </select>
-                                        </div>
+                                    <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="checkbox" name="filters[]" id="f-hospedaje" value="hospedaje"
+                                        {{ in_array('hospedaje', request()->get('filters', [])) ? 'checked' : '' }}>
+                                    <label class="form-check-label" for="f-hospedaje">Hospedaje</label>
                                     </div>
-                                    <div class="text-center">
-                                        <button type="submit" class="btn btn-search btn-lg">
-                                            <i class="fas fa-search me-2"></i>Buscar vuelos
-                                        </button>
+                                    <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="checkbox" name="filters[]" id="f-vehiculo" value="vehiculo"
+                                        {{ in_array('vehiculo', request()->get('filters', [])) ? 'checked' : '' }}>
+                                    <label class="form-check-label" for="f-vehiculo">Vehículo</label>
                                     </div>
+                                    <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="checkbox" name="filters[]" id="f-paquete" value="paquete"
+                                        {{ in_array('paquete', request()->get('filters', [])) ? 'checked' : '' }}>
+                                    <label class="form-check-label" for="f-paquete">Paquete</label>
+                                    </div>
+                                </div>
+
+                                <div class="d-flex">
+                                    <input
+                                    type="text"
+                                    name="search"
+                                    value="{{ request('search') }}"
+                                    class="form-control me-2"
+                                    placeholder="Busca destino, hotel o vehículo..."
+                                    aria-label="Buscar"
+                                    >
+                                    <button class="btn btn-primary" type="submit">Buscar</button>
+                                </div>
                                 </form>
+
                             </div>
-                            <!-- Hoteles Tab -->
-                            <div class="tab-pane fade" id="hoteles">
-                                <form>
-                                    <div class="row mb-3">
-                                        <div class="col-md-6">
-                                            <label class="form-label">Destino</label>
-                                            <div class="input-group">
-                                                <span class="input-group-text"><i class="fas fa-map-marker-alt"></i></span>
-                                                <input type="text" class="form-control" placeholder="¿A dónde vas?">
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <label class="form-label">Huéspedes</label>
-                                            <select class="form-select">
-                                                <option>2 huéspedes, 1 habitación</option>
-                                                <option>3 huéspedes, 1 habitación</option>
-                                                <option>4 huéspedes, 2 habitaciones</option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div class="row mb-3">
-                                        <div class="col-md-6">
-                                            <label class="form-label">Check-in</label>
-                                            <input type="date" class="form-control">
-                                        </div>
-                                        <div class="col-md-6">
-                                            <label class="form-label">Check-out</label>
-                                            <input type="date" class="form-control">
-                                        </div>
-                                    </div>
-                                    <div class="text-center">
-                                        <button type="submit" class="btn btn-search btn-lg">
-                                            <i class="fas fa-search me-2"></i>Buscar hoteles
-                                        </button>
-                                    </div>
-                                </form>
-                            </div>
-                            <!-- Paquetes Tab -->
-                            <div class="tab-pane fade" id="paquetes">
-                                <form>
-                                    <div class="row mb-3">
-                                        <div class="col-md-6">
-                                            <label class="form-label">Origen</label>
-                                            <div class="input-group">
-                                                <span class="input-group-text"><i class="fas fa-plane-departure"></i></span>
-                                                <input type="text" class="form-control" placeholder="¿Desde dónde salís?" value="Buenos Aires (BUE)">
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <label class="form-label">Destino</label>
-                                            <div class="input-group">
-                                                <span class="input-group-text"><i class="fas fa-suitcase"></i></span>
-                                                <input type="text" class="form-control" placeholder="¿A dónde vas?">
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="row mb-3">
-                                        <div class="col-md-4">
-                                            <label class="form-label">Salida</label>
-                                            <input type="date" class="form-control">
-                                        </div>
-                                        <div class="col-md-4">
-                                            <label class="form-label">Regreso</label>
-                                            <input type="date" class="form-control">
-                                        </div>
-                                        <div class="col-md-4">
-                                            <label class="form-label">Pasajeros</label>
-                                            <select class="form-select">
-                                                <option>2 pasajeros</option>
-                                                <option>3 pasajeros</option>
-                                                <option>4 pasajeros</option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div class="text-center">
-                                        <button type="submit" class="btn btn-search btn-lg">
-                                            <i class="fas fa-search me-2"></i>Buscar paquetes
-                                        </button>
-                                    </div>
-                                </form>
-                            </div>
-                            <!-- Autos Tab -->
-                            <div class="tab-pane fade" id="autos">
-                                <form>
-                                    <div class="row mb-3">
-                                        <div class="col-md-6">
-                                            <label class="form-label">Lugar de retiro</label>
-                                            <div class="input-group">
-                                                <span class="input-group-text"><i class="fas fa-map-marker-alt"></i></span>
-                                                <input type="text" class="form-control" placeholder="Ciudad o aeropuerto">
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <label class="form-label">Lugar de devolución</label>
-                                            <div class="input-group">
-                                                <span class="input-group-text"><i class="fas fa-map-marker-alt"></i></span>
-                                                <input type="text" class="form-control" placeholder="Ciudad o aeropuerto">
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="row mb-3">
-                                        <div class="col-md-6">
-                                            <label class="form-label">Fecha de retiro</label>
-                                            <input type="datetime-local" class="form-control">
-                                        </div>
-                                        <div class="col-md-6">
-                                            <label class="form-label">Fecha de devolución</label>
-                                            <input type="datetime-local" class="form-control">
-                                        </div>
-                                    </div>
-                                    <div class="text-center">
-                                        <button type="submit" class="btn btn-search btn-lg">
-                                            <i class="fas fa-search me-2"></i>Buscar autos
-                                        </button>
-                                    </div>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
+                            
     </section>
 
     <!-- hospedaje -->
     <section class="py-5">
-        <<div class="row">
+        <div class="row">
   @foreach($hospedajes as $h)
     <div class="col-md-3 mb-4">
       <div class="destination-card">
