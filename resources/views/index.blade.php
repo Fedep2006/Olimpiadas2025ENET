@@ -198,10 +198,50 @@
             padding: 40px 0;
         }
         
+        /* Estilos para los títulos de sección */
+        .section-title {
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: var(--despegar-blue);
+            text-align: center;
+            margin-bottom: 3rem;
+            position: relative;
+        }
+        
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 3px;
+            background: var(--despegar-orange);
+            border-radius: 2px;
+        }
+
+        /* Estilo para el badge visual */
+        .visual-badge {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: rgba(255, 102, 0, 0.9);
+            color: white;
+            padding: 5px 10px;
+            border-radius: 15px;
+            font-size: 0.75rem;
+            font-weight: bold;
+            z-index: 3;
+        }
+        
         /* Ajuste responsivo para fechas en móviles */
         @media (max-width: 768px) {
             .date-col {
                 width: 50%;
+            }
+            
+            .section-title {
+                font-size: 2rem;
             }
         }
     </style>
@@ -320,66 +360,51 @@
         </div>
     </section>
 
-    <!-- hospedaje -->
+    <!-- Hospedajes -->
     <section class="py-5">
-        <div class="row">
-            @foreach($hospedajes as $h)
-            <div class="col-md-3 mb-4">
-                <div class="destination-card">
-                    <img 
-                        src="data:image/jpeg;base64,{{ $h->imagen }}" 
-                        class="w-100 h-100 object-fit-cover" 
-                        alt="{{ $h->nombre }}"
-                    >
-                    <div class="destination-overlay">
-                        <h5 class="mb-1">{{ $h->nombre }}</h5>
-                        <p class="mb-0">Desde ${{ number_format($h->precio_noche, 2) }} / noche</p>
+        <div class="container">
+            <h2 class="section-title">Hospedajes</h2>
+            <div class="row">
+                @foreach($hospedajes as $h)
+                <div class="col-md-3 mb-4">
+                    <div class="destination-card">
+                        <img 
+                            src="data:image/jpeg;base64,{{ $h->imagen }}" 
+                            class="w-100 h-100 object-fit-cover" 
+                            alt="{{ $h->nombre }}"
+                        >
+                        <div class="destination-overlay">
+                            <h5 class="mb-1">{{ $h->nombre }}</h5>
+                            <p class="mb-0">Desde ${{ number_format($h->precio_noche, 2) }} / noche</p>
+                        </div>
                     </div>
                 </div>
+                @endforeach
             </div>
-            @endforeach
         </div>
     </section>
 
-    <!-- hospedaje -->
-    <section class="py-5">
-        <div class="row">
-            @foreach($hospedajes as $h)
-            <div class="col-md-3 mb-4">
-                <div class="destination-card">
-                    <img 
-                        src="data:image/jpeg;base64,{{ $h->imagen }}" 
-                        class="w-100 h-100 object-fit-cover" 
-                        alt="{{ $h->nombre }}"
-                    >
-                    <div class="destination-overlay">
-                        <h5 class="mb-1">{{ $h->nombre }}</h5>
-                        <p class="mb-0">Desde ${{ number_format($h->precio_noche, 2) }} / noche</p>
-                    </div>
-                </div>
-            </div>
-            @endforeach
-        </div>
-    </section>
-
-    <!-- Destinos Populares -->
+    <!-- Viajes -->
     <section class="py-5 bg-light">
-        <div class="row">
-            @foreach($viajes as $viaje)
-            <div class="col-md-3 mb-4">
-                <div class="destination-card">
-                    <img 
-                        src="data:image/jpeg;base64,{{ $viaje->imagen }}" 
-                        class="w-100 h-100 object-fit-cover" 
-                        alt="{{ $viaje->nombre }}"
-                    >
-                    <div class="destination-overlay">
-                        <h5 class="mb-1">{{ $viaje->nombre }}</h5>
-                        <p class="mb-0">Desde ${{ number_format($viaje->precio, 2) }}</p>
+        <div class="container">
+            <h2 class="section-title">Viajes</h2>
+            <div class="row">
+                @foreach($viajes as $viaje)
+                <div class="col-md-3 mb-4">
+                    <div class="destination-card">
+                        <img 
+                            src="data:image/jpeg;base64,{{ $viaje->imagen }}" 
+                            class="w-100 h-100 object-fit-cover" 
+                            alt="{{ $viaje->nombre }}"
+                        >
+                        <div class="destination-overlay">
+                            <h5 class="mb-1">{{ $viaje->nombre }}</h5>
+                            <p class="mb-0">Desde ${{ number_format($viaje->precio, 2) }}</p>
+                        </div>
                     </div>
                 </div>
+                @endforeach
             </div>
-            @endforeach
         </div>
     </section>
 
@@ -419,24 +444,95 @@
         </div>
     </section>
 
-    <div class="row">
-        @foreach($vehiculos as $v)
-        <div class="col-md-3 mb-4">
-            <div class="destination-card">
-                <img 
-                    {{-- si guardas varias imágenes, tomo la primera --}}
-                    src="data:image/jpeg;base64,{{ $v->imagenes[0] ?? '' }}" 
-                    class="w-100 h-100 object-fit-cover" 
-                    alt="{{ $v->marca }} {{ $v->modelo }}"
-                >
-                <div class="destination-overlay">
-                    <h5 class="mb-1">{{ $v->marca }} {{ $v->modelo }}</h5>
-                    <p class="mb-0">Desde ${{ number_format($v->precio_por_dia, 2) }} / día</p>
+    <!-- Vehículos -->
+    <section class="py-5 bg-light">
+        <div class="container">
+            <h2 class="section-title">Vehículos</h2>
+            <div class="row">
+                @foreach($vehiculos as $v)
+                <div class="col-md-3 mb-4">
+                    <div class="destination-card">
+                        <img 
+                            {{-- si guardas varias imágenes, tomo la primera --}}
+                            src="data:image/jpeg;base64,{{ $v->imagenes[0] ?? '' }}" 
+                            class="w-100 h-100 object-fit-cover" 
+                            alt="{{ $v->marca }} {{ $v->modelo }}"
+                        >
+                        <div class="destination-overlay">
+                            <h5 class="mb-1">{{ $v->marca }} {{ $v->modelo }}</h5>
+                            <p class="mb-0">Desde ${{ number_format($v->precio_por_dia, 2) }} / día</p>
+                        </div>
+                    </div>
+                </div>
+                @endforeach
+            </div>
+        </div>
+    </section>
+
+    <!-- Paquetes (Solo Visual) -->
+    <section class="py-5">
+        <div class="container">
+            <h2 class="section-title">Paquetes</h2>
+            <div class="row">
+                <div class="col-md-3 mb-4">
+                    <div class="destination-card">
+                        <div class="visual-badge">Esto es visual</div>
+                        <img 
+                            src="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=400&h=300&fit=crop" 
+                            class="w-100 h-100 object-fit-cover" 
+                            alt="Paquete París"
+                        >
+                        <div class="destination-overlay">
+                            <h5 class="mb-1">Paquete París</h5>
+                            <p class="mb-0">Desde $1,299</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3 mb-4">
+                    <div class="destination-card">
+                        <div class="visual-badge">Esto es visual</div>
+                        <img 
+                            src="https://images.unsplash.com/photo-1539650116574-75c0c6d73f6e?w=400&h=300&fit=crop" 
+                            class="w-100 h-100 object-fit-cover" 
+                            alt="Paquete Roma"
+                        >
+                        <div class="destination-overlay">
+                            <h5 class="mb-1">Paquete Roma</h5>
+                            <p class="mb-0">Desde $999</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3 mb-4">
+                    <div class="destination-card">
+                        <div class="visual-badge">Esto es visual</div>
+                        <img 
+                            src="https://images.unsplash.com/photo-1513635269975-59663e0ac1ad?w=400&h=300&fit=crop" 
+                            class="w-100 h-100 object-fit-cover" 
+                            alt="Paquete Londres"
+                        >
+                        <div class="destination-overlay">
+                            <h5 class="mb-1">Paquete Londres</h5>
+                            <p class="mb-0">Desde $1,199</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3 mb-4">
+                    <div class="destination-card">
+                        <div class="visual-badge">Esto es visual</div>
+                        <img 
+                            src="https://images.unsplash.com/photo-1543832923-44667a44c804?w=400&h=300&fit=crop" 
+                            class="w-100 h-100 object-fit-cover" 
+                            alt="Paquete Barcelona"
+                        >
+                        <div class="destination-overlay">
+                            <h5 class="mb-1">Paquete Barcelona</h5>
+                            <p class="mb-0">Desde $899</p>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
-        @endforeach
-    </div>
+    </section>
 
     <!-- Footer -->
     <footer class="footer-section">
