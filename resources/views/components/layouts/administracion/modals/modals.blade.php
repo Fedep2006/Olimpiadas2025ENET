@@ -97,47 +97,12 @@
         padding: 10px 12px;
     }
 </style>
-@php
-    $camposCrear = [
-        (object)[
-            'id' => 'name',
-            'name' => 'name',
-            'type' => 'text',
-            'label' => 'Nombre de Usuario'
-        ],
-        (object)[
-            'id' => 'email',
-            'name' => 'email',
-            'type' => 'email',
-            'label' => 'Email'
-        ],
-        (object)[
-            'id' => 'password',
-            'name' => 'password',
-            'type' => 'password',
-            'label' => 'Contraseña'
-        ]
-    ];
-    $camposEditar = [
-        (object)[
-            'id' => 'editName',
-            'name' => 'name',
-            'type' => 'text',
-            'label' => 'Nombre de Usuario'
-        ],
-        (object)[
-            'id' => 'editEmail',
-            'name' => 'email',
-            'type' => 'email',
-            'label' => 'Email'
-        ]
-    ];
-    
-@endphp
-<x-layouts.administracion.modals.crear-registro titulo="Crear Nuevo Usuario" :inputs="$camposCrear" />
+@props(['tituloCrear','tituloEditar','tituloEliminar', 'camposCrear', 'camposEditar'])
 
-<x-layouts.administracion.modals.editar-registro titulo="Editar un Usuario" :inputs="$camposEditar"/>
+<x-layouts.administracion.modals.crear-registro :titulo="$tituloCrear" :inputs="$camposCrear" />
 
-<x-layouts.administracion.modals.eliminar-registro titulo="Eliminar Usuario" />
+<x-layouts.administracion.modals.editar-registro :titulo="$tituloEditar" :inputs="$camposEditar"/>
+
+<x-layouts.administracion.modals.eliminar-registro :titulo="$tituloEliminar" />
 
 @vite(['resources/js/administracion/modals/modals.js'])

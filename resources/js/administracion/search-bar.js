@@ -2,16 +2,23 @@ import { updateTable, showToast } from "./utils";
 setTimeout(function () {
     // Search functionality
     let searchTimeout;
+    let inputs = null;
+    for(i = 0; i>){
+
+    }
     const searchInput = document.getElementById("searchInput");
-    const clearSearchBtn = document.getElementById("clearSearch");
     const dateInput = document.querySelector('input[name="registration_date"]');
+
+    const pathname = window.location.pathname;
 
     // Function to perform search
     function performSearch() {
         const formData = new FormData(document.getElementById("searchForm"));
         const searchParams = new URLSearchParams(formData);
 
-        fetch(`/usuarios?${searchParams.toString()}`, {
+        console.log(searchParams);
+
+        fetch(pathname + `?${searchParams.toString()}`, {
             headers: {
                 "X-Requested-With": "XMLHttpRequest",
             },
@@ -22,7 +29,7 @@ setTimeout(function () {
                 window.history.pushState(
                     {},
                     "",
-                    `/usuarios?${searchParams.toString()}`
+                    pathname + `?${searchParams.toString()}`
                 );
             })
             .catch((error) => {
@@ -39,12 +46,6 @@ setTimeout(function () {
 
     // Date input change handler
     dateInput.addEventListener("change", function () {
-        performSearch();
-    });
-
-    // Clear search input
-    clearSearchBtn.addEventListener("click", function () {
-        searchInput.value = "";
         performSearch();
     });
 

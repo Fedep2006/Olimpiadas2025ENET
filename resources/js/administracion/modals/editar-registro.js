@@ -50,6 +50,7 @@ setTimeout(function () {
                 const formData = new FormData(form);
                 const data = Object.fromEntries(formData.entries());
                 const registroId = data.registro_id;
+                console.log(data);
 
                 try {
                     const token = document

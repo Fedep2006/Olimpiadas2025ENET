@@ -79,7 +79,7 @@
             <td>{{ $user->created_at->format('d/m/Y H:i') }}</td>
             <td>
                 <div class="action-buttons">
-                    <button class="action-btn edit" data-registro="{{ $user }}" data-registro-id="{{ $user }}" title="Editar">
+                    <button class="action-btn edit" data-registro="{{ $user }}" title="Editar">
                         <i class="fas fa-edit"></i>
                     </button>
                     <button class="action-btn delete" data-registro-id="{{ $user->id }}" title="Eliminar">

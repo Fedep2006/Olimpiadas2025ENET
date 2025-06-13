@@ -1,3 +1,4 @@
+@props(['titulo', 'inputs' => []])
 <div class="modal" id="nuevoRegistroModal" tabindex="-1">
     <div class="modal-dialog">
         <div class="modal-content">
