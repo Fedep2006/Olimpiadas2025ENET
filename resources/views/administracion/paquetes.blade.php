@@ -334,7 +334,7 @@
                         <i class="fas fa-sync"></i>
                         Sincronizar
                     </a>
-                <a href="#" class="btn-admin orange">
+                <a href="#" class="btn-admin orange" data-bs-toggle="modal" data-bs-target="#agregarPaqueteModal">
                     <i class="fas fa-plus"></i>
                     Nueva Promoción
                 </a>
@@ -478,7 +478,68 @@
                                 </div>
                             </td>
                         </tr>
+                        <!-- Modal para ver condiciones del paquete -->
                         @endforeach
+
+<!-- Modal para agregar Paquete -->
+<div class="modal fade" id="agregarPaqueteModal" tabindex="-1" aria-labelledby="agregarPaqueteLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="agregarPaqueteLabel">Agregar Paquete</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+            </div>
+            <form action="{{ route('administracion.paquetes.añadir') }}" method="POST">
+                @csrf
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label for="nombre" class="form-label">Nombre del Paquete</label>
+                        <input type="text" class="form-control" id="nombre" name="nombre" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="descripcion" class="form-label">Descripción</label>
+                        <textarea class="form-control" id="descripcion" name="descripcion" rows="3" required></textarea>
+                    </div>
+                    <div class="mb-3">
+                        <label for="precio_total" class="form-label">Precio Total</label>
+                        <input type="number" class="form-control" id="precio_total" name="precio_total" step="0.01" min="0" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="duracion" class="form-label">Duración</label>
+                        <input type="text" class="form-control" id="duracion" name="duracion" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="ubicacion" class="form-label">Ubicación</label>
+                        <input type="text" class="form-control" id="ubicacion" name="ubicacion" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="cupo_minimo" class="form-label">Cupo Mínimo</label>
+                        <input type="number" class="form-control" id="cupo_minimo" name="cupo_minimo" min="1" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="cupo_maximo" class="form-label">Cupo Máximo</label>
+                        <input type="number" class="form-control" id="cupo_maximo" name="cupo_maximo" min="1" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="activo" class="form-label">Activo</label>
+                        <select class="form-select" id="activo" name="activo" required>
+                            <option value="1">Sí</option>
+                            <option value="0">No</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="condiciones" class="form-label">Condiciones</label>
+                        <textarea class="form-control" id="condiciones" name="condiciones" rows="2"></textarea>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="submit" class="btn btn-primary">Guardar Paquete</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
                     </tbody>
                 </table>
             </div>

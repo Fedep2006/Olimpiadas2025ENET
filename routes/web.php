@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Admin\PaquetesController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -99,7 +100,14 @@ Route::prefix('administracion')->middleware('auth')->group(function () {
     Route::delete('/hospedaje/delete/{id}', [HospedajeController::class, 'EliminarHospedaje'])->name('administracion.hospedaje.Borrar');
 
     // Paquetes y Viajes Admin
-    Route::get('/paquetes',               [administracionController::class, 'paquetes'])->name('administracion.paquetes');
+    Route::get('/paquetes',               [PaquetesController::class, 'index'])->name('administracion.paquetes');
+    Route::post('/paquetes/añadir',              [PaquetesController::class, 'Añadir'])->name('administracion.paquetes.añadir');
+    Route::get('/paquetes/edit',     [PaquetesController::class, 'Editar'])->name('administracion.paquetes.editar');
+    Route::delete('/paquetes/delete/{id}',       [PaquetesController::class, 'Borrar'])->name('administracion.paquetes.borrar');
+
+
+
+
     Route::get('/viajes',                 [AdminViajeController::class, 'index'])->name('administracion.viajes');
     Route::post('/viajes',                [AdminViajeController::class, 'store'])->name('viajes.store');
     Route::get('/viajes/{id}/edit',       [AdminViajeController::class, 'edit'])->name('viajes.edit');
