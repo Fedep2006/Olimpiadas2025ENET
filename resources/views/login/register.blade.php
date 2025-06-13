@@ -376,21 +376,11 @@
                                 </div>
                                 <div class="form-text" id="confirmPasswordFeedback"></div>
                             </div>
-
-                            <div class="mb-3">
-                                <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" id="newsletter" name="newsletter">
-                                    <label class="form-check-label" for="newsletter">
-                                        Quiero recibir ofertas y promociones por email
-                                    </label>
-                                </div>
-                            </div>
-
                             <div class="mb-4">
                                 <div class="form-check">
                                     <input class="form-check-input" type="checkbox" id="terms" name="terms" required>
                                     <label class="form-check-label" for="terms">
-                                        Acepto los <a href="{{ route('terminos') }}" class="text-muted">Términos y Condiciones</a> y la <a href="#" class="terms-link">Política de Privacidad</a>
+                                        Acepto los <a href="{{ route('terminos') }}" class="text-muted">Términos y Condiciones Política y la de Privacidad</a>  
                                     </label>
                                 </div>
                             </div>
