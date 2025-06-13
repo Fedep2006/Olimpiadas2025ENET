@@ -419,8 +419,8 @@
                             <th>Ubicación</th>
                             <th>Cupo Mínimo</th>
                             <th>Cupo Máximo</th>
-                            <th>Activo</th>
                             <th>Condiciones</th>
+                            <th>Activo</th>
                             <th>Acciones</th>
                         </tr>
                     </thead>
@@ -435,6 +435,9 @@
                             <td>{{ $paquete->cupo_minimo }}</td>
                             <td>{{ $paquete->cupo_maximo }}</td>
                             <td>
+                                {{ $paquete->condiciones}}
+                            </td>
+                             <td>
                                 @if($paquete->activo)
                                     <span class="status-badge status-active">Sí</span>
                                 @else
@@ -442,104 +445,110 @@
                                 @endif
                             </td>
                             <td>
-                                <button class="btn-admin btn-sm" data-bs-toggle="modal" data-bs-target="#condicionesModal{{ $paquete->id }}">
-                                    Ver
-                                </button>
-                                <!-- Modal -->
-                                <div class="modal fade" id="condicionesModal{{ $paquete->id }}" tabindex="-1" aria-labelledby="condicionesLabel{{ $paquete->id }}" aria-hidden="true">
-                                  <div class="modal-dialog">
-                                    <div class="modal-content">
-                                      <div class="modal-header">
-                                        <h5 class="modal-title" id="condicionesLabel{{ $paquete->id }}">Condiciones del Paquete</h5>
-                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
-                                      </div>
-                                      <div class="modal-body">
-                                        {{ $paquete->condiciones }}
-                                      </div>
-                                    </div>
-                                  </div>
-                                </div>
-                            </td>
-                            <td>
-                                <div class="action-buttons">
-                                    <a href="{{ route('administracion.paquetes.show', $paquete->id) }}" class="action-btn view" title="Ver detalles">
-                                        <i class="fas fa-eye"></i>
-                                    </a>
-                                    <a href="{{ route('administracion.paquetes.edit', $paquete->id) }}" class="action-btn edit" title="Editar">
+                                    <!-- Edit Button -->
+                                    <button type="button" class="action-btn edit" data-bs-toggle="modal" data-bs-target="#editarPaqueteModal{{ $paquete->id }}">
                                         <i class="fas fa-edit"></i>
-                                    </a>
-                                    <form action="{{ route('administracion.paquetes.destroy', $paquete->id) }}" method="POST" style="display:inline;">
+                                    </button>
+                                    <!-- Delete Button -->
+                                    <button type="button" class="action-btn delete" title="Eliminar" data-bs-toggle="modal" data-bs-target="#eliminarModal{{ $paquete->id }}">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
+                                </td>
+                        </tr>
+
+                                                <!-- Modal para eliminar Paquete (por paquete) -->
+                        <div class="modal fade" id="eliminarModal{{ $paquete->id }}" tabindex="-1" aria-labelledby="eliminarModalLabel{{ $paquete->id }}" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="eliminarModalLabel{{ $paquete->id }}">Eliminar Paquete</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+                                    </div>
+                                    <form action="{{ route('administracion.paquetes.borrar', $paquete->id) }}" method="POST">
                                         @csrf
                                         @method('DELETE')
-                                        <button type="submit" class="action-btn delete" title="Eliminar" onclick="return confirm('¿Está seguro de eliminar este paquete?')">
-                                            <i class="fas fa-trash"></i>
-                                        </button>
+                                        <div class="modal-body">
+                                            <p>¿Estás seguro de que deseas eliminar el paquete <strong>{{ $paquete->nombre }}</strong>?</p>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                                            <button type="submit" class="btn btn-danger">Eliminar</button>
+                                        </div>
                                     </form>
                                 </div>
-                            </td>
-                        </tr>
-                        <!-- Modal para ver condiciones del paquete -->
-                        @endforeach
+                            </div>
+                        </div>
+                        
+                        <!-- Modal para Editar Paquete (por paquete) -->
+                        <div class="modal fade" id="editarPaqueteModal{{ $paquete->id }}" tabindex="-1" aria-labelledby="editarPaqueteLabel{{ $paquete->id }}" aria-hidden="true">
+                            <div class="modal-dialog modal-lg">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="editarPaqueteLabel{{ $paquete->id }}">Editar Paquete</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+                                    </div>
+                                    <form action="{{ route('administracion.paquetes.editar') }}" method="POST">
+                                        @csrf
+                                        <div class="modal-body">
+                                            <div class="mb-3">
+                                              <input type="hidden" name="id" value="{{ $paquete->id }}">
+                                            <div class="mb-3">
+                                                <label for="nombre" class="form-label">Nombre del Paquete</label>
+                                                <input type="text" class="form-control" id="nombre" name="nombre" value="{{ $paquete->nombre }}" required>
+                                            </div>
+                                            <div class="mb-3">
+                                                <label for="descripcion" class="form-label">Descripción</label>
+                                                <textarea class="form-control" id="descripcion" name="descripcion" rows="3" required>{{ $paquete->descripcion }}</textarea>
+                                            </div>
+                                            <div class="mb-3">
+                                                <label for="precio_total" class="form-label">Precio Total</label>
+                                                <input type="number" class="form-control" id="precio_total" name="precio_total" step="0.01" min="0" value="{{ $paquete->precio_total }}" required>
+                                            </div>
+                                            <div class="mb-3">
+                                                <label for="duracion" class="form-label">Duración</label>
+                                                <input type="text" class="form-control" id="duracion" name="duracion" value="{{ $paquete->duracion }}" required>
+                                            </div>
+                                            <div class="mb-3">
+                                                <label for="ubicacion" class="form-label">Ubicación</label>
+                                                <input type="text" class="form-control" id="ubicacion" name="ubicacion" value="{{ $paquete->ubicacion }}" required>
+                                            </div>
+                                            <div class="mb-3">
+                                                <label for="cupo_minimo" class="form-label">Cupo Mínimo</label>
+                                                <input type="number" class="form-control" id="cupo_minimo" name="cupo_minimo" min="1" value="{{ $paquete->cupo_minimo }}" required>
+                                            </div>
+                                            <div class="mb-3">
+                                                <label for="cupo_maximo" class="form-label">Cupo Máximo</label>
+                                                <input type="number" class="form-control" id="cupo_maximo" name="cupo_maximo" min="1" value="{{ $paquete->cupo_maximo }}" required>
+                                            </div>
+                                            <div class="mb-3">
+                                                <label for="activo" class="form-label">Activo</label>
+                                                <select class="form-select" id="activo" name="activo" required>
+                                                    <option value="1" @if($paquete->activo) selected @endif>Sí</option>
+                                                    <option value="0" @if(!$paquete->activo) selected @endif>No</option>
+                                                </select>
+                                            </div>
+                                            <div class="mb-3">
+                                                <label for="imagenes" class="form-label">URL de la imagen</label>
+                                                <input type="text" name="imagenes[]" id="imagenes" class="form-control" placeholder="Ingrese la URL de la imagen" value="{{ $paquete->imagenes[0] ?? '' }}" required>
+                                            </div>
+                                            <div class="mb-3">
+                                                <label for="condiciones" class="form-label">Condiciones</label>
+                                                <textarea class="form-control" id="condiciones" name="condiciones" rows="2">{{ $paquete->condiciones }}</textarea>
+                                            </div>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                                            <button type="submit" class="btn btn-primary">Guardar Paquete</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
 
-<!-- Modal para agregar Paquete -->
-<div class="modal fade" id="agregarPaqueteModal" tabindex="-1" aria-labelledby="agregarPaqueteLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="agregarPaqueteLabel">Agregar Paquete</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
-            </div>
-            <form action="{{ route('administracion.paquetes.añadir') }}" method="POST">
-                @csrf
-                <div class="modal-body">
-                    <div class="mb-3">
-                        <label for="nombre" class="form-label">Nombre del Paquete</label>
-                        <input type="text" class="form-control" id="nombre" name="nombre" required>
-                    </div>
-                    <div class="mb-3">
-                        <label for="descripcion" class="form-label">Descripción</label>
-                        <textarea class="form-control" id="descripcion" name="descripcion" rows="3" required></textarea>
-                    </div>
-                    <div class="mb-3">
-                        <label for="precio_total" class="form-label">Precio Total</label>
-                        <input type="number" class="form-control" id="precio_total" name="precio_total" step="0.01" min="0" required>
-                    </div>
-                    <div class="mb-3">
-                        <label for="duracion" class="form-label">Duración</label>
-                        <input type="text" class="form-control" id="duracion" name="duracion" required>
-                    </div>
-                    <div class="mb-3">
-                        <label for="ubicacion" class="form-label">Ubicación</label>
-                        <input type="text" class="form-control" id="ubicacion" name="ubicacion" required>
-                    </div>
-                    <div class="mb-3">
-                        <label for="cupo_minimo" class="form-label">Cupo Mínimo</label>
-                        <input type="number" class="form-control" id="cupo_minimo" name="cupo_minimo" min="1" required>
-                    </div>
-                    <div class="mb-3">
-                        <label for="cupo_maximo" class="form-label">Cupo Máximo</label>
-                        <input type="number" class="form-control" id="cupo_maximo" name="cupo_maximo" min="1" required>
-                    </div>
-                    <div class="mb-3">
-                        <label for="activo" class="form-label">Activo</label>
-                        <select class="form-select" id="activo" name="activo" required>
-                            <option value="1">Sí</option>
-                            <option value="0">No</option>
-                        </select>
-                    </div>
-                    <div class="mb-3">
-                        <label for="condiciones" class="form-label">Condiciones</label>
-                        <textarea class="form-control" id="condiciones" name="condiciones" rows="2"></textarea>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                    <button type="submit" class="btn btn-primary">Guardar Paquete</button>
-                </div>
-            </form>
-        </div>
-    </div>
-</div>
+<!-- Los modales de edición y eliminación ahora están dentro del bucle foreach para cada paquete -->
+@endforeach
+
+
                     </tbody>
                 </table>
             </div>
@@ -564,6 +573,70 @@
                     </li>
                 </ul>
             </nav>
+        </div>
+
+        <!-- Modal para Agregar Paquete -->
+        <div class="modal fade" id="agregarPaqueteModal" tabindex="-1" aria-labelledby="agregarPaqueteLabel" aria-hidden="true">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="agregarPaqueteLabel">Agregar Nuevo Paquete</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+                    </div>
+                    <form action="{{ route('administracion.paquetes.añadir') }}" method="POST">
+                        @csrf
+                        <div class="modal-body">
+                            <div class="mb-3">
+                                <label for="nombreNuevo" class="form-label">Nombre del Paquete</label>
+                                <input type="text" class="form-control" id="nombreNuevo" name="nombre" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="descripcionNuevo" class="form-label">Descripción</label>
+                                <textarea class="form-control" id="descripcionNuevo" name="descripcion" rows="3" required></textarea>
+                            </div>
+                            <div class="mb-3">
+                                <label for="precio_totalNuevo" class="form-label">Precio Total</label>
+                                <input type="number" class="form-control" id="precio_totalNuevo" name="precio_total" step="0.01" min="0" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="duracionNuevo" class="form-label">Duración</label>
+                                <input type="text" class="form-control" id="duracionNuevo" name="duracion" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="ubicacionNuevo" class="form-label">Ubicación</label>
+                                <input type="text" class="form-control" id="ubicacionNuevo" name="ubicacion" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="cupo_minimoNuevo" class="form-label">Cupo Mínimo</label>
+                                <input type="number" class="form-control" id="cupo_minimoNuevo" name="cupo_minimo" min="1" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="cupo_maximoNuevo" class="form-label">Cupo Máximo</label>
+                                <input type="number" class="form-control" id="cupo_maximoNuevo" name="cupo_maximo" min="1" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="activoNuevo" class="form-label">Activo</label>
+                                <select class="form-select" id="activoNuevo" name="activo" required>
+                                    <option value="1">Sí</option>
+                                    <option value="0">No</option>
+                                </select>
+                            </div>
+                            <div class="mb-3">
+                                <label for="imagenesNuevo" class="form-label">URL de la imagen</label>
+                                <input type="text" name="imagenes[]" id="imagenesNuevo" class="form-control" placeholder="Ingrese la URL de la imagen" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="condicionesNuevo" class="form-label">Condiciones</label>
+                                <textarea class="form-control" id="condicionesNuevo" name="condiciones" rows="2"></textarea>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                            <button type="submit" class="btn btn-primary">Agregar Paquete</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
         </div>
     </x-layouts.administracion.main>
 
