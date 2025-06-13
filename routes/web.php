@@ -124,6 +124,14 @@ Route::prefix('administracion')->middleware('auth')->group(function () {
     Route::get('/empleados',              [administracionController::class, 'empleados'])->name('administracion.empleados');
 });
 
+Route::get('/terminos', function () {
+    return view('login.terminos');
+})->name('terminos');
+
+Route::get('/back', function () {
+    return view('login.register');
+})->name('back');
+
 // Rutas de prueba
 Route::get('/test-compra', [TestCompraController::class, 'simularCompra']);
 Route::get('/test-gmail',  [TestGmailController::class, 'testGmail']);
