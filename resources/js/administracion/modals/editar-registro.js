@@ -10,49 +10,25 @@ setTimeout(function () {
         }
     );
 
-    // Function to show toast notification
-    function showToast(message, type = "success") {
-        const toastContainer = document.querySelector(".toast-container");
-        const toast = document.createElement("div");
-        toast.className = `toast ${type} show`;
-        toast.innerHTML = `
-                        <div class="toast-header">
-                            <strong class="me-auto">${
-                                type === "success" ? "Éxito" : "Error"
-                            }</strong>
-                            <button type="button" class="btn-close" data-bs-dismiss="toast"></button>
-                        </div>
-                        <div class="toast-body">
-                            ${message}
-                        </div>
-                    `;
-        toastContainer.appendChild(toast);
-
-        // Remove toast after 3 seconds
-        setTimeout(() => {
-            toast.remove();
-        }, 3000);
-    }
-
-    function updateTable(data) {
-        document.getElementById("usersTableBody").innerHTML = data.view;
-        document.querySelector(".pagination-container").innerHTML =
-            data.pagination;
-        document.querySelector(".pagination-info").innerHTML =
-            data.paginationInfo;
-    }
-
     // Handle edit button click
     document.addEventListener("click", function (e) {
         const editBtn = e.target.closest(".action-btn.edit");
         if (editBtn) {
-            const registroId = editBtn.dataset.registroId;
+            const registro = editBtn.dataset.registro;
+            console.log(registro);
             const registroRow = editBtn.closest("tr");
-            const registroName =
-                registroRow.querySelector(".user-info h6").textContent;
-            const registroEmail =
-                registroRow.querySelector("td:nth-child(2)").textContent;
 
+            const form = document.getElementById("editarRegistroForm");
+            if (form.checkValidity()) {
+                const formData = new FormData(form);
+                const data = Object.fromEntries(formData.entries());
+            }
+            Object.entries(valores).forEach(([key, value]) => {
+                const input = document.querySelector(`[name="${key}"]`);
+                if (input) {
+                    input.value = value;
+                }
+            });
             document.getElementById("editRegistroId").value = registroId;
             document.getElementById("editName").value = registroName;
             document.getElementById("editEmail").value = registroEmail;

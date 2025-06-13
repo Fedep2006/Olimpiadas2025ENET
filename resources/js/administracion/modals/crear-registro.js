@@ -10,6 +10,7 @@ setTimeout(function () {
         }
     );
 
+    const pathname = window.location.pathname;
     // Handle the click on "Nuevo Registro" button
     document
         .querySelector(".btn-admin.orange")
@@ -17,7 +18,6 @@ setTimeout(function () {
             e.preventDefault();
             nuevoRegistroModal.show();
         });
-
     // Handle form submission
     document
         .getElementById("guardarRegistro")
@@ -35,8 +35,7 @@ setTimeout(function () {
                     if (!token) {
                         throw new Error("Token CSRF no encontrado");
                     }
-
-                    const response = await fetch("/usuarios/create", {
+                    const response = await fetch(pathname + "/create", {
                         method: "POST",
                         headers: {
                             "Content-Type": "application/json",
@@ -68,11 +67,7 @@ setTimeout(function () {
                     nuevoRegistroModal.hide();
                     form.reset();
 
-                    // Refresh the user list
-                    const currentUrl = new URL(window.location.href);
-                    const searchParams = new URLSearchParams(currentUrl.search);
-
-                    fetch(`/usuarios?${searchParams.toString()}`, {
+                    fetch(pathname, {
                         headers: {
                             "X-Requested-With": "XMLHttpRequest",
                         },

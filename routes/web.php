@@ -7,12 +7,69 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\Admin\HospedajeController;
 use App\Http\Controllers\Admin\VehiculosController;
 use App\Models\User;
-
+use App\Models\Viaje;
+use App\Models\Hospedaje;
+use App\Models\Vehiculo;
 use Illuminate\Support\Facades\Auth;
-
-Route::get('/', function () {
-    return view('index');
+use Illuminate\Http\Request;
+Route::get('/', function (Request $request) {
+    $viajes     = Viaje::all();
+    $hospedajes = Hospedaje::all();
+    $vehiculos  = Vehiculo::all();
+    return view('index', compact('viajes', 'hospedajes', 'vehiculos'));
 });
+Route::get('/results', function (Request $request) {
+    $term     = $request->query('search');
+    $filters  = $request->query('filters', []);
+    if (empty($filters)) {
+        $filters = ['viaje','hospedaje','vehiculo','paquete'];
+    }
+
+    $results = [];
+
+    if (in_array('viaje', $filters)) {
+        $results['viajes'] = Viaje::when($term, fn($q) =>
+            $q->where('nombre', 'like', "%{$term}%")
+        )->get();
+    }
+    if (in_array('hospedaje', $filters)) {
+        $results['hospedajes'] = Hospedaje::when($term, fn($q) =>
+            $q->where('nombre', 'like', "%{$term}%")
+        )->get();
+    }
+    if (in_array('vehiculo', $filters)) {
+        $results['vehiculos'] = Vehiculo::when($term, fn($q) =>
+            $q->where('marca', 'like', "%{$term}%")
+              ->orWhere('modelo', 'like', "%{$term}%")
+        )->get();
+    }
+    if (in_array('paquete', $filters)) {
+        $results['paquetes'] = collect()
+            ->merge($results['viajes'] ?? [])
+            ->merge($results['hospedajes'] ?? [])
+            ->merge($results['vehiculos'] ?? []);
+    }
+
+    return view('results', [
+      'results' => $results,
+      'term'    => $term,
+      'filters' => $filters,
+    ]);
+});
+
+Route::get('/details/{type}/{id}', function($type, $id) {
+    switch($type) {
+        case 'viaje':     $item = Viaje::findOrFail($id); break;
+        case 'hospedaje': $item = Hospedaje::findOrFail($id); break;
+        case 'vehiculo':  $item = Vehiculo::findOrFail($id); break;
+        // case 'paquete':  // si tienes modelo propio
+        default: abort(404);
+    }
+    return view('details', compact('type','item'));
+});
+
+
+
 Route::get('/login', function () {
     return view('login.login');
 });
@@ -109,4 +166,3 @@ Route::get('/test-gmail', [App\Http\Controllers\TestGmailController::class, 'tes
 
 // Ruta de prueba para probar el envío de correos
 Route::get('/test-email', [App\Http\Controllers\TestEmailController::class, 'testEmail']);
-

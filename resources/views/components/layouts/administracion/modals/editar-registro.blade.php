@@ -8,14 +8,22 @@
             <div class="modal-body">
                 <form id="editarRegistroForm">
                     <input type="hidden" id="editRegistroId" name="registro_id">
-                    <div class="mb-3">
-                        <label for="editName" class="form-label">Nombre de Usuario</label>
-                        <input type="text" class="form-control" id="editName" name="name" required>
-                    </div>
-                    <div class="mb-3">
-                        <label for="editEmail" class="form-label">Email</label>
-                        <input type="email" class="form-control" id="editEmail" name="email" required>
-                    </div>
+
+                    @foreach ( $inputs as $input)
+                        <div class="mb-3">
+                            <label 
+                                for="{{ $input->name ?? $input->name}}" 
+                                class="form-label">{{$input->label ?? ""}}
+                            </label>
+                            <input 
+                                type="{{$input->type ?? ""}}" 
+                                class="form-control" 
+                                id="{{$input->id  ?? ""}}" 
+                                name="{{$input->name ?? $input->id}}" 
+                                required
+                            > 
+                        </div>
+                    @endforeach
                 </form>
             </div>
             <div class="modal-footer">

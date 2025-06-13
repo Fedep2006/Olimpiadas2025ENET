@@ -6,6 +6,9 @@
     <title>Frategar - Viajes, Vuelos, Hoteles y Paquetes</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
     <style>
         :root {
             --despegar-blue: #0066cc;
@@ -29,7 +32,7 @@
         }
         .hero-video-bg {
             position: absolute;
-            top: 0; left: 0; width: 100%; height: 100%;
+            top: 0; left: 0; width: 100%; height: 150%;
             object-fit: cover;
             z-index: 0;
         }
@@ -161,317 +164,114 @@
             </div>
             <div class="row">
                 <div class="col-lg-10 mx-auto">
-                    <div class="search-card">
-                        <!-- Tabs -->
-                        <ul class="nav nav-pills tab-pills mb-4" role="tablist">
-                            <li class="nav-item">
-                                <a class="nav-link active" data-bs-toggle="pill" href="#vuelos">
-                                    <i class="fas fa-plane me-2"></i>Vuelos
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" data-bs-toggle="pill" href="#hoteles">
-                                    <i class="fas fa-bed me-2"></i>Hoteles
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" data-bs-toggle="pill" href="#paquetes">
-                                    <i class="fas fa-suitcase me-2"></i>Paquetes
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" data-bs-toggle="pill" href="#autos">
-                                    <i class="fas fa-car me-2"></i>Autos
-                                </a>
-                            </li>
-                        </ul>
-                        <!-- Tab Content -->
-                        <div class="tab-content">
-                            <!-- Vuelos Tab -->
-                            <div class="tab-pane fade show active" id="vuelos">
-                                <form>
-                                    <div class="row mb-3">
-                                        <div class="col-md-6">
-                                            <label class="form-label">Origen</label>
-                                            <div class="input-group">
-                                                <span class="input-group-text"><i class="fas fa-plane-departure"></i></span>
-                                                <input type="text" class="form-control" placeholder="¿Desde dónde salís?" value="Buenos Aires (BUE)">
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <label class="form-label">Destino</label>
-                                            <div class="input-group">
-                                                <span class="input-group-text"><i class="fas fa-plane-arrival"></i></span>
-                                                <input type="text" class="form-control" placeholder="¿A dónde vas?">
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="row mb-3">
-                                        <div class="col-md-3">
-                                            <label class="form-label">Ida</label>
-                                            <input type="date" class="form-control">
-                                        </div>
-                                        <div class="col-md-3">
-                                            <label class="form-label">Vuelta</label>
-                                            <input type="date" class="form-control">
-                                        </div>
-                                        <div class="col-md-3">
-                                            <label class="form-label">Pasajeros</label>
-                                            <select class="form-select">
-                                                <option>1 adulto</option>
-                                                <option>2 adultos</option>
-                                                <option>3 adultos</option>
-                                                <option>4 adultos</option>
-                                            </select>
-                                        </div>
-                                        <div class="col-md-3">
-                                            <label class="form-label">Clase</label>
-                                            <select class="form-select">
-                                                <option>Económica</option>
-                                                <option>Premium</option>
-                                                <option>Business</option>
-                                                <option>Primera</option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div class="text-center">
-                                        <button type="submit" class="btn btn-search btn-lg">
-                                            <i class="fas fa-search me-2"></i>Buscar vuelos
-                                        </button>
-                                    </div>
-                                </form>
-                            </div>
-                            <!-- Hoteles Tab -->
-                            <div class="tab-pane fade" id="hoteles">
-                                <form>
-                                    <div class="row mb-3">
-                                        <div class="col-md-6">
-                                            <label class="form-label">Destino</label>
-                                            <div class="input-group">
-                                                <span class="input-group-text"><i class="fas fa-map-marker-alt"></i></span>
-                                                <input type="text" class="form-control" placeholder="¿A dónde vas?">
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <label class="form-label">Huéspedes</label>
-                                            <select class="form-select">
-                                                <option>2 huéspedes, 1 habitación</option>
-                                                <option>3 huéspedes, 1 habitación</option>
-                                                <option>4 huéspedes, 2 habitaciones</option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div class="row mb-3">
-                                        <div class="col-md-6">
-                                            <label class="form-label">Check-in</label>
-                                            <input type="date" class="form-control">
-                                        </div>
-                                        <div class="col-md-6">
-                                            <label class="form-label">Check-out</label>
-                                            <input type="date" class="form-control">
-                                        </div>
-                                    </div>
-                                    <div class="text-center">
-                                        <button type="submit" class="btn btn-search btn-lg">
-                                            <i class="fas fa-search me-2"></i>Buscar hoteles
-                                        </button>
-                                    </div>
-                                </form>
-                            </div>
-                            <!-- Paquetes Tab -->
-                            <div class="tab-pane fade" id="paquetes">
-                                <form>
-                                    <div class="row mb-3">
-                                        <div class="col-md-6">
-                                            <label class="form-label">Origen</label>
-                                            <div class="input-group">
-                                                <span class="input-group-text"><i class="fas fa-plane-departure"></i></span>
-                                                <input type="text" class="form-control" placeholder="¿Desde dónde salís?" value="Buenos Aires (BUE)">
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <label class="form-label">Destino</label>
-                                            <div class="input-group">
-                                                <span class="input-group-text"><i class="fas fa-suitcase"></i></span>
-                                                <input type="text" class="form-control" placeholder="¿A dónde vas?">
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="row mb-3">
-                                        <div class="col-md-4">
-                                            <label class="form-label">Salida</label>
-                                            <input type="date" class="form-control">
-                                        </div>
-                                        <div class="col-md-4">
-                                            <label class="form-label">Regreso</label>
-                                            <input type="date" class="form-control">
-                                        </div>
-                                        <div class="col-md-4">
-                                            <label class="form-label">Pasajeros</label>
-                                            <select class="form-select">
-                                                <option>2 pasajeros</option>
-                                                <option>3 pasajeros</option>
-                                                <option>4 pasajeros</option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div class="text-center">
-                                        <button type="submit" class="btn btn-search btn-lg">
-                                            <i class="fas fa-search me-2"></i>Buscar paquetes
-                                        </button>
-                                    </div>
-                                </form>
-                            </div>
-                            <!-- Autos Tab -->
-                            <div class="tab-pane fade" id="autos">
-                                <form>
-                                    <div class="row mb-3">
-                                        <div class="col-md-6">
-                                            <label class="form-label">Lugar de retiro</label>
-                                            <div class="input-group">
-                                                <span class="input-group-text"><i class="fas fa-map-marker-alt"></i></span>
-                                                <input type="text" class="form-control" placeholder="Ciudad o aeropuerto">
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <label class="form-label">Lugar de devolución</label>
-                                            <div class="input-group">
-                                                <span class="input-group-text"><i class="fas fa-map-marker-alt"></i></span>
-                                                <input type="text" class="form-control" placeholder="Ciudad o aeropuerto">
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="row mb-3">
-                                        <div class="col-md-6">
-                                            <label class="form-label">Fecha de retiro</label>
-                                            <input type="datetime-local" class="form-control">
-                                        </div>
-                                        <div class="col-md-6">
-                                            <label class="form-label">Fecha de devolución</label>
-                                            <input type="datetime-local" class="form-control">
-                                        </div>
-                                    </div>
-                                    <div class="text-center">
-                                        <button type="submit" class="btn btn-search btn-lg">
-                                            <i class="fas fa-search me-2"></i>Buscar autos
-                                        </button>
-                                    </div>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+<div class="search-card">
+  <ul class="nav nav-tabs mb-3" id="searchModeTab" role="tablist">
+    <li class="nav-item" role="presentation">
+      <button class="nav-link active" id="text-tab" data-bs-toggle="tab" data-bs-target="#text" type="button">Texto</button>
+    </li>
+    <li class="nav-item" role "presentation">
+      <button class="nav-link" id="advanced-tab" data-bs-toggle="tab" data-bs-target="#advanced" type="button">Preferencias</button>
+    </li>
+  </ul>
+  <div class="tab-content" id="searchModeTabContent">
+    {{-- Búsqueda por texto --}}
+    <div class="tab-pane fade show active" id="text" role="tabpanel">
+      <form action="{{ url('/results') }}" method="GET" class="d-flex">
+        <input type="text" name="search" value="{{ request('search') }}" class="form-control me-2" placeholder="Busca destino, hotel, auto o paquete…" />
+        <button class="btn btn-primary" type="submit"><i class="fas fa-search me-1"></i> Buscar</button>
+      </form>
+    </div>
+
+    {{-- Búsqueda avanzada --}}
+    <div class="tab-pane fade" id="advanced" role="tabpanel">
+      <form action="{{ url('/results') }}" method="GET">
+        <div class="row g-2 align-items-end">
+          <div class="col-md-3">
+            <label class="form-label small">Origen</label>
+            <div class="input-group">
+              <span class="input-group-text"><i class="fas fa-dot-circle"></i></span>
+              <input type="text" name="origin" class="form-control" placeholder="Ciudad de origen" value="{{ request('origin') }}" />
             </div>
+          </div>
+          <div class="col-md-3">
+            <label class="form-label small">Destino</label>
+            <div class="input-group">
+              <span class="input-group-text"><i class="fas fa-map-marker-alt"></i></span>
+              <input type="text" name="destination" class="form-control" placeholder="Ciudad de destino" value="{{ request('destination') }}" />
+            </div>
+          </div>
+          <div class="col-md-2">
+            <label class="form-label small">Entrada</label>
+            <input type="date" name="checkin" class="form-control" value="{{ request('checkin') }}" />
+          </div>
+          <div class="col-md-2">
+            <label class="form-label small">Salida</label>
+            <input type="date" name="checkout" class="form-control" value="{{ request('checkout') }}" />
+          </div>
+          <div class="col-md-2">
+            <label class="form-label small">Huéspedes</label>
+            <div class="input-group">
+              <span class="input-group-text"><i class="fas fa-user-friends"></i></span>
+              <input type="number" name="guests" min="1" class="form-control" value="{{ request('guests',1) }}" />
+            </div>
+          </div>
         </div>
+        <div class="text-end mt-3">
+          <button class="btn btn-primary"><i class="fas fa-search me-1"></i> Buscar</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+
+
+                            </div>
+                            
     </section>
 
-    <!-- Ofertas Destacadas -->
+    <!-- hospedaje -->
     <section class="py-5">
-        <div class="container">
-            <div class="row mb-4">
-                <div class="col-12 text-center">
-                    <h2 class="fw-bold">Ofertas destacadas</h2>
-                    <p class="text-muted">Los mejores precios para tu próximo viaje</p>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-md-4 mb-4">
-                    <a  href="/detalles"  style="text-decoration: none; color: inherit;">
-                    <div class="card offer-card h-100">
-                        <img src="/placeholder.svg?height=200&width=400" class="card-img-top" alt="Miami">
-                        <div class="card-body">
-                            <div class="d-flex justify-content-between align-items-start mb-2">
-                                <h5 class="card-title">Miami</h5>
-                                <span class="price-tag">$899</span>
-                            </div>
-                            <p class="card-text text-muted">Vuelo + Hotel por 7 noches</p>
-                            <p class="card-text"><small class="text-success">¡Oferta por tiempo limitado!</small></p>
-                        </div>
-                    </div>
-                    </a>
-                </div>
-                <div class="col-md-4 mb-4">
-                       <a  href="/detalles"  style="text-decoration: none; color: inherit;">
-                    <div class="card offer-card h-100">
-                        <img src="/placeholder.svg?height=200&width=400" class="card-img-top" alt="Cancún">
-                        <div class="card-body">
-                            <div class="d-flex justify-content-between align-items-start mb-2">
-                                <h5 class="card-title">Cancún</h5>
-                                <span class="price-tag">$750</span>
-                            </div>
-                            <p class="card-text text-muted">Paquete todo incluido</p>
-                            <p class="card-text"><small class="text-success">¡Últimas plazas disponibles!</small></p>
-                        </div>
-                    </div>
-                    </a>
-                </div>
-                <div class="col-md-4 mb-4">
-                      <a  href="/detalles" style="text-decoration: none; color: inherit;">
-                    <div class="card offer-card h-100">
-                        <img src="/placeholder.svg?height=200&width=400" class="card-img-top" alt="Europa">
-                        <div class="card-body">
-                            <div class="d-flex justify-content-between align-items-start mb-2">
-                                <h5 class="card-title">Europa</h5>
-                                <span class="price-tag">$1,299</span>
-                            </div>
-                            <p class="card-text text-muted">Tour por 3 ciudades</p>
-                            <p class="card-text"><small class="text-success">¡Incluye traslados!</small></p>
-                        </div>
-                    </div>
-                    </a>
-                </div>
-            </div>
+        <div class="row">
+  @foreach($hospedajes as $h)
+    <div class="col-md-3 mb-4">
+      <div class="destination-card">
+        <img 
+          src="data:image/jpeg;base64,{{ $h->imagen }}" 
+          class="w-100 h-100 object-fit-cover" 
+          alt="{{ $h->nombre }}"
+        >
+        <div class="destination-overlay">
+          <h5 class="mb-1">{{ $h->nombre }}</h5>
+          <p class="mb-0">Desde ${{ number_format($h->precio_noche, 2) }} / noche</p>
         </div>
+      </div>
+    </div>
+  @endforeach
+</div>
+
     </section>
 
     <!-- Destinos Populares -->
     <section class="py-5 bg-light">
-        <div class="container">
-            <div class="row mb-4">
-                <div class="col-12 text-center">
-                    <h2 class="fw-bold">Destinos populares</h2>
-                    <p class="text-muted">Los lugares más elegidos por nuestros viajeros</p>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-md-3 mb-4">
-                    <div class="destination-card">
-                        <img src="/placeholder.svg?height=200&width=300" class="w-100 h-100 object-fit-cover" alt="París">
-                        <div class="destination-overlay">
-                            <h5 class="mb-1">París</h5>
-                            <p class="mb-0">Desde $1,200</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-3 mb-4">
-                    <div class="destination-card">
-                        <img src="/placeholder.svg?height=200&width=300" class="w-100 h-100 object-fit-cover" alt="Nueva York">
-                        <div class="destination-overlay">
-                            <h5 class="mb-1">Nueva York</h5>
-                            <p class="mb-0">Desde $950</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-3 mb-4">
-                    <div class="destination-card">
-                        <img src="/placeholder.svg?height=200&width=300" class="w-100 h-100 object-fit-cover" alt="Tokio">
-                        <div class="destination-overlay">
-                            <h5 class="mb-1">Tokio</h5>
-                            <p class="mb-0">Desde $1,800</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-3 mb-4">
-                    <div class="destination-card">
-                        <img src="/placeholder.svg?height=200&width=300" class="w-100 h-100 object-fit-cover" alt="Londres">
-                        <div class="destination-overlay">
-                            <h5 class="mb-1">Londres</h5>
-                            <p class="mb-0">Desde $1,100</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
+        <div class="row">
+  @foreach($viajes as $viaje)
+    <div class="col-md-3 mb-4">
+      <div class="destination-card">
+        <img 
+          src="data:image/jpeg;base64,{{ $viaje->imagen }}" 
+          class="w-100 h-100 object-fit-cover" 
+          alt="{{ $viaje->nombre }}"
+        >
+        <div class="destination-overlay">
+          <h5 class="mb-1">{{ $viaje->nombre }}</h5>
+          <p class="mb-0">Desde ${{ number_format($viaje->precio, 2) }}</p>
         </div>
+      </div>
+    </div>
+  @endforeach
+</div>
+
     </section>
 
     <!-- Servicios -->
@@ -509,6 +309,26 @@
             </div>
         </div>
     </section>
+
+    <div class="row">
+  @foreach($vehiculos as $v)
+    <div class="col-md-3 mb-4">
+      <div class="destination-card">
+        <img 
+          {{-- si guardas varias imágenes, tomo la primera --}}
+          src="data:image/jpeg;base64,{{ $v->imagenes[0] ?? '' }}" 
+          class="w-100 h-100 object-fit-cover" 
+          alt="{{ $v->marca }} {{ $v->modelo }}"
+        >
+        <div class="destination-overlay">
+          <h5 class="mb-1">{{ $v->marca }} {{ $v->modelo }}</h5>
+          <p class="mb-0">Desde ${{ number_format($v->precio_por_dia, 2) }} / día</p>
+        </div>
+      </div>
+    </div>
+  @endforeach
+</div>
+
 
     <!-- Footer -->
     <footer class="footer-section">
