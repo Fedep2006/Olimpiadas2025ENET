@@ -330,34 +330,18 @@
                     <h1 class="page-title">Gestión de Paquetes</h1>
                     <p class="page-subtitle">Crea y administra ofertas especiales y descuentos</p>
                 </div>
-                <a href="#" class="btn-admin orange">
+                  <a href="{{ route('administracion.paquetes') }}" class="btn-admin warning">
+                        <i class="fas fa-sync"></i>
+                        Sincronizar
+                    </a>
+                <a href="#" class="btn-admin orange" data-bs-toggle="modal" data-bs-target="#agregarPaqueteModal">
                     <i class="fas fa-plus"></i>
                     Nueva Promoción
                 </a>
             </div>
         </div>
 
-        <!-- Stats Row -->
-        <div class="stats-row">
-            <div class="stat-card">
-                <div class="stat-number">47</div>
-                <div class="stat-label">Total Paquetes</div>
-            </div>
-            <div class="stat-card" style="border-left-color: #28a745;">
-                <div class="stat-number">32</div>
-                <div class="stat-label">Paquetes Activas</div>
-            </div>
-            <div class="stat-card" style="border-left-color: #ffc107;">
-                <div class="stat-number">8</div>
-                <div class="stat-label">Programadas</div>
-            </div>
-            <div class="stat-card" style="border-left-color: #dc3545;">
-                <div class="stat-number">7</div>
-                <div class="stat-label">Expiradas</div>
-            </div>
-        </div>
-
-        <!-- Filters -->
+        <!-- Filters
         <div class="content-card">
             <div class="search-filters">
                 <div class="filter-row">
@@ -415,298 +399,147 @@
                 </div>
             </div>
         </div>
-
+    -->
         <!-- Promotions Table -->
         <div class="content-card">
             <div class="card-header">
                 <h5 class="card-title">Lista de Paquetes</h5>
                 <div class="d-flex gap-2">
-                    <a href="#" class="btn-admin success">
-                        <i class="fas fa-file-excel"></i>
-                        Excel
-                    </a>
                 </div>
             </div>
-
+<br>
             <div class="table-container">
                 <table class="table">
                     <thead>
                         <tr>
-                            <th>Promoción</th>
-                            <th>Tipo</th>
-                            <th>Descuento</th>
-                            <th>Categoría</th>
-                            <th>Vigencia</th>
-                            <th>Uso</th>
-                            <th>Estado</th>
+                            <th>Nombre</th>
+                            <th>Descripción</th>
+                            <th>Precio Total</th>
+                            <th>Duración</th>
+                            <th>Ubicación</th>
+                            <th>Cupo Mínimo</th>
+                            <th>Cupo Máximo</th>
+                            <th>Activo</th>
+                            <th>Condiciones</th>
                             <th>Acciones</th>
                         </tr>
                     </thead>
                     <tbody>
+                        @foreach($paquetes as $paquete)
                         <tr>
+                            <td>{{ $paquete->nombre }}</td>
+                            <td>{{ $paquete->descripcion }}</td>
+                            <td>${{ number_format($paquete->precio_total, 2) }}</td>
+                            <td>{{ $paquete->duracion }}</td>
+                            <td>{{ $paquete->ubicacion }}</td>
+                            <td>{{ $paquete->cupo_minimo }}</td>
+                            <td>{{ $paquete->cupo_maximo }}</td>
                             <td>
-                                <div class="promo-info">
-                                    <div class="promo-icon">
-                                        <i class="fas fa-percentage"></i>
+                                @if($paquete->activo)
+                                    <span class="status-badge status-active">Sí</span>
+                                @else
+                                    <span class="status-badge status-expired">No</span>
+                                @endif
+                            </td>
+                            <td>
+                                <button class="btn-admin btn-sm" data-bs-toggle="modal" data-bs-target="#condicionesModal{{ $paquete->id }}">
+                                    Ver
+                                </button>
+                                <!-- Modal -->
+                                <div class="modal fade" id="condicionesModal{{ $paquete->id }}" tabindex="-1" aria-labelledby="condicionesLabel{{ $paquete->id }}" aria-hidden="true">
+                                  <div class="modal-dialog">
+                                    <div class="modal-content">
+                                      <div class="modal-header">
+                                        <h5 class="modal-title" id="condicionesLabel{{ $paquete->id }}">Condiciones del Paquete</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+                                      </div>
+                                      <div class="modal-body">
+                                        {{ $paquete->condiciones }}
+                                      </div>
                                     </div>
-                                    <div class="promo-details">
-                                        <h6>Descuento Verano 2024</h6>
-                                        <small>Código: VERANO24</small>
-                                    </div>
+                                  </div>
                                 </div>
                             </td>
-                            <td>
-                                <span class="type-badge type-percentage">Descuento %</span>
-                            </td>
-                            <td>
-                                <div class="discount-badge">25% OFF</div>
-                            </td>
-                            <td>
-                                <div><strong>Vuelos</strong></div>
-                                <small class="text-muted">Destinos internacionales</small>
-                            </td>
-                            <td>
-                                <div><strong>01/03 - 31/03</strong></div>
-                                <small class="text-muted">30 días restantes</small>
-                            </td>
-                            <td>
-                                <div class="usage-stats">
-                                    <div class="usage-number">847/1000</div>
-                                    <div class="usage-bar">
-                                        <div class="usage-fill" style="width: 84.7%;"></div>
-                                    </div>
-                                    <small class="text-muted">84.7% usado</small>
-                                </div>
-                            </td>
-                            <td><span class="status-badge status-active">Activa</span></td>
                             <td>
                                 <div class="action-buttons">
-                                    <button class="action-btn view" title="Ver detalles">
+                                    <a href="{{ route('administracion.paquetes.show', $paquete->id) }}" class="action-btn view" title="Ver detalles">
                                         <i class="fas fa-eye"></i>
-                                    </button>
-                                    <button class="action-btn edit" title="Editar">
+                                    </a>
+                                    <a href="{{ route('administracion.paquetes.edit', $paquete->id) }}" class="action-btn edit" title="Editar">
                                         <i class="fas fa-edit"></i>
-                                    </button>
-                                    <button class="action-btn pause" title="Pausar">
-                                        <i class="fas fa-pause"></i>
-                                    </button>
-                                    <button class="action-btn delete" title="Eliminar">
-                                        <i class="fas fa-trash"></i>
-                                    </button>
+                                    </a>
+                                    <form action="{{ route('administracion.paquetes.destroy', $paquete->id) }}" method="POST" style="display:inline;">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" class="action-btn delete" title="Eliminar" onclick="return confirm('¿Está seguro de eliminar este paquete?')">
+                                            <i class="fas fa-trash"></i>
+                                        </button>
+                                    </form>
                                 </div>
                             </td>
                         </tr>
-                        <tr>
-                            <td>
-                                <div class="promo-info">
-                                    <div class="promo-icon">
-                                        <i class="fas fa-dollar-sign"></i>
-                                    </div>
-                                    <div class="promo-details">
-                                        <h6>Descuento Fijo Hoteles</h6>
-                                        <small>Código: HOTEL100</small>
-                                    </div>
-                                </div>
-                            </td>
-                            <td>
-                                <span class="type-badge type-fixed">Descuento Fijo</span>
-                            </td>
-                            <td>
-                                <div class="discount-badge">$100 OFF</div>
-                            </td>
-                            <td>
-                                <div><strong>Hoteles</strong></div>
-                                <small class="text-muted">Reservas +$500</small>
-                            </td>
-                            <td>
-                                <div><strong>15/03 - 15/04</strong></div>
-                                <small class="text-muted">15 días restantes</small>
-                            </td>
-                            <td>
-                                <div class="usage-stats">
-                                    <div class="usage-number">234/500</div>
-                                    <div class="usage-bar">
-                                        <div class="usage-fill" style="width: 46.8%;"></div>
-                                    </div>
-                                    <small class="text-muted">46.8% usado</small>
-                                </div>
-                            </td>
-                            <td><span class="status-badge status-active">Activa</span></td>
-                            <td>
-                                <div class="action-buttons">
-                                    <button class="action-btn view" title="Ver detalles">
-                                        <i class="fas fa-eye"></i>
-                                    </button>
-                                    <button class="action-btn edit" title="Editar">
-                                        <i class="fas fa-edit"></i>
-                                    </button>
-                                    <button class="action-btn pause" title="Pausar">
-                                        <i class="fas fa-pause"></i>
-                                    </button>
-                                    <button class="action-btn delete" title="Eliminar">
-                                        <i class="fas fa-trash"></i>
-                                    </button>
-                                </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <div class="promo-info">
-                                    <div class="promo-icon">
-                                        <i class="fas fa-gift"></i>
-                                    </div>
-                                    <div class="promo-details">
-                                        <h6>2x1 en Autos</h6>
-                                        <small>Código: AUTO2X1</small>
-                                    </div>
-                                </div>
-                            </td>
-                            <td>
-                                <span class="type-badge type-bogo">2x1</span>
-                            </td>
-                            <td>
-                                <div class="discount-badge">2x1</div>
-                            </td>
-                            <td>
-                                <div><strong>Autos</strong></div>
-                                <small class="text-muted">Fines de semana</small>
-                            </td>
-                            <td>
-                                <div><strong>01/04 - 30/04</strong></div>
-                                <small class="text-success">Programada</small>
-                            </td>
-                            <td>
-                                <div class="usage-stats">
-                                    <div class="usage-number">0/200</div>
-                                    <div class="usage-bar">
-                                        <div class="usage-fill" style="width: 0%;"></div>
-                                    </div>
-                                    <small class="text-muted">0% usado</small>
-                                </div>
-                            </td>
-                            <td><span class="status-badge status-scheduled">Programada</span></td>
-                            <td>
-                                <div class="action-buttons">
-                                    <button class="action-btn view" title="Ver detalles">
-                                        <i class="fas fa-eye"></i>
-                                    </button>
-                                    <button class="action-btn edit" title="Editar">
-                                        <i class="fas fa-edit"></i>
-                                    </button>
-                                    <button class="action-btn pause" title="Pausar">
-                                        <i class="fas fa-pause"></i>
-                                    </button>
-                                    <button class="action-btn delete" title="Eliminar">
-                                        <i class="fas fa-trash"></i>
-                                    </button>
-                                </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <div class="promo-info">
-                                    <div class="promo-icon">
-                                        <i class="fas fa-star"></i>
-                                    </div>
-                                    <div class="promo-details">
-                                        <h6>Envío Gratis Paquetes</h6>
-                                        <small>Código: FREEPACK</small>
-                                    </div>
-                                </div>
-                            </td>
-                            <td>
-                                <span class="type-badge type-free">Gratis</span>
-                            </td>
-                            <td>
-                                <div class="discount-badge">Envío Gratis</div>
-                            </td>
-                            <td>
-                                <div><strong>Paquetes</strong></div>
-                                <small class="text-muted">Todos los destinos</small>
-                            </td>
-                            <td>
-                                <div><strong>10/02 - 10/03</strong></div>
-                                <small class="text-warning">Pausada</small>
-                            </td>
-                            <td>
-                                <div class="usage-stats">
-                                    <div class="usage-number">156/300</div>
-                                    <div class="usage-bar">
-                                        <div class="usage-fill" style="width: 52%;"></div>
-                                    </div>
-                                    <small class="text-muted">52% usado</small>
-                                </div>
-                            </td>
-                            <td><span class="status-badge status-paused">Pausada</span></td>
-                            <td>
-                                <div class="action-buttons">
-                                    <button class="action-btn view" title="Ver detalles">
-                                        <i class="fas fa-eye"></i>
-                                    </button>
-                                    <button class="action-btn edit" title="Editar">
-                                        <i class="fas fa-edit"></i>
-                                    </button>
-                                    <button class="action-btn pause" title="Reanudar"
-                                        style="background-color: #28a745;">
-                                        <i class="fas fa-play"></i>
-                                    </button>
-                                    <button class="action-btn delete" title="Eliminar">
-                                        <i class="fas fa-trash"></i>
-                                    </button>
-                                </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <div class="promo-info">
-                                    <div class="promo-icon">
-                                        <i class="fas fa-clock"></i>
-                                    </div>
-                                    <div class="promo-details">
-                                        <h6>Early Bird 2024</h6>
-                                        <small>Código: EARLY2024</small>
-                                    </div>
-                                </div>
-                            </td>
-                            <td>
-                                <span class="type-badge type-percentage">Descuento %</span>
-                            </td>
-                            <td>
-                                <div class="discount-badge">15% OFF</div>
-                            </td>
-                            <td>
-                                <div><strong>Vuelos</strong></div>
-                                <small class="text-muted">Reservas anticipadas</small>
-                            </td>
-                            <td>
-                                <div><strong>01/01 - 28/02</strong></div>
-                                <small class="text-danger">Expirada</small>
-                            </td>
-                            <td>
-                                <div class="usage-stats">
-                                    <div class="usage-number">1000/1000</div>
-                                    <div class="usage-bar">
-                                        <div class="usage-fill" style="width: 100%;"></div>
-                                    </div>
-                                    <small class="text-muted">100% usado</small>
-                                </div>
-                            </td>
-                            <td><span class="status-badge status-expired">Expirada</span></td>
-                            <td>
-                                <div class="action-buttons">
-                                    <button class="action-btn view" title="Ver detalles">
-                                        <i class="fas fa-eye"></i>
-                                    </button>
-                                    <button class="action-btn edit" title="Duplicar"
-                                        style="background-color: #17a2b8;">
-                                        <i class="fas fa-copy"></i>
-                                    </button>
-                                    <button class="action-btn delete" title="Eliminar">
-                                        <i class="fas fa-trash"></i>
-                                    </button>
-                                </div>
-                            </td>
-                        </tr>
+                        <!-- Modal para ver condiciones del paquete -->
+                        @endforeach
+
+<!-- Modal para agregar Paquete -->
+<div class="modal fade" id="agregarPaqueteModal" tabindex="-1" aria-labelledby="agregarPaqueteLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="agregarPaqueteLabel">Agregar Paquete</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+            </div>
+            <form action="{{ route('administracion.paquetes.añadir') }}" method="POST">
+                @csrf
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label for="nombre" class="form-label">Nombre del Paquete</label>
+                        <input type="text" class="form-control" id="nombre" name="nombre" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="descripcion" class="form-label">Descripción</label>
+                        <textarea class="form-control" id="descripcion" name="descripcion" rows="3" required></textarea>
+                    </div>
+                    <div class="mb-3">
+                        <label for="precio_total" class="form-label">Precio Total</label>
+                        <input type="number" class="form-control" id="precio_total" name="precio_total" step="0.01" min="0" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="duracion" class="form-label">Duración</label>
+                        <input type="text" class="form-control" id="duracion" name="duracion" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="ubicacion" class="form-label">Ubicación</label>
+                        <input type="text" class="form-control" id="ubicacion" name="ubicacion" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="cupo_minimo" class="form-label">Cupo Mínimo</label>
+                        <input type="number" class="form-control" id="cupo_minimo" name="cupo_minimo" min="1" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="cupo_maximo" class="form-label">Cupo Máximo</label>
+                        <input type="number" class="form-control" id="cupo_maximo" name="cupo_maximo" min="1" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="activo" class="form-label">Activo</label>
+                        <select class="form-select" id="activo" name="activo" required>
+                            <option value="1">Sí</option>
+                            <option value="0">No</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="condiciones" class="form-label">Condiciones</label>
+                        <textarea class="form-control" id="condiciones" name="condiciones" rows="2"></textarea>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="submit" class="btn btn-primary">Guardar Paquete</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
                     </tbody>
                 </table>
             </div>

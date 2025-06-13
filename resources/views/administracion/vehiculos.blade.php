@@ -391,7 +391,7 @@
                 <div class="d-flex gap-2">
                 </div>
             </div>
-
+<br>
             <div class="table-container">
                 <table class="table">
                     <thead>
@@ -410,7 +410,7 @@
                     </thead>
                     <tbody>
                     @foreach ($vehiculo as $vehiculos)
-                    <td class="text-center"><img src="{{ $vehiculos->imagenes[0] }}" alt="Imagen del vehículo" class="img-fluid" style="width: 100px; height: 100px;"></td>
+                    <td class="text-center"><img src="{{ is_array($vehiculos->imagenes) ? $vehiculos->imagenes[0] : $vehiculos->imagenes }}" alt="Imagen del vehículo" class="img-fluid" style="width: 100px; height: 100px;"></td>
                     <td class="text-center">{{ $vehiculos->id }}</td>
                     <td class="text-center">{{ $vehiculos->tipo }}</td>
 
@@ -451,36 +451,9 @@
                     </td>
                 
                     </tbody>
-                    @endforeach
-                </table>
-            </div>
 
-            <!-- Pagination -->
-            <nav class="d-flex justify-content-center">
-                <ul class="pagination">
-                    <li class="page-item disabled">
-                        <a class="page-link" href="#" tabindex="-1">Anterior</a>
-                    </li>
-                    <li class="page-item active">
-                        <a class="page-link" href="#">1</a>
-                    </li>
-                    <li class="page-item">
-                        <a class="page-link" href="#">2</a>
-                    </li>
-                    <li class="page-item">
-                        <a class="page-link" href="#">3</a>
-                    </li>
-                    <li class="page-item">
-                        <a class="page-link" href="#">Siguiente</a>
-                    </li>
-                </ul>
-            </nav>
-        </div>
-    </x-layouts.administracion.main>
+                    
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-
-    @vite('resources/js/sidebar.js')
 
     <!-- Modal para editar vehículos -->
     <div class="modal fade" id="EditarVehiculo" tabindex="-1" aria-labelledby="EditarVehiculoLabel" aria-hidden="true">
@@ -573,7 +546,7 @@
                         </div>
                         <div class="mb-3">
                             <label for="observaciones" class="form-label">Observaciones</label>
-                            <textarea class="form-control" id="observaciones" name="observaciones" rows="3" value="{{ $vehiculos->observaciones }}"></textarea>
+                            <textarea class="form-control" id="observaciones" name="observaciones" rows="3">{{ $vehiculos->observaciones }}</textarea>
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
@@ -602,11 +575,44 @@
     <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
         <button type="submit" class="btn btn-danger">Desactivar Vehículo</button>
+        </div>
+                    </form>
+                </div>
+            </div>
     </div>
-</form>
+                    @endforeach
+                </table>
+            </div>
+
+            <!-- Pagination -->
+            <nav class="d-flex justify-content-center">
+                <ul class="pagination">
+                    <li class="page-item disabled">
+                        <a class="page-link" href="#" tabindex="-1">Anterior</a>
+                    </li>
+                    <li class="page-item active">
+                        <a class="page-link" href="#">1</a>
+                    </li>
+                    <li class="page-item">
+                        <a class="page-link" href="#">2</a>
+                    </li>
+                    <li class="page-item">
+                        <a class="page-link" href="#">3</a>
+                    </li>
+                    <li class="page-item">
+                        <a class="page-link" href="#">Siguiente</a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </x-layouts.administracion.main>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    @vite('resources/js/sidebar.js')
 
     <!-- Modal para agregar vehículos -->
-    <div class="modal fade" id="AñadirVehiculo" tabindex="-1" aria-labelledby="AñadirVehiculoLabel" aria-hidden="true">
+    <div class="modal fade" id="AñadirVehiculo" tabindex="-1" aria-labelledby="AñadirVehiculoLabel" aria-hidden="true" role="dialog">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
@@ -619,10 +625,10 @@
                         <div class="mb-3">
                             <label for="tipo" class="form-label">Tipo de vehículo</label>
                             <select class="form-select" id="tipo" name="tipo" required>
-                                <option value="auto" {{ $vehiculos->tipo == 'auto' ? 'selected' : '' }}>Automovil</option>
-                                <option value="camioneta" {{ $vehiculos->tipo == 'camioneta' ? 'selected' : '' }}>Camioneta</option>
-                                <option value="moto" {{ $vehiculos->tipo == 'moto' ? 'selected' : '' }}>Moto</option>
-                                <option value="bicicleta" {{ $vehiculos->tipo == 'bicicleta' ? 'selected' : '' }}>Bicicleta</option>
+                                <option value="auto">Automovil</option>
+                                <option value="camioneta">Camioneta</option>
+                                <option value="moto">Moto</option>
+                                <option value="bicicleta">Bicicleta</option>
                             </select>
                         </div>
                         <div class="mb-3">
@@ -660,8 +666,8 @@
                         <div class="mb-3">
                             <label for="disponible" class="form-label">¿Disponible para alquiler?</label>
                             <select class="form-select" id="disponible" name="disponible" required>
-                                <option value="1" {{ $vehiculos->disponible == 1 ? 'selected' : '' }}>Sí</option>
-                                <option value="0" {{ $vehiculos->disponible == 0 ? 'selected' : '' }}>No</option>
+                                <option value="1">Sí</option>
+                                <option value="0">No</option>
                             </select>
                         </div>
                         <div class="mb-3">
@@ -673,22 +679,22 @@
                             <div class="row">
                                 <div class="col-md-4">
                                     <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" name="caracteristicas[]" value="GPS" id="caracteristicas">
-                                        <label class="form-check-label" for="caracteristicas">GPS</label>
+                                        <input class="form-check-input" type="checkbox" name="caracteristicas[]" value="GPS" id="caracteristica_gps">
+                                        <label class="form-check-label" for="caracteristica_gps">GPS</label>
                                     </div>
                                     <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" name="caracteristicas[]" value="Bluetooth" id="caracteristicas">
-                                        <label class="form-check-label" for="caracteristicas">Bluetooth</label>
+                                        <input class="form-check-input" type="checkbox" name="caracteristicas[]" value="Bluetooth" id="caracteristica_bluetooth">
+                                        <label class="form-check-label" for="caracteristica_bluetooth">Bluetooth</label>
                                     </div>
                                 </div>
                                 <div class="col-md-4">
                                     <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" name="caracteristicas[]" value="Aire Acondicionado" id="caracteristicas">
-                                        <label class="form-check-label" for="caracteristicas">Aire Acondicionado</label>
+                                        <input class="form-check-input" type="checkbox" name="caracteristicas[]" value="Aire Acondicionado" id="caracteristica_aire">
+                                        <label class="form-check-label" for="caracteristica_aire">Aire Acondicionado</label>
                                     </div>
                                     <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" name="caracteristicas[]" value="Camara de Reversa" id="caracteristicas">
-                                        <label class="form-check-label" for="caracteristicas">Camara de Reversa</label>
+                                        <input class="form-check-input" type="checkbox" name="caracteristicas[]" value="Camara de Reversa" id="caracteristica_camara">
+                                        <label class="form-check-label" for="caracteristica_camara">Camara de Reversa</label>
                                     </div>
                                 </div>
                             </div>
@@ -706,5 +712,7 @@
             </div>
         </div>
     </div>
+
+</form>
 </body>
 </html>

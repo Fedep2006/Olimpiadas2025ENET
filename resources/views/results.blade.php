@@ -7,20 +7,204 @@
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
   <style>
-    :root { --primary: #0066cc; --light: #f8f9fa; }
-    body { background: var(--light); }
-    .navbar-brand { font-weight: 700; font-size: 1.75rem; color: var(--primary) !important; }
-    .hero { position: relative; background: url('/images/hero-bg.jpg') center/cover no-repeat; height: 300px; }
-    .search-card { position: absolute; left: 50%; bottom: -30px; transform: translateX(-50%); width: 90%; max-width: 800px; background: #fff; border-radius: 12px; box-shadow: 0 4px 20px rgba(0,0,0,0.1); padding: 1rem; }
-    .results-section { padding-top: 60px; }
-    .result-card { background: #fff; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.05); margin-bottom: 1rem; transition: transform .2s; }
-    .result-card:hover { transform: translateY(-2px); }
-    .result-body { padding: 1rem; display: flex; justify-content: space-between; align-items: center; }
-    .result-info { flex: 1; }
-    .badge-type { background: var(--primary); text-transform: uppercase; font-size: .75rem; }
-    .item-price { font-size: 1.1rem; font-weight: 600; }
-    .footer-section { background: #2c3e50; color: #fff; padding: 2rem 0; }
-    .features-section .fas { color: var(--primary); }
+    :root { 
+      --primary: #0066cc; 
+      --light: #f8f9fa; 
+      --orange: #ff6600;
+    }
+    
+    body { 
+      background: var(--light); 
+    }
+    
+    .navbar-brand { 
+      font-weight: 700; 
+      font-size: 1.75rem; 
+      color: var(--primary)!important; 
+    }
+    
+    .hero { 
+      position: relative; 
+      background: url('/images/hero-bg.jpg') center/cover no-repeat; 
+      height: 350px; /* Aumentado para dar más espacio al buscador */
+    }
+    
+    /* Estilo mejorado para el buscador */
+    .search-card { 
+      position: absolute; 
+      left: 50%; 
+      bottom: -30px; 
+      transform: translateX(-50%); 
+      width: 90%; 
+      max-width: 900px; 
+      background: rgba(255, 255, 255, 0.95);
+      border-radius: 20px; 
+      box-shadow: 0 15px 50px rgba(0,0,0,0.2); 
+      padding: 30px;
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      transition: all 0.3s ease;
+    }
+    
+    .search-card:hover {
+      transform: translateX(-50%) translateY(-5px);
+      box-shadow: 0 20px 60px rgba(0,0,0,0.25);
+    }
+    
+    /* Estilos para los campos de entrada */
+    .input-group.input-elevated {
+      border: none;
+      border-radius: 15px;
+      padding: 0.5rem;
+      min-height: 60px;
+      background-color: #f8f9fa;
+      box-shadow: 0 3px 15px rgba(0,0,0,0.05);
+      transition: all 0.3s ease;
+    }
+    
+    .input-group.input-elevated:focus-within {
+      box-shadow: 0 5px 20px rgba(0,102,204,0.15);
+      background-color: white;
+    }
+    
+    .input-group .form-control {
+      font-size: 1.1rem;
+      padding: 0.75rem 1rem;
+      border: none;
+      background: transparent;
+    }
+    
+    /* Mejora específica para los campos de fecha */
+    input[type="date"].form-control {
+      font-size: 1rem;
+      min-width: 100%;
+      padding: 0.75rem 0.5rem;
+      height: auto;
+      cursor: pointer;
+      color: #495057;
+      font-weight: 500;
+    }
+    
+    /* Ajuste para el contenedor de fechas */
+    .date-field-container {
+      min-width: 100%;
+    }
+    
+    .input-group .form-control:focus {
+      box-shadow: none;
+    }
+    
+    .input-group .input-group-text {
+      color: var(--primary);
+    }
+    
+    .form-label {
+      color: #495057;
+      font-size: 0.85rem;
+      margin-bottom: 0.5rem;
+      font-weight: bold;
+    }
+    
+    /* Botón de búsqueda mejorado */
+    .btn-search {
+      background: linear-gradient(135deg, var(--orange), #ff8533);
+      border: none;
+      border-radius: 50px;
+      padding: 12px 40px;
+      font-weight: bold;
+      color: white;
+      box-shadow: 0 5px 15px rgba(255,102,0,0.3);
+      transition: all 0.3s ease;
+    }
+    
+    .btn-search:hover {
+      background: linear-gradient(135deg, #ff8533, var(--orange));
+      transform: translateY(-2px);
+      box-shadow: 0 8px 20px rgba(255,102,0,0.4);
+    }
+    
+    .results-section { 
+      padding-top: 80px; /* Aumentado para dar espacio al buscador */
+    }
+    
+    .result-card { 
+      background: #fff; 
+      border-radius: 12px; 
+      box-shadow: 0 2px 10px rgba(0,0,0,0.05); 
+      margin-bottom: 1rem; 
+      transition: transform .2s; 
+      overflow: hidden;
+    }
+    
+    .result-card:hover { 
+      transform: translateY(-2px);
+      box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    }
+    
+    .result-body { 
+      padding: 1.25rem; 
+      display: flex; 
+      justify-content: space-between; 
+      align-items: center; 
+    }
+    
+    .result-info { 
+      flex: 1; 
+    }
+    
+    .badge-type { 
+      background: var(--primary); 
+      text-transform: uppercase; 
+      font-size: .75rem; 
+      padding: 0.35em 0.65em;
+    }
+    
+    .item-price { 
+      font-size: 1.25rem; 
+      font-weight: 600;
+      color: var(--orange);
+    }
+    
+    .footer-section { 
+      background: #2c3e50; 
+      color: #fff; 
+      padding: 2rem 0; 
+    }
+    
+    .features-section .fas { 
+      color: var(--primary); 
+    }
+    
+    /* Estilos para las pestañas */
+    .nav-tabs .nav-link {
+      color: #495057;
+      border: none;
+      border-bottom: 2px solid transparent;
+      padding: 0.75rem 1rem;
+      font-weight: 500;
+      transition: all 0.2s ease;
+    }
+    
+    .nav-tabs .nav-link.active {
+      color: var(--primary);
+      background: transparent;
+      border-bottom: 2px solid var(--primary);
+    }
+    
+    .nav-tabs .nav-link:hover:not(.active) {
+      border-color: rgba(0, 102, 204, 0.3);
+    }
+    
+    /* Ajuste responsivo para fechas en móviles */
+    @media (max-width: 768px) {
+      .date-col {
+        width: 50%;
+      }
+      
+      .search-card {
+        padding: 20px;
+      }
+    }
   </style>
 </head>
 <body>
@@ -30,260 +214,213 @@
       <a class="navbar-brand" href="/">
         <i class="fas fa-plane me-1 text-primary"></i> Frategar
       </a>
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse" id="navbarNav">
-        <ul class="navbar-nav me-auto">
-          <li class="nav-item"><a class="nav-link" href="/">Inicio</a></li>
-          <li class="nav-item"><a class="nav-link" href="#"><i class="fas fa-plane"></i> Vuelos</a></li>
-          <li class="nav-item"><a class="nav-link" href="#"><i class="fas fa-bed"></i> Hoteles</a></li>
-          <li class="nav-item"><a class="nav-link" href="#"><i class="fas fa-suitcase"></i> Paquetes</a></li>
-          <li class="nav-item"><a class="nav-link" href="#"><i class="fas fa-car"></i> Autos</a></li>
-        </ul>
-        <ul class="navbar-nav">
-          <li class="nav-item"><a class="nav-link" href="/login"><i class="fas fa-user"></i> Mi cuenta</a></li>
-          <li class="nav-item"><a class="nav-link" href="#"><i class="fas fa-headset"></i> Ayuda</a></li>
-        </ul>
-      </div>
     </div>
   </nav>
 
-  <!-- Hero + Search -->
+  @php
+    $hasFilters = request()->hasAny(['origin','destination','checkin','checkout','guests','price_min','price_max']);
+  @endphp
+
+  <!-- Hero + Filters -->
   <section class="hero">
     <div class="search-card">
-      <ul class="nav nav-tabs mb-3" id="searchModeTab" role="tablist">
-        <li class="nav-item" role="presentation">
-          <button class="nav-link {{ request()->has('q') ? '' : 'active' }}" id="text-tab" data-bs-toggle="tab" data-bs-target="#text" type="button">Texto</button>
-        </li>
-        <li class="nav-item" role="presentation">
-          <button class="nav-link {{ request()->has('q') ? 'active' : '' }}" id="advanced-tab" data-bs-toggle="tab" data-bs-target="#advanced" type="button">Preferencias</button>
-        </li>
-      </ul>
-      <div class="tab-content" id="searchModeTabContent">
-        <div class="tab-pane fade {{ request()->has('q') ? '' : 'show active' }}" id="text" role="tabpanel">
-          <form action="{{ url('/results') }}" method="GET" class="d-flex">
-            <input type="text" name="search" value="{{ request('search') }}" class="form-control me-2" placeholder="Busca destino, hotel, auto o paquete" />
-            <button class="btn btn-primary" type="submit"><i class="fas fa-search me-1"></i> Buscar</button>
-          </form>
+      <h5 class="mb-3 fw-bold"><i class="fas fa-filter me-2 text-primary"></i>Filtros de búsqueda</h5>
+      <form action="{{ route('results.index') }}" method="GET">
+        <div class="row g-3">
+          <!-- Origen -->
+          <div class="col-md-3">
+            <label class="form-label fw-bold mb-2">
+              <i class="fas fa-dot-circle me-2 text-primary"></i>ORIGEN
+            </label>
+            <div class="input-group input-elevated">
+              <span class="input-group-text bg-transparent border-0">
+                <i class="fas fa-plane-departure"></i>
+              </span>
+              <input type="text" name="origin" class="form-control border-0" placeholder="Ciudad de origen" value="{{ request('origin') }}">
+            </div>
+          </div>
+          
+          <!-- Destino -->
+          <div class="col-md-3">
+            <label class="form-label fw-bold mb-2">
+              <i class="fas fa-map-marker-alt me-2 text-primary"></i>DESTINO
+            </label>
+            <div class="input-group input-elevated">
+              <span class="input-group-text bg-transparent border-0">
+                <i class="fas fa-plane-arrival"></i>
+              </span>
+              <input type="text" name="destination" class="form-control border-0" placeholder="Ciudad de destino" value="{{ request('destination') }}">
+            </div>
+          </div>
+          
+          <!-- Fecha Entrada -->
+          <div class="col-md-2 date-col">
+            <label class="form-label fw-bold mb-2">
+              <i class="fas fa-calendar-alt me-2 text-primary"></i>ENTRADA
+            </label>
+            <div class="input-group input-elevated date-field-container">
+              <span class="input-group-text bg-transparent border-0">
+                <i class="fas fa-calendar-check"></i>
+              </span>
+              <input type="date" name="checkin" class="form-control border-0" value="{{ request('checkin') }}">
+            </div>
+          </div>
+          
+          <!-- Fecha Salida -->
+          <div class="col-md-2 date-col">
+            <label class="form-label fw-bold mb-2">
+              <i class="fas fa-calendar-alt me-2 text-primary"></i>SALIDA
+            </label>
+            <div class="input-group input-elevated date-field-container">
+              <span class="input-group-text bg-transparent border-0">
+                <i class="fas fa-calendar-times"></i>
+              </span>
+              <input type="date" name="checkout" class="form-control border-0" value="{{ request('checkout') }}">
+            </div>
+          </div>
+          
+          <!-- Huéspedes -->
+          <div class="col-md-2">
+            <label class="form-label fw-bold mb-2">
+              <i class="fas fa-bed me-2 text-primary"></i>HUÉSPEDES
+            </label>
+            <div class="input-group input-elevated">
+              <span class="input-group-text bg-transparent border-0">
+                <i class="fas fa-users"></i>
+              </span>
+              <input type="number" name="guests" min="1" class="form-control border-0" value="{{ request('guests', 1) }}">
+            </div>
+          </div>
         </div>
-        <div class="tab-pane fade {{ request()->has(['origin','destination','checkin','checkout','guests']) ? 'show active' : '' }}" id="advanced" role="tabpanel">
-  <form action="{{ route('preferencias.buscar') }}" method="GET">
-    <div class="row g-2 align-items-center">
-      <div class="col-md-3">
-        <label class="form-label small">Origen</label>
-        <div class="input-group">
-          <span class="input-group-text"><i class="fas fa-dot-circle"></i></span>
-          <input type="text" name="origin" class="form-control" placeholder="Ciudad de origen" value="{{ request('origin') }}" />
+        
+        <!-- Botón Aplicar Filtros -->
+        <div class="text-center mt-4">
+          <button class="btn btn-search rounded-pill px-5 py-2">
+            <i class="fas fa-filter me-2"></i>Aplicar filtros
+          </button>
         </div>
-      </div>
-      <div class="col-md-3">
-        <label class="form-label small">Destino</label>
-        <div class="input-group">
-          <span class="input-group-text"><i class="fas fa-map-marker-alt"></i></span>
-          <input type="text" name="destination" class="form-control" placeholder="Ciudad de destino" value="{{ request('destination') }}" />
-        </div>
-      </div>
-      <div class="col-md-2">
-        <label class="form-label small">Entrada</label>
-        <input type="date" name="checkin" class="form-control" value="{{ request('checkin') }}" />
-      </div>
-      <div class="col-md-2">
-        <label class="form-label small">Salida</label>
-        <input type="date" name="checkout" class="form-control" value="{{ request('checkout') }}" />
-      </div>
-      <div class="col-md-2">
-        <label class="form-label small">Huéspedes</label>
-        <div class="input-group">
-          <span class="input-group-text"><i class="fas fa-user-friends"></i></span>
-          <input type="number" name="guests" min="1" class="form-control" value="{{ request('guests',1) }}" />
-        </div>
-      </div>
-    </div>
-    <div class="row g-2 align-items-center mt-3">
-      <div class="col-md-3">
-        <label class="form-label small">Precio mínimo</label>
-        <div class="input-group">
-          <span class="input-group-text">$</span>
-          <input type="number" name="price_min" class="form-control" placeholder="0" value="{{ request('price_min') }}" />
-        </div>
-      </div>
-      <div class="col-md-3">
-        <label class="form-label small">Precio máximo</label>
-        <div class="input-group">
-          <span class="input-group-text">$</span>
-          <input type="number" name="price_max" class="form-control" placeholder="0" value="{{ request('price_max') }}" />
-        </div>
-      </div>
-      <div class="col-md-6 text-end">
-        <button class="btn btn-primary mt-4"><i class="fas fa-filter me-1"></i> Aplicar filtros</button>
-      </div>
-    </div>
-  </form>
-</div>
-      </div>
+      </form>
     </div>
   </section>
 
   <!-- Results -->
   <section class="results-section container">
-    @if(request()->has('q'))
-      <h2 class="mb-4">Resultados para: <strong>{{ request('q') }}</strong></h2>
-      @if($results->isEmpty())
-        <p class="text-muted">No se encontraron preferencias.</p>
-      @else
-        <div class="list-group">
-          @foreach($results as $pref)
-            <a href="#" class="list-group-item list-group-item-action">
-              <div class="d-flex w-100 justify-content-between">
-                <h5 class="mb-1">{{ $pref->nombre }}</h5>
+    @php
+      $tabs = ['viajes'=>'Viajes','hospedajes'=>'Hospedajes','vehiculos'=>'Vehículos','paquetes'=>'Paquetes'];
+      $totalAll = collect($results)->flatten(1)->count();
+    @endphp
+
+    <ul class="nav nav-tabs mb-4">
+      <li class="nav-item"><button class="nav-link active" data-bs-toggle="tab" data-bs-target="#tab-all">Todos ({{ $totalAll }})</button></li>
+      @foreach($tabs as $key=>$label)
+        <li class="nav-item"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#tab-{{ $key }}">{{ $label }} ({{ $results[$key]->count() }})</button></li>
+      @endforeach
+    </ul>
+
+    <div class="tab-content">
+      <div class="tab-pane fade show active" id="tab-all">
+        @forelse(collect($results)->flatten(1) as $item)
+          @php
+            $type = $item instanceof \App\Models\Viaje ? 'viajes'
+                  : ($item instanceof \App\Models\Hospedaje ? 'hospedajes'
+                  : ($item instanceof \App\Models\Vehiculo ? 'vehiculos' : 'paquetes'));
+          @endphp
+          <div class="result-card">
+            <a href="{{ url('/details', ['type'=>$type,'id'=>$item->id]) }}" class="text-decoration-none text-dark">
+              <div class="result-body">
+                <div class="result-info">
+                  <span class="badge bg-primary badge-type">{{ strtoupper($type) }}</span>
+                  <div class="fw-semibold mt-1">
+                    @if($type=='viajes')
+                      {{ $item->nombre }} ({{ $item->origen }} → {{ $item->destino }})
+                    @elseif($type=='vehiculos')
+                      {{ $item->marca }} {{ $item->modelo }}
+                    @else
+                      {{ $item->nombre }}
+                    @endif
+                  </div>
+                </div>
+                <div class="text-end">
+                  <div class="item-price">
+                    @if($type=='viajes')
+                      ${{ number_format($item->precio_base ?? $item->precio,2) }}
+                    @elseif($type=='hospedajes')
+                      ${{ number_format($item->precio_noche,2) }}<small>/noche</small>
+                    @elseif($type=='vehiculos')
+                      ${{ number_format($item->precio_por_dia,2) }}<small>/día</small>
+                    @else
+                      ${{ number_format($item->precio_total ?? $item->precio,2) }}
+                    @endif
+                  </div>
+                </div>
               </div>
-              <p class="mb-1 text-muted">{{ $pref->descripcion ?? 'Sin descripción' }}</p>
             </a>
-          @endforeach
-        </div>
-      @endif
-      <div class="text-center mt-4">
-        <a href="/" class="btn btn-outline-primary">← Volver al inicio</a>
+          </div>
+        @empty
+          <p class="text-center text-muted">No hay resultados.</p>
+        @endforelse
       </div>
-    @else
-      <ul class="nav nav-tabs mb-4" id="tabs">
-        @php $total = collect($results)->map->count()->sum(); @endphp
-        <li class="nav-item"><button class="nav-link active" data-bs-target="#tab-all" data-bs-toggle="tab">Todos ({{ $total }})</button></li>
-        @foreach(['vehiculos' => 'Vehículos', 'viajes' => 'Viajes', 'hospedajes' => 'Hospedajes', 'paquetes' => 'Paquetes'] as $key => $label)
-          <li class="nav-item"><button class="nav-link" data-bs-target="#tab-{{ $key }}" data-bs-toggle="tab">{{ $label }} ({{ $results[$key]->count() ?? 0 }})</button></li>
-        @endforeach
-      </ul>
-      <div class="tab-content">
-        @foreach(array_merge(['all' => 'Todos'], ['vehiculos' => 'Vehículos', 'viajes' => 'Viajes', 'hospedajes' => 'Hospedajes', 'paquetes' => 'Paquetes']) as $key => $label)
-          <div class="tab-pane fade {{ $loop->first ? 'show active' : '' }}" id="tab-{{ $key }}">
-            @php $items = $key === 'all' ? collect($results)->flatten(1) : ($results[$key] ?? collect()); @endphp
-            @forelse($items as $item)
-              @php
-                if($item instanceof \App\Models\Viaje) { $type='viajes'; }
-                elseif($item instanceof \App\Models\Hospedaje) { $type='hospedajes'; }
-                elseif($item instanceof \App\Models\Vehiculo) { $type='vehiculos'; }
-                else { $type='paquetes'; }
-              @endphp
-              <div class="result-card">
-                <a href="{{ url('/details', ['type'=>$type,'id'=>$item->id]) }}" class="text-decoration-none text-dark">
-                  <div class="result-body">
-                    <div class="result-info">
-                      <span class="badge badge-pill bg-primary badge-type text-uppercase">{{ $type }}</span>
-                      <div class="fw-semibold mt-1">
-                        @if($type=='viajes')
-                          {{ $item->nombre }} ({{ $item->origen }} → {{ $item->destino }})
-                        @elseif($type=='vehiculos')
-                          {{ $item->marca }} {{ $item->modelo }}
-                        @else
-                          {{ $item->nombre }}
-                        @endif
-                      </div>
-                      @if($type=='viajes')<small class="text-muted">Ida y vuelta • {{ $item->duracion ?? '?' }}</small>@endif
-                    </div>
-                    <div class="text-end">
-                      <div class="item-price">
-                        @if($type=='viajes')
-                          ${{ number_format($item->precio,2) }}
-                        @elseif($type=='hospedajes')
-                          ${{ number_format($item->precio_noche,2) }}<span class="small">/noche</span>
-                        @elseif($type=='vehiculos')
-                          ${{ number_format($item->precio_por_dia,2) }}<span class="small">/día</span>
-                        @else
-                          ${{ number_format($item->precio ?? 0,2) }}
-                        @endif
-                      </div>
+      @foreach($tabs as $key=>$label)
+        <div class="tab-pane fade" id="tab-{{ $key }}">
+          @forelse($results[$key] as $item)
+            @php $type = $key; @endphp
+            <div class="result-card">
+              <a href="{{ url('/details', ['type'=>$type,'id'=>$item->id]) }}" class="text-decoration-none text-dark">
+                <div class="result-body">
+                  <div class="result-info">
+                    <span class="badge bg-primary badge-type">{{ strtoupper($type) }}</span>
+                    <div class="fw-semibold mt-1">
+                      @if($type=='viajes')
+                        {{ $item->nombre }} ({{ $item->origen }} → {{ $item->destino }})
+                      @elseif($type=='vehiculos')
+                        {{ $item->marca }} {{ $item->modelo }}
+                      @else
+                        {{ $item->nombre }}
+                      @endif
                     </div>
                   </div>
-                </a>
-              </div>
-            @empty
-              <p class="text-center text-muted">No hay resultados en {{ $label }}.</p>
-            @endforelse
-          </div>
-        @endforeach
-      </div>
-      <div class="text-center mt-4">
-        <a href="/" class="btn btn-outline-primary">← Volver al inicio</a>
-      </div>
-    @endif
-  </section>
-
-  <!-- Features -->
-  <section class="features-section py-5 bg-white">
-    <div class="container">
-      <div class="row text-center">
-        <div class="col-md-3 mb-4">
-          <i class="fas fa-shield-alt fa-2x mb-3"></i>
-          <h6>Compra protegida</h6>
-          <p class="small text-muted">Tu dinero está protegido con nosotros</p>
+                  <div class="text-end">
+                    <div class="item-price">
+                      @if($type=='viajes')
+                        ${{ number_format($item->precio_base ?? $item->precio,2) }}
+                      @elseif($type=='hospedajes')
+                        ${{ number_format($item->precio_noche,2) }}<small>/noche</small>
+                      @elseif($type=='vehiculos')
+                        ${{ number_format($item->precio_por_dia,2) }}<small>/día</small>
+                      @else
+                        ${{ number_format($item->precio_total ?? $item->precio,2) }}
+                      @endif
+                    </div>
+                  </div>
+                </div>
+              </a>
+            </div>
+          @empty
+            <p class="text-center text-muted">No hay resultados en {{ $label }}.</p>
+          @endforelse
         </div>
-        <div class="col-md-3 mb-4">
-          <i class="fas fa-headset fa-2x mb-3"></i>
-          <h6>Atención 24/7</h6>
-          <p class="small text-muted">Te ayudamos cuando lo necesites</p>
-        </div>
-        <div class="col-md-3 mb-4">
-          <i class="fas fa-percent fa-2x mb-3"></i>
-          <h6>Mejores precios</h6>
-          <p class="small text-muted">Garantizamos el mejor precio</p>
-        </div>
-        <div class="col-md-3 mb-4">
-          <i class="fas fa-car fa-2x mb-3"></i>
-          <h٦>Autos y más</h٦>
-          <p class="small text-muted">Alquiler de autos y otros servicios</p>
-        </div>
-      </div>
+      @endforeach
+    </div>
+    <div class="text-center mt-4">
+      <a href="/" class="btn btn-outline-primary rounded-pill px-4 py-2">
+        <i class="fas fa-home me-2"></i>Volver al inicio
+      </a>
     </div>
   </section>
-  <!-- Footer -->
-  <footer class="footer-section bg-dark text-white py-5">
-    <div class="container">
-      <div class="row">
-        <div class="col-md-3">
-          <h5>Frategar</h5>
-          <ul class="list-unstyled small">
-            <li>Quiénes somos</li>
-            <li>Trabaja con nosotros</li>
-            <li>Prensa</li>
-            <li>Inversores</li>
-          </ul>
-        </div>
-        <div class="col-md-3">
-          <h5>Productos</h5>
-          <ul class="list-unstyled small">
-            <li>Vuelos</li>
-            <li>Hoteles</li>
-            <li>Paquetes</li>
-            <li>Autos</li>
-          </ul>
-        </div>
-        <div class="col-md-3">
-          <h5>Ayuda</h5>
-          <ul class="list-unstyled small">
-            <li>Centro de ayuda</li>
-            <li>Contacto</li>
-            <li>>Términos y condiciones</li>
-            <li>Privacidad</li>
-          </ul>
-        </div>
-        <div class="col-md-3">
-          <h5>Síguenos</h5>
-          <a href="#" class="text-white me-3"><i class="fab fa-facebook-f"></i></a>
-          <a href="#" class="text-white me-3"><i class="fab fa-twitter"></i></a>
-          <a href="#" class="text-white me-3"><i class="fab fa-instagram"></i></a>
-          <a href="#" class="text-white"><i class="fab fa-youtube"></i></a>
-        </div>
-      </div>
-      <hr class="bg-secondary mt-4">
-      <div class="row">
-        <div class="col text-center">
-          <small>&copy; 2025 Frategar. Todos los derechos reservados.</small>
-        </div>
-      </div>
-    </div>
-  </footer>
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  
+  <!-- Script para mejorar la visualización de fechas en móviles -->
+  <script>
+  document.addEventListener('DOMContentLoaded', function() {
+    // Asegurarse de que los campos de fecha tengan suficiente espacio
+    const dateInputs = document.querySelectorAll('input[type="date"]');
+    dateInputs.forEach(input => {
+      input.addEventListener('focus', function() {
+        this.style.width = '100%';
+      });
+    });
+  });
+  </script>
 </body>
 </html>
