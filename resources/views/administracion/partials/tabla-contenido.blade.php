@@ -54,6 +54,9 @@
         color: #6c757d;
     }
 </style>
+@php
+    
+@endphp
 @if ($users->isEmpty())
     <tr>
         <td colspan="4" class="text-center">No se encontraron usuarios</td>

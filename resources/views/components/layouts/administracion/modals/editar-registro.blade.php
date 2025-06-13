@@ -7,7 +7,7 @@
             </div>
             <div class="modal-body">
                 <form id="editarRegistroForm">
-                    <input type="hidden" id="editRegistroId" name="registro_id">
+                    <input type="hidden" id="editId" name="registro_id">
 
                     @foreach ( $inputs as $input)
                         <div class="mb-3">
