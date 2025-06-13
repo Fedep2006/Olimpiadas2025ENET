@@ -30,69 +30,36 @@
       <a class="navbar-brand" href="/">
         <i class="fas fa-plane me-1 text-primary"></i> Frategar
       </a>
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse" id="navbarNav">
-        <ul class="navbar-nav me-auto">
-          <li class="nav-item"><a class="nav-link" href="/">Inicio</a></li>
-        </ul>
-        <ul class="navbar-nav">
-          <li class="nav-item"><a class="nav-link" href="/login"><i class="fas fa-user"></i> Mi cuenta</a></li>
-        </ul>
-      </div>
     </div>
   </nav>
 
   @php
     $hasFilters = request()->hasAny(['origin','destination','checkin','checkout','guests','price_min','price_max']);
-    $hasSearch  = request()->filled('search');
   @endphp
 
-  <!-- Hero + Search -->
+  <!-- Hero + Filters -->
   <section class="hero">
     <div class="search-card">
-      <ul class="nav nav-tabs mb-3">
-        <li class="nav-item">
-          <button class="nav-link {{ $hasSearch || !$hasFilters?'active':'' }}" data-bs-toggle="tab" data-bs-target="#text">Texto</button>
-        </li>
-        <li class="nav-item">
-          <button class="nav-link {{ $hasFilters?'active':'' }}" data-bs-toggle="tab" data-bs-target="#filters">Filtros</button>
-        </li>
-      </ul>
-      <div class="tab-content">
-        <div class="tab-pane fade {{ $hasSearch||!$hasFilters?'show active':'' }}" id="text">
-          <form action="{{ route('results.index') }}" method="GET" class="d-flex">
-            <input type="text" name="search" value="{{ request('search') }}" class="form-control me-2" placeholder="Busca destino, hotel, auto o paquete">
-            <button class="btn btn-primary"><i class="fas fa-search me-1"></i> Buscar</button>
-          </form>
+      <h5 class="mb-3">Filtros de búsqueda</h5>
+      <form action="{{ route('results.index') }}" method="GET">
+        <div class="row g-2">
+          <div class="col-md-3"><input type="text" name="origin" class="form-control" placeholder="Origen" value="{{ request('origin') }}"></div>
+          <div class="col-md-3"><input type="text" name="destination" class="form-control" placeholder="Destino" value="{{ request('destination') }}"></div>
+          <div class="col-md-2"><input type="date" name="checkin" class="form-control" value="{{ request('checkin') }}"></div>
+          <div class="col-md-2"><input type="date" name="checkout" class="form-control" value="{{ request('checkout') }}"></div>
+          <div class="col-md-2"><input type="number" name="guests" min="1" class="form-control" value="{{ request('guests',1) }}" placeholder="Huéspedes"></div>
         </div>
-        <div class="tab-pane fade {{ $hasFilters?'show active':'' }}" id="filters">
-          <form action="{{ route('results.index') }}" method="GET">
-            <div class="row g-2">
-              <div class="col-md-3"><input type="text" name="origin" class="form-control" placeholder="Origen" value="{{ request('origin') }}"></div>
-              <div class="col-md-3"><input type="text" name="destination" class="form-control" placeholder="Destino" value="{{ request('destination') }}"></div>
-              <div class="col-md-2"><input type="date" name="checkin" class="form-control" value="{{ request('checkin') }}"></div>
-              <div class="col-md-2"><input type="date" name="checkout" class="form-control" value="{{ request('checkout') }}"></div>
-              <div class="col-md-2"><input type="number" name="guests" min="1" class="form-control" value="{{ request('guests',1) }}" placeholder="Huéspedes"></div>
-            </div>
-            <div class="row g-2 mt-3">
-              <div class="col-md-3"><input type="number" name="price_min" class="form-control" placeholder="Precio mín." value="{{ request('price_min') }}"></div>
-              <div class="col-md-3"><input type="number" name="price_max" class="form-control" placeholder="Precio máx." value="{{ request('price_max') }}"></div>
-              <div class="col-md-6 text-end"><button class="btn btn-primary"><i class="fas fa-filter me-1"></i> Aplicar filtros</button></div>
-            </div>
-          </form>
+        <div class="row g-2 mt-3">
+          <div class="col-md-3"><input type="number" name="price_min" class="form-control" placeholder="Precio mín." value="{{ request('price_min') }}"></div>
+          <div class="col-md-3"><input type="number" name="price_max" class="form-control" placeholder="Precio máx." value="{{ request('price_max') }}"></div>
+          <div class="col-md-6 text-end"><button class="btn btn-primary"><i class="fas fa-filter me-1"></i> Aplicar filtros</button></div>
         </div>
-      </div>
+      </form>
     </div>
   </section>
 
   <!-- Results -->
   <section class="results-section container">
-    @if($hasSearch)
-      <h2>Resultados para: <strong>{{ request('search') }}</strong></h2>
-    @endif
-
     @php
       $tabs = ['viajes'=>'Viajes','hospedajes'=>'Hospedajes','vehiculos'=>'Vehículos','paquetes'=>'Paquetes'];
       $totalAll = collect($results)->flatten(1)->count();
@@ -117,7 +84,7 @@
             <a href="{{ url('/details', ['type'=>$type,'id'=>$item->id]) }}" class="text-decoration-none text-dark">
               <div class="result-body">
                 <div class="result-info">
-                  <span class="badge badge-pill bg-primary badge-type">{{ strtoupper($type) }}</span>
+                  <span class="badge bg-primary badge-type">{{ strtoupper($type) }}</span>
                   <div class="fw-semibold mt-1">
                     @if($type=='viajes')
                       {{ $item->nombre }} ({{ $item->origen }} → {{ $item->destino }})
@@ -151,14 +118,12 @@
       @foreach($tabs as $key=>$label)
         <div class="tab-pane fade" id="tab-{{ $key }}">
           @forelse($results[$key] as $item)
-            @php
-              $type = $key;
-            @endphp
+            @php $type = $key; @endphp
             <div class="result-card">
               <a href="{{ url('/details', ['type'=>$type,'id'=>$item->id]) }}" class="text-decoration-none text-dark">
                 <div class="result-body">
                   <div class="result-info">
-                    <span class="badge badge-pill bg-primary badge-type">{{ strtoupper($type) }}</span>
+                    <span class="badge bg-primary badge-type">{{ strtoupper($type) }}</span>
                     <div class="fw-semibold mt-1">
                       @if($type=='viajes')
                         {{ $item->nombre }} ({{ $item->origen }} → {{ $item->destino }})
@@ -195,54 +160,6 @@
       <a href="/" class="btn btn-outline-primary">← Volver al inicio</a>
     </div>
   </section>
-
-  <!-- Footer -->
-  <footer class="footer-section bg-dark text-white py-5">
-    <div class="container">
-      <div class="row">
-        <div class="col-md-3">
-          <h5>Frategar</h5>
-          <ul class="list-unstyled small">
-            <li>Quiénes somos</li>
-            <li>Trabaja con nosotros</li>
-            <li>Prensa</li>
-            <li>Inversores</li>
-          </ul>
-        </div>
-        <div class="col-md-3">
-          <h5>Productos</h5>
-          <ul class="list-unstyled small">
-            <li>Vuelos</li>
-            <li>Hoteles</li>
-            <li>Paquetes</li>
-            <li>Autos</li>
-          </ul>
-        </div>
-        <div class="col-md-3">
-          <h5>Ayuda</h5>
-          <ul class="list-unstyled small">
-            <li>Centro de ayuda</li>
-            <li>Contacto</li>
-            <li>Términos y condiciones</li>
-            <li>Privacidad</li>
-          </ul>
-        </div>
-        <div class="col-md-3">
-          <h5>Síguenos</h5>
-          <a href="#" class="text-white me-3"><i class="fab fa-facebook-f"></i></a>
-          <a href="#" class="text-white me-3"><i class="fab fa-twitter"></i></a>
-          <a href="#" class="text-white me-3"><i class="fab fa-instagram"></i></a>
-          <a href="#" class="text-white"><i class="fab fa-youtube"></i></a>
-        </div>
-      </div>
-      <hr class="bg-secondary mt-4">
-      <div class="row">
-        <div class="col text-center">
-          <small>&copy; 2025 Frategar. Todos los derechos reservados.</small>
-        </div>
-      </div>
-    </div>
-  </footer>
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
