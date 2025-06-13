@@ -7,20 +7,204 @@
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
   <style>
-    :root { --primary:#0066cc; --light:#f8f9fa; }
-    body { background:var(--light); }
-    .navbar-brand { font-weight:700; font-size:1.75rem; color:var(--primary)!important; }
-    .hero { position:relative; background:url('/images/hero-bg.jpg') center/cover no-repeat; height:300px; }
-    .search-card { position:absolute; left:50%; bottom:-30px; transform:translateX(-50%); width:90%; max-width:800px; background:#fff; border-radius:12px; box-shadow:0 4px 20px rgba(0,0,0,0.1); padding:1rem; }
-    .results-section { padding-top:60px; }
-    .result-card { background:#fff; border-radius:8px; box-shadow:0 2px 10px rgba(0,0,0,0.05); margin-bottom:1rem; transition:transform .2s; }
-    .result-card:hover { transform:translateY(-2px); }
-    .result-body { padding:1rem; display:flex; justify-content:space-between; align-items:center; }
-    .result-info { flex:1; }
-    .badge-type { background:var(--primary); text-transform:uppercase; font-size:.75rem; }
-    .item-price { font-size:1.1rem; font-weight:600; }
-    .footer-section { background:#2c3e50; color:#fff; padding:2rem 0; }
-    .features-section .fas { color: var(--primary); }
+    :root { 
+      --primary: #0066cc; 
+      --light: #f8f9fa; 
+      --orange: #ff6600;
+    }
+    
+    body { 
+      background: var(--light); 
+    }
+    
+    .navbar-brand { 
+      font-weight: 700; 
+      font-size: 1.75rem; 
+      color: var(--primary)!important; 
+    }
+    
+    .hero { 
+      position: relative; 
+      background: url('/images/hero-bg.jpg') center/cover no-repeat; 
+      height: 350px; /* Aumentado para dar más espacio al buscador */
+    }
+    
+    /* Estilo mejorado para el buscador */
+    .search-card { 
+      position: absolute; 
+      left: 50%; 
+      bottom: -30px; 
+      transform: translateX(-50%); 
+      width: 90%; 
+      max-width: 900px; 
+      background: rgba(255, 255, 255, 0.95);
+      border-radius: 20px; 
+      box-shadow: 0 15px 50px rgba(0,0,0,0.2); 
+      padding: 30px;
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      transition: all 0.3s ease;
+    }
+    
+    .search-card:hover {
+      transform: translateX(-50%) translateY(-5px);
+      box-shadow: 0 20px 60px rgba(0,0,0,0.25);
+    }
+    
+    /* Estilos para los campos de entrada */
+    .input-group.input-elevated {
+      border: none;
+      border-radius: 15px;
+      padding: 0.5rem;
+      min-height: 60px;
+      background-color: #f8f9fa;
+      box-shadow: 0 3px 15px rgba(0,0,0,0.05);
+      transition: all 0.3s ease;
+    }
+    
+    .input-group.input-elevated:focus-within {
+      box-shadow: 0 5px 20px rgba(0,102,204,0.15);
+      background-color: white;
+    }
+    
+    .input-group .form-control {
+      font-size: 1.1rem;
+      padding: 0.75rem 1rem;
+      border: none;
+      background: transparent;
+    }
+    
+    /* Mejora específica para los campos de fecha */
+    input[type="date"].form-control {
+      font-size: 1rem;
+      min-width: 100%;
+      padding: 0.75rem 0.5rem;
+      height: auto;
+      cursor: pointer;
+      color: #495057;
+      font-weight: 500;
+    }
+    
+    /* Ajuste para el contenedor de fechas */
+    .date-field-container {
+      min-width: 100%;
+    }
+    
+    .input-group .form-control:focus {
+      box-shadow: none;
+    }
+    
+    .input-group .input-group-text {
+      color: var(--primary);
+    }
+    
+    .form-label {
+      color: #495057;
+      font-size: 0.85rem;
+      margin-bottom: 0.5rem;
+      font-weight: bold;
+    }
+    
+    /* Botón de búsqueda mejorado */
+    .btn-search {
+      background: linear-gradient(135deg, var(--orange), #ff8533);
+      border: none;
+      border-radius: 50px;
+      padding: 12px 40px;
+      font-weight: bold;
+      color: white;
+      box-shadow: 0 5px 15px rgba(255,102,0,0.3);
+      transition: all 0.3s ease;
+    }
+    
+    .btn-search:hover {
+      background: linear-gradient(135deg, #ff8533, var(--orange));
+      transform: translateY(-2px);
+      box-shadow: 0 8px 20px rgba(255,102,0,0.4);
+    }
+    
+    .results-section { 
+      padding-top: 80px; /* Aumentado para dar espacio al buscador */
+    }
+    
+    .result-card { 
+      background: #fff; 
+      border-radius: 12px; 
+      box-shadow: 0 2px 10px rgba(0,0,0,0.05); 
+      margin-bottom: 1rem; 
+      transition: transform .2s; 
+      overflow: hidden;
+    }
+    
+    .result-card:hover { 
+      transform: translateY(-2px);
+      box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    }
+    
+    .result-body { 
+      padding: 1.25rem; 
+      display: flex; 
+      justify-content: space-between; 
+      align-items: center; 
+    }
+    
+    .result-info { 
+      flex: 1; 
+    }
+    
+    .badge-type { 
+      background: var(--primary); 
+      text-transform: uppercase; 
+      font-size: .75rem; 
+      padding: 0.35em 0.65em;
+    }
+    
+    .item-price { 
+      font-size: 1.25rem; 
+      font-weight: 600;
+      color: var(--orange);
+    }
+    
+    .footer-section { 
+      background: #2c3e50; 
+      color: #fff; 
+      padding: 2rem 0; 
+    }
+    
+    .features-section .fas { 
+      color: var(--primary); 
+    }
+    
+    /* Estilos para las pestañas */
+    .nav-tabs .nav-link {
+      color: #495057;
+      border: none;
+      border-bottom: 2px solid transparent;
+      padding: 0.75rem 1rem;
+      font-weight: 500;
+      transition: all 0.2s ease;
+    }
+    
+    .nav-tabs .nav-link.active {
+      color: var(--primary);
+      background: transparent;
+      border-bottom: 2px solid var(--primary);
+    }
+    
+    .nav-tabs .nav-link:hover:not(.active) {
+      border-color: rgba(0, 102, 204, 0.3);
+    }
+    
+    /* Ajuste responsivo para fechas en móviles */
+    @media (max-width: 768px) {
+      .date-col {
+        width: 50%;
+      }
+      
+      .search-card {
+        padding: 20px;
+      }
+    }
   </style>
 </head>
 <body>
@@ -40,17 +224,80 @@
   <!-- Hero + Filters -->
   <section class="hero">
     <div class="search-card">
-      <h5 class="mb-3">Filtros de búsqueda</h5>
+      <h5 class="mb-3 fw-bold"><i class="fas fa-filter me-2 text-primary"></i>Filtros de búsqueda</h5>
       <form action="{{ route('results.index') }}" method="GET">
-        <div class="row g-2">
-          <div class="col-md-3"><input type="text" name="origin" class="form-control" placeholder="Origen" value="{{ request('origin') }}"></div>
-          <div class="col-md-3"><input type="text" name="destination" class="form-control" placeholder="Destino" value="{{ request('destination') }}"></div>
-          <div class="col-md-2"><input type="date" name="checkin" class="form-control" value="{{ request('checkin') }}"></div>
-          <div class="col-md-2"><input type="date" name="checkout" class="form-control" value="{{ request('checkout') }}"></div>
-          <div class="col-md-2"><input type="number" name="guests" min="1" class="form-control" value="{{ request('guests',1) }}" placeholder="Huéspedes"></div>
+        <div class="row g-3">
+          <!-- Origen -->
+          <div class="col-md-3">
+            <label class="form-label fw-bold mb-2">
+              <i class="fas fa-dot-circle me-2 text-primary"></i>ORIGEN
+            </label>
+            <div class="input-group input-elevated">
+              <span class="input-group-text bg-transparent border-0">
+                <i class="fas fa-plane-departure"></i>
+              </span>
+              <input type="text" name="origin" class="form-control border-0" placeholder="Ciudad de origen" value="{{ request('origin') }}">
+            </div>
+          </div>
+          
+          <!-- Destino -->
+          <div class="col-md-3">
+            <label class="form-label fw-bold mb-2">
+              <i class="fas fa-map-marker-alt me-2 text-primary"></i>DESTINO
+            </label>
+            <div class="input-group input-elevated">
+              <span class="input-group-text bg-transparent border-0">
+                <i class="fas fa-plane-arrival"></i>
+              </span>
+              <input type="text" name="destination" class="form-control border-0" placeholder="Ciudad de destino" value="{{ request('destination') }}">
+            </div>
+          </div>
+          
+          <!-- Fecha Entrada -->
+          <div class="col-md-2 date-col">
+            <label class="form-label fw-bold mb-2">
+              <i class="fas fa-calendar-alt me-2 text-primary"></i>ENTRADA
+            </label>
+            <div class="input-group input-elevated date-field-container">
+              <span class="input-group-text bg-transparent border-0">
+                <i class="fas fa-calendar-check"></i>
+              </span>
+              <input type="date" name="checkin" class="form-control border-0" value="{{ request('checkin') }}">
+            </div>
+          </div>
+          
+          <!-- Fecha Salida -->
+          <div class="col-md-2 date-col">
+            <label class="form-label fw-bold mb-2">
+              <i class="fas fa-calendar-alt me-2 text-primary"></i>SALIDA
+            </label>
+            <div class="input-group input-elevated date-field-container">
+              <span class="input-group-text bg-transparent border-0">
+                <i class="fas fa-calendar-times"></i>
+              </span>
+              <input type="date" name="checkout" class="form-control border-0" value="{{ request('checkout') }}">
+            </div>
+          </div>
+          
+          <!-- Huéspedes -->
+          <div class="col-md-2">
+            <label class="form-label fw-bold mb-2">
+              <i class="fas fa-bed me-2 text-primary"></i>HUÉSPEDES
+            </label>
+            <div class="input-group input-elevated">
+              <span class="input-group-text bg-transparent border-0">
+                <i class="fas fa-users"></i>
+              </span>
+              <input type="number" name="guests" min="1" class="form-control border-0" value="{{ request('guests', 1) }}">
+            </div>
+          </div>
         </div>
-        <div class="row g-2 mt-3">
-          <div class="col-md-6 text-end"><button class="btn btn-primary"><i class="fas fa-filter me-1"></i> Aplicar filtros</button></div>
+        
+        <!-- Botón Aplicar Filtros -->
+        <div class="text-center mt-4">
+          <button class="btn btn-search rounded-pill px-5 py-2">
+            <i class="fas fa-filter me-2"></i>Aplicar filtros
+          </button>
         </div>
       </form>
     </div>
@@ -155,10 +402,25 @@
       @endforeach
     </div>
     <div class="text-center mt-4">
-      <a href="/" class="btn btn-outline-primary">← Volver al inicio</a>
+      <a href="/" class="btn btn-outline-primary rounded-pill px-4 py-2">
+        <i class="fas fa-home me-2"></i>Volver al inicio
+      </a>
     </div>
   </section>
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  
+  <!-- Script para mejorar la visualización de fechas en móviles -->
+  <script>
+  document.addEventListener('DOMContentLoaded', function() {
+    // Asegurarse de que los campos de fecha tengan suficiente espacio
+    const dateInputs = document.querySelectorAll('input[type="date"]');
+    dateInputs.forEach(input => {
+      input.addEventListener('focus', function() {
+        this.style.width = '100%';
+      });
+    });
+  });
+  </script>
 </body>
 </html>

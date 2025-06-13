@@ -6,7 +6,6 @@
     <title>Frategar - Viajes, Vuelos, Hoteles y Paquetes</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
     <style>
@@ -22,38 +21,126 @@
             color: var(--despegar-blue) !important;
         }
 
-        /* Hero con imagen de fondo */
+        /* Hero con video de fondo mejorado */
         .hero-section {
             position: relative;
             color: white;
-            padding: 60px 0;
-            background: none; /* Quitar imagen de fondo */
+            padding: 100px 0;
+            background: none;
             overflow: hidden;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
         }
+        
         .hero-video-bg {
             position: absolute;
-            top: 0; left: 0; width: 100%; height: 150%;
+            top: 0; 
+            left: 0; 
+            width: 100%; 
+            height: 100%;
             object-fit: cover;
             z-index: 0;
         }
+        
         .hero-section::before {
             content: "";
             position: absolute;
             inset: 0;
-            background: rgba(0, 0, 0, 0.4);
+            background: rgba(0, 0, 0, 0.5);
             z-index: 1;
         }
+        
         .hero-section .container {
             position: relative;
             z-index: 2;
+            width: 100%;
         }
 
+        /* Buscador mejorado */
         .search-card {
-            background: white;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            box-shadow: 0 15px 50px rgba(0,0,0,0.2);
+            padding: 40px;
+            margin-top: 0;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            transition: all 0.3s ease;
+        }
+        
+        .search-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 60px rgba(0,0,0,0.25);
+        }
+
+        .input-group.input-elevated {
+            border: none;
             border-radius: 15px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-            padding: 30px;
-            margin-top: 30px;
+            padding: 0.5rem;
+            min-height: 70px;
+            background-color: #f8f9fa;
+            box-shadow: 0 3px 15px rgba(0,0,0,0.05);
+            transition: all 0.3s ease;
+        }
+        
+        .input-group.input-elevated:focus-within {
+            box-shadow: 0 5px 20px rgba(0,102,204,0.15);
+            background-color: white;
+        }
+
+        .input-group .form-control {
+            font-size: 1.1rem;
+            padding: 0.75rem 1rem;
+            border: none;
+            background: transparent;
+        }
+        
+        /* Mejora específica para los campos de fecha */
+        input[type="date"].form-control {
+            font-size: 1rem;
+            min-width: 100%;
+            padding: 0.75rem 0.5rem;
+            height: auto;
+            cursor: pointer;
+            color: #495057;
+            font-weight: 500;
+        }
+        
+        /* Ajuste para el contenedor de fechas */
+        .date-field-container {
+            min-width: 100%;
+        }
+        
+        .input-group .form-control:focus {
+            box-shadow: none;
+        }
+        
+        .input-group .input-group-text {
+            color: var(--despegar-blue);
+        }
+        
+        .form-label {
+            color: #495057;
+            font-size: 0.85rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .btn-search {
+            background: linear-gradient(135deg, var(--despegar-orange), #ff8533);
+            border: none;
+            border-radius: 50px;
+            padding: 15px 50px;
+            font-weight: bold;
+            color: white;
+            box-shadow: 0 5px 15px rgba(255,102,0,0.3);
+            transition: all 0.3s ease;
+        }
+
+        .btn-search:hover {
+            background: linear-gradient(135deg, #ff8533, var(--despegar-orange));
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(255,102,0,0.4);
         }
 
         .tab-pills .nav-link {
@@ -66,20 +153,6 @@
 
         .tab-pills .nav-link.active {
             background-color: var(--despegar-blue);
-            color: white;
-        }
-
-        .btn-search {
-            background-color: var(--despegar-orange);
-            border: none;
-            border-radius: 25px;
-            padding: 12px 40px;
-            font-weight: bold;
-            color: white;
-        }
-
-        .btn-search:hover {
-            background-color: #e55a00;
             color: white;
         }
 
@@ -124,6 +197,13 @@
             color: white;
             padding: 40px 0;
         }
+        
+        /* Ajuste responsivo para fechas en móviles */
+        @media (max-width: 768px) {
+            .date-col {
+                width: 50%;
+            }
+        }
     </style>
 </head>
 <body>
@@ -153,103 +233,154 @@
     </nav>
 
     <!-- Hero Section -->
-<section class="hero-section">
-    <video class="hero-video-bg" src="{{ asset('img/fondo.mp4') }}" autoplay loop muted playsinline></video>
-    <div class="container">
-        <div class="row">
-            <div class="col-lg-8 mx-auto text-center">
-                <h1 class="display-4 fw-bold mb-3">¡Viajá como querés!</h1>
-                <p class="lead mb-4">Encontrá vuelos, hoteles y paquetes al mejor precio</p>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-lg-10 mx-auto">
-                <div class="search-card">
-                    <form action="{{ url('/results') }}" method="GET">
-                        <div class="row g-2 align-items-end">
-                            <div class="col-md-3">
-                                <label class="form-label small">Origen</label>
-                                <div class="input-group">
-                                    <span class="input-group-text"><i class="fas fa-dot-circle"></i></span>
-                                    <input type="text" name="origin" class="form-control" placeholder="Ciudad de origen" value="{{ request('origin') }}" />
+    <section class="hero-section">
+        <video class="hero-video-bg" src="{{ asset('img/fondo.mp4') }}" autoplay loop muted playsinline></video>
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-lg-10">
+                    <div class="search-card">
+                        <form action="{{ url('/results') }}" method="GET">
+                            <div class="row g-4 align-items-center">
+                                <!-- Origen -->
+                                <div class="col-md-3">
+                                    <label class="form-label fw-bold mb-2">
+                                        <i class="fas fa-dot-circle me-2 text-primary"></i>ORIGEN
+                                    </label>
+                                    <div class="input-group input-elevated">
+                                        <span class="input-group-text bg-transparent border-0">
+                                            <i class="fas fa-plane-departure"></i>
+                                        </span>
+                                        <input type="text" name="origin" class="form-control border-0" placeholder="Ciudad de origen" value="{{ request('origin') }}">
+                                    </div>
+                                </div>
+
+                                <!-- Destino -->
+                                <div class="col-md-3">
+                                    <label class="form-label fw-bold mb-2">
+                                        <i class="fas fa-map-marker-alt me-2 text-primary"></i>DESTINO
+                                    </label>
+                                    <div class="input-group input-elevated">
+                                        <span class="input-group-text bg-transparent border-0">
+                                            <i class="fas fa-plane-arrival"></i>
+                                        </span>
+                                        <input type="text" name="destination" class="form-control border-0" placeholder="Ciudad de destino" value="{{ request('destination') }}">
+                                    </div>
+                                </div>
+
+                                <!-- Fecha Entrada - Modificado para mejor visualización -->
+                                <div class="col-md-2 date-col">
+                                    <label class="form-label fw-bold mb-2">
+                                        <i class="fas fa-calendar-alt me-2 text-primary"></i>ENTRADA
+                                    </label>
+                                    <div class="input-group input-elevated date-field-container">
+                                        <span class="input-group-text bg-transparent border-0">
+                                            <i class="fas fa-calendar-check"></i>
+                                        </span>
+                                        <input type="date" name="checkin" class="form-control border-0" value="{{ request('checkin') }}">
+                                    </div>
+                                </div>
+
+                                <!-- Fecha Salida - Modificado para mejor visualización -->
+                                <div class="col-md-2 date-col">
+                                    <label class="form-label fw-bold mb-2">
+                                        <i class="fas fa-calendar-alt me-2 text-primary"></i>SALIDA
+                                    </label>
+                                    <div class="input-group input-elevated date-field-container">
+                                        <span class="input-group-text bg-transparent border-0">
+                                            <i class="fas fa-calendar-times"></i>
+                                        </span>
+                                        <input type="date" name="checkout" class="form-control border-0" value="{{ request('checkout') }}">
+                                    </div>
+                                </div>
+
+                                <!-- Habitaciones -->
+                                <div class="col-md-2">
+                                    <label class="form-label fw-bold mb-2">
+                                        <i class="fas fa-bed me-2 text-primary"></i>HABITACIONES
+                                    </label>
+                                    <div class="input-group input-elevated">
+                                        <span class="input-group-text bg-transparent border-0">
+                                            <i class="fas fa-users"></i>
+                                        </span>
+                                        <input type="number" name="guests" min="1" class="form-control border-0" value="{{ request('guests', 1) }}">
+                                    </div>
                                 </div>
                             </div>
-                            <div class="col-md-3">
-                                <label class="form-label small">Destino</label>
-                                <div class="input-group">
-                                    <span class="input-group-text"><i class="fas fa-map-marker-alt"></i></span>
-                                    <input type="text" name="destination" class="form-control" placeholder="Ciudad de destino" value="{{ request('destination') }}" />
-                                </div>
+
+                            <!-- Botón Buscar -->
+                            <div class="text-center mt-4">
+                                <button class="btn btn-search rounded-pill px-5 py-3 fs-5">
+                                    <i class="fas fa-search me-2"></i>Buscar
+                                </button>
                             </div>
-                            <div class="col-md-2">
-                                <label class="form-label small">Entrada</label>
-                                <input type="date" name="checkin" class="form-control" value="{{ request('checkin') }}" />
-                            </div>
-                            <div class="col-md-2">
-                                <label class="form-label small">Salida</label>
-                                <input type="date" name="checkout" class="form-control" value="{{ request('checkout') }}" />
-                            </div>
-                            <div class="col-md-2">
-                                <label class="form-label small">Huéspedes</label>
-                                <div class="input-group">
-                                    <span class="input-group-text"><i class="fas fa-user-friends"></i></span>
-                                    <input type="number" name="guests" min="1" class="form-control" value="{{ request('guests',1) }}" />
-                                </div>
-                            </div>
-                        </div>
-                        <div class="text-end mt-3">
-                            <button class="btn btn-primary"><i class="fas fa-search me-1"></i> Buscar</button>
-                        </div>
-                    </form>
+                        </form>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
-</section>
-
+    </section>
 
     <!-- hospedaje -->
     <section class="py-5">
         <div class="row">
-  @foreach($hospedajes as $h)
-    <div class="col-md-3 mb-4">
-      <div class="destination-card">
-        <img 
-          src="data:image/jpeg;base64,{{ $h->imagen }}" 
-          class="w-100 h-100 object-fit-cover" 
-          alt="{{ $h->nombre }}"
-        >
-        <div class="destination-overlay">
-          <h5 class="mb-1">{{ $h->nombre }}</h5>
-          <p class="mb-0">Desde ${{ number_format($h->precio_noche, 2) }} / noche</p>
+            @foreach($hospedajes as $h)
+            <div class="col-md-3 mb-4">
+                <div class="destination-card">
+                    <img 
+                        src="data:image/jpeg;base64,{{ $h->imagen }}" 
+                        class="w-100 h-100 object-fit-cover" 
+                        alt="{{ $h->nombre }}"
+                    >
+                    <div class="destination-overlay">
+                        <h5 class="mb-1">{{ $h->nombre }}</h5>
+                        <p class="mb-0">Desde ${{ number_format($h->precio_noche, 2) }} / noche</p>
+                    </div>
+                </div>
+            </div>
+            @endforeach
         </div>
-      </div>
-    </div>
-  @endforeach
-</div>
+    </section>
 
+    <!-- hospedaje -->
+    <section class="py-5">
+        <div class="row">
+            @foreach($hospedajes as $h)
+            <div class="col-md-3 mb-4">
+                <div class="destination-card">
+                    <img 
+                        src="data:image/jpeg;base64,{{ $h->imagen }}" 
+                        class="w-100 h-100 object-fit-cover" 
+                        alt="{{ $h->nombre }}"
+                    >
+                    <div class="destination-overlay">
+                        <h5 class="mb-1">{{ $h->nombre }}</h5>
+                        <p class="mb-0">Desde ${{ number_format($h->precio_noche, 2) }} / noche</p>
+                    </div>
+                </div>
+            </div>
+            @endforeach
+        </div>
     </section>
 
     <!-- Destinos Populares -->
     <section class="py-5 bg-light">
         <div class="row">
-  @foreach($viajes as $viaje)
-    <div class="col-md-3 mb-4">
-      <div class="destination-card">
-        <img 
-          src="data:image/jpeg;base64,{{ $viaje->imagen }}" 
-          class="w-100 h-100 object-fit-cover" 
-          alt="{{ $viaje->nombre }}"
-        >
-        <div class="destination-overlay">
-          <h5 class="mb-1">{{ $viaje->nombre }}</h5>
-          <p class="mb-0">Desde ${{ number_format($viaje->precio, 2) }}</p>
+            @foreach($viajes as $viaje)
+            <div class="col-md-3 mb-4">
+                <div class="destination-card">
+                    <img 
+                        src="data:image/jpeg;base64,{{ $viaje->imagen }}" 
+                        class="w-100 h-100 object-fit-cover" 
+                        alt="{{ $viaje->nombre }}"
+                    >
+                    <div class="destination-overlay">
+                        <h5 class="mb-1">{{ $viaje->nombre }}</h5>
+                        <p class="mb-0">Desde ${{ number_format($viaje->precio, 2) }}</p>
+                    </div>
+                </div>
+            </div>
+            @endforeach
         </div>
-      </div>
-    </div>
-  @endforeach
-</div>
-
     </section>
 
     <!-- Servicios -->
@@ -289,24 +420,23 @@
     </section>
 
     <div class="row">
-  @foreach($vehiculos as $v)
-    <div class="col-md-3 mb-4">
-      <div class="destination-card">
-        <img 
-          {{-- si guardas varias imágenes, tomo la primera --}}
-          src="data:image/jpeg;base64,{{ $v->imagenes[0] ?? '' }}" 
-          class="w-100 h-100 object-fit-cover" 
-          alt="{{ $v->marca }} {{ $v->modelo }}"
-        >
-        <div class="destination-overlay">
-          <h5 class="mb-1">{{ $v->marca }} {{ $v->modelo }}</h5>
-          <p class="mb-0">Desde ${{ number_format($v->precio_por_dia, 2) }} / día</p>
+        @foreach($vehiculos as $v)
+        <div class="col-md-3 mb-4">
+            <div class="destination-card">
+                <img 
+                    {{-- si guardas varias imágenes, tomo la primera --}}
+                    src="data:image/jpeg;base64,{{ $v->imagenes[0] ?? '' }}" 
+                    class="w-100 h-100 object-fit-cover" 
+                    alt="{{ $v->marca }} {{ $v->modelo }}"
+                >
+                <div class="destination-overlay">
+                    <h5 class="mb-1">{{ $v->marca }} {{ $v->modelo }}</h5>
+                    <p class="mb-0">Desde ${{ number_format($v->precio_por_dia, 2) }} / día</p>
+                </div>
+            </div>
         </div>
-      </div>
+        @endforeach
     </div>
-  @endforeach
-</div>
-
 
     <!-- Footer -->
     <footer class="footer-section">
