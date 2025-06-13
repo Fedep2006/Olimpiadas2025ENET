@@ -88,7 +88,7 @@ class UserController extends Controller
         $users = $query->paginate(10)->withQueryString();
 
         if ($request->ajax()) {
-            $view = view('administracion.partials.users-table', compact('users'))->render();
+            $view = view('administracion.partials.tabla-contenido', compact('users'))->render();
             $pagination = view('administracion.partials.pagination', compact('users'))->render();
 
             return response()->json([
