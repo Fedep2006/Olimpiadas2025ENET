@@ -102,8 +102,8 @@ Route::prefix('administracion')->middleware('auth')->group(function () {
     // Paquetes y Viajes Admin
     Route::get('/paquetes',               [PaquetesController::class, 'index'])->name('administracion.paquetes');
     Route::post('/paquetes/añadir',              [PaquetesController::class, 'Añadir'])->name('administracion.paquetes.añadir');
-    Route::get('/paquetes/edit',     [PaquetesController::class, 'Editar'])->name('administracion.paquetes.editar');
-    Route::delete('/paquetes/delete/{id}',       [PaquetesController::class, 'Borrar'])->name('administracion.paquetes.borrar');
+    Route::post('/paquetes/editar',     [PaquetesController::class, 'Editar'])->name('administracion.paquetes.editar');
+    Route::delete('/paquetes/borrar/{id}',       [PaquetesController::class, 'Borrar'])->name('administracion.paquetes.borrar');
 
 
 
