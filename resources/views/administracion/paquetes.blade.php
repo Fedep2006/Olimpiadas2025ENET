@@ -412,6 +412,7 @@
                 <table class="table">
                     <thead>
                         <tr>
+                            <th></th>
                             <th>Nombre</th>
                             <th>Descripción</th>
                             <th>Precio Total</th>
@@ -427,6 +428,13 @@
                     <tbody>
                         @foreach($paquetes as $paquete)
                         <tr>
+                            <td>
+                                @if(is_array($paquete->imagenes) && count($paquete->imagenes) > 0 && !empty($paquete->imagenes[0]))
+                                    <img src="{{ $paquete->imagenes[0] }}" alt="Imagen" style="width: 50px; height: 50px; object-fit: cover; border-radius: 6px;">
+                                @else
+                                    <span class="text-muted">Sin imagen</span>
+                                @endif
+                            </td>
                             <td>{{ $paquete->nombre }}</td>
                             <td>{{ $paquete->descripcion }}</td>
                             <td>${{ number_format($paquete->precio_total, 2) }}</td>
@@ -478,7 +486,7 @@
                                 </div>
                             </div>
                         </div>
-                        
+
                         <!-- Modal para Editar Paquete (por paquete) -->
                         <div class="modal fade" id="editarPaqueteModal{{ $paquete->id }}" tabindex="-1" aria-labelledby="editarPaqueteLabel{{ $paquete->id }}" aria-hidden="true">
                             <div class="modal-dialog modal-lg">
