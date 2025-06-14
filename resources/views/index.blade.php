@@ -304,7 +304,6 @@
                     <li class="nav-item"><a class="nav-link" href="#"><i class="fas fa-bed"></i> Hoteles</a></li>
                     <li class="nav-item"><a class="nav-link" href="#"><i class="fas fa-suitcase"></i> Paquetes</a></li>
                     <li class="nav-item"><a class="nav-link" href="#"><i class="fas fa-car"></i> Autos</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#"><i class="fas fa-ship"></i> Cruceros</a></li>
                 </ul>
                 <ul class="navbar-nav">
                     <li class="nav-item"><a class="nav-link" href="/login"><i class="fas fa-user"></i> Mi cuenta</a></li>
