@@ -126,11 +126,10 @@
                     </a>
                 </li>
             @endif
-
-            {{-- Números de Página --}}
+                        {{-- Números de Página --}}
             @php
                 $start = max(1, $users->currentPage() - 2);
-                $end = min($users->lastPage(), values: $users->currentPage() + 2);
+                $end = min($users->lastPage(), $users->currentPage() + 2);
             @endphp
 
             {{-- Primera página --}}
@@ -186,6 +185,7 @@
                     </span>
                 </li>
             @endif
+            
         </ul>
     </nav>
 @endif
