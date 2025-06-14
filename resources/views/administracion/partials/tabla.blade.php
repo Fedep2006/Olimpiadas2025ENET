@@ -67,8 +67,8 @@
     <!-- Pagination -->
     <div class="d-flex justify-content-between align-items-center mt-4">
         <div class="pagination-info">
-            @if ($users->total() > 0)
-                Mostrando {{ $users->firstItem() }} - {{ $users->lastItem() }} de {{ $users->total() }}
+            @if ($registros->total() > 0)
+                Mostrando {{ $registros->firstItem() }} - {{ $registros->lastItem() }} de {{ $registros->total() }}
                 usuarios
             @else
                 No hay usuarios para mostrar
