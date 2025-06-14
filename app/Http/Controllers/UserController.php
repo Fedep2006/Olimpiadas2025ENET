@@ -66,18 +66,21 @@ class UserController extends Controller
         $query = User::query();
 
         // Aplicar búsqueda
-        if ($request->filled('search')) {
-            $search = $request->search;
+        if ($request->filled('search_usuario')) {
+            $search = $request->search_usuario;
             $query->where(function ($q) use ($search) {
                 $q->where('name', 'like', "%{$search}%")
-                    ->orWhere('email', 'like', "%{$search}%")
-                    ->orWhere('id', 'like', "%{$search}%");
+                    ->orWhere('email', 'like', "%{$search}%");
             });
+        }
+        if ($request->filled('search_id')) {
+            $search = $request->search_id;
+            $query->where('id', $search);
         }
 
         // Aplicar filtro de fecha
-        if ($request->filled('registration_date')) {
-            $date = $request->registration_date;
+        if ($request->filled('search_registration_date')) {
+            $date = $request->search_registration_date;
             $query->whereDate('created_at', $date);
         }
 
