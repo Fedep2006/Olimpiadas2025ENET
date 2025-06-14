@@ -328,14 +328,14 @@
                 <table class="table">
                     <thead>
                         <tr>
-                            <th>Hospedaje</th> <!-- Nombre del hospedaje -->
-                            <th>Estrellas</th> <!-- Nombre del hospedaje -->
-                            <th>Ubicación</th> <!-- Ubicación del hospedaje -->
-                            <th>Categoría</th> <!-- Tipo del hospedaje -->
+                            <th>Hospedaje</th>
+                            <th>Estrellas</th>
+                            <th>Ubicación</th>
+                            <th>Categoría</th>
                             <th>Servicios</th>
                             <th>Politicas</th>
-                            <th>Descripcion</th> <!-- Habitaciones del hospedaje -->
-                            <th>Contacto</th> <!-- Habitaciones del hospedaje -->
+                            <th>Descripcion</th>
+                            <th>Contacto</th>
                             <th>Horario</th>
                             <th>Estado</th>
                             <th>Acciones</th>
