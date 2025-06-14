@@ -192,6 +192,48 @@
             padding: 20px;
         }
 
+        /* Nuevo estilo para las cards de viajes sin imagen */
+        .travel-card {
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+            height: 200px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 30px 20px;
+            border: 2px solid transparent;
+        }
+
+        .travel-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+            border-color: var(--despegar-blue);
+        }
+
+        .travel-card h5 {
+            color: var(--despegar-blue);
+            font-weight: bold;
+            margin-bottom: 15px;
+            font-size: 1.3rem;
+        }
+
+        .travel-card .price {
+            color: var(--despegar-orange);
+            font-weight: bold;
+            font-size: 1.1rem;
+        }
+
+        .travel-card .travel-icon {
+            color: var(--despegar-blue);
+            font-size: 2.5rem;
+            margin-bottom: 15px;
+            opacity: 0.8;
+        }
+
         .footer-section {
             background-color: #2c3e50;
             color: white;
@@ -279,7 +321,7 @@
             <div class="row justify-content-center">
                 <div class="col-lg-10">
                     <div class="search-card">
-                        <form action="{{ url('/results') }}" method="GET">
+                        <form action="/results" method="GET">
                             <div class="row g-4 align-items-center">
                                 <!-- Origen -->
                                 <div class="col-md-3">
@@ -290,7 +332,7 @@
                                         <span class="input-group-text bg-transparent border-0">
                                             <i class="fas fa-plane-departure"></i>
                                         </span>
-                                        <input type="text" name="origin" class="form-control border-0" placeholder="Ciudad de origen" value="{{ request('origin') }}">
+                                        <input type="text" name="origin" class="form-control border-0" placeholder="Ciudad de origen">
                                     </div>
                                 </div>
 
@@ -303,11 +345,11 @@
                                         <span class="input-group-text bg-transparent border-0">
                                             <i class="fas fa-plane-arrival"></i>
                                         </span>
-                                        <input type="text" name="destination" class="form-control border-0" placeholder="Ciudad de destino" value="{{ request('destination') }}">
+                                        <input type="text" name="destination" class="form-control border-0" placeholder="Ciudad de destino">
                                     </div>
                                 </div>
 
-                                <!-- Fecha Entrada - Modificado para mejor visualización -->
+                                <!-- Fecha Entrada -->
                                 <div class="col-md-2 date-col">
                                     <label class="form-label fw-bold mb-2">
                                         <i class="fas fa-calendar-alt me-2 text-primary"></i>ENTRADA
@@ -316,11 +358,11 @@
                                         <span class="input-group-text bg-transparent border-0">
                                             <i class="fas fa-calendar-check"></i>
                                         </span>
-                                        <input type="date" name="checkin" class="form-control border-0" value="{{ request('checkin') }}">
+                                        <input type="date" name="checkin" class="form-control border-0">
                                     </div>
                                 </div>
 
-                                <!-- Fecha Salida - Modificado para mejor visualización -->
+                                <!-- Fecha Salida -->
                                 <div class="col-md-2 date-col">
                                     <label class="form-label fw-bold mb-2">
                                         <i class="fas fa-calendar-alt me-2 text-primary"></i>SALIDA
@@ -329,7 +371,7 @@
                                         <span class="input-group-text bg-transparent border-0">
                                             <i class="fas fa-calendar-times"></i>
                                         </span>
-                                        <input type="date" name="checkout" class="form-control border-0" value="{{ request('checkout') }}">
+                                        <input type="date" name="checkout" class="form-control border-0">
                                     </div>
                                 </div>
 
@@ -342,7 +384,7 @@
                                         <span class="input-group-text bg-transparent border-0">
                                             <i class="fas fa-users"></i>
                                         </span>
-                                        <input type="number" name="guests" min="1" class="form-control border-0" value="{{ request('guests', 1) }}">
+                                        <input type="number" name="guests" min="1" class="form-control border-0" value="1">
                                     </div>
                                 </div>
                             </div>
@@ -365,42 +407,36 @@
         <div class="container">
             <h2 class="section-title">Hospedajes</h2>
             <div class="row">
-                @foreach($hospedajes as $h)
-                <div class="col-md-3 mb-4">
-                    <div class="destination-card">
-                        <img 
-                            src="data:image/jpeg;base64,{{ $h->imagen }}" 
-                            class="w-100 h-100 object-fit-cover" 
-                            alt="{{ $h->nombre }}"
-                        >
-                        <div class="destination-overlay">
-                            <h5 class="mb-1">{{ $h->nombre }}</h5>
-                            <p class="mb-0">Desde ${{ number_format($h->precio_noche, 2) }} / noche</p>
-                        </div>
+            @foreach($hospedajes as $h)
+            <div class="col-md-3 mb-4">
+                <div class="destination-card">
+                    <img 
+                        src="data:image/jpeg;base64,{{ $h->imagen }}" 
+                        class="w-100 h-100 object-fit-cover" 
+                        alt="{{ $h->nombre }}"
+                    >
+                    <div class="destination-overlay">
+                        <h5 class="mb-1">{{ $h->nombre }}</h5>
+                        <p class="mb-0">Desde ${{ number_format($h->precio_noche, 2) }} / noche</p>
                     </div>
                 </div>
-                @endforeach
             </div>
+            @endforeach
         </div>
-    </section>
+    </div>
+</section>
 
-    <!-- Viajes -->
+    <!-- Viajes - MODIFICADO: Sin imágenes, solo cards con datos de BD -->
     <section class="py-5 bg-light">
         <div class="container">
             <h2 class="section-title">Viajes</h2>
             <div class="row">
                 @foreach($viajes as $viaje)
                 <div class="col-md-3 mb-4">
-                    <div class="destination-card">
-                        <img 
-                            src="{{ is_array($viaje->imagen) ? ($viaje->imagen[0] ?? '') : $viaje->imagen }}" 
-                            class="w-100 h-100 object-fit-cover" 
-                            alt="{{ $viaje->nombre }}"
-                        >
-                        <div class="destination-overlay">
-                            <h5 class="mb-1">{{ $viaje->nombre }}</h5>
-                            <p class="mb-0">Desde ${{ number_format($viaje->precio, 2) }}</p>
-                        </div>
+                    <div class="travel-card">
+                        <i class="fas fa-map-marked-alt travel-icon"></i>
+                        <h5 class="mb-1">{{ $viaje->nombre }}</h5>
+                        <p class="price mb-0">Desde ${{ number_format($viaje->precio, 2) }}</p>
                     </div>
                 </div>
                 @endforeach
@@ -449,25 +485,24 @@
         <div class="container">
             <h2 class="section-title">Vehículos</h2>
             <div class="row">
-                @foreach($vehiculos as $v)
-                <div class="col-md-3 mb-4">
-                    <div class="destination-card">
-                        <img 
-                            {{-- si guardas varias imágenes, tomo la primera --}}
-                            src="{{ is_array($v->imagenes[0] ?? '') }}" 
-                            class="w-100 h-100 object-fit-cover" 
-                            alt="{{ $v->marca }} {{ $v->modelo }}"
-                        >
-                        <div class="destination-overlay">
-                            <h5 class="mb-1">{{ $v->marca }} {{ $v->modelo }}</h5>
-                            <p class="mb-0">Desde ${{ number_format($v->precio_por_dia, 2) }} / día</p>
-                        </div>
+            @foreach($vehiculos as $v)
+            <div class="col-md-3 mb-4">
+                <div class="destination-card">
+                    <img 
+                        src="data:image/jpeg;base64,{{ is_array($v->imagenes) ? $v->imagenes[0] : $v->imagenes }}" 
+                        class="w-100 h-100 object-fit-cover" 
+                        alt="{{ $v->marca }} {{ $v->modelo }}"
+                    >
+                    <div class="destination-overlay">
+                        <h5 class="mb-1">{{ $v->marca }} {{ $v->modelo }}</h5>
+                        <p class="mb-0">Desde ${{ number_format($v->precio_por_dia, 2) }} / día</p>
                     </div>
                 </div>
-                @endforeach
             </div>
+            @endforeach
         </div>
-    </section>
+    </div>
+</section>
 
     <!-- Paquetes (Solo Visual) -->
     <section class="py-5">
