@@ -35,8 +35,6 @@ setTimeout(function () {
                 break;
         }
     }
-    const searchInput = document.getElementById("searchInput");
-    const dateInput = document.querySelector('input[name="registration_date"]');
 
     const pathname = window.location.pathname;
 
@@ -63,24 +61,23 @@ setTimeout(function () {
             })
             .catch((error) => {
                 console.error("Error:", error);
-                showToast("Error al buscar usuarios", "error");
+                showToast("Error al buscar", "error");
             });
     }
 
     // Handle form submission
-    document
-        .getElementById("searchForm")
-        .addEventListener("submit", function (e) {
-            e.preventDefault();
-            performSearch();
-        });
+    form.addEventListener("submit", function (e) {
+        e.preventDefault();
+        performSearch();
+    });
 
     // Clear all filters
     document
         .getElementById("clearFilters")
         .addEventListener("click", function () {
-            searchInput.value = "";
-            dateInput.value = "";
+            for (let i = 0; i < inputsElementos.length; i++) {
+                inputsElementos[i].value = "";
+            }
             performSearch();
         });
 }, 50);
