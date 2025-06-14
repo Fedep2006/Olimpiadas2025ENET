@@ -393,7 +393,7 @@
                 <div class="col-md-3 mb-4">
                     <div class="destination-card">
                         <img 
-                            src="data:image/jpeg;base64,{{ $viaje->imagen }}" 
+                            src="{{ is_array($viaje->imagen) ? ($viaje->imagen[0] ?? '') : $viaje->imagen }}" 
                             class="w-100 h-100 object-fit-cover" 
                             alt="{{ $viaje->nombre }}"
                         >
@@ -454,7 +454,7 @@
                     <div class="destination-card">
                         <img 
                             {{-- si guardas varias imágenes, tomo la primera --}}
-                            src="data:image/jpeg;base64,{{ $v->imagenes[0] ?? '' }}" 
+                            src="{{ is_array($v->imagenes[0] ?? '') }}" 
                             class="w-100 h-100 object-fit-cover" 
                             alt="{{ $v->marca }} {{ $v->modelo }}"
                         >
