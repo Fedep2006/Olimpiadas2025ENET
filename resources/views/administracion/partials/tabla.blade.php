@@ -52,14 +52,17 @@
         <table class="table">
             <thead>
                 <tr>
-                    <th>Usuario</th>
-                    <th>Email</th>
-                    <th>Fecha Registro</th>
+                    @foreach ($thead as $col)
+                        <th>{{$col}}</th>
+                    @endforeach
                     <th>Acciones</th>
                 </tr>
             </thead>
-            <tbody id="usersTableBody">
-                @include('administracion.partials.tabla-contenido')
+            <tbody id="tBody">
+                @include('administracion.partials.tabla-contenido', 
+                [
+                    'trow' => $trow,
+                ])
             </tbody>
         </table>
     </div>

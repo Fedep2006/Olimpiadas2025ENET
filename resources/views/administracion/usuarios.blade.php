@@ -88,7 +88,26 @@
         <x-layouts.administracion.search-bar :inputs="$camposBuscar"/>
 
         <!-- Users Table -->
-        @include('administracion.partials.tabla')
+        @php
+            $thead= [
+                "Usuario",
+                "Email",
+                "Fecha Registro",
+            ];
+            $trow=[
+                (object)[
+                    'algo' => 'algo'
+                ],
+                (object)[
+                    'algo' => 'algo'
+                ],
+            ]
+        @endphp
+        @include('administracion.partials.tabla', 
+                [
+                    'thead' => $thead,
+                    'trow' => $trow
+                ])
     </x-layouts.administracion.main>
 
     <!-- ABM Modals -->

@@ -24,7 +24,7 @@ export function showToast(message, type = "success") {
 
 // Function to update the table with new data
 export function updateTable(data) {
-    document.getElementById("usersTableBody").innerHTML = data.view;
+    document.getElementById("tBody").innerHTML = data.view;
     document.querySelector(".pagination-container").innerHTML = data.pagination;
     document.querySelector(".pagination-info").innerHTML = data.paginationInfo;
 }
