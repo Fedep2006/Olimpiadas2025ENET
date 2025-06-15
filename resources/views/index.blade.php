@@ -336,7 +336,7 @@
             <div class="row justify-content-center">
                 <div class="col-lg-10">
                     <div class="search-card">
-                        <form action="/results" method="GET">
+                        <form action="/results" method="GET" autocomplete="off">
                             <div class="row g-4 align-items-center">
                                 <!-- Origen -->
                                 <div class="col-md-3">
@@ -347,7 +347,8 @@
                                         <span class="input-group-text bg-transparent border-0">
                                             <i class="fas fa-plane-departure"></i>
                                         </span>
-                                        <input type="text" name="origin" class="form-control border-0" placeholder="Ciudad de origen">
+                                        <input type="text" name="origin" class="form-control border-0" placeholder="Ciudad de origen" id="input-origin" autocomplete="off" list="list-origin">
+<datalist id="list-origin"></datalist>
                                     </div>
                                 </div>
 
@@ -360,33 +361,34 @@
                                         <span class="input-group-text bg-transparent border-0">
                                             <i class="fas fa-plane-arrival"></i>
                                         </span>
-                                        <input type="text" name="destination" class="form-control border-0" placeholder="Ciudad de destino">
+                                        <input type="text" name="destination" class="form-control border-0" placeholder="Ciudad de destino" id="input-destination" autocomplete="off" list="list-destination">
+<datalist id="list-destination"></datalist>
                                     </div>
                                 </div>
 
-                                <!-- Fecha Entrada -->
+                                <!-- Fecha Ida -->
                                 <div class="col-md-2 date-col">
-                                    <label class="form-label fw-bold mb-2">
-                                        <i class="fas fa-calendar-alt me-2 text-primary"></i>ENTRADA
-                                    </label>
+                                        <label class="form-label fw-bold mb-2">
+                                            <i class="fas fa-calendar-alt me-2 text-primary"></i>IDA
+                                        </label>
                                     <div class="input-group input-elevated date-field-container">
                                         <span class="input-group-text bg-transparent border-0">
                                             <i class="fas fa-calendar-check"></i>
                                         </span>
-                                        <input type="date" name="checkin" class="form-control border-0">
+                                            <input type="date" name="checkin" class="form-control border-0" placeholder="Fecha de ida">
                                     </div>
                                 </div>
 
-                                <!-- Fecha Salida -->
+                                <!-- Fecha Vuelta -->
                                 <div class="col-md-2 date-col">
-                                    <label class="form-label fw-bold mb-2">
-                                        <i class="fas fa-calendar-alt me-2 text-primary"></i>SALIDA
-                                    </label>
+                                        <label class="form-label fw-bold mb-2">
+                                            <i class="fas fa-calendar-alt me-2 text-primary"></i>VUELTA
+                                        </label>
                                     <div class="input-group input-elevated date-field-container">
                                         <span class="input-group-text bg-transparent border-0">
                                             <i class="fas fa-calendar-times"></i>
                                         </span>
-                                        <input type="date" name="checkout" class="form-control border-0">
+                                            <input type="date" name="checkout" class="form-control border-0" placeholder="Fecha de vuelta">
                                     </div>
                                 </div>
 
@@ -502,17 +504,17 @@
             <div class="row">
             @foreach($vehiculos as $v)
             <div class="col-md-3 mb-4">
-                <a href="{{ url('detalles') }}" style="text-decoration:none;color:inherit;"><div class="destination-card">
-                    <img 
-                        src="data:image/jpeg;base64,{{ is_array($v->imagenes) ? $v->imagenes[0] : $v->imagenes }}" 
-                        class="w-100 h-100 object-fit-cover" 
-                        alt="{{ $v->marca }} {{ $v->modelo }}"
-                    >
-                    <div class="destination-overlay">
-                        <h5 class="mb-1">{{ $v->marca }} {{ $v->modelo }}</h5>
-                        <p class="mb-0">Desde ${{ number_format($v->precio_por_dia, 2) }} / día</p>
-                    </div>
-                </div></a>
+                <a href="{{ url('detalles') }}" style="text-decoration:none;color:inherit;"><div class="destination-card position-relative overflow-hidden">
+    <img 
+        src="{{ is_array($v->imagenes) ? $v->imagenes[0] : $v->imagenes }}" 
+        style="position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;z-index:1;" 
+        alt="{{ $v->marca }} {{ $v->modelo }}"
+    >
+    <div class="destination-overlay d-flex flex-column justify-content-end" style="position:relative;z-index:2;height:100%;background:linear-gradient(transparent 60%,rgba(0,0,0,0.7) 100%);">
+        <h5 class="mb-1">{{ $v->marca }} {{ $v->modelo }}</h5>
+        <p class="mb-0">Desde ${{ number_format($v->precio_por_dia, 2) }} / día</p>
+    </div>
+</div></a>
             </div>
             @endforeach
         </div>
@@ -577,5 +579,16 @@
     </footer>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+// Autocompletado de ciudades para origen y destino
+fetch('/api/ciudades')
+  .then(res => res.json())
+  .then(ciudades => {
+    const listOrigin = document.getElementById('list-origin');
+    const listDestination = document.getElementById('list-destination');
+    listOrigin.innerHTML = ciudades.map(c => `<option value="${c}">`).join('');
+    listDestination.innerHTML = ciudades.map(c => `<option value="${c}">`).join('');
+  });
+</script>
 </body>
 </html>

@@ -132,6 +132,9 @@ Route::get('/back', function () {
     return view('login.register');
 })->name('back');
 
+// API autocomplete ciudades
+Route::get('/api/ciudades', [\App\Http\Controllers\Api\CiudadController::class, 'index']);
+
 // Rutas de prueba
 Route::get('/test-compra', [TestCompraController::class, 'simularCompra']);
 Route::get('/test-gmail',  [TestGmailController::class, 'testGmail']);

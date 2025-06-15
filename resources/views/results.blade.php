@@ -236,7 +236,8 @@
               <span class="input-group-text bg-transparent border-0">
                 <i class="fas fa-plane-departure"></i>
               </span>
-              <input type="text" name="origin" class="form-control border-0" placeholder="Ciudad de origen" value="{{ request('origin') }}">
+              <input type="text" name="origin" class="form-control border-0" placeholder="Ciudad de origen" id="input-origin" autocomplete="off" list="list-origin" value="{{ request('origin') }}">
+<datalist id="list-origin"></datalist>
             </div>
           </div>
           
@@ -249,33 +250,34 @@
               <span class="input-group-text bg-transparent border-0">
                 <i class="fas fa-plane-arrival"></i>
               </span>
-              <input type="text" name="destination" class="form-control border-0" placeholder="Ciudad de destino" value="{{ request('destination') }}">
+              <input type="text" name="destination" class="form-control border-0" placeholder="Ciudad de destino" id="input-destination" autocomplete="off" list="list-destination" value="{{ request('destination') }}">
+<datalist id="list-destination"></datalist>
             </div>
           </div>
           
-          <!-- Fecha Entrada -->
+          <!-- Fecha Ida -->
           <div class="col-md-2 date-col">
             <label class="form-label fw-bold mb-2">
-              <i class="fas fa-calendar-alt me-2 text-primary"></i>ENTRADA
+              <i class="fas fa-calendar-alt me-2 text-primary"></i>IDA
             </label>
             <div class="input-group input-elevated date-field-container">
               <span class="input-group-text bg-transparent border-0">
                 <i class="fas fa-calendar-check"></i>
               </span>
-              <input type="date" name="checkin" class="form-control border-0" value="{{ request('checkin') }}">
+              <input type="date" name="checkin" class="form-control border-0" placeholder="Fecha de ida" value="{{ request('checkin') }}">
             </div>
           </div>
           
-          <!-- Fecha Salida -->
+          <!-- Fecha Vuelta -->
           <div class="col-md-2 date-col">
             <label class="form-label fw-bold mb-2">
-              <i class="fas fa-calendar-alt me-2 text-primary"></i>SALIDA
+              <i class="fas fa-calendar-alt me-2 text-primary"></i>VUELTA
             </label>
             <div class="input-group input-elevated date-field-container">
               <span class="input-group-text bg-transparent border-0">
                 <i class="fas fa-calendar-times"></i>
               </span>
-              <input type="date" name="checkout" class="form-control border-0" value="{{ request('checkout') }}">
+              <input type="date" name="checkout" class="form-control border-0" placeholder="Fecha de vuelta" value="{{ request('checkout') }}">
             </div>
           </div>
           
@@ -542,5 +544,16 @@
     });
   });
   </script>
+<script>
+// Autocompletado de ciudades para origen y destino
+fetch('/api/ciudades')
+  .then(res => res.json())
+  .then(ciudades => {
+    const listOrigin = document.getElementById('list-origin');
+    const listDestination = document.getElementById('list-destination');
+    listOrigin.innerHTML = ciudades.map(c => `<option value="${c}">`).join('');
+    listDestination.innerHTML = ciudades.map(c => `<option value="${c}">`).join('');
+  });
+</script>
 </body>
 </html>

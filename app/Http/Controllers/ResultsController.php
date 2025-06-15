@@ -32,7 +32,7 @@ class ResultsController extends Controller
         // 1) Búsqueda libre
         if ($search) {
             $viajes->where('nombre', 'like', "%{$search}%");
-            $hospedajes->where('nombre', 'like', "%{$search}%");
+            // $hospedajes->where('nombre', 'like', "%{$search}%"); // Quitado: solo buscar por ciudad
             $vehiculos->where(function($q) use ($search) {
                 $q->where('marca','like',"%{$search}%")
                   ->orWhere('modelo','like',"%{$search}%");
@@ -75,9 +75,10 @@ class ResultsController extends Controller
             $viajes_exactos = $viajes->get();
         }
 
-        // --- Nuevo: filtrar hospedajes por ciudad de destino ---
+        // --- Nuevo: filtrar hospedajes y vehículos por ciudad de destino ---
         if ($destination) {
             $hospedajes->where('ciudad', 'like', "%{$destination}%");
+            $vehiculos->where('ubicacion', 'like', "%{$destination}%");
         }
 
         // Filtros avanzados para hospedajes por fechas y huéspedes
