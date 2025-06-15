@@ -335,6 +335,15 @@
                       {{ $item->nombre }} ({{ $item->origen }} → {{ $item->destino }})
                     @elseif($type=='vehiculos')
                       {{ $item->marca }} {{ $item->modelo }}
+                    @elseif($type=='hospedajes')
+                      {{ $item->nombre }}
+                      @if(isset($item->estrellas))
+                        <span class="text-warning ms-2">
+                          @for($i = 0; $i < $item->estrellas; $i++)
+                            <i class="fas fa-star"></i>
+                          @endfor
+                        </span>
+                      @endif
                     @else
                       {{ $item->nombre }}
                     @endif
@@ -374,6 +383,15 @@
                         {{ $item->nombre }} ({{ $item->origen }} → {{ $item->destino }})
                       @elseif($type=='vehiculos')
                         {{ $item->marca }} {{ $item->modelo }}
+                      @elseif($type=='hospedajes')
+                        {{ $item->nombre }}
+                        @if(isset($item->estrellas))
+                          <span class="text-warning ms-2">
+                            @for($i = 0; $i < $item->estrellas; $i++)
+                              <i class="fas fa-star"></i>
+                            @endfor
+                          </span>
+                        @endif
                       @else
                         {{ $item->nombre }}
                       @endif
