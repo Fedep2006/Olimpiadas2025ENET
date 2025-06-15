@@ -333,6 +333,12 @@
                   <div class="fw-semibold mt-1">
                     @if($type=='viajes')
                       {{ $item->nombre }} ({{ $item->origen }} → {{ $item->destino }})
+                      <br>
+                      <small class="text-muted">
+                        {{ \Carbon\Carbon::parse($item->fecha_salida)->format('d/m/Y') }}
+                        &rarr;
+                        {{ \Carbon\Carbon::parse($item->fecha_llegada)->format('d/m/Y') }}
+                      </small>
                     @elseif($type=='vehiculos')
                       {{ $item->marca }} {{ $item->modelo }}
                     @elseif($type=='hospedajes')

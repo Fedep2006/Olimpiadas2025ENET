@@ -44,6 +44,19 @@ class ResultsController extends Controller
         if ($origin)      $viajes->where('origen', 'like', "%{$origin}%");
         if ($destination) $viajes->where('destino','like', "%{$destination}%");
 
+        // Filtro por fechas para viajes
+        if ($checkin && $checkout) {
+            // Ambos campos completos: filtrar entre ambos
+            $viajes->whereDate('fecha_salida', '>=', $checkin)
+                   ->whereDate('fecha_llegada', '<=', $checkout);
+        } elseif ($checkin) {
+            // Solo entrada: SOLO los de esa fecha exacta de salida
+            $viajes->whereDate('fecha_salida', '=', $checkin);
+        } elseif ($checkout) {
+            // Solo salida: SOLO los de esa fecha exacta de llegada
+            $viajes->whereDate('fecha_llegada', '=', $checkout);
+        }
+
         // --- Nuevo: filtrar hospedajes por ciudad de destino ---
         if ($destination) {
             $hospedajes->where('ciudad', 'like', "%{$destination}%");
