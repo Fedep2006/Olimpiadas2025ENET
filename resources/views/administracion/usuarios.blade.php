@@ -7,7 +7,7 @@
 </head>
 
 <body>
-        @php
+    @php
         $camposCrear = [
             (object)[
                 'id' => 'name',

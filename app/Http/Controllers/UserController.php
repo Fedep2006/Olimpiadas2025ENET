@@ -10,57 +10,6 @@ use Illuminate\Support\Facades\Validator;
 
 class UserController extends Controller
 {
-    public function crear(Request $request)
-    {
-        try {
-            // Validate the request data
-            $validator = Validator::make($request->all(), [
-                'name' => 'required|string|max:255|unique:users,name',
-                'email' => 'required|string|email|max:255|unique:users,email',
-                'password' => 'required|string|min:8',
-            ], [
-                'name.required' => 'El nombre es obligatorio',
-                'name.string' => 'El nombre debe ser texto',
-                'name.max' => 'El nombre no puede tener más de 255 caracteres',
-                'name.unique' => 'Este nombre de usuario ya está registrado',
-                'email.required' => 'El correo electrónico es obligatorio',
-                'email.string' => 'El correo electrónico debe ser texto',
-                'email.email' => 'El correo electrónico debe ser válido',
-                'email.max' => 'El correo electrónico no puede tener más de 255 caracteres',
-                'email.unique' => 'Este correo electrónico ya está registrado',
-                'password.required' => 'La contraseña es obligatoria',
-                'password.string' => 'La contraseña debe ser texto',
-                'password.min' => 'La contraseña debe tener al menos 8 caracteres'
-            ]);
-
-            if ($validator->fails()) {
-                return response()->json([
-                    'success' => false,
-                    'message' => 'Error de validación',
-                    'errors' => $validator->errors()
-                ], 422);
-            } else {
-                // Create the user
-                $user = User::create([
-                    'name' => $request->name,
-                    'email' => $request->email,
-                    'password' => Hash::make($request->password),
-                ]);
-
-                return response()->json([
-                    'success' => true,
-                    'message' => 'Usuario creado exitosamente'
-                ], 201);
-            }
-        } catch (\Exception $e) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Error al crear el usuario',
-                'error' => $e->getMessage()
-            ], 500);
-        }
-    }
-
     public function index(Request $request)
     {
         $query = User::query();
@@ -104,6 +53,57 @@ class UserController extends Controller
         return view('administracion.usuarios', compact('registros'));
     }
 
+    public function crear(Request $request)
+    {
+        try {
+            // Verificar la informacion
+            $validator = Validator::make($request->all(), [
+                'name' => 'required|string|max:255|unique:users,name',
+                'email' => 'required|string|email|max:255|unique:users,email',
+                'password' => 'required|string|min:8',
+            ], [
+                'name.required' => 'El nombre es obligatorio',
+                'name.string' => 'El nombre debe ser texto',
+                'name.max' => 'El nombre no puede tener más de 255 caracteres',
+                'name.unique' => 'Este nombre de usuario ya está registrado',
+                'email.required' => 'El correo electrónico es obligatorio',
+                'email.string' => 'El correo electrónico debe ser texto',
+                'email.email' => 'El correo electrónico debe ser válido',
+                'email.max' => 'El correo electrónico no puede tener más de 255 caracteres',
+                'email.unique' => 'Este correo electrónico ya está registrado',
+                'password.required' => 'La contraseña es obligatoria',
+                'password.string' => 'La contraseña debe ser texto',
+                'password.min' => 'La contraseña debe tener al menos 8 caracteres'
+            ]);
+
+            if ($validator->fails()) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Error de validación',
+                    'errors' => $validator->errors()
+                ], 422);
+            } else {
+                // Crear el usuario
+                User::create([
+                    'name' => $request->name,
+                    'email' => $request->email,
+                    'password' => Hash::make($request->password),
+                ]);
+
+                return response()->json([
+                    'success' => true,
+                    'message' => 'Usuario creado exitosamente'
+                ], 201);
+            }
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Error al crear el usuario',
+                'error' => $e->getMessage()
+            ], 500);
+        }
+    }
+
     public function update(Request $request, User $user)
     {
         $request->validate([
@@ -117,47 +117,34 @@ class UserController extends Controller
                 'email' => $request->email,
             ]);
 
-            if ($request->ajax()) {
-                return response()->json([
-                    'message' => 'Usuario actualizado exitosamente',
-                    'user' => $user
-                ]);
-            }
-
-            return redirect()->back()->with('success', 'Usuario actualizado exitosamente');
+            return response()->json([
+                'message' => 'Usuario actualizado exitosamente',
+                'user' => $user
+            ]);
         } catch (\Exception $e) {
-            if ($request->ajax()) {
-                return response()->json([
-                    'message' => 'Error al actualizar el usuario',
-                    'error' => $e->getMessage()
-                ], 500);
-            }
-
-            return redirect()->back()->with('error', 'Error al actualizar el usuario');
+            return response()->json([
+                'message' => 'Error al actualizar el usuario',
+                'error' => $e->getMessage()
+            ], 500);
         }
     }
 
-    public function destroy(User $user)
+    public function destroy(User $registro)
     {
         try {
-            $user->delete();
+            $registro->deleted_at = now();
+            $registro->save();
 
-            if (request()->ajax()) {
-                return response()->json([
-                    'message' => 'Usuario eliminado exitosamente'
-                ]);
-            }
 
-            return redirect()->back()->with('success', 'Usuario eliminado exitosamente');
+            return response()->json([
+                'message' => 'Usuario eliminado exitosamente',
+            ]);
         } catch (\Exception $e) {
-            if (request()->ajax()) {
-                return response()->json([
-                    'message' => 'Error al eliminar el usuario',
-                    'error' => $e->getMessage()
-                ], 500);
-            }
 
-            return redirect()->back()->with('error', 'Error al eliminar el usuario');
+            return response()->json([
+                'message' => 'Error al eliminar el usuario',
+                'error' => $e->getMessage()
+            ], 500);
         }
     }
 }

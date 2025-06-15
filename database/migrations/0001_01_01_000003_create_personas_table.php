@@ -22,7 +22,6 @@ return new class extends Migration
             $table->string('ciudad')->nullable()->comment('Ciudad de residencia');
             $table->string('pais')->nullable()->comment('País de residencia');
             $table->string('telefono')->nullable()->comment('Número de teléfono de contacto');
-            $table->string('email')->nullable()->comment('Correo electrónico de contacto');
             $table->timestamps();
             $table->softDeletes();
         });

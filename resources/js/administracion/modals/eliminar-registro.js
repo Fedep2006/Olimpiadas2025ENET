@@ -26,7 +26,6 @@ setTimeout(function () {
         .getElementById("confirmarEliminacion")
         .addEventListener("click", async function () {
             if (!registroId) return;
-
             try {
                 const token = document
                     .querySelector('meta[name="csrf-token"]')
@@ -53,7 +52,11 @@ setTimeout(function () {
                 showToast(result.message);
                 confirmarEliminacionModal.hide();
 
-                fetch(pathname, {
+                const searchParams = new URLSearchParams(
+                    window.location.search
+                );
+
+                fetch(pathname + `?${searchParams}`, {
                     headers: {
                         "X-Requested-With": "XMLHttpRequest",
                     },

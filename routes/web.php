@@ -14,6 +14,7 @@ use App\Http\Controllers\ResultsController;
 use App\Http\Controllers\Admin\VehiculosController;
 use App\Http\Controllers\Admin\HospedajeController;
 use App\Http\Controllers\Admin\ViajeController as AdminViajeController;
+use App\Http\Controllers\EmpleadoController;
 use App\Http\Controllers\TestCompraController;
 use App\Http\Controllers\TestGmailController;
 use App\Http\Controllers\TestEmailController;
@@ -27,7 +28,7 @@ use App\Models\Paquete;
 
 // Ruta de búsqueda unificada de texto y filtros avanzados
 Route::get('/results', [ResultsController::class, 'index'])
-     ->name('results.index');
+    ->name('results.index');
 
 // Página de inicio
 Route::get('/', function (Request $request) {
@@ -55,7 +56,7 @@ Route::get('/details/{type}/{id}', function ($type, $id) {
         default:
             abort(404);
     }
-    return view('details', compact('type','item'));
+    return view('details', compact('type', 'item'));
 });
 
 // Autenticación
@@ -64,7 +65,7 @@ Route::get('/login', function () {
 })->name('login');
 
 Route::post('/login', [AuthController::class, 'login'])
-     ->name('login.process');
+    ->name('login.process');
 
 Route::post('/logout', function () {
     Auth::logout();
@@ -78,14 +79,20 @@ Route::get('/register', [RegisterController::class, 'index'])->name('register');
 Route::post('/CrearRegistro', [RegisterController::class, 'register'])->name('register.process');
 
 // Vistas estáticas
-Route::get('/detalles', function () { return view('detalles'); });
-Route::get('/carrito',  function () { return view('login.carrito'); });
-Route::get('/busqueda', function () { return view('busqueda'); });
+Route::get('/detalles', function () {
+    return view('detalles');
+});
+Route::get('/carrito',  function () {
+    return view('login.carrito');
+});
+Route::get('/busqueda', function () {
+    return view('busqueda');
+});
 
 // Área de administración (requiere auth)
 Route::prefix('administracion')->middleware('auth')->group(function () {
     Route::get('/',        [administracionController::class, 'inicio'])->name('administracion.inicio');
-    Route::get('/reportes',[administracionController::class, 'reportes'])->name('administracion.reportes');
+    Route::get('/reportes', [administracionController::class, 'reportes'])->name('administracion.reportes');
 
     // Vehículos
     Route::get('/vehiculos',                [VehiculosController::class, 'index'])->name('administracion.vehiculos');
@@ -117,11 +124,14 @@ Route::prefix('administracion')->middleware('auth')->group(function () {
     // Usuarios
     Route::get('/usuarios',               [UserController::class, 'index'])->name('usuarios.index');
     Route::post('/usuarios/create',       [UserController::class, 'crear'])->name('usuarios.create');
-    Route::put('/usuarios/{user}',        [UserController::class, 'update'])->name('usuarios.update');
-    Route::delete('/usuarios/{user}',     [UserController::class, 'destroy'])->name('usuarios.destroy');
+    Route::put('/usuarios/{id}',        [UserController::class, 'update'])->name('usuarios.update');
+    Route::delete('/usuarios/{id}', [UserController::class, 'destroy'])->name('usuarios.destroy');
 
     // Empleados
-    Route::get('/empleados',              [administracionController::class, 'empleados'])->name('administracion.empleados');
+    Route::get('/empleados',              [EmpleadoController::class, 'index'])->name('empleados.index');
+    Route::post('/empleados/create',       [UserController::class, 'crear'])->name('empleados.create');
+    Route::put('/empleados/{id}',        [UserController::class, 'update'])->name('empleados.update');
+    Route::delete('/empleados/{id}', [UserController::class, 'destroy'])->name('empleados.destroy');
 });
 
 Route::get('/terminos', function () {

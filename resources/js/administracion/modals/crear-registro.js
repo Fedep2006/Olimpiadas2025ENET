@@ -67,7 +67,11 @@ setTimeout(function () {
                     nuevoRegistroModal.hide();
                     form.reset();
 
-                    fetch(pathname, {
+                    const searchParams = new URLSearchParams(
+                        window.location.search
+                    );
+
+                    fetch(pathname + `?${searchParams}`, {
                         headers: {
                             "X-Requested-With": "XMLHttpRequest",
                         },

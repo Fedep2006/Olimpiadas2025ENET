@@ -88,7 +88,10 @@ setTimeout(function () {
                     showToast(result.message);
                     editarRegistroModal.hide();
 
-                    fetch(pathname, {
+                    const searchParams = new URLSearchParams(
+                        window.location.search
+                    );
+                    fetch(pathname + `?${searchParams}`, {
                         headers: {
                             "X-Requested-With": "XMLHttpRequest",
                         },
