@@ -21,6 +21,7 @@ class ResultsController extends Controller
         $guests      = $request->query('guests');
         $priceMin    = $request->query('price_min');
         $priceMax    = $request->query('price_max');
+        $sort        = $request->query('sort'); // si implementas orden
 
         // Construir querybuilders
         $viajes     = Viaje::query();
@@ -43,7 +44,12 @@ class ResultsController extends Controller
         if ($origin)      $viajes->where('origen', 'like', "%{$origin}%");
         if ($destination) $viajes->where('destino','like', "%{$destination}%");
 
-        // Filtros avanzados para hospedajes
+        // --- Nuevo: filtrar hospedajes por ciudad de destino ---
+        if ($destination) {
+            $hospedajes->where('ciudad', 'like', "%{$destination}%");
+        }
+
+        // Filtros avanzados para hospedajes por fechas y huéspedes
         if ($checkin)     $hospedajes->whereDate('check_in','>=',$checkin);
         if ($checkout)    $hospedajes->whereDate('check_out','<=',$checkout);
         if ($guests)      $hospedajes->where('estrellas','>=',intval($guests));
@@ -62,18 +68,31 @@ class ResultsController extends Controller
             $paquetes->where('precio_total','<=',$priceMax);
         }
 
-        // Ejecutar consultas
+        // 3) Ordenación (opcional)
+        if ($sort === 'price_asc') {
+            $viajes->orderBy('precio_base','asc');
+            $hospedajes->orderBy('precio_noche','asc');
+            $vehiculos->orderBy('precio_por_dia','asc');
+            $paquetes->orderBy('precio_total','asc');
+        } elseif ($sort === 'price_desc') {
+            $viajes->orderBy('precio_base','desc');
+            $hospedajes->orderBy('precio_noche','desc');
+            $vehiculos->orderBy('precio_por_dia','desc');
+            $paquetes->orderBy('precio_total','desc');
+        }
+
+        // Ejecutar consultas con orden por defecto si no se aplicó sort
         $results = [
-            'viajes'     => $viajes->orderBy('nombre')->get(),
-            'hospedajes' => $hospedajes->orderBy('nombre')->get(),
-            'vehiculos'  => $vehiculos->orderBy('marca')->get(),
-            'paquetes'   => $paquetes->orderBy('nombre')->get(),
+            'viajes'     => $viajes->get(),
+            'hospedajes' => $hospedajes->get(),
+            'vehiculos'  => $vehiculos->get(),
+            'paquetes'   => $paquetes->get(),
         ];
 
         // Retornar la vista results.blade.php
         return view('results', array_merge(
             ['results' => $results],
-            compact('search','origin','destination','checkin','checkout','guests','priceMin','priceMax')
+            compact('search','origin','destination','checkin','checkout','guests','priceMin','priceMax','sort')
         ));
     }
 }
