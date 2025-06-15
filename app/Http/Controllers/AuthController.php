@@ -19,6 +19,12 @@ class AuthController extends Controller
 
         // Intentar credenciales
         if (Auth::attempt($request->only('email', 'password'), $request->boolean('remember'))) {
+            // Bloquear acceso si no verificó el email
+            $user = Auth::user();
+            if (is_null($user->email_verified_at)) {
+                Auth::logout();
+                return back()->withErrors(['email' => 'Debes verificar tu correo electrónico antes de iniciar sesión.'])->onlyInput('email');
+            }
             $request->session()->regenerate();
             return redirect()->intended('/administracion')
                 ->with('success', 'Has iniciado sesión correctamente.');

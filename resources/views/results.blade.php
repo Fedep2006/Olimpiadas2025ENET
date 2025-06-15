@@ -236,7 +236,8 @@
               <span class="input-group-text bg-transparent border-0">
                 <i class="fas fa-plane-departure"></i>
               </span>
-              <input type="text" name="origin" class="form-control border-0" placeholder="Ciudad de origen" value="{{ request('origin') }}">
+              <input type="text" name="origin" class="form-control border-0" placeholder="Ciudad de origen" id="input-origin" autocomplete="off" list="list-origin" value="{{ request('origin') }}">
+<datalist id="list-origin"></datalist>
             </div>
           </div>
           
@@ -249,33 +250,34 @@
               <span class="input-group-text bg-transparent border-0">
                 <i class="fas fa-plane-arrival"></i>
               </span>
-              <input type="text" name="destination" class="form-control border-0" placeholder="Ciudad de destino" value="{{ request('destination') }}">
+              <input type="text" name="destination" class="form-control border-0" placeholder="Ciudad de destino" id="input-destination" autocomplete="off" list="list-destination" value="{{ request('destination') }}">
+<datalist id="list-destination"></datalist>
             </div>
           </div>
           
-          <!-- Fecha Entrada -->
+          <!-- Fecha Ida -->
           <div class="col-md-2 date-col">
             <label class="form-label fw-bold mb-2">
-              <i class="fas fa-calendar-alt me-2 text-primary"></i>ENTRADA
+              <i class="fas fa-calendar-alt me-2 text-primary"></i>IDA
             </label>
             <div class="input-group input-elevated date-field-container">
               <span class="input-group-text bg-transparent border-0">
                 <i class="fas fa-calendar-check"></i>
               </span>
-              <input type="date" name="checkin" class="form-control border-0" value="{{ request('checkin') }}">
+              <input type="date" name="checkin" class="form-control border-0" placeholder="Fecha de ida" value="{{ request('checkin') }}">
             </div>
           </div>
           
-          <!-- Fecha Salida -->
+          <!-- Fecha Vuelta -->
           <div class="col-md-2 date-col">
             <label class="form-label fw-bold mb-2">
-              <i class="fas fa-calendar-alt me-2 text-primary"></i>SALIDA
+              <i class="fas fa-calendar-alt me-2 text-primary"></i>VUELTA
             </label>
             <div class="input-group input-elevated date-field-container">
               <span class="input-group-text bg-transparent border-0">
                 <i class="fas fa-calendar-times"></i>
               </span>
-              <input type="date" name="checkout" class="form-control border-0" value="{{ request('checkout') }}">
+              <input type="date" name="checkout" class="form-control border-0" placeholder="Fecha de vuelta" value="{{ request('checkout') }}">
             </div>
           </div>
           
@@ -319,49 +321,160 @@
 
     <div class="tab-content">
       <div class="tab-pane fade show active" id="tab-all">
-        @forelse(collect($results)->flatten(1) as $item)
-          @php
-            $type = $item instanceof \App\Models\Viaje ? 'viajes'
-                  : ($item instanceof \App\Models\Hospedaje ? 'hospedajes'
-                  : ($item instanceof \App\Models\Vehiculo ? 'vehiculos' : 'paquetes'));
-          @endphp
+        {{-- VIAJES EXACTOS --}}
+        <h5 class="mt-3 mb-2"><i class="fas fa-plane text-primary me-2"></i>Viajes</h5>
+        @forelse($results['viajes'] as $item)
+          @php $type = 'viajes'; @endphp
           <div class="result-card">
             <a href="{{ url('/details', ['type'=>$type,'id'=>$item->id]) }}" class="text-decoration-none text-dark">
               <div class="result-body">
                 <div class="result-info">
                   <span class="badge bg-primary badge-type">{{ strtoupper($type) }}</span>
                   <div class="fw-semibold mt-1">
-                    @if($type=='viajes')
-                      {{ $item->nombre }} ({{ $item->origen }} → {{ $item->destino }})
-                    @elseif($type=='vehiculos')
-                      {{ $item->marca }} {{ $item->modelo }}
-                    @else
-                      {{ $item->nombre }}
-                    @endif
+                    {{ $item->nombre }} ({{ $item->origen }} → {{ $item->destino }})
+                    <br>
+                    <small class="text-muted">
+                      {{ \Carbon\Carbon::parse($item->fecha_salida)->format('d/m/Y') }}
+                      &rarr;
+                      {{ \Carbon\Carbon::parse($item->fecha_llegada)->format('d/m/Y') }}
+                    </small>
                   </div>
                 </div>
                 <div class="text-end">
                   <div class="item-price">
-                    @if($type=='viajes')
-                      ${{ number_format($item->precio_base ?? $item->precio,2) }}
-                    @elseif($type=='hospedajes')
-                      ${{ number_format($item->precio_noche,2) }}<small>/noche</small>
-                    @elseif($type=='vehiculos')
-                      ${{ number_format($item->precio_por_dia,2) }}<small>/día</small>
-                    @else
-                      ${{ number_format($item->precio_total ?? $item->precio,2) }}
-                    @endif
+                    ${{ number_format($item->precio_base ?? $item->precio,2) }}
                   </div>
                 </div>
               </div>
             </a>
           </div>
         @empty
-          <p class="text-center text-muted">No hay resultados.</p>
+          <p class="text-center text-muted">No hay viajes.</p>
+        @endforelse
+
+        {{-- VIAJES CERCANOS --}}
+        @if(isset($viajes_cercanos) && count($viajes_cercanos) > 0)
+          <div class="alert alert-info mt-4 mb-2 text-center">
+            <strong>Fechas cercanas</strong> (±3 días)
+          </div>
+          @foreach($viajes_cercanos as $item)
+            <div class="result-card border border-info">
+              <a href="{{ url('/details', ['type'=>'viajes','id'=>$item->id]) }}" class="text-decoration-none text-dark">
+                <div class="result-body">
+                  <div class="result-info">
+                    <span class="badge bg-info text-dark badge-type">VIAJE CERCANO</span>
+                    <div class="fw-semibold mt-1">
+                      {{ $item->nombre }} ({{ $item->origen }} → {{ $item->destino }})
+                      <br>
+                      <small class="text-muted">
+                        {{ \Carbon\Carbon::parse($item->fecha_salida)->format('d/m/Y') }}
+                        &rarr;
+                        {{ \Carbon\Carbon::parse($item->fecha_llegada)->format('d/m/Y') }}
+                      </small>
+                    </div>
+                  </div>
+                  <div class="text-end">
+                    <div class="item-price">
+                      ${{ number_format($item->precio_base ?? $item->precio,2) }}
+                    </div>
+                  </div>
+                </div>
+              </a>
+            </div>
+          @endforeach
+        @endif
+
+        {{-- HOSPEDAJES --}}
+        <h5 class="mt-4 mb-2"><i class="fas fa-hotel text-success me-2"></i>Hospedajes</h5>
+        @forelse($results['hospedajes'] as $item)
+          <div class="result-card">
+            <a href="{{ url('/details', ['type'=>'hospedajes','id'=>$item->id]) }}" class="text-decoration-none text-dark">
+              <div class="result-body">
+                <div class="result-info">
+                  <span class="badge bg-success badge-type">HOSPEDAJE</span>
+                  <div class="fw-semibold mt-1">
+                    {{ $item->nombre }}
+                    @if(isset($item->estrellas))
+                      <span class="text-warning ms-2">
+                        @for($i = 0; $i < $item->estrellas; $i++)
+                          <i class="fas fa-star"></i>
+                        @endfor
+                      </span>
+                    @endif
+                  </div>
+                </div>
+                <div class="text-end">
+                  <div class="item-price">
+                    ${{ number_format($item->precio_noche,2) }}<small>/noche</small>
+                  </div>
+                </div>
+              </div>
+            </a>
+          </div>
+        @empty
+          <p class="text-center text-muted">No hay hospedajes.</p>
+        @endforelse
+
+        {{-- VEHÍCULOS --}}
+        <h5 class="mt-4 mb-2"><i class="fas fa-car text-warning me-2"></i>Vehículos</h5>
+        @forelse($results['vehiculos'] as $item)
+          <div class="result-card">
+            <a href="{{ url('/details', ['type'=>'vehiculos','id'=>$item->id]) }}" class="text-decoration-none text-dark">
+              <div class="result-body">
+                <div class="result-info">
+                  <span class="badge bg-warning text-dark badge-type">VEHÍCULO</span>
+                  <div class="fw-semibold mt-1">
+                    {{ $item->marca }} {{ $item->modelo }}
+                  </div>
+                </div>
+                <div class="text-end">
+                  <div class="item-price">
+                    ${{ number_format($item->precio_por_dia,2) }}<small>/día</small>
+                  </div>
+                </div>
+              </div>
+            </a>
+          </div>
+        @empty
+          <p class="text-center text-muted">No hay vehículos.</p>
+        @endforelse
+
+        {{-- PAQUETES --}}
+        <h5 class="mt-4 mb-2"><i class="fas fa-box text-secondary me-2"></i>Paquetes</h5>
+        @forelse($results['paquetes'] as $item)
+          <div class="result-card">
+            <a href="{{ url('/details', ['type'=>'paquetes','id'=>$item->id]) }}" class="text-decoration-none text-dark">
+              <div class="result-body">
+                <div class="result-info">
+                  <span class="badge bg-secondary badge-type">PAQUETE</span>
+                  <div class="fw-semibold mt-1">
+                    {{ $item->nombre }}
+                  </div>
+                </div>
+                <div class="text-end">
+                  <div class="item-price">
+                    ${{ number_format($item->precio_total ?? $item->precio,2) }}
+                  </div>
+                </div>
+              </div>
+            </a>
+          </div>
+        @empty
+          <p class="text-center text-muted">No hay paquetes.</p>
         @endforelse
       </div>
       @foreach($tabs as $key=>$label)
         <div class="tab-pane fade" id="tab-{{ $key }}">
+          {{-- Título de sección según el tipo --}}
+          @if($key=='viajes')
+            <h5 class="mt-3 mb-2"><i class="fas fa-plane text-primary me-2"></i>Viajes</h5>
+          @elseif($key=='hospedajes')
+            <h5 class="mt-3 mb-2"><i class="fas fa-hotel text-success me-2"></i>Hospedajes</h5>
+          @elseif($key=='vehiculos')
+            <h5 class="mt-3 mb-2"><i class="fas fa-car text-warning me-2"></i>Vehículos</h5>
+          @elseif($key=='paquetes')
+            <h5 class="mt-3 mb-2"><i class="fas fa-box text-secondary me-2"></i>Paquetes</h5>
+          @endif
           @forelse($results[$key] as $item)
             @php $type = $key; @endphp
             <div class="result-card">
@@ -374,6 +487,15 @@
                         {{ $item->nombre }} ({{ $item->origen }} → {{ $item->destino }})
                       @elseif($type=='vehiculos')
                         {{ $item->marca }} {{ $item->modelo }}
+                      @elseif($type=='hospedajes')
+                        {{ $item->nombre }}
+                        @if(isset($item->estrellas))
+                          <span class="text-warning ms-2">
+                            @for($i = 0; $i < $item->estrellas; $i++)
+                              <i class="fas fa-star"></i>
+                            @endfor
+                          </span>
+                        @endif
                       @else
                         {{ $item->nombre }}
                       @endif
@@ -422,5 +544,16 @@
     });
   });
   </script>
+<script>
+// Autocompletado de ciudades para origen y destino
+fetch('/api/ciudades')
+  .then(res => res.json())
+  .then(ciudades => {
+    const listOrigin = document.getElementById('list-origin');
+    const listDestination = document.getElementById('list-destination');
+    listOrigin.innerHTML = ciudades.map(c => `<option value="${c}">`).join('');
+    listDestination.innerHTML = ciudades.map(c => `<option value="${c}">`).join('');
+  });
+</script>
 </body>
 </html>

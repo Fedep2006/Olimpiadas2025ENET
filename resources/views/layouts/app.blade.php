@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="csrf-token" content="{{ csrf_token() }}">
+    <link rel="icon" type="image/png" href="{{ asset('img/logo.png') }}">
     <title>Olimpiadas 2025 - ENET</title>
     
     <!-- Bootstrap CSS -->
@@ -85,8 +86,8 @@
     <!-- Navbar -->
     <nav class="navbar navbar-expand-lg navbar-dark mb-4">
         <div class="container">
-            <a class="navbar-brand" href="/">
-                <i class="fas fa-trophy me-2"></i>
+            <a class="navbar-brand d-flex align-items-center" href="/">
+                <img src="{{ asset('img/logo.png') }}" alt="Logo" style="height:36px; margin-right:10px;">
                 Olimpiadas 2025
             </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">

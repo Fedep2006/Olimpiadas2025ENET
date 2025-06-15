@@ -78,6 +78,9 @@ Route::post('/logout', function () {
 Route::get('/register', [RegisterController::class, 'index'])->name('register');
 Route::post('/CrearRegistro', [RegisterController::class, 'register'])->name('register.process');
 
+// Verificación de email
+Route::get('/verify-email', [\App\Http\Controllers\RegisterController::class, 'verifyEmail'])->name('verify.email');
+
 // Vistas estáticas
 Route::get('/detalles', function () {
     return view('detalles');
@@ -141,6 +144,9 @@ Route::get('/terminos', function () {
 Route::get('/back', function () {
     return view('login.register');
 })->name('back');
+
+// API autocomplete ciudades
+Route::get('/api/ciudades', [\App\Http\Controllers\Api\CiudadController::class, 'index']);
 
 // Rutas de prueba
 Route::get('/test-compra', [TestCompraController::class, 'simularCompra']);

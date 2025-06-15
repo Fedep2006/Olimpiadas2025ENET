@@ -21,6 +21,7 @@ class ResultsController extends Controller
         $guests      = $request->query('guests');
         $priceMin    = $request->query('price_min');
         $priceMax    = $request->query('price_max');
+        $sort        = $request->query('sort'); // si implementas orden
 
         // Construir querybuilders
         $viajes     = Viaje::query();
@@ -31,7 +32,7 @@ class ResultsController extends Controller
         // 1) Búsqueda libre
         if ($search) {
             $viajes->where('nombre', 'like', "%{$search}%");
-            $hospedajes->where('nombre', 'like', "%{$search}%");
+            // $hospedajes->where('nombre', 'like', "%{$search}%"); // Quitado: solo buscar por ciudad
             $vehiculos->where(function($q) use ($search) {
                 $q->where('marca','like',"%{$search}%")
                   ->orWhere('modelo','like',"%{$search}%");
@@ -43,7 +44,44 @@ class ResultsController extends Controller
         if ($origin)      $viajes->where('origen', 'like', "%{$origin}%");
         if ($destination) $viajes->where('destino','like', "%{$destination}%");
 
-        // Filtros avanzados para hospedajes
+        // Filtro por fechas para viajes
+        $viajes_exactos = collect();
+        $viajes_cercanos = collect();
+        if ($checkin && $checkout) {
+            // Ambos campos completos: filtrar entre ambos
+            $viajes->whereDate('fecha_salida', '>=', $checkin)
+                   ->whereDate('fecha_llegada', '<=', $checkout);
+            $viajes_exactos = $viajes->get();
+        } elseif ($checkin) {
+            // Solo entrada: SOLO los de esa fecha exacta de salida
+            $viajes_exactos = Viaje::whereDate('fecha_salida', '=', $checkin)->get();
+            // Cercanos: ±3 días (excluyendo exactos)
+            $viajes_cercanos = Viaje::whereDate('fecha_salida', '!=', $checkin)
+                ->whereBetween('fecha_salida', [
+                    \Carbon\Carbon::parse($checkin)->subDays(3)->toDateString(),
+                    \Carbon\Carbon::parse($checkin)->addDays(3)->toDateString()
+                ])->get();
+        } elseif ($checkout) {
+            // Solo salida: SOLO los de esa fecha exacta de llegada
+            $viajes_exactos = Viaje::whereDate('fecha_llegada', '=', $checkout)->get();
+            // Cercanos: ±3 días (excluyendo exactos)
+            $viajes_cercanos = Viaje::whereDate('fecha_llegada', '!=', $checkout)
+                ->whereBetween('fecha_llegada', [
+                    \Carbon\Carbon::parse($checkout)->subDays(3)->toDateString(),
+                    \Carbon\Carbon::parse($checkout)->addDays(3)->toDateString()
+                ])->get();
+        } else {
+            // Sin filtro de fechas, traer todos
+            $viajes_exactos = $viajes->get();
+        }
+
+        // --- Nuevo: filtrar hospedajes y vehículos por ciudad de destino ---
+        if ($destination) {
+            $hospedajes->where('ciudad', 'like', "%{$destination}%");
+            $vehiculos->where('ubicacion', 'like', "%{$destination}%");
+        }
+
+        // Filtros avanzados para hospedajes por fechas y huéspedes
         if ($checkin)     $hospedajes->whereDate('check_in','>=',$checkin);
         if ($checkout)    $hospedajes->whereDate('check_out','<=',$checkout);
         if ($guests)      $hospedajes->where('estrellas','>=',intval($guests));
@@ -62,18 +100,31 @@ class ResultsController extends Controller
             $paquetes->where('precio_total','<=',$priceMax);
         }
 
-        // Ejecutar consultas
+        // 3) Ordenación (opcional)
+        if ($sort === 'price_asc') {
+            $viajes->orderBy('precio_base','asc');
+            $hospedajes->orderBy('precio_noche','asc');
+            $vehiculos->orderBy('precio_por_dia','asc');
+            $paquetes->orderBy('precio_total','asc');
+        } elseif ($sort === 'price_desc') {
+            $viajes->orderBy('precio_base','desc');
+            $hospedajes->orderBy('precio_noche','desc');
+            $vehiculos->orderBy('precio_por_dia','desc');
+            $paquetes->orderBy('precio_total','desc');
+        }
+
+        // Ejecutar consultas con orden por defecto si no se aplicó sort
         $results = [
-            'viajes'     => $viajes->orderBy('nombre')->get(),
-            'hospedajes' => $hospedajes->orderBy('nombre')->get(),
-            'vehiculos'  => $vehiculos->orderBy('marca')->get(),
-            'paquetes'   => $paquetes->orderBy('nombre')->get(),
+            'viajes'     => $viajes_exactos,
+            'hospedajes' => $hospedajes->get(),
+            'vehiculos'  => $vehiculos->get(),
+            'paquetes'   => $paquetes->get(),
         ];
 
         // Retornar la vista results.blade.php
         return view('results', array_merge(
-            ['results' => $results],
-            compact('search','origin','destination','checkin','checkout','guests','priceMin','priceMax')
+            ['results' => $results, 'viajes_cercanos' => $viajes_cercanos],
+            compact('search','origin','destination','checkin','checkout','guests','priceMin','priceMax','sort')
         ));
     }
 }
