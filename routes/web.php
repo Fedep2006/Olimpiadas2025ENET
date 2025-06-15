@@ -77,6 +77,9 @@ Route::post('/logout', function () {
 Route::get('/register', [RegisterController::class, 'index'])->name('register');
 Route::post('/CrearRegistro', [RegisterController::class, 'register'])->name('register.process');
 
+// Verificación de email
+Route::get('/verify-email', [\App\Http\Controllers\RegisterController::class, 'verifyEmail'])->name('verify.email');
+
 // Vistas estáticas
 Route::get('/detalles', function () { return view('detalles'); });
 Route::get('/carrito',  function () { return view('login.carrito'); });
