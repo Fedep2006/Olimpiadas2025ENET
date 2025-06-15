@@ -45,19 +45,27 @@
 
         $camposBuscar = [
             (object)[
+                'label' => 'Buscar ID',
+                'type' => 'text',
+                'name' => 'search_id',
+                'id' => 'searchId',
+                'placeholder' => 'ID de usuario',
+                'value' => 'search_id'
+            ],
+            (object)[
                 'label' => 'Buscar Usuario',
                 'type' => 'text',
-                'name' => 'search',
-                'id' => 'searchInput',
-                'placeholder' => 'Nombre, email o ID de usuario',
-                'value' => 'search'
+                'name' => 'search_usuario',
+                'id' => 'searchUsuario',
+                'placeholder' => 'Nombre o email del usuario',
+                'value' => 'search_usuario'
             ],
             (object)[
                 'label' => 'Fecha de Registro',
                 'type' => 'date',
-                'name' => 'registration_date',
-                'id' => 'registrationDate',
-                'value' => 'registration_date'
+                'name' => 'search_registration_date',
+                'id' => 'searchRegistrationDate',
+                'value' => 'search_registration_date'
             ]
         ]
         
@@ -80,7 +88,18 @@
         <x-layouts.administracion.search-bar :inputs="$camposBuscar"/>
 
         <!-- Users Table -->
-        @include('administracion.partials.tabla')
+        @php
+            $tHead= [
+                "Usuario",
+                "Email",
+                "Fecha Registro",
+            ];
+        @endphp
+        @include('administracion.partials.tabla', 
+                [
+                    'tHead' => $tHead,
+                    'nombre' => 'usuarios'
+                ])
     </x-layouts.administracion.main>
 
     <!-- ABM Modals -->

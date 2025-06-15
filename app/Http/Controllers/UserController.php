@@ -66,18 +66,21 @@ class UserController extends Controller
         $query = User::query();
 
         // Aplicar búsqueda
-        if ($request->filled('search')) {
-            $search = $request->search;
+        if ($request->filled('search_usuario')) {
+            $search = $request->search_usuario;
             $query->where(function ($q) use ($search) {
                 $q->where('name', 'like', "%{$search}%")
-                    ->orWhere('email', 'like', "%{$search}%")
-                    ->orWhere('id', 'like', "%{$search}%");
+                    ->orWhere('email', 'like', "%{$search}%");
             });
+        }
+        if ($request->filled('search_id')) {
+            $search = $request->search_id;
+            $query->where('id', $search);
         }
 
         // Aplicar filtro de fecha
-        if ($request->filled('registration_date')) {
-            $date = $request->registration_date;
+        if ($request->filled('search_registration_date')) {
+            $date = $request->search_registration_date;
             $query->whereDate('created_at', $date);
         }
 
@@ -85,20 +88,20 @@ class UserController extends Controller
         $query->select(['id', 'name', 'email', 'created_at'])->orderBy('created_at', 'desc');
 
         // Paginar resultados
-        $users = $query->paginate(10)->withQueryString();
+        $registros = $query->paginate(10)->withQueryString();
 
         if ($request->ajax()) {
-            $view = view('administracion.partials.tabla-contenido', compact('users'))->render();
-            $pagination = view('administracion.partials.pagination', compact('users'))->render();
+            $view = view('administracion.partials.tablas.tabla-usuarios-contenido', compact('registros'))->render();
+            $pagination = view('administracion.partials.pagination', compact('registros'))->render();
 
             return response()->json([
                 'view' => $view,
                 'pagination' => $pagination,
-                'paginationInfo' => "Mostrando {$users->firstItem()} - {$users->lastItem()} de {$users->total()} usuarios"
+                'paginationInfo' => "Mostrando {$registros->firstItem()} - {$registros->lastItem()} de {$registros->total()} usuarios"
             ]);
         }
 
-        return view('administracion.usuarios', compact('users'));
+        return view('administracion.usuarios', compact('registros'));
     }
 
     public function update(Request $request, User $user)

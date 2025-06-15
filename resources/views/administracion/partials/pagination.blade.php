@@ -107,11 +107,11 @@
         opacity: 0.65;
     }
 </style>
-@if ($users->hasPages())
+@if ($registros->hasPages())
     <nav aria-label="Navegación de páginas">
         <ul class="pagination">
             {{-- Botón Anterior --}}
-            @if ($users->onFirstPage())
+            @if ($registros->onFirstPage())
                 <li class="page-item disabled">
                     <span class="page-link prev">
                         <i class="fas fa-chevron-left"></i>
@@ -120,23 +120,22 @@
                 </li>
             @else
                 <li class="page-item">
-                    <a class="page-link prev" href="{{ $users->previousPageUrl() }}" rel="prev">
+                    <a class="page-link prev" href="{{ $registros->previousPageUrl() }}" rel="prev">
                         <i class="fas fa-chevron-left"></i>
                         <span>Anterior</span>
                     </a>
                 </li>
             @endif
-
-            {{-- Números de Página --}}
+                        {{-- Números de Página --}}
             @php
-                $start = max(1, $users->currentPage() - 2);
-                $end = min($users->lastPage(), values: $users->currentPage() + 2);
+                $start = max(1, $registros->currentPage() - 3);
+                $end = min($registros->lastPage(), $registros->currentPage() + 3);
             @endphp
 
             {{-- Primera página --}}
             @if ($start > 1)
                 <li class="page-item">
-                    <a class="page-link" href="{{ $users->url(1) }}">1</a>
+                    <a class="page-link" href="{{ $registros->url(1) }}">1</a>
                 </li>
                 @if ($start > 2)
                     <li class="page-item disabled">
@@ -147,33 +146,33 @@
 
             {{-- Páginas alrededor de la actual --}}
             @for ($i = $start; $i <= $end; $i++)
-                @if ($i == $users->currentPage())
+                @if ($i == $registros->currentPage())
                     <li class="page-item active">
                         <span class="page-link">{{ $i }}</span>
                     </li>
                 @else
                     <li class="page-item">
-                        <a class="page-link" href="{{ $users->url($i) }}">{{ $i }}</a>
+                        <a class="page-link" href="{{ $registros->url($i) }}">{{ $i }}</a>
                     </li>
                 @endif
             @endfor
 
             {{-- Última página --}}
-            @if ($end < $users->lastPage())
-                @if ($end < $users->lastPage() - 1)
+            @if ($end < $registros->lastPage())
+                @if ($end < $registros->lastPage() - 1)
                     <li class="page-item disabled">
                         <span class="page-link">...</span>
                     </li>
                 @endif
                 <li class="page-item">
-                    <a class="page-link" href="{{ $users->url($users->lastPage()) }}">{{ $users->lastPage() }}</a>
+                    <a class="page-link" href="{{ $registros->url($registros->lastPage()) }}">{{ $registros->lastPage() }}</a>
                 </li>
             @endif
 
             {{-- Botón Siguiente --}}
-            @if ($users->hasMorePages())
+            @if ($registros->hasMorePages())
                 <li class="page-item">
-                    <a class="page-link next" href="{{ $users->nextPageUrl() }}" rel="next">
+                    <a class="page-link next" href="{{ $registros->nextPageUrl() }}" rel="next">
                         <i class="fas fa-chevron-right"></i>
                         <span>Siguiente</span>
                     </a>
@@ -186,6 +185,7 @@
                     </span>
                 </li>
             @endif
+            
         </ul>
     </nav>
 @endif
