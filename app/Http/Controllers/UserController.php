@@ -91,7 +91,7 @@ class UserController extends Controller
         $registros = $query->paginate(10)->withQueryString();
 
         if ($request->ajax()) {
-            $view = view('administracion.partials.tabla-contenido', compact('registros'))->render();
+            $view = view('administracion.partials.tablas.tabla-usuarios-contenido', compact('registros'))->render();
             $pagination = view('administracion.partials.pagination', compact('registros'))->render();
 
             return response()->json([

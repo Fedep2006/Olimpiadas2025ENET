@@ -89,24 +89,16 @@
 
         <!-- Users Table -->
         @php
-            $thead= [
+            $tHead= [
                 "Usuario",
                 "Email",
                 "Fecha Registro",
             ];
-            $trow=[
-                (object)[
-                    'algo' => 'algo'
-                ],
-                (object)[
-                    'algo' => 'algo'
-                ],
-            ]
         @endphp
         @include('administracion.partials.tabla', 
                 [
-                    'thead' => $thead,
-                    'trow' => $trow
+                    'tHead' => $tHead,
+                    'nombre' => 'usuarios'
                 ])
     </x-layouts.administracion.main>
 

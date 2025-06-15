@@ -45,24 +45,30 @@
 </style>
 <div class="content-card">
     <div class="card-header">
-        <h5 class="card-title">Lista de Usuarios</h5>
+        <h5 class="card-title">Lista de {{ucfirst($nombre)}}</h5>
     </div>
 
     <div class="table-container">
         <table class="table">
             <thead>
                 <tr>
-                    @foreach ($thead as $col)
+                    @foreach ($tHead as $col)
                         <th>{{$col}}</th>
                     @endforeach
                     <th>Acciones</th>
                 </tr>
             </thead>
             <tbody id="tBody">
-                @include('administracion.partials.tabla-contenido', 
-                [
-                    'trow' => $trow,
-                ])
+                @switch($nombre)
+                    @case('usuarios')
+                        @include('administracion.partials.tablas.tabla-usuarios-contenido')
+                        @break
+                    @case(2)
+                        
+                        @break
+                    @default
+                        
+                @endswitch
             </tbody>
         </table>
     </div>
@@ -71,10 +77,10 @@
     <div class="d-flex justify-content-between align-items-center mt-4">
         <div class="pagination-info">
             @if ($registros->total() > 0)
-                Mostrando {{ $registros->firstItem() }} - {{ $registros->lastItem() }} de {{ $registros->total() }}
-                usuarios
+                Mostrando {{ $registros->firstItem() }} - {{ $registros->lastItem() }} de {{ $registros->total()}} 
+                {{$nombre}}
             @else
-                No hay usuarios para mostrar
+                No hay {{$nombre}} para mostrar
             @endif
         </div>
         <div class="pagination-container">
