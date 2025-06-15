@@ -286,20 +286,6 @@
             </div>
         </div>
     </nav>
-
-    <!-- Breadcrumb -->
-    <section class="breadcrumb-section">
-        <div class="container">
-            <nav aria-label="breadcrumb">
-                <ol class="breadcrumb mb-0">
-                    <li class="breadcrumb-item"><a href="index.html">Inicio</a></li>
-                    <li class="breadcrumb-item"><a href="#">Vuelos</a></li>
-                    <li class="breadcrumb-item active" aria-current="page">Buenos Aires - Miami</li>
-                </ol>
-            </nav>
-        </div>
-    </section>
-
     <!-- Main Content -->
     <div class="container my-4">
         <div class="row">
