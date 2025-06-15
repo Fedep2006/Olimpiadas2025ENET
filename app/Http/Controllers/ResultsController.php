@@ -45,16 +45,34 @@ class ResultsController extends Controller
         if ($destination) $viajes->where('destino','like', "%{$destination}%");
 
         // Filtro por fechas para viajes
+        $viajes_exactos = collect();
+        $viajes_cercanos = collect();
         if ($checkin && $checkout) {
             // Ambos campos completos: filtrar entre ambos
             $viajes->whereDate('fecha_salida', '>=', $checkin)
                    ->whereDate('fecha_llegada', '<=', $checkout);
+            $viajes_exactos = $viajes->get();
         } elseif ($checkin) {
             // Solo entrada: SOLO los de esa fecha exacta de salida
-            $viajes->whereDate('fecha_salida', '=', $checkin);
+            $viajes_exactos = Viaje::whereDate('fecha_salida', '=', $checkin)->get();
+            // Cercanos: ±3 días (excluyendo exactos)
+            $viajes_cercanos = Viaje::whereDate('fecha_salida', '!=', $checkin)
+                ->whereBetween('fecha_salida', [
+                    \Carbon\Carbon::parse($checkin)->subDays(3)->toDateString(),
+                    \Carbon\Carbon::parse($checkin)->addDays(3)->toDateString()
+                ])->get();
         } elseif ($checkout) {
             // Solo salida: SOLO los de esa fecha exacta de llegada
-            $viajes->whereDate('fecha_llegada', '=', $checkout);
+            $viajes_exactos = Viaje::whereDate('fecha_llegada', '=', $checkout)->get();
+            // Cercanos: ±3 días (excluyendo exactos)
+            $viajes_cercanos = Viaje::whereDate('fecha_llegada', '!=', $checkout)
+                ->whereBetween('fecha_llegada', [
+                    \Carbon\Carbon::parse($checkout)->subDays(3)->toDateString(),
+                    \Carbon\Carbon::parse($checkout)->addDays(3)->toDateString()
+                ])->get();
+        } else {
+            // Sin filtro de fechas, traer todos
+            $viajes_exactos = $viajes->get();
         }
 
         // --- Nuevo: filtrar hospedajes por ciudad de destino ---
@@ -96,7 +114,7 @@ class ResultsController extends Controller
 
         // Ejecutar consultas con orden por defecto si no se aplicó sort
         $results = [
-            'viajes'     => $viajes->get(),
+            'viajes'     => $viajes_exactos,
             'hospedajes' => $hospedajes->get(),
             'vehiculos'  => $vehiculos->get(),
             'paquetes'   => $paquetes->get(),
@@ -104,7 +122,7 @@ class ResultsController extends Controller
 
         // Retornar la vista results.blade.php
         return view('results', array_merge(
-            ['results' => $results],
+            ['results' => $results, 'viajes_cercanos' => $viajes_cercanos],
             compact('search','origin','destination','checkin','checkout','guests','priceMin','priceMax','sort')
         ));
     }
