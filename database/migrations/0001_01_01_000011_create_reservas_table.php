@@ -20,7 +20,7 @@ return new class extends Migration
             $table->dateTime('fecha_fin')->comment('Fecha y hora de finalización de la reserva');
             $table->string('ubicacion')->comment('Ubicación principal o punto de encuentro');
             $table->enum('estado', ['pendiente', 'confirmada', 'cancelada', 'completada'])->default('pendiente')
-                ->comment('Estado actual de la reserva: pendiente (recién creada), confirmada (pago verificado), cancelada (anulada), completada (servicio realizado)');
+                ->comment('Estado actual de la reserva: pendiente (recién creada), confirmada (pago verificado y verificada por un administrador), cancelada (anulada), completada (servicio realizado)');
             $table->json('personas_id')->comment('Array de IDs de la tabla personas que participarán');
             $table->json('habitaciones_id')->nullable()->comment('Array de IDs de las habitaciones reservadas (solo para reservas de tipo hospedaje)');
             $table->decimal('precio_total', 10, 2)->comment('Precio total de la reserva en la moneda base del sistema');

@@ -10,23 +10,91 @@
     @php
         $camposCrear = [
             (object)[
-                'id' => 'name',
-                'name' => 'name',
+                'id' => 'usuario_id',
+                'name' => 'usuario_id',
+                'type' => 'number',
+                'label' => 'ID del Usuario Asociado'
+            ],
+            (object)[
+                'id' => 'puesto',
+                'name' => 'puesto',
                 'type' => 'text',
-                'label' => 'Nombre de Usuario'
+                'label' => 'Puesto'
             ],
             (object)[
-                'id' => 'email',
-                'name' => 'email',
-                'type' => 'email',
-                'label' => 'Email'
+                'id' => 'fecha_contratacion',
+                'name' => 'fecha_contratacion',
+                'type' => 'date',
+                'label' => 'Fecha de Contratacion'
             ],
             (object)[
-                'id' => 'password',
-                'name' => 'password',
-                'type' => 'password',
-                'label' => 'Contraseña'
+                'id' => 'salario',
+                'name' => 'salario',
+                'type' => 'number',
+                'label' => 'Salario',
+                'step' => '.01'
+            ],
+            (object)[
+                'id' => 'estado',
+                'name' => 'estado',
+                'type' => 'select',
+                'label' => 'Estado',
+                'options' => [
+                    (object)['value' => 'activo', 'text' => 'Activo'],
+                    (object)['value' => 'inactivo', 'text' => 'Inactivo'],
+                    (object)['value' => 'vacaciones', 'text' => 'Vacaciones'],
+                    (object)['value' => 'licencia', 'text' => 'Licencia'],
+                ],
+            ],
+            (object)[
+                'id' => 'nombre',
+                'name' => 'nombre',
+                'type' => 'text',
+                'label' => 'Nombre'
+            ],
+            (object)[
+                'id' => 'apellido',
+                'name' => 'apellido',
+                'type' => 'text',
+                'label' => 'Apellido'
+            ],
+            (object)[
+                'id' => 'dni',
+                'name' => 'dni',
+                'type' => 'number',
+                'label' => 'DNI'
+            ],
+            (object)[
+                'id' => 'fecha_nacimiento',
+                'name' => 'fecha_nacimiento',
+                'type' => 'date',
+                'label' => 'Fecha de Nacimiento'
+            ],
+            (object)[
+                'id' => 'nacionalidad',
+                'name' => 'nacionalidad',
+                'type' => 'text',
+                'label' => 'Nacionalidad'
+            ],
+            (object)[
+                'id' => 'ciudad',
+                'name' => 'ciudad',
+                'type' => 'text',
+                'label' => 'Ciudad'
+            ],
+            (object)[
+                'id' => 'pais',
+                'name' => 'pais',
+                'type' => 'text',
+                'label' => 'Pais'
+            ],
+            (object)[
+                'id' => 'telefono',
+                'name' => 'telefono',
+                'type' => 'number',
+                'label' => 'Telefono'
             ]
+
         ];
         $camposEditar = [
             (object)[
@@ -98,13 +166,25 @@
         @include('administracion.partials.tabla', 
                 [
                     'tHead' => $tHead,
-                    'nombre' => 'usuarios'
+                    'nombre' => 'empleados'
                 ])
 
     </x-layouts.administracion.main>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- ABM Modals -->
+    <x-layouts.administracion.modals.modals 
+        tituloCrear="Crear Nuevo Empleado"
+        tituloEditar="Modificar Empleado"
+        tituloEliminar="Eliminar Empleado"
+        :camposCrear="$camposCrear"
+        :camposEditar="$camposEditar"
+    />
+    <!-- Toast Notifications -->
+    <x-layouts.administracion.modals.toast />
+
     @vite('resources/js/sidebar.js')
+    @vite('resources/js/administracion/search-bar.js')
+    @vite('resources/js/administracion/paginacion.js')
 </body>
 
 </html>

@@ -62,7 +62,7 @@ class EmpleadoController extends Controller
                 'fecha_contratacion' => 'required|date|before_or_equal:today',
                 'salario' => 'required|numeric|min:0|max:999999999.99',
                 'estado' => 'required|string|in:activo,inactivo,vacaciones,licencia',
-                'habilidades' => 'required|array|max:50',
+                'habilidades' => 'nullable|array|max:50',
                 'habilidades.*' => 'required|string|min:2|max:100|distinct',
                 'observaciones' => 'nullable|string|max:65535'
             ], [
@@ -88,7 +88,6 @@ class EmpleadoController extends Controller
                 'estado.required' => 'El estado es obligatorio',
                 'estado.string' => 'El estado debe ser texto',
                 'estado.in' => 'El estado es incorrecto',
-                'habilidades.required' => 'Las habilidades son obligatorias',
                 'habilidades.array' => 'Las habilidades deben ser una array',
                 'habilidades.max' => 'Las habilidades no pueden superar las 50',
                 'habilidades.*.required' => 'La habilidad es obligatoria',
