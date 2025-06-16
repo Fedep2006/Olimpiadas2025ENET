@@ -18,7 +18,6 @@ return new class extends Migration
             $table->string('dni', 20)->unique()->comment('Número de documento de identidad');
             $table->date('fecha_nacimiento')->comment('Fecha de nacimiento');
             $table->string('nacionalidad')->comment('Nacionalidad de la persona');
-            $table->string('direccion')->nullable()->comment('Dirección de residencia');
             $table->string('ciudad')->nullable()->comment('Ciudad de residencia');
             $table->string('pais')->nullable()->comment('País de residencia');
             $table->string('telefono')->nullable()->comment('Número de teléfono de contacto');

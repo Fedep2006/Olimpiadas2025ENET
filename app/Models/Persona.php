@@ -16,11 +16,9 @@ class Persona extends Model
         'dni',
         'fecha_nacimiento',
         'nacionalidad',
-        'direccion',
         'ciudad',
         'pais',
-        'telefono',
-        'email'
+        'telefono'
     ];
 
     protected $casts = [

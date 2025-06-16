@@ -129,11 +129,11 @@
                 'value' => 'search_usuario'
             ],
             (object)[
-                'label' => 'Fecha de Registro',
+                'label' => 'Fecha de Contratacion',
                 'type' => 'date',
-                'name' => 'search_registration_date',
-                'id' => 'searchRegistrationDate',
-                'value' => 'search_registration_date'
+                'name' => 'search_hiring_date',
+                'id' => 'searchHiringDate',
+                'value' => 'search_hiring_date'
             ]
         ]
         
@@ -160,7 +160,10 @@
             $tHead= [
                 "Usuario",
                 "Email",
-                "Fecha Registro",
+                "Puesto",
+                "Salario",
+                "Estado",
+                "Fecha de Contratacion",
             ];
         @endphp
         @include('administracion.partials.tabla', 

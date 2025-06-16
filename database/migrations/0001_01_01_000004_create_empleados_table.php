@@ -18,13 +18,11 @@ return new class extends Migration
             $table->foreignId('persona_id')->constrained('personas')->onDelete('cascade')
                 ->comment('ID de la persona asociada al empleado');
             $table->string('puesto')->comment('Cargo o puesto del empleado');
-            $table->enum('nivel', [0, 1, 2, 3])->comment('Nivel jerárquico: 0 (básico), 1 (intermedio), 2 (supervisor), 3 (gerencial)');
+            $table->enum('nivel', [0, 1])->comment('Nivel jerárquico: 0 (básico), 1 (jefe)');
             $table->date('fecha_contratacion')->comment('Fecha en que se contrató al empleado');
-            $table->decimal('salario', 10, 2)->comment('Salario base del empleado');
+            $table->string('salario')->comment('Salario base del empleado');
             $table->enum('estado', ['activo', 'inactivo', 'vacaciones', 'licencia'])->default('activo')
                 ->comment('Estado actual del empleado');
-            $table->json('habilidades')->nullable()->comment('Array de habilidades o competencias del empleado');
-            $table->text('observaciones')->nullable()->comment('Notas adicionales sobre el empleado');
             $table->timestamps();
             $table->softDeletes();
         });

@@ -132,9 +132,9 @@ Route::prefix('administracion')->middleware('auth')->group(function () {
 
     // Empleados
     Route::get('/empleados',              [EmpleadoController::class, 'index'])->name('empleados.index');
-    Route::post('/empleados/create',       [UserController::class, 'crear'])->name('empleados.create');
-    Route::put('/empleados/{id}',        [UserController::class, 'update'])->name('empleados.update');
-    Route::delete('/empleados/{id}', [UserController::class, 'destroy'])->name('empleados.destroy');
+    Route::post('/empleados/create',       [EmpleadoController::class, 'crear'])->name('empleados.create');
+    Route::put('/empleados/{id}',        [EmpleadoController::class, 'update'])->name('empleados.update');
+    Route::delete('/empleados/{id}', [EmpleadoController::class, 'destroy'])->name('empleados.destroy');
 });
 
 Route::get('/terminos', function () {
