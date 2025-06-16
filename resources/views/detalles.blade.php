@@ -7,11 +7,173 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <style>
+        :root {
+            --despegar-blue: #0066cc;
+            --despegar-orange: #ff6600;
+            --despegar-light-blue: #e6f3ff;
+        }
         body {
             background-color: #f8f9fa;
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
         }
-        
+        .navbar-brand {
+            font-weight: bold;
+            font-size: 1.8rem;
+            color: var(--despegar-blue) !important;
+        }
+        .section-title {
+            font-size: 2.2rem;
+            font-weight: bold;
+            color: var(--despegar-blue);
+            text-align: center;
+            margin-bottom: 2rem;
+            position: relative;
+        }
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 3px;
+            background: var(--despegar-orange);
+            border-radius: 2px;
+        }
+        .vehicle-card {
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.10);
+            overflow: hidden;
+            margin-bottom: 30px;
+        }
+        .vehicle-details {
+            background: white;
+            border-radius: 16px;
+            padding: 24px;
+            margin-top: 20px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+        .price-display {
+            font-size: 28px;
+            font-weight: 600;
+            color: var(--despegar-orange);
+            margin-bottom: 24px;
+        }
+        .price-period {
+            font-size: 14px;
+            color: #666;
+            font-weight: normal;
+            margin-left: 8px;
+        }
+        .reserve-header {
+            background: var(--despegar-blue);
+            color: white;
+            padding: 18px 24px;
+            font-size: 20px;
+            font-weight: 600;
+            border-radius: 16px 16px 0 0;
+            margin: 0;
+        }
+        .booking-panel {
+            background: white;
+            padding: 0;
+            border-radius: 16px;
+            box-shadow: 0 5px 15px rgba(0,102,204,0.08);
+        }
+        .booking-content {
+            padding: 24px;
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        .form-label {
+            font-size: 14px;
+            color: #333;
+            font-weight: 500;
+            margin-bottom: 8px;
+            display: block;
+        }
+        .form-control {
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 12px 16px;
+            font-size: 14px;
+            width: 100%;
+            transition: border-color 0.2s;
+        }
+        .form-control:focus {
+            border-color: var(--despegar-blue);
+            box-shadow: 0 0 0 3px rgba(0,102,204,0.08);
+            outline: none;
+        }
+        .reserve-button {
+            background: linear-gradient(135deg, var(--despegar-orange), #ff8533);
+            color: white;
+            border: none;
+            border-radius: 50px;
+            padding: 15px 0;
+            font-size: 1.1rem;
+            font-weight: bold;
+            width: 100%;
+            margin-bottom: 24px;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        .reserve-button:hover {
+            background: linear-gradient(135deg, #ff8533, var(--despegar-orange));
+        }
+        .modal-content {
+            border-radius: 18px;
+        }
+        .nav-tabs .nav-link.active {
+            background-color: var(--despegar-blue);
+            color: #fff;
+            border-radius: 25px 25px 0 0;
+        }
+        .nav-tabs .nav-link {
+            color: var(--despegar-blue);
+            border-radius: 25px 25px 0 0;
+        }
+        .trust-indicators {
+            border-top: 1px solid #eee;
+            padding-top: 20px;
+        }
+        .trust-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 12px;
+            font-size: 14px;
+            color: #333;
+        }
+        .trust-item:last-child {
+            margin-bottom: 0;
+        }
+        .trust-icon {
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            margin-right: 12px;
+            flex-shrink: 0;
+        }
+        .trust-icon.blue {
+            background: var(--despegar-blue);
+        }
+        .trust-icon.green {
+            background: #34a853;
+        }
+        @media (max-width: 768px) {
+            .main-container {
+                padding: 0 5px;
+            }
+            .section-title {
+                font-size: 1.5rem;
+            }
+            .vehicle-image-container {
+                height: 220px;
+            }
+        }
+    
         .main-container {
             max-width: 1200px;
             margin: 40px auto;
@@ -231,6 +393,30 @@
     </style>
 </head>
 <body>
+    <!-- Header -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm mb-4">
+        <div class="container">
+            <a class="navbar-brand" href="/">
+                <i class="fas fa-plane text-primary"></i> Frategar
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item"><a class="nav-link" href="#"><i class="fas fa-plane"></i> Vuelos</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#"><i class="fas fa-bed"></i> Hoteles</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#"><i class="fas fa-suitcase"></i> Paquetes</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#"><i class="fas fa-car"></i> Autos</a></li>
+                </ul>
+                <ul class="navbar-nav">
+                    <li class="nav-item"><a class="nav-link" href="/login"><i class="fas fa-user"></i> Mi cuenta</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#"><i class="fas fa-headset"></i> Ayuda</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
     <div class="main-container">
         <div class="row g-4">
             <!-- Left Column - Vehicle Image and Details -->
