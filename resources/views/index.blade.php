@@ -9,6 +9,16 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
     <style>
+        .destination-card .hotel-overlay {
+            opacity: 1;
+        }
+        .destination-card .hotel-overlay-content {
+            opacity: 1;
+        }
+        .destination-card:hover .hotel-overlay,
+        .destination-card:hover .hotel-overlay-content {
+            opacity: 0;
+        }
         :root {
             --despegar-blue: #0066cc;
             --despegar-orange: #ff6600;
@@ -428,11 +438,12 @@
             <div class="col-md-3 mb-4">
                 <a href="{{ url('detalles') }}" style="text-decoration:none;color:inherit;"><div class="destination-card">
                     <img 
-                        src="data:image/jpeg;base64,{{ $h->imagen }}" 
-                        class="w-100 h-100 object-fit-cover" 
+                        src="{{ is_array($h->imagenes) ? $h->imagenes[0] : (is_string($h->imagenes) ? $h->imagenes : '') }}" 
+                        style="position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;z-index:1;" 
                         alt="{{ $h->nombre }}"
                     >
-                    <div class="destination-overlay">
+                    <div class="hotel-overlay" style="position:absolute;top:0;left:0;width:100%;height:100%;background:linear-gradient(transparent 40%,rgba(0,0,0,0.85) 100%);z-index:2;transition:opacity 0.4s;"></div>
+                    <div class="destination-overlay hotel-overlay-content" style="position:relative;z-index:3;transition:opacity 0.4s;">
                         <h5 class="mb-1">{{ $h->nombre }}</h5>
                         <p class="mb-0">Desde ${{ number_format($h->precio_noche, 2) }} / noche</p>
                     </div>
