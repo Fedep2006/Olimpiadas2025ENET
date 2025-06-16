@@ -6,6 +6,9 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 // Controladores
+use App\Http\Controllers\PagoController;
+Route::post('/vehiculos/{id}/pago-ficticio', [PagoController::class, 'storeFicticio'])->name('vehiculos.pago_ficticio');
+Route::post('/vehiculos/{id}/reservar', [App\Http\Controllers\Admin\VehiculosController::class, 'reservar'])->name('vehiculos.reservar');
 use App\Http\Controllers\administracionController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\UserController;

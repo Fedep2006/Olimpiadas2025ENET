@@ -315,9 +315,17 @@
                     <p class="mb-0">{{ $vehiculo->observaciones }}</p>
                 </div>
                 @endif
+
+                <!-- Pago Ficticio -->
+                @if(session('status'))
+                    <div class="alert alert-success mt-4">{{ session('status') }}</div>
+                @endif
             </div>
             
             <!-- Right Column - Booking Panel -->
+            @if(session('reserva_status'))
+                <div class="alert alert-success mt-3">{{ session('reserva_status') }}</div>
+            @endif
             <div class="col-lg-4">
                 <div class="vehicle-card">
                     <div class="booking-panel">
@@ -328,27 +336,117 @@
                                 <span class="price-period">por día</span>
                             </div>
                             
-                            <form>
-                                <div class="form-group">
-                                    <label class="form-label">Fecha de inicio</label>
-                                    <input type="date" class="form-control" value="{{ date('Y-m-d') }}">
+                            <!-- Botón para abrir el modal -->
+                            <button type="button" class="reserve-button w-100" data-bs-toggle="modal" data-bs-target="#reservaPagoModal" {{ !$vehiculo->disponible ? 'disabled' : '' }}>
+                                <i class="fas fa-calendar-check me-2"></i>
+                                {{ $vehiculo->disponible ? 'Reservar ahora' : 'No disponible' }}
+                            </button>
+
+                            <!-- Modal con pestañas -->
+                            <div class="modal fade" id="reservaPagoModal" tabindex="-1" aria-labelledby="reservaPagoModalLabel" aria-hidden="true">
+                              <div class="modal-dialog">
+                                <div class="modal-content">
+                                  <form action="{{ route('vehiculos.reservar', $vehiculo->id) }}" method="POST" id="formReservaPago">
+                                    @csrf
+                                    <div class="modal-header">
+                                      <h5 class="modal-title" id="reservaPagoModalLabel">Reservar y Pagar</h5>
+                                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                      <ul class="nav nav-tabs" id="reservaPagoTabs" role="tablist">
+                                        <li class="nav-item" role="presentation">
+                                          <button class="nav-link active" id="reserva-tab" data-bs-toggle="tab" data-bs-target="#reserva" type="button" role="tab" aria-controls="reserva" aria-selected="true">Reserva</button>
+                                        </li>
+                                        <li class="nav-item" role="presentation">
+                                          <button class="nav-link" id="pago-tab" data-bs-toggle="tab" data-bs-target="#pago" type="button" role="tab" aria-controls="pago" aria-selected="false">Tarjeta</button>
+                                        </li>
+                                      </ul>
+                                      <div class="tab-content mt-3" id="reservaPagoTabsContent">
+                                        <!-- Tab Reserva -->
+                                        <div class="tab-pane fade show active" id="reserva" role="tabpanel" aria-labelledby="reserva-tab">
+                                          <div class="form-group mb-3">
+                                            <label class="form-label">Fecha de inicio</label>
+                                            <input type="date" class="form-control" name="fecha_inicio" id="fecha_inicio" value="{{ date('Y-m-d') }}" required>
+                                          </div>
+                                          <div class="form-group mb-3">
+                                            <label class="form-label">Cantidad de días</label>
+                                            <input type="number" class="form-control" name="cantidad" id="cantidad_dias" value="1" min="1" required>
+                                          </div>
+                                          <div class="form-group mb-3">
+                                            <label class="form-label">Fecha de fin</label>
+                                            <input type="date" class="form-control" id="fecha_fin" value="{{ date('Y-m-d', strtotime('+1 day')) }}" readonly>
+                                          </div>
+                                        </div>
+                                        <!-- Tab Pago -->
+                                        <div class="tab-pane fade" id="pago" role="tabpanel" aria-labelledby="pago-tab">
+                                          <div class="mb-3">
+                                            <label class="form-label">Titular de la tarjeta</label>
+                                            <input type="text" name="cardholder_name" value="{{ old('cardholder_name') }}" class="form-control @error('cardholder_name') is-invalid @enderror">
+                                            @error('cardholder_name')
+                                              <div class="invalid-feedback">{{ $message }}</div>
+                                            @enderror
+                                          </div>
+                                          <div class="mb-3">
+                                            <label class="form-label">Número de tarjeta</label>
+                                            <input type="text" name="card_number" value="{{ old('card_number') }}" class="form-control @error('card_number') is-invalid @enderror">
+                                            @error('card_number')
+                                              <div class="invalid-feedback">{{ $message }}</div>
+                                            @enderror
+                                          </div>
+                                          <div class="row">
+                                            <div class="col-md-6 mb-3">
+                                              <label class="form-label">Mes (MM)</label>
+                                              <input type="text" name="expiration_month" value="{{ old('expiration_month') }}" class="form-control @error('expiration_month') is-invalid @enderror">
+                                              @error('expiration_month')
+                                                <div class="invalid-feedback">{{ $message }}</div>
+                                              @enderror
+                                            </div>
+                                            <div class="col-md-6 mb-3">
+                                              <label class="form-label">Año (AAAA)</label>
+                                              <input type="text" name="expiration_year" value="{{ old('expiration_year') }}" class="form-control @error('expiration_year') is-invalid @enderror">
+                                              @error('expiration_year')
+                                                <div class="invalid-feedback">{{ $message }}</div>
+                                              @enderror
+                                            </div>
+                                          </div>
+                                          <div class="mb-3">
+                                            <label class="form-label">CVV</label>
+                                            <input type="text" name="cvv" value="{{ old('cvv') }}" class="form-control w-50 @error('cvv') is-invalid @enderror">
+                                            @error('cvv')
+                                              <div class="invalid-feedback">{{ $message }}</div>
+                                            @enderror
+                                          </div>
+                                        </div>
+                                      </div>
+                                    </div>
+                                    <div class="modal-footer">
+                                      <button type="submit" class="btn btn-primary w-100">
+                                        Reservar y Pagar ${{ number_format($vehiculo->precio_por_dia, 2) }}
+                                      </button>
+                                    </div>
+                                  </form>
                                 </div>
-                                
-                                <div class="form-group">
-                                    <label class="form-label">Fecha de fin</label>
-                                    <input type="date" class="form-control" value="{{ date('Y-m-d', strtotime('+1 day')) }}">
-                                </div>
-                                
-                                <div class="form-group">
-                                    <label class="form-label">Cantidad de días</label>
-                                    <input type="number" class="form-control" value="1" min="1">
-                                </div>
-                                
-                                <button type="submit" class="reserve-button" {{ !$vehiculo->disponible ? 'disabled' : '' }}>
-                                    <i class="fas fa-calendar-check me-2"></i>
-                                    {{ $vehiculo->disponible ? 'Reservar ahora' : 'No disponible' }}
-                                </button>
-                            </form>
+                              </div>
+                            </div>
+                            <script>
+                                document.addEventListener('DOMContentLoaded', function() {
+                                    function calcularFechaFin() {
+                                        const inicio = document.getElementById('fecha_inicio').value;
+                                        const dias = parseInt(document.getElementById('cantidad_dias').value || '1');
+                                        if (inicio && dias > 0) {
+                                            const fecha = new Date(inicio);
+                                            fecha.setDate(fecha.getDate() + dias);
+                                            const yyyy = fecha.getFullYear();
+                                            const mm = String(fecha.getMonth() + 1).padStart(2, '0');
+                                            const dd = String(fecha.getDate()).padStart(2, '0');
+                                            document.getElementById('fecha_fin').value = `${yyyy}-${mm}-${dd}`;
+                                        }
+                                    }
+                                    document.getElementById('fecha_inicio').addEventListener('change', calcularFechaFin);
+                                    document.getElementById('cantidad_dias').addEventListener('input', calcularFechaFin);
+                                    calcularFechaFin();
+                                });
+                            </script>
                             
                             <div class="trust-indicators">
                                 <div class="trust-item">
