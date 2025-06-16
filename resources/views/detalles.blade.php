@@ -510,7 +510,31 @@
             
             <!-- Right Column - Booking Panel -->
             @if(session('reserva_status'))
-                <div class="alert alert-success mt-3">{{ session('reserva_status') }}</div>
+                <!-- Modal de éxito -->
+                <div class="modal fade" id="reservaSuccessModal" tabindex="-1" aria-labelledby="reservaSuccessModalLabel" aria-hidden="true">
+                  <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content">
+                      <div class="modal-header bg-success text-white">
+                        <h5 class="modal-title" id="reservaSuccessModalLabel">
+                          <i class="fas fa-check-circle me-2"></i> ¡Reserva enviada!
+                        </h5>
+                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+                      </div>
+                      <div class="modal-body text-center">
+                        <p class="mb-0 fs-5">{{ session('reserva_status') }}</p>
+                      </div>
+                      <div class="modal-footer justify-content-center">
+                        <button type="button" class="btn btn-success px-4" data-bs-dismiss="modal">Aceptar</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <script>
+                  document.addEventListener('DOMContentLoaded', function() {
+                    var reservaModal = new bootstrap.Modal(document.getElementById('reservaSuccessModal'));
+                    reservaModal.show();
+                  });
+                </script>
             @endif
             <div class="col-lg-4">
                 <div class="vehicle-card">

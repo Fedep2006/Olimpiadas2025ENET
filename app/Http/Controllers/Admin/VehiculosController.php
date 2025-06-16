@@ -48,7 +48,9 @@ class VehiculosController extends Controller
         ]);
 
         // Crear la reserva y el pago en una transacción
-        \DB::transaction(function() use ($vehiculo, $validated, $fecha_inicio, $fecha_fin, $request) {
+        $reserva = null;
+        $pago = null;
+        \DB::transaction(function() use ($vehiculo, $validated, $fecha_inicio, $fecha_fin, $request, &$reserva, &$pago) {
             $reserva = new \App\Models\Reserva();
             $reserva->usuario_id = auth()->id();
             $reserva->tipo = 'vehiculo';
@@ -78,6 +80,15 @@ class VehiculosController extends Controller
             $pago->amount = $reserva->precio_total;
             $pago->estado = 'pendiente';
             $pago->save();
+        });
+
+        // Enviar email al usuario
+        \Mail::send('emails.reserva_enviada', [
+            'vehiculo' => $vehiculo,
+            'reserva' => $reserva,
+        ], function($message) use ($vehiculo) {
+            $message->to(auth()->user()->email)
+                ->subject('Reserva enviada - Frategar');
         });
 
         return redirect()->back()->with('reserva_status', 'Reserva enviada correctamente, debe esperar a la confirmación del administrador');

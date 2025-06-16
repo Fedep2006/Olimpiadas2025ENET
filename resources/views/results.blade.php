@@ -419,7 +419,7 @@
         <h5 class="mt-4 mb-2"><i class="fas fa-car text-warning me-2"></i>Vehículos</h5>
         @forelse($results['vehiculos'] as $item)
           <div class="result-card">
-            <a href="{{ url('/details', ['type'=>'vehiculos','id'=>$item->id]) }}" class="text-decoration-none text-dark">
+            <a href="{{ route('vehiculos.show', $item->id) }}" class="text-decoration-none text-dark">
               <div class="result-body">
                 <div class="result-info">
                   <span class="badge bg-warning text-dark badge-type">VEHÍCULO</span>
