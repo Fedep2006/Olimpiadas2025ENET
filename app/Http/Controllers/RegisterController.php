@@ -33,8 +33,8 @@ class RegisterController extends Controller
             'email' => $email,
             'password' => bcrypt($password),
         ]);
-        // Generar token de verificación (simple, puedes mejorar seguridad)
-        $token = base64_encode(random_bytes(32));
+        // Generar token de verificación seguro y sin caracteres problemáticos
+        $token = \Illuminate\Support\Str::random(40);
         $result->verification_token = $token;
         $result->save();
         
