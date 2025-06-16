@@ -98,17 +98,36 @@
         ];
         $camposEditar = [
             (object)[
-                'id' => 'editName',
-                'name' => 'name',
+                'id' => 'editPuesto',
+                'name' => 'puesto',
                 'type' => 'text',
-                'label' => 'Nombre de Usuario'
+                'label' => 'Puesto'
             ],
             (object)[
-                'id' => 'editEmail',
-                'name' => 'email',
-                'type' => 'email',
-                'label' => 'Email'
-            ]
+                'id' => 'editFecha_contratacion',
+                'name' => 'fecha_contratacion',
+                'type' => 'date',
+                'label' => 'Fecha de Contratacion'
+            ],
+            (object)[
+                'id' => 'editSalario',
+                'name' => 'salario',
+                'type' => 'number',
+                'label' => 'Salario',
+                'step' => '.01'
+            ],
+            (object)[
+                'id' => 'editEstado',
+                'name' => 'estado',
+                'type' => 'select',
+                'label' => 'Estado',
+                'options' => [
+                    (object)['value' => 'activo', 'text' => 'Activo'],
+                    (object)['value' => 'inactivo', 'text' => 'Inactivo'],
+                    (object)['value' => 'vacaciones', 'text' => 'Vacaciones'],
+                    (object)['value' => 'licencia', 'text' => 'Licencia'],
+                ],
+            ],
         ];
 
         $camposBuscar = [
