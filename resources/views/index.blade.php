@@ -436,18 +436,29 @@
             <div class="row">
             @foreach($hospedajes as $h)
             <div class="col-md-3 mb-4">
-                <a href="{{ url('detalles') }}" style="text-decoration:none;color:inherit;"><div class="destination-card">
-                    <img 
-                        src="{{ is_array($h->imagenes) ? $h->imagenes[0] : (is_string($h->imagenes) ? $h->imagenes : '') }}" 
-                        style="position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;z-index:1;" 
-                        alt="{{ $h->nombre }}"
-                    >
-                    <div class="hotel-overlay" style="position:absolute;top:0;left:0;width:100%;height:100%;background:linear-gradient(transparent 40%,rgba(0,0,0,0.85) 100%);z-index:2;transition:opacity 0.4s;"></div>
-                    <div class="destination-overlay hotel-overlay-content" style="position:relative;z-index:3;transition:opacity 0.4s;">
-                        <h5 class="mb-1">{{ $h->nombre }}</h5>
-                        <p class="mb-0">Desde ${{ number_format($h->precio_noche, 2) }} / noche</p>
+                <a href="{{ url('detalles') }}" style="text-decoration:none;color:inherit;">
+                    <div class="destination-card position-relative overflow-hidden">
+                        <img 
+                            src="{{ is_array($h->imagenes) ? $h->imagenes[0] : (is_string($h->imagenes) ? $h->imagenes : '') }}" 
+                            style="position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;z-index:1;" 
+                            alt="{{ $h->nombre }}"
+                        >
+                        <div class="hotel-overlay" style="position:absolute;top:0;left:0;width:100%;height:100%;background:linear-gradient(transparent 40%,rgba(0,0,0,0.85) 100%);z-index:2;transition:opacity 0.4s;"></div>
+                        <div class="destination-overlay hotel-overlay-content d-flex flex-column justify-content-end align-items-start p-3" style="position:relative;z-index:3;transition:opacity 0.4s;height:100%;">
+                            <h5 class="mb-1">{{ $h->nombre }}</h5>
+                            @php
+    $minPrecio = $h->habitaciones->min('precio_por_noche');
+@endphp
+<p class="mb-0">
+    @if($minPrecio !== null)
+        Desde ${{ number_format($minPrecio, 2) }} / noche
+    @else
+        No disponible
+    @endif
+</p>
+                        </div>
                     </div>
-                </div></a>
+                </a>
             </div>
             @endforeach
         </div>
@@ -515,17 +526,20 @@
             <div class="row">
             @foreach($vehiculos as $v)
             <div class="col-md-3 mb-4">
-                <a href="{{ url('detalles') }}" style="text-decoration:none;color:inherit;"><div class="destination-card position-relative overflow-hidden">
-    <img 
-        src="{{ is_array($v->imagenes) ? $v->imagenes[0] : $v->imagenes }}" 
-        style="position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;z-index:1;" 
-        alt="{{ $v->marca }} {{ $v->modelo }}"
-    >
-    <div class="destination-overlay d-flex flex-column justify-content-end" style="position:relative;z-index:2;height:100%;background:linear-gradient(transparent 60%,rgba(0,0,0,0.7) 100%);">
-        <h5 class="mb-1">{{ $v->marca }} {{ $v->modelo }}</h5>
-        <p class="mb-0">Desde ${{ number_format($v->precio_por_dia, 2) }} / día</p>
-    </div>
-</div></a>
+                <a href="{{ url('detalles') }}" style="text-decoration:none;color:inherit;">
+                    <div class="destination-card position-relative overflow-hidden">
+                        <img 
+                            src="{{ is_array($v->imagenes) ? $v->imagenes[0] : $v->imagenes }}" 
+                            style="position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;z-index:1;" 
+                            alt="{{ $v->marca }} {{ $v->modelo }}"
+                        >
+                        <div class="hotel-overlay" style="position:absolute;top:0;left:0;width:100%;height:100%;background:linear-gradient(transparent 40%,rgba(0,0,0,0.85) 100%);z-index:2;transition:opacity 0.4s;"></div>
+                        <div class="destination-overlay hotel-overlay-content d-flex flex-column justify-content-end align-items-start p-3" style="position:relative;z-index:3;transition:opacity 0.4s;height:100%;">
+                            <h5 class="mb-1">{{ $v->marca }} {{ $v->modelo }}</h5>
+                            <p class="mb-0">Desde ${{ number_format($v->precio_por_dia, 2) }} / día</p>
+                        </div>
+                    </div>
+                </a>
             </div>
             @endforeach
         </div>
