@@ -10,6 +10,12 @@ use Illuminate\Support\Facades\DB;
 
 class VehiculosController extends Controller
 {
+    // Muestra el detalle de un vehículo
+    public function show($id)
+    {
+        $vehiculo = Vehiculo::findOrFail($id);
+        return view('detalles', compact('vehiculo'));
+    }
     public function index(){
         $vehiculo = Vehiculo::all();
         return view("administracion.vehiculos" ,compact("vehiculo"));

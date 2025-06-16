@@ -38,6 +38,9 @@ Route::get('/', function (Request $request) {
     return view('index', compact('viajes', 'hospedajes', 'vehiculos'));
 });
 
+// Detalles de un vehículo
+Route::get('/vehiculos/{id}', [VehiculosController::class, 'show'])->name('vehiculos.show');
+
 // Detalles de un recurso
 Route::get('/details/{type}/{id}', function ($type, $id) {
     switch ($type) {
