@@ -103,6 +103,12 @@ Route::prefix('administracion')->middleware('auth')->group(function () {
     Route::get('/',        [administracionController::class, 'inicio'])->name('administracion.inicio');
     Route::get('/reportes', [administracionController::class, 'reportes'])->name('administracion.reportes');
 
+    // Reservas
+    Route::get('/reservas', [AdministracionController::class, 'reservas']);
+    // Acciones de reservas de vehículos
+    Route::post('/reservas/vehiculos/{reserva}/aceptar', [AdministracionController::class, 'aceptarReservaVehiculo'])->name('administracion.reservas.vehiculos.aceptar');
+    Route::post('/reservas/vehiculos/{reserva}/rechazar', [AdministracionController::class, 'rechazarReservaVehiculo'])->name('administracion.reservas.vehiculos.rechazar');
+
     // Vehículos
     Route::get('/vehiculos',                [VehiculosController::class, 'index'])->name('administracion.vehiculos');
     Route::post('/vehiculos/añadir',        [VehiculosController::class, 'AñadirVehiculo'])->name('administracion.vehiculos.añadir');
