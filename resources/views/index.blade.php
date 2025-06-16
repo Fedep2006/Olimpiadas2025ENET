@@ -436,7 +436,7 @@
             <div class="row">
             @foreach($hospedajes as $h)
             <div class="col-md-3 mb-4">
-                <a href="{{ url('detalles') }}" style="text-decoration:none;color:inherit;">
+                <a href="{{ route('vehiculos.show', $v->id) }}" style="text-decoration:none;color:inherit;">
                     <div class="destination-card position-relative overflow-hidden">
                         <img 
                             src="{{ is_array($h->imagenes) ? $h->imagenes[0] : (is_string($h->imagenes) ? $h->imagenes : '') }}" 
@@ -472,7 +472,7 @@
             <div class="row">
                 @foreach($viajes as $viaje)
                 <div class="col-md-3 mb-4">
-                    <a href="{{ url('detalles') }}" style="text-decoration:none;color:inherit;"><div class="travel-card">
+                    <a href="{{ route('vehiculos.show', $v->id) }}" style="text-decoration:none;color:inherit;"><div class="travel-card">
                         <i class="fas fa-map-marked-alt travel-icon"></i>
                         <h5 class="mb-1">{{ $viaje->nombre }}</h5>
                         <p class="price mb-0">Desde ${{ number_format($viaje->precio, 2) }}</p>
@@ -526,7 +526,7 @@
             <div class="row">
             @foreach($vehiculos as $v)
             <div class="col-md-3 mb-4">
-                <a href="{{ url('detalles') }}" style="text-decoration:none;color:inherit;">
+                <a href="{{ route('vehiculos.show', $v->id) }}" style="text-decoration:none;color:inherit;">
                     <div class="destination-card position-relative overflow-hidden">
                         <img 
                             src="{{ is_array($v->imagenes) ? $v->imagenes[0] : $v->imagenes }}" 

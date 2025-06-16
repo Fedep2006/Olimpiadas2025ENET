@@ -408,6 +408,9 @@
                                 </td>
                                 <td>
                                     <div class="action-buttons">
+                                        <a href="{{ route('administracion.hospedaje.habitaciones', $hospedaje->id) }}" class="action-btn view" title="Ver habitaciones">
+                                            <i class="fas fa-bed"></i>
+                                        </a>
                                         <button class="action-btn view" title="Ver detalles">
                                             <i class="fas fa-eye"></i>
                                         </button>

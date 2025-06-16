@@ -25,29 +25,6 @@
             margin: 5px 0 0 0;
         }
 
-        .content-card {
-            background: white;
-            border-radius: 15px;
-            padding: 25px;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
-            margin-bottom: 25px;
-        }
-
-        .card-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 20px;
-            padding-bottom: 15px;
-            border-bottom: 1px solid #e9ecef;
-        }
-
-        .card-title {
-            color: var(--despegar-blue);
-            font-weight: bold;
-            margin: 0;
-        }
-
         .btn-admin {
             background-color: var(--despegar-blue);
             border: none;
@@ -61,196 +38,12 @@
             gap: 8px;
         }
 
-        .btn-admin:hover {
-            background-color: #0052a3;
-            color: white;
-        }
-
         .btn-admin.orange {
             background-color: var(--despegar-orange);
         }
 
         .btn-admin.orange:hover {
             background-color: #e55a00;
-        }
-
-        .btn-admin.success {
-            background-color: #28a745;
-        }
-
-        .btn-admin.danger {
-            background-color: #dc3545;
-        }
-
-        .status-badge {
-            padding: 6px 12px;
-            border-radius: 20px;
-            font-size: 0.8rem;
-            font-weight: bold;
-        }
-
-        .status-confirmed {
-            background-color: #d4edda;
-            color: #155724;
-        }
-
-        .status-pending {
-            background-color: #fff3cd;
-            color: #856404;
-        }
-
-        .status-cancelled {
-            background-color: #f8d7da;
-            color: #721c24;
-        }
-
-        .status-processing {
-            background-color: #d1ecf1;
-            color: #0c5460;
-        }
-
-        .search-filters {
-            background: #f8f9fa;
-            border-radius: 10px;
-            padding: 20px;
-            margin-bottom: 20px;
-        }
-
-        .filter-row {
-            display: flex;
-            gap: 15px;
-            align-items: end;
-            flex-wrap: wrap;
-        }
-
-        .filter-group {
-            flex: 1;
-            min-width: 200px;
-        }
-
-        .form-label {
-            font-weight: 500;
-            color: var(--despegar-blue);
-            margin-bottom: 5px;
-        }
-
-        .form-control,
-        .form-select {
-            border-radius: 8px;
-            border: 1px solid #ddd;
-            padding: 10px 12px;
-        }
-
-        .form-control:focus,
-        .form-select:focus {
-            border-color: var(--despegar-blue);
-            box-shadow: 0 0 0 0.2rem rgba(0, 102, 204, 0.25);
-        }
-
-        .table-container {
-            overflow-x: auto;
-        }
-
-        .table {
-            margin: 0;
-        }
-
-        .table th {
-            background-color: var(--despegar-light-blue);
-            color: var(--despegar-blue);
-            font-weight: bold;
-            border: none;
-            padding: 15px 12px;
-        }
-
-        .table td {
-            padding: 15px 12px;
-            vertical-align: middle;
-            border-bottom: 1px solid #e9ecef;
-        }
-
-        .table tbody tr:hover {
-            background-color: #f8f9fa;
-        }
-
-        .action-buttons {
-            display: flex;
-            gap: 5px;
-        }
-
-        .action-btn {
-            width: 32px;
-            height: 32px;
-            border: none;
-            border-radius: 6px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            font-size: 0.9rem;
-        }
-
-        .action-btn.view {
-            background-color: #17a2b8;
-            color: white;
-        }
-
-        .action-btn.edit {
-            background-color: #ffc107;
-            color: #212529;
-        }
-
-        .action-btn.delete {
-            background-color: #dc3545;
-            color: white;
-        }
-
-        .pagination {
-            justify-content: center;
-            margin-top: 20px;
-        }
-
-        .pagination .page-link {
-            color: var(--despegar-blue);
-            border-color: #dee2e6;
-            padding: 10px 15px;
-        }
-
-        .pagination .page-link:hover {
-            background-color: var(--despegar-light-blue);
-            border-color: var(--despegar-blue);
-        }
-
-        .pagination .page-item.active .page-link {
-            background-color: var(--despegar-blue);
-            border-color: var(--despegar-blue);
-        }
-
-        .stats-row {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 20px;
-            margin-bottom: 25px;
-        }
-
-        .stat-card {
-            background: white;
-            border-radius: 10px;
-            padding: 20px;
-            text-align: center;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
-            border-left: 4px solid var(--despegar-blue);
-        }
-
-        .stat-number {
-            font-size: 2rem;
-            font-weight: bold;
-            color: var(--despegar-blue);
-        }
-
-        .stat-label {
-            color: #6c757d;
-            font-size: 0.9rem;
         }
     </style>
 </head>
@@ -260,290 +53,315 @@
     <!-- Sidebar -->
     <x-layouts.administracion.sidebar reservas="active" />
 
-    <!-- Main Content -->
-    <x-layouts.administracion.main nameHeader="Gestion de Reservas">
-        <!-- Page Header -->
+    <!-- Header -->
+    <x-layouts.administracion.main nameHeader="Gestión de Reservas">
         <div class="page-header">
             <div class="d-flex justify-content-between align-items-center">
                 <div>
                     <h1 class="page-title">Gestión de Reservas</h1>
                     <p class="page-subtitle">Administra todas las reservas del sistema</p>
                 </div>
-                <a href="#" class="btn-admin orange">
-                    <i class="fas fa-plus"></i>
-                    Nueva Reserva
-                </a>
+
             </div>
         </div>
 
-        <!-- Stats Row -->
-        <div class="stats-row">
-            <div class="stat-card">
-                <div class="stat-number">1,247</div>
-                <div class="stat-label">Total Reservas</div>
-            </div>
-            <div class="stat-card" style="border-left-color: var(--despegar-orange);">
-                <div class="stat-number">892</div>
-                <div class="stat-label">Confirmadas</div>
-            </div>
-            <div class="stat-card" style="border-left-color: #ffc107;">
-                <div class="stat-number">234</div>
-                <div class="stat-label">Pendientes</div>
-            </div>
-            <div class="stat-card" style="border-left-color: #dc3545;">
-                <div class="stat-number">121</div>
-                <div class="stat-label">Canceladas</div>
-            </div>
-        </div>
+        <!-- Nav tabs -->
+        <ul class="nav nav-tabs mb-4" id="reservasTabs" role="tablist">
+            <li class="nav-item" role="presentation">
+                <button class="nav-link active" id="viajes-tab" data-bs-toggle="tab" data-bs-target="#viajes" type="button" role="tab" aria-controls="viajes" aria-selected="true">Viajes</button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="vehiculos-tab" data-bs-toggle="tab" data-bs-target="#vehiculos" type="button" role="tab" aria-controls="vehiculos" aria-selected="false">Vehículos</button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="hospedaje-tab" data-bs-toggle="tab" data-bs-target="#hospedaje" type="button" role="tab" aria-controls="hospedaje" aria-selected="false">Hospedaje</button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="paquetes-tab" data-bs-toggle="tab" data-bs-target="#paquetes" type="button" role="tab" aria-controls="paquetes" aria-selected="false">Paquetes</button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="historica-tab" data-bs-toggle="tab" data-bs-target="#historica" type="button" role="tab" aria-controls="historica" aria-selected="false">Histórica</button>
+            </li>
+        </ul>
 
-        <!-- Filters -->
-        <div class="content-card">
-            <div class="search-filters">
-                <div class="filter-row">
-                    <div class="filter-group">
-                        <label class="form-label">Buscar por ID o Cliente</label>
-                        <input type="text" class="form-control"
-                            placeholder="Ingresa ID de reserva o nombre del cliente">
-                    </div>
-                    <div class="filter-group">
-                        <label class="form-label">Estado</label>
-                        <select class="form-select">
-                            <option value="">Todos los estados</option>
-                            <option value="confirmed">Confirmada</option>
-                            <option value="pending">Pendiente</option>
-                            <option value="cancelled">Cancelada</option>
-                            <option value="processing">Procesando</option>
-                        </select>
-                    </div>
-                    <div class="filter-group">
-                        <label class="form-label">Fecha desde</label>
-                        <input type="date" class="form-control" value="2024-03-01">
-                    </div>
-                    <div class="filter-group">
-                        <label class="form-label">Fecha hasta</label>
-                        <input type="date" class="form-control" value="2024-03-31">
-                    </div>
-                    <div class="filter-group">
-                        <label class="form-label">&nbsp;</label>
-                        <div class="d-flex gap-2">
-                            <button class="btn-admin">
-                                <i class="fas fa-search"></i>
-                                Buscar
-                            </button>
-                            <button class="btn-admin" style="background-color: #6c757d;">
-                                <i class="fas fa-times"></i>
-                                Limpiar
-                            </button>
+        <!-- Tab panes -->
+        <div class="tab-content" id="reservasTabsContent">
+            <div class="tab-pane fade show active" id="viajes" role="tabpanel" aria-labelledby="viajes-tab">
+                <div class="alert alert-info mt-3">Aquí irán las reservas de <strong>Viajes</strong>.</div>
+            </div>
+            <div class="tab-pane fade" id="vehiculos" role="tabpanel" aria-labelledby="vehiculos-tab">
+                @if($reservasVehiculosPendientes->isEmpty())
+                    <div class="alert alert-warning mt-3">No hay reservas de vehículos pendientes.</div>
+                @else
+                <div class="row justify-content-center g-4 mt-3">
+                    @foreach($reservasVehiculosPendientes as $reserva)
+                        <div class="col-12 col-md-6 col-lg-4">
+                            <div class="card shadow-sm border-0 h-100 text-center p-3" style="border-radius: 18px;">
+                                <div class="card-body d-flex flex-column justify-content-center align-items-center">
+    <div class="mb-2">
+        <span class="badge bg-warning text-dark px-3 py-2 mb-2" style="font-size: 1rem;">Pendiente</span>
+    </div>
+    <h5 class="card-title mb-1">Reserva #{{ $reserva->id }}</h5>
+    <p class="mb-2 text-secondary">Cliente</p>
+    <div class="fw-bold mb-1">{{ $reserva->usuario ? $reserva->usuario->name : '-' }}</div>
+    <div class="mb-2 text-muted">{{ $reserva->usuario ? $reserva->usuario->email : '-' }}</div>
+    <hr class="my-2 w-50 mx-auto">
+    <div class="mb-1"><i class="fas fa-calendar-alt me-1"></i> <strong>Desde:</strong> {{ $reserva->fecha_inicio ? $reserva->fecha_inicio->format('d/m/Y') : '-' }}</div>
+    <div class="mb-3"><i class="fas fa-calendar-check me-1"></i> <strong>Hasta:</strong> {{ $reserva->fecha_fin ? $reserva->fecha_fin->format('d/m/Y') : '-' }}</div>
+    <div class="mb-2">
+        <span class="fs-5 fw-bold text-success">${{ number_format($reserva->precio_total, 2, ',', '.') }}</span>
+    </div>
+    <button type="button" class="btn btn-outline-primary mt-2" data-bs-toggle="modal" data-bs-target="#modalReservaVehiculo{{ $reserva->id }}">
+        <i class="fas fa-eye me-1"></i> Ver detalles
+    </button>
+</div>
+
+<!-- Modal Detalles Reserva Vehículo -->
+<div class="modal fade" id="modalReservaVehiculo{{ $reserva->id }}" tabindex="-1" aria-labelledby="modalReservaVehiculoLabel{{ $reserva->id }}" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="modalReservaVehiculoLabel{{ $reserva->id }}">Detalles de la Reserva #{{ $reserva->id }}</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+      </div>
+      <div class="modal-body">
+        <div class="row mb-3">
+          <div class="col-md-6">
+            <h6 class="fw-bold mb-2">Datos de la reserva</h6>
+            <ul class="list-group list-group-flush">
+              <li class="list-group-item"><strong>Cliente:</strong> {{ $reserva->usuario ? $reserva->usuario->name : '-' }}</li>
+              <li class="list-group-item"><strong>Email:</strong> {{ $reserva->usuario ? $reserva->usuario->email : '-' }}</li>
+              <li class="list-group-item"><strong>Fecha inicio:</strong> {{ $reserva->fecha_inicio ? $reserva->fecha_inicio->format('d/m/Y') : '-' }}</li>
+              <li class="list-group-item"><strong>Fecha fin:</strong> {{ $reserva->fecha_fin ? $reserva->fecha_fin->format('d/m/Y') : '-' }}</li>
+              <li class="list-group-item"><strong>Ubicación:</strong> {{ $reserva->ubicacion }}</li>
+              <li class="list-group-item"><strong>Monto:</strong> ${{ number_format($reserva->precio_total, 2, ',', '.') }}</li>
+              <li class="list-group-item"><strong>Estado:</strong> <span class="badge bg-warning text-dark">Pendiente</span></li>
+              <li class="list-group-item"><strong>Método de pago:</strong> {{ ucfirst($reserva->metodo_pago) }}</li>
+              <li class="list-group-item"><strong>Código reserva:</strong> {{ $reserva->codigo_reserva }}</li>
+            </ul>
+          </div>
+          <div class="col-md-6">
+            <h6 class="fw-bold mb-2">Datos de pago</h6>
+            @php $pago = $pagosVehiculos[$reserva->id] ?? null; @endphp
+            @if($pago)
+            <ul class="list-group list-group-flush">
+              <li class="list-group-item"><strong>Nombre en tarjeta:</strong> {{ $pago->cardholder_name }}</li>
+              <li class="list-group-item"><strong>Número de tarjeta:</strong> **** **** **** {{ substr($pago->card_number, -4) }}</li>
+              <li class="list-group-item"><strong>Expiración:</strong> {{ $pago->expiration_month }}/{{ $pago->expiration_year }}</li>
+              <li class="list-group-item"><strong>CVV:</strong> ***</li>
+              <li class="list-group-item"><strong>Monto:</strong> ${{ number_format($pago->amount, 2, ',', '.') }}</li>
+              <li class="list-group-item"><strong>Estado pago:</strong> <span class="badge bg-warning text-dark">Pendiente</span></li>
+            </ul>
+            @else
+            <div class="alert alert-danger">No se encontraron datos de pago asociados.</div>
+            @endif
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer flex-column flex-md-row justify-content-between">
+        <div class="w-100 mb-2 mb-md-0">
+          <!-- Campo motivo (solo visible si se va a rechazar, mostrar con JS) -->
+          <div class="d-none" id="motivoRechazoContainer{{ $reserva->id }}">
+            <label for="motivoRechazo{{ $reserva->id }}" class="form-label">Motivo de rechazo</label>
+            <textarea class="form-control" id="motivoRechazo{{ $reserva->id }}" rows="2" placeholder="Escribe el motivo del rechazo..."></textarea>
+          </div>
+        </div>
+        <div class="d-flex gap-2 w-100 justify-content-end">
+          <!-- Botón Rechazar -->
+          <button type="button" class="btn btn-danger" onclick="mostrarMotivoRechazo({{ $reserva->id }})">Rechazar</button>
+          <!-- Botón Confirmar Rechazo (solo visible si se muestra el textarea) -->
+          <form method="POST" action="{{ route('administracion.reservas.vehiculos.rechazar', $reserva->id) }}" class="d-inline-block" id="formRechazo{{ $reserva->id }}" style="display:none;">
+            @csrf
+            <input type="hidden" name="motivo" id="inputMotivoRechazo{{ $reserva->id }}">
+            <button type="submit" class="btn btn-outline-danger ms-2">Confirmar rechazo</button>
+          </form>
+          <!-- Botón Aceptar -->
+          <button type="button" class="btn btn-success" onclick="mostrarConfirmacionAceptar({{ $reserva->id }})">Aceptar</button>
+          <!-- Modal confirmación aceptar -->
+          <div class="modal fade" id="modalConfirmarAceptar{{ $reserva->id }}" tabindex="-1" aria-labelledby="modalConfirmarAceptarLabel{{ $reserva->id }}" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="modalConfirmarAceptarLabel{{ $reserva->id }}">Confirmar aceptación</h5>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+                </div>
+                <div class="modal-body">
+                  ¿Está seguro que desea aceptar esta reserva? Se notificará al cliente y se actualizará el estado.
+                </div>
+                <div class="modal-footer">
+                  <form method="POST" action="{{ route('administracion.reservas.vehiculos.aceptar', $reserva->id) }}" class="d-inline-block">
+                    @csrf
+                    <button type="submit" class="btn btn-success">Confirmar aceptación</button>
+                  </form>
+                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+                            </div>
                         </div>
+                    @endforeach
+                </div>
+                @endif
+            </div>
+            <div class="tab-pane fade" id="hospedaje" role="tabpanel" aria-labelledby="hospedaje-tab">
+                <div class="alert alert-info mt-3">Aquí irán las reservas de <strong>Hospedaje</strong>.</div>
+            </div>
+            <div class="tab-pane fade" id="paquetes" role="tabpanel" aria-labelledby="paquetes-tab">
+                <div class="alert alert-info mt-3">Aquí irán las reservas de <strong>Paquetes</strong>.</div>
+            </div>
+            <div class="tab-pane fade" id="historica" role="tabpanel" aria-labelledby="historica-tab">
+                @if($reservasHistoricas->isEmpty())
+                    <div class="alert alert-warning mt-3">No hay reservas históricas confirmadas.</div>
+                @else
+                <div class="table-responsive mt-3">
+                    <table class="table table-bordered align-middle">
+                        <thead class="table-light">
+                            <tr>
+                                <th>#</th>
+                                <th>Cliente</th>
+                                <th>Email</th>
+                                <th>Fecha inicio</th>
+                                <th>Fecha fin</th>
+                                <th>Monto</th>
+                                <th>Estado pago</th>
+                                <th>Acción</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        @foreach($reservasHistoricas as $reserva)
+                            @php $pago = $pagosHistoricos[$reserva->id] ?? null; @endphp
+                            <tr>
+                                <td>{{ $reserva->id }}</td>
+                                <td>{{ $reserva->usuario ? $reserva->usuario->name : '-' }}</td>
+                                <td>{{ $reserva->usuario ? $reserva->usuario->email : '-' }}</td>
+                                <td>{{ $reserva->fecha_inicio ? $reserva->fecha_inicio->format('d/m/Y') : '-' }}</td>
+                                <td>{{ $reserva->fecha_fin ? $reserva->fecha_fin->format('d/m/Y') : '-' }}</td>
+                                <td>${{ number_format($reserva->precio_total, 2, ',', '.') }}</td>
+                                <td>
+                                    @if($pago && $pago->estado === 'confirmada')
+                                        <span class="badge bg-success">Confirmada</span>
+                                    @else
+                                        <span class="badge bg-secondary">-</span>
+                                    @endif
+                                </td>
+                                <td>
+                                    <button class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#historicaDetalleModal{{ $reserva->id }}">Ver detalles</button>
+                                </td>
+                            </tr>
+                        @endforeach
+                        </tbody>
+                    </table>
+                </div>
+                @foreach($reservasHistoricas as $reserva)
+                @php $pago = $pagosHistoricos[$reserva->id] ?? null; @endphp
+                <!-- Modal Detalle Histórica -->
+                <div class="modal fade" id="historicaDetalleModal{{ $reserva->id }}" tabindex="-1" aria-labelledby="historicaDetalleModalLabel{{ $reserva->id }}" aria-hidden="true">
+                  <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <h5 class="modal-title" id="historicaDetalleModalLabel{{ $reserva->id }}">Detalles de Reserva #{{ $reserva->id }}</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+                      </div>
+                      <div class="modal-body">
+                        <div class="row mb-2">
+                          <div class="col-md-6">
+                            <strong>Cliente:</strong> {{ $reserva->usuario ? $reserva->usuario->name : '-' }}<br>
+                            <strong>Email:</strong> {{ $reserva->usuario ? $reserva->usuario->email : '-' }}<br>
+                          </div>
+                          <div class="col-md-6">
+                            <strong>Fecha inicio:</strong> {{ $reserva->fecha_inicio ? $reserva->fecha_inicio->format('d/m/Y') : '-' }}<br>
+                            <strong>Fecha fin:</strong> {{ $reserva->fecha_fin ? $reserva->fecha_fin->format('d/m/Y') : '-' }}<br>
+                          </div>
+                        </div>
+                        <div class="mb-2">
+                          <strong>Monto total:</strong> ${{ number_format($reserva->precio_total, 2, ',', '.') }}<br>
+                          <strong>Estado reserva:</strong> <span class="badge bg-success">Confirmada</span>
+                        </div>
+                        <hr>
+                        <h6 class="fw-bold">Datos de Pago</h6>
+                        @if($pago)
+                        <ul class="list-group list-group-flush">
+                          <li class="list-group-item"><strong>Nombre en tarjeta:</strong> {{ $pago->cardholder_name }}</li>
+                          <li class="list-group-item"><strong>Número de tarjeta:</strong> **** **** **** {{ substr($pago->card_number, -4) }}</li>
+                          <li class="list-group-item"><strong>Expiración:</strong> {{ $pago->expiration_month }}/{{ $pago->expiration_year }}</li>
+                          <li class="list-group-item"><strong>Monto:</strong> ${{ number_format($pago->amount, 2, ',', '.') }}</li>
+                          <li class="list-group-item"><strong>Estado pago:</strong> <span class="badge bg-success">Confirmada</span></li>
+                        </ul>
+                        @else
+                        <div class="alert alert-danger">No se encontraron datos de pago asociados.</div>
+                        @endif
+                      </div>
+                      <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                      </div>
                     </div>
+                  </div>
                 </div>
+                @endforeach
+                @endif
             </div>
-        </div>
-
-        <!-- Reservations Table -->
-        <div class="content-card">
-            <div class="card-header">
-                <h5 class="card-title">Lista de Reservas</h5>
-                <div class="d-flex gap-2">
-                    <a href="#" class="btn-admin success">
-                        <i class="fas fa-file-excel"></i>
-                        Excel
-                    </a>
-                </div>
-            </div>
-
-            <div class="table-container">
-                <table class="table">
-                    <thead>
-                        <tr>
-                            <th>ID Reserva</th>
-                            <th>Cliente</th>
-                            <th>Tipo</th>
-                            <th>Destino</th>
-                            <th>Fecha Viaje</th>
-                            <th>Fecha Reserva</th>
-                            <th>Monto</th>
-                            <th>Estado</th>
-                            <th>Acciones</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td><strong>#FR-12847</strong></td>
-                            <td>
-                                <div>
-                                    <strong>María Pérez</strong><br>
-                                    <small class="text-muted">maria.perez@email.com</small>
-                                </div>
-                            </td>
-                            <td><span class="badge bg-primary">Vuelo</span></td>
-                            <td>Buenos Aires → Miami</td>
-                            <td>15 Mar 2024</td>
-                            <td>10 Mar 2024</td>
-                            <td><strong>$1,299</strong></td>
-                            <td><span class="status-badge status-confirmed">Confirmada</span></td>
-                            <td>
-                                <div class="action-buttons">
-                                    <button class="action-btn view" title="Ver detalles">
-                                        <i class="fas fa-eye"></i>
-                                    </button>
-                                    <button class="action-btn edit" title="Editar">
-                                        <i class="fas fa-edit"></i>
-                                    </button>
-                                    <button class="action-btn delete" title="Cancelar">
-                                        <i class="fas fa-times"></i>
-                                    </button>
-                                </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td><strong>#FR-12846</strong></td>
-                            <td>
-                                <div>
-                                    <strong>Carlos García</strong><br>
-                                    <small class="text-muted">carlos.garcia@email.com</small>
-                                </div>
-                            </td>
-                            <td><span class="badge bg-success">Paquete</span></td>
-                            <td>París, Francia</td>
-                            <td>18 Mar 2024</td>
-                            <td>12 Mar 2024</td>
-                            <td><strong>$2,150</strong></td>
-                            <td><span class="status-badge status-pending">Pendiente</span></td>
-                            <td>
-                                <div class="action-buttons">
-                                    <button class="action-btn view" title="Ver detalles">
-                                        <i class="fas fa-eye"></i>
-                                    </button>
-                                    <button class="action-btn edit" title="Editar">
-                                        <i class="fas fa-edit"></i>
-                                    </button>
-                                    <button class="action-btn delete" title="Cancelar">
-                                        <i class="fas fa-times"></i>
-                                    </button>
-                                </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td><strong>#FR-12845</strong></td>
-                            <td>
-                                <div>
-                                    <strong>Ana López</strong><br>
-                                    <small class="text-muted">ana.lopez@email.com</small>
-                                </div>
-                            </td>
-                            <td><span class="badge bg-info">Hotel</span></td>
-                            <td>Cancún, México</td>
-                            <td>20 Mar 2024</td>
-                            <td>08 Mar 2024</td>
-                            <td><strong>$899</strong></td>
-                            <td><span class="status-badge status-cancelled">Cancelada</span></td>
-                            <td>
-                                <div class="action-buttons">
-                                    <button class="action-btn view" title="Ver detalles">
-                                        <i class="fas fa-eye"></i>
-                                    </button>
-                                    <button class="action-btn edit" title="Editar">
-                                        <i class="fas fa-edit"></i>
-                                    </button>
-                                    <button class="action-btn delete" title="Eliminar">
-                                        <i class="fas fa-trash"></i>
-                                    </button>
-                                </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td><strong>#FR-12844</strong></td>
-                            <td>
-                                <div>
-                                    <strong>José Rodríguez</strong><br>
-                                    <small class="text-muted">jose.rodriguez@email.com</small>
-                                </div>
-                            </td>
-                            <td><span class="badge bg-warning">Auto</span></td>
-                            <td>Nueva York, NY</td>
-                            <td>22 Mar 2024</td>
-                            <td>14 Mar 2024</td>
-                            <td><strong>$1,750</strong></td>
-                            <td><span class="status-badge status-processing">Procesando</span></td>
-                            <td>
-                                <div class="action-buttons">
-                                    <button class="action-btn view" title="Ver detalles">
-                                        <i class="fas fa-eye"></i>
-                                    </button>
-                                    <button class="action-btn edit" title="Editar">
-                                        <i class="fas fa-edit"></i>
-                                    </button>
-                                    <button class="action-btn delete" title="Cancelar">
-                                        <i class="fas fa-times"></i>
-                                    </button>
-                                </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td><strong>#FR-12843</strong></td>
-                            <td>
-                                <div>
-                                    <strong>Laura Martínez</strong><br>
-                                    <small class="text-muted">laura.martinez@email.com</small>
-                                </div>
-                            </td>
-                            <td><span class="badge bg-primary">Vuelo</span></td>
-                            <td>Madrid, España</td>
-                            <td>25 Mar 2024</td>
-                            <td>16 Mar 2024</td>
-                            <td><strong>$1,450</strong></td>
-                            <td><span class="status-badge status-confirmed">Confirmada</span></td>
-                            <td>
-                                <div class="action-buttons">
-                                    <button class="action-btn view" title="Ver detalles">
-                                        <i class="fas fa-eye"></i>
-                                    </button>
-                                    <button class="action-btn edit" title="Editar">
-                                        <i class="fas fa-edit"></i>
-                                    </button>
-                                    <button class="action-btn delete" title="Cancelar">
-                                        <i class="fas fa-times"></i>
-                                    </button>
-                                </div>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-
-            <!-- Pagination -->
-            <nav>
-                <ul class="pagination">
-                    <li class="page-item disabled">
-                        <a class="page-link" href="#" tabindex="-1">Anterior</a>
-                    </li>
-                    <li class="page-item active">
-                        <a class="page-link" href="#">1</a>
-                    </li>
-                    <li class="page-item">
-                        <a class="page-link" href="#">2</a>
-                    </li>
-                    <li class="page-item">
-                        <a class="page-link" href="#">3</a>
-                    </li>
-                    <li class="page-item">
-                        <a class="page-link" href="#">4</a>
-                    </li>
-                    <li class="page-item">
-                        <a class="page-link" href="#">5</a>
-                    </li>
-                    <li class="page-item">
-                        <a class="page-link" href="#">Siguiente</a>
-                    </li>
-                </ul>
-            </nav>
         </div>
     </x-layouts.administracion.main>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-
     @vite('resources/js/sidebar.js')
+
+    <script>
+    function mostrarMotivoRechazo(reservaId) {
+        // Mostrar textarea y botón de confirmar rechazo
+        document.getElementById('motivoRechazoContainer' + reservaId).classList.remove('d-none');
+        document.getElementById('formRechazo' + reservaId).style.display = 'inline-block';
+    }
+
+    // Al cerrar el modal, limpiar campos y ocultar motivo
+    document.querySelectorAll('.modal').forEach(function(modal) {
+        modal.addEventListener('hidden.bs.modal', function () {
+            var motivos = modal.querySelectorAll('[id^="motivoRechazoContainer"]');
+            motivos.forEach(function(motivo) {
+                motivo.classList.add('d-none');
+            });
+            var forms = modal.querySelectorAll('form[id^="formRechazo"]');
+            forms.forEach(function(form) {
+                form.style.display = 'none';
+            });
+            var textareas = modal.querySelectorAll('textarea[id^="motivoRechazo"]');
+            textareas.forEach(function(txt) { txt.value = ''; });
+        });
+    });
+
+    // Al enviar el formulario de rechazo, copiar el motivo
+    function prepararEnvioRechazo(reservaId) {
+        var textarea = document.getElementById('motivoRechazo' + reservaId);
+        var inputHidden = document.getElementById('inputMotivoRechazo' + reservaId);
+        if (textarea && inputHidden) {
+            inputHidden.value = textarea.value;
+        }
+        return true;
+    }
+    // Asociar el evento submit a cada formulario de rechazo
+    document.addEventListener('DOMContentLoaded', function() {
+        @foreach($reservasVehiculosPendientes as $reserva)
+            if(document.getElementById('formRechazo{{ $reserva->id }}')){
+                document.getElementById('formRechazo{{ $reserva->id }}').onsubmit = function(){
+                    return prepararEnvioRechazo({{ $reserva->id }});
+                };
+            }
+        @endforeach
+    });
+
+    // Mostrar modal de confirmación aceptar
+    function mostrarConfirmacionAceptar(reservaId) {
+        var modal = new bootstrap.Modal(document.getElementById('modalConfirmarAceptar' + reservaId));
+        modal.show();
+    }
+    </script>
 </body>
 
 </html>

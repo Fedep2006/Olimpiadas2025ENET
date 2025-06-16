@@ -6,6 +6,11 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 // Controladores
+use App\Http\Controllers\PagoController;
+
+Route::post('/vehiculos/{id}/pago-ficticio', [PagoController::class, 'storeFicticio'])->name('vehiculos.pago_ficticio');
+Route::post('/vehiculos/{id}/reservar', [App\Http\Controllers\Admin\VehiculosController::class, 'reservar'])->name('vehiculos.reservar');
+
 use App\Http\Controllers\administracionController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\UserController;
@@ -37,6 +42,9 @@ Route::get('/', function (Request $request) {
     $vehiculos  = Vehiculo::all();
     return view('index', compact('viajes', 'hospedajes', 'vehiculos'));
 });
+
+// Detalles de un vehículo
+Route::get('/vehiculos/{id}', [VehiculosController::class, 'show'])->name('vehiculos.show');
 
 // Detalles de un recurso
 Route::get('/details/{type}/{id}', function ($type, $id) {
@@ -97,6 +105,12 @@ Route::prefix('administracion')->middleware('auth')->group(function () {
     Route::get('/',        [administracionController::class, 'inicio'])->name('administracion.inicio');
     Route::get('/reportes', [administracionController::class, 'reportes'])->name('administracion.reportes');
 
+    // Reservas
+    Route::get('/reservas', [AdministracionController::class, 'reservas']);
+    // Acciones de reservas de vehículos
+    Route::post('/reservas/vehiculos/{reserva}/aceptar', [AdministracionController::class, 'aceptarReservaVehiculo'])->name('administracion.reservas.vehiculos.aceptar');
+    Route::post('/reservas/vehiculos/{reserva}/rechazar', [AdministracionController::class, 'rechazarReservaVehiculo'])->name('administracion.reservas.vehiculos.rechazar');
+
     // Vehículos
     Route::get('/vehiculos',                [VehiculosController::class, 'index'])->name('administracion.vehiculos');
     Route::post('/vehiculos/añadir',        [VehiculosController::class, 'AñadirVehiculo'])->name('administracion.vehiculos.añadir');
@@ -108,15 +122,13 @@ Route::prefix('administracion')->middleware('auth')->group(function () {
     Route::post('/hospedaje/store',         [HospedajeController::class, 'HospedajeAgregar'])->name('administracion.hospedaje.Agregar');
     Route::post('/hospedaje/edit',          [HospedajeController::class, 'HospedajeEditar'])->name('administracion.hospedaje.Editar');
     Route::delete('/hospedaje/delete/{id}', [HospedajeController::class, 'EliminarHospedaje'])->name('administracion.hospedaje.Borrar');
+    Route::get('/hospedaje/{id}/habitaciones', [HospedajeController::class, 'verHabitaciones'])->name('administracion.hospedaje.habitaciones');
 
     // Paquetes y Viajes Admin
     Route::get('/paquetes',               [PaquetesController::class, 'index'])->name('administracion.paquetes');
     Route::post('/paquetes/añadir',              [PaquetesController::class, 'Añadir'])->name('administracion.paquetes.añadir');
     Route::post('/paquetes/editar',     [PaquetesController::class, 'Editar'])->name('administracion.paquetes.editar');
     Route::delete('/paquetes/borrar/{id}',       [PaquetesController::class, 'Borrar'])->name('administracion.paquetes.borrar');
-
-
-
 
     Route::get('/viajes',                 [AdminViajeController::class, 'index'])->name('administracion.viajes');
     Route::post('/viajes',                [AdminViajeController::class, 'store'])->name('viajes.store');
@@ -132,9 +144,16 @@ Route::prefix('administracion')->middleware('auth')->group(function () {
 
     // Empleados
     Route::get('/empleados',              [EmpleadoController::class, 'index'])->name('empleados.index');
-    Route::post('/empleados/create',       [EmpleadoController::class, 'crear'])->name('empleados.create');
-    Route::put('/empleados/{id}',        [EmpleadoController::class, 'update'])->name('empleados.update');
-    Route::delete('/empleados/{id}', [EmpleadoController::class, 'destroy'])->name('empleados.destroy');
+    Route::post('/empleados/create',       [UserController::class, 'crear'])->name('empleados.create');
+    Route::put('/empleados/{id}',        [UserController::class, 'update'])->name('empleados.update');
+    Route::delete('/empleados/{id}', [UserController::class, 'destroy'])->name('empleados.destroy');
+
+    // Rutas para habitaciones
+    Route::get('/habitaciones/{hospedaje_id}', [App\Http\Controllers\Admin\HabitacionController::class, 'verHabitaciones'])->name('administracion.habitaciones');
+    Route::post('/habitaciones/agregar', [App\Http\Controllers\Admin\HabitacionController::class, 'agregar'])->name('administracion.habitaciones.agregar');
+    Route::put('/habitaciones/{id}/editar', [App\Http\Controllers\Admin\HabitacionController::class, 'editar'])->name('administracion.habitaciones.editar');
+    Route::put('/habitaciones/{id}/cambiar-estado', [App\Http\Controllers\Admin\HabitacionController::class, 'cambiarEstado'])->name('administracion.habitaciones.cambiar-estado');
+    Route::delete('/habitaciones/{id}', [App\Http\Controllers\Admin\HabitacionController::class, 'eliminar'])->name('administracion.habitaciones.eliminar');
 });
 
 Route::get('/terminos', function () {
