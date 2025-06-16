@@ -89,4 +89,15 @@ class HospedajeController extends Controller
         $hospedaje->delete();
         return redirect()->route('administracion.hospedaje')->with('success', 'Hospedaje eliminado correctamente');
     }
+
+    public function verHabitaciones($id)
+    {
+        try {
+            $hospedaje = Hospedaje::with('habitaciones')->findOrFail($id);
+            return view('administracion.habitaciones', compact('hospedaje'));
+        } catch (\Exception $e) {
+            Log::error('Error al cargar las habitaciones: ' . $e->getMessage());
+            return redirect()->route('administracion.hospedaje')->with('error', 'Error al cargar las habitaciones');
+        }
+    }
 }
