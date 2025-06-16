@@ -119,25 +119,25 @@ class EmpleadoController extends Controller
         }
     }
 
-    public function update(Request $request, Empleado $registro)
+    public function update(Request $request, Empleado $empleado)
     {
-        $request->validate([
-            'id' => 'required|integer|exists:empleados,id',
-            'usuario_id' => 'required|integer|exists:usuarios,id',
-            'persona_id' => 'required|integer|exists:personas,id',
+        $validator = Validator::make($request->all(), [
             'puesto' => 'required|string|max:255',
-            'nivel' => 'required|integer|in:0,1,2,3',
             'fecha_contratacion' => 'required|date|before_or_equal:today',
-            'salario' => 'required|numeric|min:0|max:999999999.99',
-            'estado' => 'required|string|in:activo,inactivo,vacaciones,licencia',
+            'salario' => 'required|string|max:255',
+            'estado' => 'nullable|string|in:activo,inactivo,vacaciones,licencia',
         ]);
-
         try {
-            $registro->update($request->validated());
+            $empleado->update([
+                'puesto' => $request->puesto,
+                'fecha_contratacion' => $request->fecha_contratacion,
+                'salario' => $request->salario,
+                'estado' => $request->estado,
+            ]);
 
             return response()->json([
                 'message' => 'Empleado actualizado exitosamente',
-                'data' => $registro->fresh()
+                'data' => $empleado->fresh()
             ]);
         } catch (\Exception $e) {
 
@@ -150,10 +150,10 @@ class EmpleadoController extends Controller
         }
     }
 
-    public function destroy(Empleado $id)
+    public function destroy(Empleado $empleado)
     {
         try {
-            $id->delete();
+            $empleado->delete();
 
             return response()->json([
                 'message' => 'Empleado eliminado exitosamente'

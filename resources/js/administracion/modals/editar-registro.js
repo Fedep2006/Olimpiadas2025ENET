@@ -12,10 +12,13 @@ setTimeout(function () {
 
     const pathname = window.location.pathname;
 
-    // Handle edit button click
     document.addEventListener("click", function (e) {
         const editBtn = e.target.closest(".action-btn.edit");
         if (editBtn) {
+            function esFechaValida(texto) {
+                return texto && !isNaN(Date.parse(texto));
+            }
+
             // Si el dataset es un string JSON, parsea:
             let registro = editBtn.dataset.registro;
             if (typeof registro === "string") {
@@ -26,14 +29,32 @@ setTimeout(function () {
                     return;
                 }
             }
+
             Object.keys(registro)
                 .sort()
                 .forEach((key) => {
                     const input = document.getElementById(
                         "edit" + key.charAt(0).toUpperCase() + key.slice(1)
                     );
-                    if (input) {
-                        input.value = registro[key];
+
+                    // Validar que el input existe
+                    if (!input) {
+                        return; // Salta a la siguiente iteración
+                    }
+
+                    console.log(input);
+
+                    switch (input.type) {
+                        case "date":
+                            let fecha = new Date(registro[key]);
+                            input.value = fecha.toISOString().split("T")[0];
+                            break;
+                        case "number":
+                            input.value = parseInt(registro[key]); // Cambié integer por parseInt
+                            break;
+                        default:
+                            input.value = registro[key];
+                            break;
                     }
                 });
 
@@ -49,15 +70,15 @@ setTimeout(function () {
             if (form.checkValidity()) {
                 const formData = new FormData(form);
                 const data = Object.fromEntries(formData.entries());
-                const registroId = data.registro_id;
-                console.log(data);
+                const { registro_id: registroId, ...dataReady } = data;
+                console.log(dataReady);
 
                 try {
                     const token = document
                         .querySelector('meta[name="csrf-token"]')
                         ?.getAttribute("content");
                     if (!token) throw new Error("Token CSRF no encontrado");
-
+                    console.log(registroId);
                     const response = await fetch(pathname + `/${registroId}`, {
                         method: "PUT",
                         headers: {
@@ -66,7 +87,7 @@ setTimeout(function () {
                             "X-CSRF-TOKEN": token,
                             "X-Requested-With": "XMLHttpRequest",
                         },
-                        body: JSON.stringify(data),
+                        body: JSON.stringify(dataReady),
                     });
 
                     const result = await response.json();
