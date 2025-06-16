@@ -9,7 +9,13 @@ class AdministracionController extends Controller
 {
     public function inicio()
     {
-        return view('administracion.inicio');
+        $hoy = now()->toDateString();
+        $reservasRecientes = \App\Models\Reserva::with('usuario')
+            ->whereDate('created_at', $hoy)
+            ->orderBy('created_at', 'desc')
+            ->limit(4)
+            ->get();
+        return view('administracion.inicio', compact('reservasRecientes'));
     }
     public function reservas()
     {
