@@ -63,8 +63,8 @@
                     @case('usuarios')
                         @include('administracion.partials.tablas.tabla-usuarios-contenido')
                         @break
-                    @case(2)
-                        
+                    @case('empleados')
+                        @include('administracion.partials.tablas.tabla-empleados-contenido')
                         @break
                     @default
                         

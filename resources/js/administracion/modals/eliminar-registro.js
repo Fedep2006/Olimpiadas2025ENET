@@ -67,10 +67,7 @@ setTimeout(function () {
                     })
                     .catch((error) => {
                         console.error("Error al actualizar la lista:", error);
-                        showToast(
-                            "Error al actualizar la lista de usuarios",
-                            "error"
-                        );
+                        showToast("Error al actualizar la lista", "error");
                     });
             } catch (error) {
                 console.error("Error completo:", error);

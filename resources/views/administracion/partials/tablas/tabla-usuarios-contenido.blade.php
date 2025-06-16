@@ -76,7 +76,7 @@
                 </div>
             </td>
             <td>{{ $registro->email }}</td>
-            <td>{{ $registro->created_at->format('d/m/Y H:i') }}</td>
+            <td>{{ $registro->created_at->format('d/m/Y') }}</td>
             <td>
                 <div class="action-buttons">
                     <button class="action-btn edit" data-registro="{{ $registro }}" title="Editar">

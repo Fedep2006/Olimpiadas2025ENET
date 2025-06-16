@@ -18,17 +18,11 @@ class Empleado extends Model
         'fecha_contratacion',
         'salario',
         'estado',
-        'habilidades',
-        'certificaciones',
-        'observaciones'
     ];
 
     protected $casts = [
         'fecha_contratacion' => 'date',
-        'salario' => 'decimal:2',
         'nivel' => 'integer',
-        'habilidades' => 'array',
-        'certificaciones' => 'array'
     ];
 
     // Relaciones

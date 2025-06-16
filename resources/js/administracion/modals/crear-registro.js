@@ -35,6 +35,7 @@ setTimeout(function () {
                     if (!token) {
                         throw new Error("Token CSRF no encontrado");
                     }
+                    console.log(pathname);
                     const response = await fetch(pathname + "/create", {
                         method: "POST",
                         headers: {
@@ -50,6 +51,7 @@ setTimeout(function () {
                     const result = await response.json();
 
                     if (!response.ok) {
+                        console.log("error");
                         if (response.status === 422) {
                             const errors = result.errors;
                             const errorMessages = Object.values(errors).flat();
@@ -85,10 +87,7 @@ setTimeout(function () {
                                 "Error al actualizar la lista:",
                                 error
                             );
-                            showToast(
-                                "Error al actualizar la lista de usuarios",
-                                "error"
-                            );
+                            showToast("Error al actualizar la lista", "error");
                         });
                 } catch (error) {
                     console.error("Error completo:", error);

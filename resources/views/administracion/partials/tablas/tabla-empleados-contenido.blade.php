@@ -67,16 +67,19 @@
             <td>
                 <div class="user-profile">
                     <div class="user-profile-avatar">
-                        {{ substr($registro->name, 0, 2) }}
+                        {{ substr($registro->usuario->name, 0, 2) }}
                     </div>
                     <div class="user-info">
-                        <h6>{{ $registro->name }}</h6>
+                        <h6>{{ $registro->usuario->name }}</h6>
                         <small>ID: {{ $registro->id }}</small>
                     </div>
                 </div>
             </td>
-            <td>{{ $registro->email }}</td>
-            <td>{{ $registro->created_at->format('d/m/Y H:i') }}</td>
+            <td>{{ $registro->usuario->email }}</td>
+            <td>{{ $registro->puesto }}</td>
+            <td>{{ '$' . number_format($registro->salario, 0, ',', '.') }}</td>
+            <td>{{ $registro->estado }}</td>
+            <td>{{ $registro->fecha_contratacion->format('d/m/Y') }}</td>
             <td>
                 <div class="action-buttons">
                     <button class="action-btn edit" data-registro="{{ $registro }}" title="Editar">
