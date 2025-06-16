@@ -218,46 +218,93 @@
             </div>
             <div class="tab-pane fade" id="historica" role="tabpanel" aria-labelledby="historica-tab">
                 @if($reservasHistoricas->isEmpty())
-                    <div class="alert alert-warning mt-3">No hay reservas históricas aceptadas.</div>
+                    <div class="alert alert-warning mt-3">No hay reservas históricas confirmadas.</div>
                 @else
-                <div class="row justify-content-center g-4 mt-3">
-                    @foreach($reservasHistoricas as $reserva)
-                        <div class="col-12 col-md-6 col-lg-4">
-                            <div class="card shadow-sm border-0 h-100 text-center p-3" style="border-radius: 18px;">
-                                <div class="card-body d-flex flex-column justify-content-center align-items-center">
-                                    <div class="mb-2">
-                                        <span class="badge bg-success px-3 py-2 mb-2" style="font-size: 1rem;">Aceptado</span>
-                                    </div>
-                                    <h5 class="card-title mb-1">Reserva #{{ $reserva->id }}</h5>
-                                    <p class="mb-2 text-secondary">Cliente</p>
-                                    <div class="fw-bold mb-1">{{ $reserva->usuario ? $reserva->usuario->name : '-' }}</div>
-                                    <div class="mb-2 text-muted">{{ $reserva->usuario ? $reserva->usuario->email : '-' }}</div>
-                                    <hr class="my-2 w-50 mx-auto">
-                                    <div class="mb-1"><i class="fas fa-calendar-alt me-1"></i> <strong>Desde:</strong> {{ $reserva->fecha_inicio ? $reserva->fecha_inicio->format('d/m/Y') : '-' }}</div>
-                                    <div class="mb-3"><i class="fas fa-calendar-check me-1"></i> <strong>Hasta:</strong> {{ $reserva->fecha_fin ? $reserva->fecha_fin->format('d/m/Y') : '-' }}</div>
-                                    <div class="mb-2">
-                                        <span class="fs-5 fw-bold text-success">${{ number_format($reserva->precio_total, 2, ',', '.') }}</span>
-                                    </div>
-                                    @php $pago = $pagosHistoricos[$reserva->id] ?? null; @endphp
-                                    <div class="mt-2">
-                                        <h6 class="fw-bold mb-1">Pago</h6>
-                                        @if($pago)
-                                        <ul class="list-group list-group-flush">
-                                            <li class="list-group-item"><strong>Nombre en tarjeta:</strong> {{ $pago->cardholder_name }}</li>
-                                            <li class="list-group-item"><strong>Número de tarjeta:</strong> **** **** **** {{ substr($pago->card_number, -4) }}</li>
-                                            <li class="list-group-item"><strong>Expiración:</strong> {{ $pago->expiration_month }}/{{ $pago->expiration_year }}</li>
-                                            <li class="list-group-item"><strong>Monto:</strong> ${{ number_format($pago->amount, 2, ',', '.') }}</li>
-                                            <li class="list-group-item"><strong>Estado pago:</strong> <span class="badge bg-success">Aceptado</span></li>
-                                        </ul>
-                                        @else
-                                        <div class="alert alert-danger">No se encontraron datos de pago asociados.</div>
-                                        @endif
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    @endforeach
+                <div class="table-responsive mt-3">
+                    <table class="table table-bordered align-middle">
+                        <thead class="table-light">
+                            <tr>
+                                <th>#</th>
+                                <th>Cliente</th>
+                                <th>Email</th>
+                                <th>Fecha inicio</th>
+                                <th>Fecha fin</th>
+                                <th>Monto</th>
+                                <th>Estado pago</th>
+                                <th>Acción</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        @foreach($reservasHistoricas as $reserva)
+                            @php $pago = $pagosHistoricos[$reserva->id] ?? null; @endphp
+                            <tr>
+                                <td>{{ $reserva->id }}</td>
+                                <td>{{ $reserva->usuario ? $reserva->usuario->name : '-' }}</td>
+                                <td>{{ $reserva->usuario ? $reserva->usuario->email : '-' }}</td>
+                                <td>{{ $reserva->fecha_inicio ? $reserva->fecha_inicio->format('d/m/Y') : '-' }}</td>
+                                <td>{{ $reserva->fecha_fin ? $reserva->fecha_fin->format('d/m/Y') : '-' }}</td>
+                                <td>${{ number_format($reserva->precio_total, 2, ',', '.') }}</td>
+                                <td>
+                                    @if($pago && $pago->estado === 'confirmada')
+                                        <span class="badge bg-success">Confirmada</span>
+                                    @else
+                                        <span class="badge bg-secondary">-</span>
+                                    @endif
+                                </td>
+                                <td>
+                                    <button class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#historicaDetalleModal{{ $reserva->id }}">Ver detalles</button>
+                                </td>
+                            </tr>
+                        @endforeach
+                        </tbody>
+                    </table>
                 </div>
+                @foreach($reservasHistoricas as $reserva)
+                @php $pago = $pagosHistoricos[$reserva->id] ?? null; @endphp
+                <!-- Modal Detalle Histórica -->
+                <div class="modal fade" id="historicaDetalleModal{{ $reserva->id }}" tabindex="-1" aria-labelledby="historicaDetalleModalLabel{{ $reserva->id }}" aria-hidden="true">
+                  <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <h5 class="modal-title" id="historicaDetalleModalLabel{{ $reserva->id }}">Detalles de Reserva #{{ $reserva->id }}</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+                      </div>
+                      <div class="modal-body">
+                        <div class="row mb-2">
+                          <div class="col-md-6">
+                            <strong>Cliente:</strong> {{ $reserva->usuario ? $reserva->usuario->name : '-' }}<br>
+                            <strong>Email:</strong> {{ $reserva->usuario ? $reserva->usuario->email : '-' }}<br>
+                          </div>
+                          <div class="col-md-6">
+                            <strong>Fecha inicio:</strong> {{ $reserva->fecha_inicio ? $reserva->fecha_inicio->format('d/m/Y') : '-' }}<br>
+                            <strong>Fecha fin:</strong> {{ $reserva->fecha_fin ? $reserva->fecha_fin->format('d/m/Y') : '-' }}<br>
+                          </div>
+                        </div>
+                        <div class="mb-2">
+                          <strong>Monto total:</strong> ${{ number_format($reserva->precio_total, 2, ',', '.') }}<br>
+                          <strong>Estado reserva:</strong> <span class="badge bg-success">Confirmada</span>
+                        </div>
+                        <hr>
+                        <h6 class="fw-bold">Datos de Pago</h6>
+                        @if($pago)
+                        <ul class="list-group list-group-flush">
+                          <li class="list-group-item"><strong>Nombre en tarjeta:</strong> {{ $pago->cardholder_name }}</li>
+                          <li class="list-group-item"><strong>Número de tarjeta:</strong> **** **** **** {{ substr($pago->card_number, -4) }}</li>
+                          <li class="list-group-item"><strong>Expiración:</strong> {{ $pago->expiration_month }}/{{ $pago->expiration_year }}</li>
+                          <li class="list-group-item"><strong>Monto:</strong> ${{ number_format($pago->amount, 2, ',', '.') }}</li>
+                          <li class="list-group-item"><strong>Estado pago:</strong> <span class="badge bg-success">Confirmada</span></li>
+                        </ul>
+                        @else
+                        <div class="alert alert-danger">No se encontraron datos de pago asociados.</div>
+                        @endif
+                      </div>
+                      <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                @endforeach
                 @endif
             </div>
         </div>

@@ -28,12 +28,12 @@ class AdministracionController extends Controller
         // Historial de reservas y pagos aceptados
         $reservasHistoricas = \App\Models\Reserva::with('usuario')
             ->where('tipo', 'vehiculo')
-            ->where('estado', 'aceptado')
+            ->where('estado', 'confirmada')
             ->orderBy('created_at', 'desc')
             ->get();
         $pagosHistoricos = [];
         foreach ($reservasHistoricas as $reserva) {
-            $pago = \App\Models\Pagos::where('reserva_id', $reserva->id)->where('estado', 'aceptado')->first();
+            $pago = \App\Models\Pagos::where('reserva_id', $reserva->id)->where('estado', 'confirmada')->first();
             if ($pago) {
                 $pagosHistoricos[$reserva->id] = $pago;
             }
@@ -85,10 +85,10 @@ class AdministracionController extends Controller
         }
         $pago = \App\Models\Pagos::where('reserva_id', $reserva->id)->first();
         // Cambiar estado
-        $reserva->estado = 'aceptado';
+        $reserva->estado = 'confirmada';
         $reserva->save();
         if ($pago) {
-            $pago->estado = 'aceptado';
+            $pago->estado = 'confirmada';
             $pago->save();
         }
         // Enviar mail al cliente
