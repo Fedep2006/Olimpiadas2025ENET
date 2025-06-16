@@ -129,11 +129,10 @@ class UserController extends Controller
         }
     }
 
-    public function destroy(User $registro)
+    public function destroy(User $id)
     {
         try {
-            $registro->deleted_at = now();
-            $registro->save();
+            $id->delete();
 
 
             return response()->json([

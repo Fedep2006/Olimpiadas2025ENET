@@ -150,11 +150,10 @@ class EmpleadoController extends Controller
         }
     }
 
-    public function destroy(Empleado $registro)
+    public function destroy(Empleado $id)
     {
         try {
-            $registro->deleted_at = now();
-            $registro->save();
+            $id->delete();
 
             return response()->json([
                 'message' => 'Empleado eliminado exitosamente'
