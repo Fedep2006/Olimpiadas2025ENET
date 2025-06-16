@@ -211,7 +211,162 @@
                 @endif
             </div>
             <div class="tab-pane fade" id="hospedaje" role="tabpanel" aria-labelledby="hospedaje-tab">
-                <div class="alert alert-info mt-3">Aquí irán las reservas de <strong>Hospedaje</strong>.</div>
+                @if($reservasHospedajePendientes->isEmpty())
+                    <div class="alert alert-warning mt-3">No hay reservas de hospedaje pendientes.</div>
+                @else
+                <div class="row justify-content-center g-4 mt-3">
+                    @foreach($reservasHospedajePendientes as $reserva)
+                        <div class="col-12 col-md-6 col-lg-4">
+                            <div class="card shadow-sm border-0 h-100 text-center p-3" style="border-radius: 18px;">
+                                <div class="card-body d-flex flex-column justify-content-center align-items-center">
+                                    <div class="mb-2">
+                                        <span class="badge bg-warning text-dark px-3 py-2 mb-2" style="font-size: 1rem;">Pendiente</span>
+                                    </div>
+                                    <h5 class="card-title mb-1">Reserva #{{ $reserva->id }}</h5>
+                                    <p class="mb-2 text-secondary">Cliente</p>
+                                    <div class="fw-bold mb-1">{{ $reserva->usuario ? $reserva->usuario->name : '-' }}</div>
+                                    <div class="mb-2 text-muted">{{ $reserva->usuario ? $reserva->usuario->email : '-' }}</div>
+                                    <div class="mb-2">
+                                        <span class="fs-6">Habitaciones: 
+                                            @foreach($reserva->habitaciones as $hab)
+                                                <span class="badge bg-info text-dark">{{ $hab->numero ?? $hab->id }}</span>
+                                            @endforeach
+                                        </span>
+                                    </div>
+                                    <hr class="my-2 w-50 mx-auto">
+                                    <div class="mb-1"><i class="fas fa-calendar-alt me-1"></i> <strong>Desde:</strong> {{ $reserva->fecha_inicio ? $reserva->fecha_inicio->format('d/m/Y') : '-' }}</div>
+                                    <div class="mb-3"><i class="fas fa-calendar-check me-1"></i> <strong>Hasta:</strong> {{ $reserva->fecha_fin ? $reserva->fecha_fin->format('d/m/Y') : '-' }}</div>
+                                    <div class="mb-2">
+                                        <span class="fs-5 fw-bold text-success">${{ number_format($reserva->precio_total, 2, ',', '.') }}</span>
+                                    </div>
+                                    <button type="button" class="btn btn-outline-primary mt-2" data-bs-toggle="modal" data-bs-target="#modalReservaHospedaje{{ $reserva->id }}">
+                                        <i class="fas fa-eye me-1"></i> Ver detalles
+                                    </button>
+                                </div>
+                                <!-- Modal Detalles Reserva Hospedaje -->
+                                <div class="modal fade" id="modalReservaHospedaje{{ $reserva->id }}" tabindex="-1" aria-labelledby="modalReservaHospedajeLabel{{ $reserva->id }}" aria-hidden="true">
+                                  <div class="modal-dialog modal-dialog-centered modal-lg">
+                                    <div class="modal-content">
+                                      <div class="modal-header">
+                                        <h5 class="modal-title" id="modalReservaHospedajeLabel{{ $reserva->id }}">Detalles de la Reserva Hospedaje #{{ $reserva->id }}</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+                                      </div>
+                                      <div class="modal-body">
+                                        <div class="row mb-3">
+                                          <div class="col-md-6">
+                                            <h6 class="fw-bold mb-2">Datos de la reserva</h6>
+                                            <ul class="list-group list-group-flush">
+                                              <li class="list-group-item"><strong>Cliente:</strong> {{ $reserva->usuario ? $reserva->usuario->name : '-' }}</li>
+                                              <li class="list-group-item"><strong>Email:</strong> {{ $reserva->usuario ? $reserva->usuario->email : '-' }}</li>
+                                              <li class="list-group-item"><strong>Fecha inicio:</strong> {{ $reserva->fecha_inicio ? $reserva->fecha_inicio->format('d/m/Y') : '-' }}</li>
+                                              <li class="list-group-item"><strong>Fecha fin:</strong> {{ $reserva->fecha_fin ? $reserva->fecha_fin->format('d/m/Y') : '-' }}</li>
+                                              <li class="list-group-item"><strong>Habitaciones:</strong> 
+                                                @foreach($reserva->habitaciones as $hab)
+                                                    <span class="badge bg-info text-dark">{{ $hab->numero ?? $hab->id }}</span>
+                                                @endforeach
+                                              </li>
+                                              <li class="list-group-item"><strong>Monto:</strong> ${{ number_format($reserva->precio_total, 2, ',', '.') }}</li>
+                                              <li class="list-group-item"><strong>Estado:</strong> <span class="badge bg-warning text-dark">Pendiente</span></li>
+                                              <li class="list-group-item"><strong>Método de pago:</strong> {{ ucfirst($reserva->metodo_pago) }}</li>
+                                              <li class="list-group-item"><strong>Código reserva:</strong> {{ $reserva->codigo_reserva }}</li>
+                                            </ul>
+                                          </div>
+                                          <div class="col-md-6">
+                                            <h6 class="fw-bold mb-2">Datos de pago</h6>
+                                            @php $pago = $pagosHospedaje[$reserva->id] ?? null; @endphp
+                                            @if($pago)
+                                            <ul class="list-group list-group-flush">
+                                              <li class="list-group-item"><strong>Nombre en tarjeta:</strong> {{ $pago->cardholder_name }}</li>
+                                              <li class="list-group-item"><strong>Número de tarjeta:</strong> **** **** **** {{ substr($pago->card_number, -4) }}</li>
+                                              <li class="list-group-item"><strong>Expiración:</strong> {{ $pago->expiration_month }}/{{ $pago->expiration_year }}</li>
+                                              <li class="list-group-item"><strong>CVV:</strong> ***</li>
+                                              <li class="list-group-item"><strong>Monto:</strong> ${{ number_format($pago->amount, 2, ',', '.') }}</li>
+                                              <li class="list-group-item"><strong>Estado pago:</strong> <span class="badge bg-warning text-dark">Pendiente</span></li>
+                                            </ul>
+                                            @else
+                                            <div class="alert alert-danger">No se encontraron datos de pago asociados.</div>
+                                            @endif
+                                          </div>
+                                        </div>
+                                      </div>
+                                      <div class="modal-footer flex-column flex-md-row justify-content-between">
+                                        <div class="w-100 mb-2 mb-md-0">
+                                          <!-- Campo motivo (solo visible si se va a rechazar, mostrar con JS) -->
+                                          <div class="d-none" id="motivoRechazoHospedajeContainer{{ $reserva->id }}">
+                                            <label for="motivoRechazoHospedaje{{ $reserva->id }}" class="form-label">Motivo de rechazo</label>
+                                            <textarea class="form-control" id="motivoRechazoHospedaje{{ $reserva->id }}" rows="2" placeholder="Escribe el motivo del rechazo..."></textarea>
+                                          </div>
+                                        </div>
+                                        <div class="d-flex gap-2 w-100 justify-content-end">
+                                          <!-- Botón Rechazar -->
+                                          <button type="button" class="btn btn-danger" onclick="mostrarMotivoRechazoHospedaje({{ $reserva->id }})">Rechazar</button>
+                                          <!-- Botón Confirmar Rechazo (solo visible si se muestra el textarea) -->
+                                          <form method="POST" action="{{ route('administracion.reservas.hospedaje.rechazar', $reserva->id) }}" class="d-inline-block" id="formRechazoHospedaje{{ $reserva->id }}" style="display:none;">
+                                            @csrf
+                                            <input type="hidden" name="motivo" id="inputMotivoRechazoHospedaje{{ $reserva->id }}">
+                                            <button type="submit" class="btn btn-outline-danger ms-2">Confirmar rechazo</button>
+                                          </form>
+                                          <!-- Botón Aceptar -->
+                                          <button type="button" class="btn btn-success" onclick="mostrarConfirmacionAceptarHospedaje({{ $reserva->id }})">Aceptar</button>
+                                          <!-- Modal confirmación aceptar -->
+                                          <div class="modal fade" id="modalConfirmarAceptarHospedaje{{ $reserva->id }}" tabindex="-1" aria-labelledby="modalConfirmarAceptarHospedajeLabel{{ $reserva->id }}" aria-hidden="true">
+                                            <div class="modal-dialog modal-dialog-centered">
+                                              <div class="modal-content">
+                                                <div class="modal-header">
+                                                  <h5 class="modal-title" id="modalConfirmarAceptarHospedajeLabel{{ $reserva->id }}">Confirmar aceptación</h5>
+                                                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+                                                </div>
+                                                <div class="modal-body">
+                                                  ¿Está seguro que desea aceptar esta reserva de hospedaje? Se notificará al cliente y se actualizará el estado.
+                                                </div>
+                                                <div class="modal-footer">
+                                                  <form method="POST" action="{{ route('administracion.reservas.hospedaje.aceptar', $reserva->id) }}" class="d-inline-block">
+                                                    @csrf
+                                                    <button type="submit" class="btn btn-success">Confirmar aceptación</button>
+                                                  </form>
+                                                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                                                </div>
+                                              </div>
+                                            </div>
+                                          </div>
+                                        </div>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                            </div>
+                        </div>
+                    @endforeach
+                </div>
+                @endif
+
+                <script>
+                function mostrarMotivoRechazoHospedaje(reservaId) {
+                    document.getElementById('motivoRechazoHospedajeContainer' + reservaId).classList.remove('d-none');
+                    document.getElementById('formRechazoHospedaje' + reservaId).style.display = 'inline-block';
+                }
+                function prepararEnvioRechazoHospedaje(reservaId) {
+                    var textarea = document.getElementById('motivoRechazoHospedaje' + reservaId);
+                    var inputHidden = document.getElementById('inputMotivoRechazoHospedaje' + reservaId);
+                    if (textarea && inputHidden) {
+                        inputHidden.value = textarea.value;
+                    }
+                    return true;
+                }
+                document.addEventListener('DOMContentLoaded', function() {
+                    @foreach($reservasHospedajePendientes as $reserva)
+                        if(document.getElementById('formRechazoHospedaje{{ $reserva->id }}')){
+                            document.getElementById('formRechazoHospedaje{{ $reserva->id }}').onsubmit = function(){
+                                return prepararEnvioRechazoHospedaje({{ $reserva->id }});
+                            };
+                        }
+                    @endforeach
+                });
+                function mostrarConfirmacionAceptarHospedaje(reservaId) {
+                    var modal = new bootstrap.Modal(document.getElementById('modalConfirmarAceptarHospedaje' + reservaId));
+                    modal.show();
+                }
+                </script>
             </div>
             <div class="tab-pane fade" id="paquetes" role="tabpanel" aria-labelledby="paquetes-tab">
                 <div class="alert alert-info mt-3">Aquí irán las reservas de <strong>Paquetes</strong>.</div>
