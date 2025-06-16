@@ -110,6 +110,9 @@ Route::prefix('administracion')->middleware('auth')->group(function () {
     // Acciones de reservas de vehículos
     Route::post('/reservas/vehiculos/{reserva}/aceptar', [AdministracionController::class, 'aceptarReservaVehiculo'])->name('administracion.reservas.vehiculos.aceptar');
     Route::post('/reservas/vehiculos/{reserva}/rechazar', [AdministracionController::class, 'rechazarReservaVehiculo'])->name('administracion.reservas.vehiculos.rechazar');
+    // Acciones de reservas de hospedaje (añadido sin afectar rutas existentes)
+    Route::post('/reservas/hospedaje/{reserva}/aceptar', [AdministracionController::class, 'aceptarReservaHospedaje'])->name('administracion.reservas.hospedaje.aceptar');
+    Route::post('/reservas/hospedaje/{reserva}/rechazar', [AdministracionController::class, 'rechazarReservaHospedaje'])->name('administracion.reservas.hospedaje.rechazar');
     // Acciones de reservas de hospedaje
     Route::post('/reservas/hospedaje/{reserva}/aceptar', [AdministracionController::class, 'aceptarReservaHospedaje'])->name('administracion.reservas.hospedaje.aceptar');
     Route::post('/reservas/hospedaje/{reserva}/rechazar', [AdministracionController::class, 'rechazarReservaHospedaje'])->name('administracion.reservas.hospedaje.rechazar');
