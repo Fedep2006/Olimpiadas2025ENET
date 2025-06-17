@@ -71,11 +71,24 @@ class AdministracionController extends Controller
                 $pagosHospedajeHistoricos[$reserva->id] = $pago;
             }
         }
+        // Viajes
+        $reservasViajesPendientes = \App\Models\ReservaViaje::with(['usuario', 'viaje'])
+            ->where('estado', 'pendiente')
+            ->orderBy('created_at', 'desc')
+            ->get();
+        $pagosViajes = [];
+        foreach ($reservasViajesPendientes as $reserva) {
+            $pago = \App\Models\Pagos::where('reserva_viaje_id', $reserva->id)->first();
+            if ($pago) {
+                $pagosViajes[$reserva->id] = $pago;
+            }
+        }
         return view('administracion.reservas', compact(
             'reservasVehiculosPendientes', 'pagosVehiculos',
             'reservasHospedajePendientes', 'pagosHospedaje',
             'reservasHistoricas', 'pagosHistoricos',
-            'reservasHospedajeHistoricas', 'pagosHospedajeHistoricos'
+            'reservasHospedajeHistoricas', 'pagosHospedajeHistoricos',
+            'reservasViajesPendientes', 'pagosViajes'
         ));
     }
 
