@@ -128,17 +128,20 @@ class ViajeController extends Controller
 
     public function show(Viaje $viaje)
     {
-        try {
-            $viaje->fecha_salida = $viaje->fecha_salida->format('Y-m-d\TH:i');
-            $viaje->fecha_llegada = $viaje->fecha_llegada->format('Y-m-d\TH:i');
-            return response()->json($viaje);
-        } catch (\Exception $e) {
-            Log::error('Error al mostrar viaje: ' . $e->getMessage());
-            return response()->json([
-                'success' => false,
-                'message' => 'Error al cargar los datos del viaje'
-            ], 500);
+        // Formatear fechas para la vista
+        if ($viaje->fecha_salida) $viaje->fecha_salida = $viaje->fecha_salida instanceof \Carbon\Carbon ? $viaje->fecha_salida->format('Y-m-d\TH:i') : $viaje->fecha_salida;
+        if ($viaje->fecha_llegada) $viaje->fecha_llegada = $viaje->fecha_llegada instanceof \Carbon\Carbon ? $viaje->fecha_llegada->format('Y-m-d\TH:i') : $viaje->fecha_llegada;
+
+        // Buscar la reserva activa para este viaje y usuario
+        $reserva = null;
+        if (auth()->check()) {
+            $reserva = \App\Models\Reserva::where('tipo', 'viaje')
+                ->where('servicio_id', $viaje->id)
+                ->where('usuario_id', auth()->id())
+                ->latest()
+                ->first();
         }
+        return view('detalles_viajes', compact('viaje', 'reserva'));
     }
 
     public function edit($id)
