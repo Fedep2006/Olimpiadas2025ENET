@@ -5,6 +5,7 @@
 
     .table th {
         background-color: var(--despegar-light-blue);
+        text-align: center;
         color: var(--despegar-blue);
         font-weight: bold;
         border: none;
@@ -65,6 +66,9 @@
                         @break
                     @case('empleados')
                         @include('administracion.partials.tablas.tabla-empleados-contenido')
+                        @break
+                    @case('viajes')
+                        @include('administracion.partials.tablas.tabla-viajes-contenido')
                         @break
                     @default
                         

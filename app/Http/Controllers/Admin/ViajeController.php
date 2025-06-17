@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
+use App\Http\Requests\ViajeRequest;
 
 class ViajeController extends Controller
 {
@@ -53,7 +54,7 @@ class ViajeController extends Controller
 
         // Aplicar todas las condiciones y obtener resultados
         $registros = $query->select(['id', 'nombre', 'tipo', 'origen', 'destino', 'fecha_salida', 'fecha_llegada', 'empresa', 'numero_viaje', 'capacidad_total', 'asientos_disponibles', 'precio_base', 'clases', 'descripcion', 'activo'])
-            ->orderBy('fecha_contratacion', 'desc')
+            ->orderBy('created_at', 'desc')
             ->paginate(10)
             ->withQueryString();
 
@@ -71,34 +72,11 @@ class ViajeController extends Controller
 
         return view('administracion.viajes', compact('registros'));
     }
-    public function crear(Request $request)
+    public function crear(ViajeRequest $request)
     {
-        $validator = Validator::make($request->all(), [
-            'usuario_id' => 'required|integer|exists:users,id',
-            'puesto' => 'required|string|max:255',
-            'fecha_contratacion' => 'required|date|before_or_equal:today',
-            'salario' => 'required|string|max:255',
-            'estado' => 'nullable|string|in:activo,inactivo,vacaciones,licencia',
-        ]);
-
-        if ($validator->fails()) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Error de validación',
-                'errors' => $validator->errors()
-            ], 422);
-        }
         try {
             // Crear el viaje
-            Viaje::create([
-                'id' => $request->usuario_id,
-                'usuario_id' => $request->usuario_id,
-                'puesto' => $request->puesto,
-                'nivel' => "0",
-                'fecha_contratacion' => $request->fecha_contratacion,
-                'salario' => $request->salario,
-                'estado' => $request->estado ?? 'activo',
-            ]);
+            Viaje::create($request->validated());
 
             return response()->json([
                 'success' => true,
@@ -167,26 +145,10 @@ class ViajeController extends Controller
         }
     }
 
-    public function update(Request $request, Viaje $viaje)
+    public function update(ViajeRequest $request, Viaje $viaje)
     {
         try {
-            $validated = $request->validate([
-                'nombre' => 'required|string|max:255',
-                'tipo' => 'required|string|max:50',
-                'origen' => 'required|string|max:100',
-                'destino' => 'required|string|max:100',
-                'fecha_salida' => 'required|date',
-                'fecha_llegada' => 'required|date|after_or_equal:fecha_salida',
-                'empresa' => 'required|string|max:100',
-                'numero_viaje' => 'required|string|max:50',
-                'capacidad_total' => 'required|integer|min:1',
-                'asientos_disponibles' => 'required|integer|min:0',
-                'precio_base' => 'required|numeric|min:0',
-                'descripcion' => 'nullable|string',
-                'activo' => 'required|boolean'
-            ]);
-
-            $viaje->update($validated);
+            $viaje->update($request->validated());
 
             return response()->json([
                 'success' => true,

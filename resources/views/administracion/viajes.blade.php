@@ -43,13 +43,13 @@
             (object)[
                 'id' => 'fecha_salida',
                 'name' => 'fecha_salida',
-                'type' => 'date',
+                'type' => 'datetime-local',
                 'label' => 'Fecha de Salida'
             ],
             (object)[
                 'id' => 'fecha_llegada',
                 'name' => 'fecha_llegada',
-                'type' => 'date',
+                'type' => 'datetime-local',
                 'label' => 'Fecha de Llegada'
             ],
             (object)[
@@ -61,14 +61,20 @@
             (object)[
                 'id' => 'numero_viaje',
                 'name' => 'numero_viaje',
-                'type' => 'text',
+                'type' => 'number',
                 'label' => 'Codigo del Viaje'
             ],
             (object)[
                 'id' => 'capacidad_total',
                 'name' => 'capacidad_total',
-                'type' => 'text',
+                'type' => 'number',
                 'label' => 'Capacidad del Viaje'
+            ],
+            (object)[
+                'id' => 'asientos_disponibles',
+                'name' => 'asientos_disponibles',
+                'type' => 'number',
+                'label' => 'Asientos Disponibles'
             ],
             (object)[
                 'id' => 'precio_base',
@@ -134,13 +140,13 @@
             (object)[
                 'id' => 'editFecha_salida',
                 'name' => 'fecha_salida',
-                'type' => 'date',
+                'type' => 'datetime-local',
                 'label' => 'Fecha de Salida'
             ],
             (object)[
                 'id' => 'editFecha_llegada',
                 'name' => 'fecha_llegada',
-                'type' => 'date',
+                'type' => 'datetime-local',
                 'label' => 'Fecha de Llegada'
             ],
             (object)[
@@ -202,7 +208,7 @@
                 'value' => 'search_id'
             ],
             (object)[
-                'label' => 'Avion',
+                'label' => 'Viaje',
                 'type' => 'text',
                 'name' => 'search_avion',
                 'id' => 'searchAvion',
@@ -233,14 +239,14 @@
             ],
             (object)[
                 'label' => 'Fecha de Salida',
-                'type' => 'date',
+                'type' => 'datetime-local',
                 'name' => 'search_fecha_salida',
                 'id' => 'searchFecha_salida',
                 'value' => 'search_fecha_salida'
             ],
             (object)[
                 'label' => 'Fecha de Llegada',
-                'type' => 'date',
+                'type' => 'datetime-local',
                 'name' => 'search_fecha_llegada',
                 'id' => 'searchFecha_llegada',
                 'value' => 'search_fecha_llegada'
@@ -319,13 +325,13 @@
             $tHead= [
                 "Viaje",//aca ira el numero_viaje, tipo e ID
                 "Nombre",
-                "Origen", //origen y destino van a estar en el mismo lugar
-                "Destino",
-                "Fecha Salida",
-                "Fecha Llegada",
+                "Camino", //origen y destino van a estar en el mismo lugar
+                "Fecha de Salida y Llegada",
                 "Empresa",
                 "Capacidad",// disponibles/capacidad
                 "Precio",
+                "Estado",
+                "Descripcion"
                 //"Estado" el estado va a determinar si esta gris o no
             ];
         @endphp
