@@ -411,7 +411,21 @@
                                         <a href="{{ route('administracion.hospedaje.habitaciones', $hospedaje->id) }}" class="action-btn view" title="Ver habitaciones">
                                             <i class="fas fa-bed"></i>
                                         </a>
-                                        <button class="action-btn view" title="Ver detalles">
+                                        
+                                        <button type="button" class="action-btn view" 
+                                            data-bs-toggle="modal" 
+                                            data-bs-target="#verModal"
+                                            data-nombre="{{ $hospedaje->nombre }}"
+                                            data-estrellas="{{ $hospedaje->estrellas }}"
+                                            data-ubicacion="{{ $hospedaje->ubicacion }}"
+                                            data-categoria="{{ $hospedaje->categoria }}"
+                                            data-servicios="{{ is_array($hospedaje->servicios) ? implode(', ', $hospedaje->servicios) : $hospedaje->servicios }}"
+                                            data-politicas="{{ is_array($hospedaje->politicas) }}"
+                                            data-descripcion="{{ $hospedaje->descripcion }}"
+                                            data-contacto="Tel: {{ $hospedaje->telefono }}, Email: {{ $hospedaje->email }}"
+                                            data-horario="{{ $hospedaje->check_in_24h == 1 ? '24 horas' : $hospedaje->check_in . ' - ' . $hospedaje->check_out }}"
+                                            data-disponibilidad="{{ $hospedaje->disponibilidad }}"
+                                            title="Ver detalles">
                                             <i class="fas fa-eye"></i>
                                         </button>
                                         <button class="action-btn edit" title="Editar" data-bs-toggle="modal" data-bs-target="#editarModal" data-hospedaje-id="{{ $hospedaje->id }}">
@@ -807,6 +821,32 @@
         </div>
     </div>
 </div>
+<!-- Modal Ver Detalles -->
+<div class="modal fade" id="verModal" tabindex="-1" aria-labelledby="verModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="verModalLabel">Detalles del Hospedaje</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+      </div>
+      <div class="modal-body">
+        <p><strong>Nombre:</strong> <span id="ver_nombre"></span></p>
+        <p><strong>Estrellas:</strong> <span id="ver_estrellas"></span></p>
+        <p><strong>Ubicación:</strong> <span id="ver_ubicacion"></span></p>
+        <p><strong>Categoría:</strong> <span id="ver_categoria"></span></p>
+        <p><strong>Servicios:</strong> <span id="ver_servicios"></span></p>
+        <p><strong>Políticas:</strong> <span id="ver_politicas"></span></p>
+        <p><strong>Descripción:</strong> <span id="ver_descripcion"></span></p>
+        <p><strong>Contacto:</strong> <span id="ver_contacto"></span></p>
+        <p><strong>Horario:</strong> <span id="ver_horario"></span></p>
+        <p><strong>Estado:</strong> <span id="ver_estado"></span></p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+      </div>
+    </div>
+  </div>
+</div>
 <script>
     // Editar Modal: rellenar campos dinámicamente
     document.addEventListener('DOMContentLoaded', function () {
@@ -860,4 +900,22 @@
 
     // Exponer hospedajes en JS
     window.hospedajes = @json($hospedajes);
+    $(function() {
+        $('#verModal').on('show.bs.modal', function (event) {
+            var button = $(event.relatedTarget);
+            $('#ver_nombre').text(button.data('nombre'));
+            $('#ver_estrellas').text(button.data('estrellas'));
+            $('#ver_ubicacion').text(button.data('ubicacion'));
+            $('#ver_categoria').text(button.data('categoria'));
+            $('#ver_servicios').text(button.data('servicios'));
+            $('#ver_politicas').text(button.data('politicas'));
+            $('#ver_descripcion').text(button.data('descripcion'));
+            $('#ver_contacto').text(button.data('contacto'));
+            $('#ver_horario').text(button.data('horario'));
+            // Mostrar estado como texto legible
+            var disponibilidad = button.data('disponibilidad');
+            var estadoTexto = (disponibilidad == 1 || disponibilidad === "1") ? "Activo" : "Inactivo";
+            $('#ver_estado').text(estadoTexto);
+        });
+    });
 </script>
