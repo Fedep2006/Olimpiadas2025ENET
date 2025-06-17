@@ -139,7 +139,7 @@ Route::prefix('administracion')->middleware('auth')->group(function () {
 
     // Detalle de viaje
     // Reservar viaje
-    Route::post('/viajes/{viaje}/reservar', [\App\Http\Controllers\Admin\ViajeController::class, 'reservasViaje'])->name('reservas.viaje');
+    Route::post('/viajes/{viajeId}/reservar', [ViajeController::class, 'reservasViaje'])->name('reservas.viaje');
 
     Route::get('/viajes',                 [ViajeController::class, 'index'])->name('administracion.index');
     Route::post('/viajes/create',       [ViajeController::class, 'crear'])->name('usuarios.create');
