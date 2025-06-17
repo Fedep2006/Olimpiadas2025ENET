@@ -1,7 +1,7 @@
 @props(['titulo', 'inputs' => []])
 <div class="modal" id="nuevoRegistroModal" tabindex="-1">
     <div class="modal-dialog">
-        <div class="modal-content">
+        <div class="modal-content" id="modalContent">
             <div class="modal-header">
                 <h5 class="modal-title">{{ $titulo }}</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
@@ -9,13 +9,13 @@
             <div class="modal-body">
                 <form id="nuevoRegistroForm">
                     @foreach ( $inputs as $input)
-                        <div class="mb-3"">
+                        <div class="mb-3{{$input->type == "checkbox" ? ' flex flex-row gap-3' : ''}}" style="{{$input->type == "checkbox" ? 'justify-content: flex-start' : ''}}"> 
+                            <label 
+                                for="{{ $input->name ?? $input->name}}" 
+                                class="form-label">{{$input->label ?? ""}}
+                            </label>
                             @switch($input->type)
                                 @case("select")
-                                     <label 
-                                        for="{{ $input->name ?? $input->name}}" 
-                                        class="form-label">{{$input->label ?? ""}}
-                                    </label>
                                     <select 
                                         class="form-select" 
                                         name="{{$input->name ?? $input->id}}" 
@@ -38,17 +38,10 @@
                                             name="{{$input->name ?? $input->id}}" 
                                              checked
                                         >
-                                        <label class="form-check-label" for="{{$input->name ?? $input->id}}" >
-                                            {{$input->label ?? ""}}
-                                        </label>
                                     </div>
                                     @break
                             
                                 @default
-                                    <label 
-                                        for="{{ $input->name ?? $input->name}}" 
-                                        class="form-label">{{$input->label ?? ""}}
-                                    </label>
                                     <input 
                                         type="{{$input->type ?? ""}}" 
                                         step="{{$input->step ?? ""}}"

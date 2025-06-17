@@ -168,6 +168,12 @@
                 'label' => 'Capacidad del Viaje'
             ],
             (object)[
+                'id' => 'editAsientos_disponibles',
+                'name' => 'asientos_disponibles',
+                'type' => 'number',
+                'label' => 'Asientos Disponibles'
+            ],
+            (object)[
                 'id' => 'editPrecio_base',
                 'name' => 'precio_base',
                 'type' => 'number',
@@ -200,14 +206,6 @@
 
         $camposBuscar = [
             (object)[
-                'label' => 'ID',
-                'type' => 'text',
-                'name' => 'search_id',
-                'id' => 'searchId',
-                'placeholder' => 'ID del Viaje',
-                'value' => 'search_id'
-            ],
-            (object)[
                 'label' => 'Viaje',
                 'type' => 'text',
                 'name' => 'search_avion',
@@ -228,6 +226,7 @@
                 'type' => 'text',
                 'name' => 'search_origen',
                 'id' => 'searchOrigen',
+                'placeholder' => 'Ciudad',
                 'value' => 'search_origen'
             ],
             (object)[
@@ -235,6 +234,7 @@
                 'type' => 'text',
                 'name' => 'search_destino',
                 'id' => 'searchDestino',
+                'placeholder' => 'Ciudad',
                 'value' => 'search_destino'
             ],
             (object)[
@@ -292,6 +292,7 @@
                 'type' => 'text',
                 'name' => 'search_descripcion',
                 'id' => 'searchDescripcion',
+                'placeholder' => 'Texto',
                 'value' => 'search_descripcion'
             ],
             (object)[
@@ -326,7 +327,7 @@
                 "Viaje",//aca ira el numero_viaje, tipo e ID
                 "Nombre",
                 "Camino", //origen y destino van a estar en el mismo lugar
-                "Fecha de Salida y Llegada",
+                "Fechas",
                 "Empresa",
                 "Capacidad",// disponibles/capacidad
                 "Precio",

@@ -137,14 +137,9 @@ Route::prefix('administracion')->middleware('auth')->group(function () {
     Route::delete('/paquetes/borrar/{id}',       [PaquetesController::class, 'Borrar'])->name('administracion.paquetes.borrar');
 
 
-    Route::get('/viajes',                 [AdminViajeController::class, 'index'])->name('administracion.viajes');
-    Route::post('/viajes',                [AdminViajeController::class, 'store'])->name('viajes.store');
     // Detalle de viaje
-    Route::get('/viajes/{viaje}', [\App\Http\Controllers\Admin\ViajeController::class, 'show'])->name('viajes.show');
     // Reservar viaje
     Route::post('/viajes/{viaje}/reservar', [\App\Http\Controllers\Admin\ViajeController::class, 'reservasViaje'])->name('reservas.viaje');
-    Route::put('/viajes/{id}',            [AdminViajeController::class, 'update'])->name('viajes.update');
-    Route::delete('/viajes/{id}',         [AdminViajeController::class, 'destroy'])->name('viajes.destroy');
 
     Route::get('/viajes',                 [ViajeController::class, 'index'])->name('administracion.index');
     Route::post('/viajes/create',       [ViajeController::class, 'crear'])->name('usuarios.create');

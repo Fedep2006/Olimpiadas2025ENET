@@ -42,7 +42,7 @@
     .camino-text{
         color: #6c757d;
         font-size: 14px;
-        line-height: 1;
+        line-height: 0.7;
     }
 </style>
 @php
@@ -59,25 +59,28 @@
     @foreach ($registros as $registro)
         <tr class="{{$registro->activo ? '' : 'bg-gray-600'}}">
             <td>
-                <div class="flex flex-col text-center ids">
-                    <h6>{{ ucfirst($registro->tipo) }}</h6>
-                    <div>
-                        <small>ID: {{ $registro->id }}</small>
+                <div class="flex justify-center items-center">
+                    <div class="flex flex-col text-center ids gap-1">
+                        <h6>{{ ucfirst($registro->tipo) }}</h6>
                         <small>#{{ $registro->numero_viaje }}</small>
                     </div>
                 </div>
             </td>
             <td>
-                <div class="flex flex-col text-center">
-                    <span class="mb-0.5">{{ $registro->nombre }}</span>
-                    <small>{{ $registro->clases }}</small>
+                <div class="flex justify-center items-center">
+                    <div class="flex flex-col text-center ids gap-1">
+                        <h6>{{ $registro->nombre }}</h6>
+                        <small>{{ $registro->clases }}</small>
+                    </div>
                 </div>
             </td>
             <td>
-                <div class="flex flex-col text-center">
-                    {{ $registro->origen }}
-                    <small class="camino-text">a</small>
-                    {{ $registro->destino }}
+                <div class="flex justify-center items-center">
+                    <div class="flex flex-col text-center ids gap-1">
+                        <h6>{{ $registro->origen }}</h6>
+                        <small class="camino-text">a</small>
+                        <h6>{{ $registro->destino }}</h6>
+                    </div>
                 </div>
             </td>
             <td >

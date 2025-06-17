@@ -42,15 +42,23 @@ setTimeout(function () {
                         return; // Salta a la siguiente iteración
                     }
 
-                    console.log(input);
-
                     switch (input.type) {
                         case "date":
                             let fecha = new Date(registro[key]);
                             input.value = fecha.toISOString().split("T")[0];
                             break;
+                        case "datetime-local":
+                            let fechaLocal = new Date(registro[key]);
+                            input.value = fechaLocal.toISOString().slice(0, 16);
+                            break;
                         case "number":
-                            input.value = parseInt(registro[key]); // Cambié integer por parseInt
+                            input.value = parseInt(registro[key]);
+                            break;
+                        case "checkbox":
+                            input.value = registro[key];
+                            if (input.value == "true") {
+                                input.checked = true;
+                            }
                             break;
                         default:
                             input.value = registro[key];
@@ -71,14 +79,12 @@ setTimeout(function () {
                 const formData = new FormData(form);
                 const data = Object.fromEntries(formData.entries());
                 const { registro_id: registroId, ...dataReady } = data;
-                console.log(dataReady);
 
                 try {
                     const token = document
                         .querySelector('meta[name="csrf-token"]')
                         ?.getAttribute("content");
                     if (!token) throw new Error("Token CSRF no encontrado");
-                    console.log(registroId);
                     const response = await fetch(pathname + `/${registroId}`, {
                         method: "PUT",
                         headers: {
