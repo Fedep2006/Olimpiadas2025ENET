@@ -29,7 +29,12 @@ class AuthController extends Controller
             if ($request->filled('redirect_to')) {
                 return redirect($request->input('redirect_to'))->with('success', 'Has iniciado sesión correctamente.');
             }
-            return redirect('/administracion')->with('success', 'Has iniciado sesión correctamente.');
+            // Redirección según nivel
+            if ($user->nivel == 0) {
+                return redirect('/')->with('success', 'Has iniciado sesión correctamente.');
+            } else {
+                return redirect('/administracion')->with('success', 'Has iniciado sesión correctamente.');
+            }
         }
 
         // Si falla

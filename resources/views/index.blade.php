@@ -326,10 +326,21 @@
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav me-auto">
-                    <li class="nav-item"><a class="nav-link" href="#"><i class="fas fa-plane"></i> Vuelos</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#"><i class="fas fa-bed"></i> Hoteles</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#"><i class="fas fa-suitcase"></i> Paquetes</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#"><i class="fas fa-car"></i> Autos</a></li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#"><i class="fas fa-plane"></i> Vuelos</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#"><i class="fas fa-bed"></i> Hoteles</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#"><i class="fas fa-suitcase"></i> Paquetes</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#"><i class="fas fa-car"></i> Autos</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#"><i class="fas fa-ship"></i> Cruceros</a>
+                    </li>
                 </ul>
                 <ul class="navbar-nav">
                     @if(Auth::check())
@@ -352,7 +363,9 @@
                             <a class="nav-link" href="{{ route('login') }}"><i class="fas fa-user"></i> Mi cuenta</a>
                         </li>
                     @endif
-                    <li class="nav-item"><a class="nav-link" href="#"><i class="fas fa-headset"></i> Ayuda</a></li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#"><i class="fas fa-headset"></i> Ayuda</a>
+                    </li>
                 </ul>
             </div>
         </div>
@@ -632,6 +645,19 @@ fetch('/api/ciudades')
     const listDestination = document.getElementById('list-destination');
     listOrigin.innerHTML = ciudades.map(c => `<option value="${c}">`).join('');
     listDestination.innerHTML = ciudades.map(c => `<option value="${c}">`).join('');
+  });
+// Bloque de debug para Bootstrap y dropdown
+  document.addEventListener('DOMContentLoaded', function() {
+    console.log('Bootstrap:', typeof bootstrap !== 'undefined' ? 'Cargado' : 'NO cargado');
+    var dropdown = document.querySelector('.dropdown-toggle');
+    var menu = document.querySelector('.dropdown-menu');
+    if (dropdown && menu) {
+        dropdown.addEventListener('click', function(e) {
+            e.preventDefault();
+            menu.classList.toggle('show');
+            console.log('Clase show toggled en dropdown-menu');
+        });
+    }
   });
 </script>
 </body>
