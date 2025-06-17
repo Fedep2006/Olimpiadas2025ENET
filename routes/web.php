@@ -136,11 +136,10 @@ Route::prefix('administracion')->middleware('auth')->group(function () {
     Route::post('/paquetes/editar',     [PaquetesController::class, 'Editar'])->name('administracion.paquetes.editar');
     Route::delete('/paquetes/borrar/{id}',       [PaquetesController::class, 'Borrar'])->name('administracion.paquetes.borrar');
 
-    Route::get('/viajes',                 [AdminViajeController::class, 'index'])->name('administracion.viajes');
-    Route::post('/viajes',                [AdminViajeController::class, 'store'])->name('viajes.store');
-    Route::get('/viajes/{id}/edit',       [AdminViajeController::class, 'edit'])->name('viajes.edit');
-    Route::put('/viajes/{id}',            [AdminViajeController::class, 'update'])->name('viajes.update');
-    Route::delete('/viajes/{id}',         [AdminViajeController::class, 'destroy'])->name('viajes.destroy');
+    Route::get('/viajes',                 [AdminViajeController::class, 'index'])->name('administracion.index');
+    Route::post('/viajes/create',       [AdminViajeController::class, 'crear'])->name('usuarios.create');
+    Route::put('/viajes/{viaje}',        [AdminViajeController::class, 'update'])->name('usuarios.update');
+    Route::delete('/viajes/{viaje}', [AdminViajeController::class, 'destroy'])->name('usuarios.destroy');
 
     // Usuarios
     Route::get('/usuarios',               [UserController::class, 'index'])->name('usuarios.index');
