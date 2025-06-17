@@ -27,7 +27,7 @@ class Vehiculo extends Model
     ];
 
     protected $casts = [
-        'imagenes' => 'array',
+        // 'imagenes' => 'array', // Quitamos el cast a array
         'caracteristicas' => 'array',
         'disponible' => 'boolean',
         'capacidad_pasajeros' => 'integer',

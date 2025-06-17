@@ -423,15 +423,42 @@
             <div class="col-lg-8">
                 <div class="vehicle-card">
                     <div class="vehicle-image-container">
-                        @if(!empty($vehiculo->imagenes))
-                            @php
-                                $imagenes = is_array($vehiculo->imagenes) ? $vehiculo->imagenes : (is_string($vehiculo->imagenes) ? explode(',', $vehiculo->imagenes) : []);
-                                $primera_imagen = !empty($imagenes) && trim($imagenes[0]) !== '' ? asset($imagenes[0]) : '/images/vehicle-sample.jpg';
-                            @endphp
-                            <img src="{{ $primera_imagen }}" alt="{{ $vehiculo->marca }} {{ $vehiculo->modelo }}" class="vehicle-image">
-                        @else
-                            <img src="/images/vehicle-sample.jpg" alt="{{ $vehiculo->marca }} {{ $vehiculo->modelo }}" class="vehicle-image">
-                        @endif
+                        @php
+                            // Soporta array de links o string simple
+                            $img = $vehiculo->imagenes;
+                            if (is_array($img)) {
+                                // Busca el primer link válido
+                                foreach ($img as $enlace) {
+                                    $enlace = trim((string)$enlace);
+                                    if ((filter_var($enlace, FILTER_VALIDATE_URL) && $enlace !== '') || (str_starts_with($enlace, 'data:image'))) {
+                                        $primera_imagen = $enlace;
+                                        break;
+                                    } elseif (!empty($enlace)) {
+                                        $primera_imagen = asset($enlace);
+                                        break;
+                                    }
+                                }
+                                if (empty($primera_imagen)) {
+                                    $primera_imagen = asset('images/vehicle-sample.jpg');
+                                }
+                            } else {
+                                $img = trim((string)$img);
+                                if ((filter_var($img, FILTER_VALIDATE_URL)) || (str_starts_with($img, 'data:image'))) {
+                                    $primera_imagen = $img;
+                                } elseif (!empty($img)) {
+                                    $primera_imagen = asset($img);
+                                } else {
+                                    $primera_imagen = asset('images/vehicle-sample.jpg');
+                                }
+                            }
+                        @endphp
+                        @php
+                            $img = $vehiculo->imagenes;
+                            if (is_string($img) && str_starts_with($img, '[')) {
+                                $img = json_decode($img, true);
+                            }
+                        @endphp
+                        <img src="{{ is_array($img) ? $img[0] : $img }}" alt="{{ $vehiculo->marca }} {{ $vehiculo->modelo }}" class="vehicle-image">
                     </div>
                 </div>
                 
@@ -542,8 +569,8 @@
                         <h4 class="reserve-header">Reserva ahora</h4>
                         <div class="booking-content">
                             <div class="price-display">
-                                ${{ number_format($vehiculo->precio_por_dia, 2) }}
-                                <span class="price-period">por día</span>
+                                <span id="precio_total_display">${{ number_format($vehiculo->precio_por_dia, 2) }}</span>
+                                <span class="price-period">total</span>
                             </div>
                             
                             <!-- Botón para abrir el modal -->
@@ -631,7 +658,7 @@
                                     </div>
                                     <div class="modal-footer">
                                       <button type="submit" class="btn btn-primary w-100">
-                                        Reservar y Pagar ${{ number_format($vehiculo->precio_por_dia, 2) }}
+                                        Reservar y Pagar <span id="precio_total_btn">${{ number_format($vehiculo->precio_por_dia, 2) }}</span>
                                       </button>
                                     </div>
                                   </form>
@@ -652,9 +679,20 @@
                                             document.getElementById('fecha_fin').value = `${yyyy}-${mm}-${dd}`;
                                         }
                                     }
+                                    function actualizarPrecio() {
+                                        const dias = parseInt(document.getElementById('cantidad_dias').value || '1');
+                                        const precioPorDia = {{ $vehiculo->precio_por_dia }};
+                                        const total = dias * precioPorDia;
+                                        document.getElementById('precio_total_display').innerText = `$${total.toFixed(2)}`;
+                                        document.getElementById('precio_total_btn').innerText = `$${total.toFixed(2)}`;
+                                    }
                                     document.getElementById('fecha_inicio').addEventListener('change', calcularFechaFin);
-                                    document.getElementById('cantidad_dias').addEventListener('input', calcularFechaFin);
+                                    document.getElementById('cantidad_dias').addEventListener('input', function() {
+                                        calcularFechaFin();
+                                        actualizarPrecio();
+                                    });
                                     calcularFechaFin();
+                                    actualizarPrecio();
                                 });
                             </script>
                             
