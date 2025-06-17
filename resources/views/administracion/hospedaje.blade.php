@@ -351,7 +351,7 @@
                                         </div>
                                         <div class="hotel-details">
                                             <h6>{{ $hospedaje->nombre }}</h6>
-                                            <small>ID:</small>
+                                            <small>ID: {{ $hospedaje->id }}</small>
                                         </div>
                                     </div>
                                 </td>

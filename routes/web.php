@@ -166,6 +166,7 @@ Route::prefix('administracion')->middleware('auth')->group(function () {
 
     // Rutas para habitaciones
     Route::get('/habitaciones/{hospedaje_id}', [App\Http\Controllers\Admin\HabitacionController::class, 'verHabitaciones'])->name('administracion.habitaciones');
+    Route::get('/habitaciones/datos/{id}', [App\Http\Controllers\Admin\HabitacionController::class, 'obtenerDatos'])->name('administracion.habitaciones.datos');
     Route::post('/habitaciones/agregar', [App\Http\Controllers\Admin\HabitacionController::class, 'agregar'])->name('administracion.habitaciones.agregar');
     Route::put('/habitaciones/{id}/editar', [App\Http\Controllers\Admin\HabitacionController::class, 'editar'])->name('administracion.habitaciones.editar');
     Route::put('/habitaciones/{id}/cambiar-estado', [App\Http\Controllers\Admin\HabitacionController::class, 'cambiarEstado'])->name('administracion.habitaciones.cambiar-estado');
