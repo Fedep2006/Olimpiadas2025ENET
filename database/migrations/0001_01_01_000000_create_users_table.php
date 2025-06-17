@@ -17,6 +17,8 @@ return new class extends Migration
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
+            $table->tinyInteger('nivel')->default(0)->comment('0=cliente, 1=empleado, 2=superAdmin');
+            $table->string('verification_token', 100)->nullable();
             $table->rememberToken();
             $table->timestamps();
             $table->softDeletes();

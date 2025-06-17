@@ -13,11 +13,6 @@ class User extends Authenticatable
     /** @use HasFactory<\Database\Factories\UserFactory> */
     use HasFactory, Notifiable, SoftDeletes;
 
-    public function empleado()
-    {
-        return $this->hasOne(Empleado::class, 'usuario_id');
-    }
-
     public function reservas()
     {
         return $this->hasMany(Reserva::class, 'usuario_id');

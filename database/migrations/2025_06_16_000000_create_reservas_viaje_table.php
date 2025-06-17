@@ -1,4 +1,5 @@
 <?php
+
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -8,8 +9,8 @@ return new class extends Migration {
     {
         Schema::create('reservas_viaje', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('usuario_id');
-            $table->unsignedBigInteger('viaje_id');
+            $table->foreignId('usuario_id')->constrained('users')->onDelete('cascade');
+            $table->foreignId('viaje_id')->constrained('viajes')->onDelete('cascade');
             $table->integer('cantidad');
             $table->json('pasajeros');
             $table->decimal('precio_total', 10, 2);
@@ -19,9 +20,6 @@ return new class extends Migration {
             $table->timestamp('fecha_pago')->nullable();
             $table->text('observaciones')->nullable();
             $table->timestamps();
-
-            $table->foreign('usuario_id')->references('id')->on('users')->onDelete('cascade');
-            $table->foreign('viaje_id')->references('id')->on('viajes')->onDelete('cascade');
         });
     }
 
