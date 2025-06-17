@@ -113,14 +113,13 @@ class ViajeController extends Controller
         }
     }
 
-    public function update(Request $request, Viaje $viaje)
-    {
 
-        // Formatear fechas para la vista
+    public function show($id)
+    {
+        $viaje = Viaje::findOrFail($id);
         if ($viaje->fecha_salida) $viaje->fecha_salida = $viaje->fecha_salida instanceof \Carbon\Carbon ? $viaje->fecha_salida->format('Y-m-d\TH:i') : $viaje->fecha_salida;
         if ($viaje->fecha_llegada) $viaje->fecha_llegada = $viaje->fecha_llegada instanceof \Carbon\Carbon ? $viaje->fecha_llegada->format('Y-m-d\TH:i') : $viaje->fecha_llegada;
 
-        // Buscar la reserva activa para este viaje y usuario
         $reserva = null;
         if (auth()->check()) {
             $reserva = \App\Models\Reserva::where('tipo', 'viaje')
@@ -130,6 +129,60 @@ class ViajeController extends Controller
                 ->first();
         }
         return view('detalles_viajes', compact('viaje', 'reserva'));
+    }
+
+    public function reservasViaje(Request $request, $viajeId)
+    {
+        $request->validate([
+            'cantidad' => 'required|integer|min:1',
+            'pasajeros' => 'required|json',
+            'cardholder_name' => 'required|string|max:255',
+            'card_number' => 'required|digits_between:13,19',
+            'expiration_month' => 'required|digits:2',
+            'expiration_year' => 'required|digits:4',
+            'cvv' => 'required|digits_between:3,4',
+        ]);
+
+        $viaje = Viaje::findOrFail($viajeId);
+        $cantidad = $request->input('cantidad');
+        $pasajeros = json_decode($request->input('pasajeros'), true);
+        $precio_total = $viaje->precio_base * $cantidad;
+
+        DB::beginTransaction();
+        try {
+            $reserva = new \App\Models\ReservaViaje();
+            $reserva->usuario_id = auth()->id();
+            $reserva->viaje_id = $viaje->id;
+            $reserva->cantidad = $cantidad;
+            $reserva->pasajeros = $pasajeros;
+            $reserva->precio_total = $precio_total;
+            $reserva->estado = 'pendiente';
+            $reserva->metodo_pago = 'tarjeta';
+            $reserva->pagado = true;
+            $reserva->fecha_pago = now();
+            $reserva->observaciones = null;
+            $reserva->save();
+
+            $pago = new \App\Models\Pagos();
+            $pago->reserva_viaje_id = $reserva->id;
+            $pago->cardholder_name = $request->input('cardholder_name');
+            $pago->card_number = $request->input('card_number');
+            $pago->expiration_month = $request->input('expiration_month');
+            $pago->expiration_year = $request->input('expiration_year');
+            $pago->cvv = $request->input('cvv');
+            $pago->amount = $precio_total;
+            $pago->estado = 'pendiente';
+            $pago->save();
+
+            // Enviar email de confirmación
+            \Mail::to(auth()->user()->email)->send(new \App\Mail\ReservaViajeEnviada($viaje, $reserva));
+
+            DB::commit();
+            return redirect()->route('viajes.show', $viaje->id)->with('status', 'Reserva y pago realizados correctamente.');
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return back()->withErrors(['error' => 'Error al procesar la reserva: ' . $e->getMessage()]);
+        }
     }
 
     public function edit($id)
@@ -182,33 +235,32 @@ class ViajeController extends Controller
                 'clases' => 'nullable|array',
                 'servicios' => 'nullable|array',
                 'activo' => 'required|boolean'
-
-        $validator = Validator::make($request->all(), [
-            'puesto' => 'required|string|max:255',
-            'fecha_contratacion' => 'required|date|before_or_equal:today',
-            'salario' => 'required|string|max:255',
-            'estado' => 'nullable|string|in:activo,inactivo,vacaciones,licencia',
-        ]);
-        try {
-            $viaje->update([
-                'puesto' => $request->puesto,
-                'fecha_contratacion' => $request->fecha_contratacion,
-                'salario' => $request->salario,
-                'estado' => $request->estado,
-
             ]);
 
+            $viaje = Viaje::findOrFail($id);
+
+            $validated['activo'] = filter_var($validated['activo'], FILTER_VALIDATE_BOOLEAN);
+            if (isset($validated['clases'])) {
+                $validated['clases'] = json_encode($validated['clases']);
+            }
+            if (isset($validated['servicios'])) {
+                $validated['servicios'] = json_encode($validated['servicios']);
+            }
+
+            $viaje->update($validated);
+
+            DB::commit();
+
             return response()->json([
+                'success' => true,
                 'message' => 'Viaje actualizado exitosamente',
-                'data' => $viaje->fresh()
+                'data' => $viaje
             ]);
         } catch (\Exception $e) {
-
+            DB::rollBack();
             return response()->json([
-
-                'message' => 'Error al actualizar el viaje',
-                'error' => $e->getMessage()
-
+                'success' => false,
+                'message' => 'Error al actualizar el viaje: ' . $e->getMessage()
             ], 500);
         }
     }
