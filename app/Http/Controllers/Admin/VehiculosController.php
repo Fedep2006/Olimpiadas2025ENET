@@ -59,19 +59,20 @@ class VehiculosController extends Controller
             $reserva->fecha_fin = $fecha_fin->format('Y-m-d');
             $reserva->ubicacion = $vehiculo->ubicacion;
             $reserva->estado = 'pendiente'; // Siempre pendiente
-            $reserva->personas_id = json_encode([]); // Ajustar según lógica
+
             $reserva->habitaciones_id = null;
             $reserva->precio_total = $vehiculo->precio_por_dia * $validated['cantidad'];
             $reserva->codigo_reserva = strtoupper(substr(md5(uniqid()), 0, 8));
-            $reserva->observaciones = null;
-            $reserva->metodo_pago = 'tarjeta';
+            $reserva->observaciones = $request->observaciones ?? null;
+            $reserva->metodo_pago = $request->metodo_pago ?? 'tarjeta';
             $reserva->pagado = false;
-            $reserva->fecha_pago = null;
+            $reserva->fecha_pago = $request->fecha_pago ?? null;
             $reserva->save();
 
             $pago = new \App\Models\Pagos();
             $pago->vehiculo_id = $vehiculo->id;
             $pago->reserva_id = $reserva->id;
+            $pago->reserva_viaje_id = null; // Para evitar error de campo obligatorio
             $pago->cardholder_name = $request->cardholder_name;
             $pago->card_number = $request->card_number;
             $pago->expiration_month = $request->expiration_month;
