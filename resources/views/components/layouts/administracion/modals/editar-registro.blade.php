@@ -25,7 +25,7 @@
                                     </select>
                                     @break
                                 @case("checkbox")
-                                    <input type="hidden" name="activo" value="false">
+                                    <input type="hidden" name="activo" value='false'>
                                     <input 
                                         type="checkbox" 
                                         class="form-check-input" 
