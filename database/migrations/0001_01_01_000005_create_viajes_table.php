@@ -25,10 +25,8 @@ return new class extends Migration
             $table->integer('capacidad_total')->comment('Capacidad total de pasajeros');
             $table->integer('asientos_disponibles')->comment('Número de asientos disponibles');
             $table->decimal('precio_base', 10, 2)->comment('Precio base del viaje');
-            $table->json('clases')->nullable()->comment('Array de clases disponibles (ej: ["económica", "business", "primera"])');
-            $table->json('servicios')->nullable()->comment('Array de servicios incluidos (ej: ["wifi", "comida", "entretenimiento"])');
+            $table->enum('clases', ["economica", "business", "primera"])->comment('Array de clases disponibles (ej: ["economica", "business", "primera"])');
             $table->text('descripcion')->nullable()->comment('Descripción detallada del viaje');
-            $table->text('observaciones')->nullable()->comment('Notas adicionales sobre el viaje');
             $table->boolean('activo')->default(true)->comment('Indica si el viaje está disponible');
             $table->timestamps();
             $table->softDeletes();

@@ -23,17 +23,13 @@ class Viaje extends Model
         'asientos_disponibles',
         'precio_base',
         'clases',
-        'servicios',
         'descripcion',
-        'observaciones',
         'activo'
     ];
 
     protected $casts = [
         'fecha_salida' => 'datetime',
         'fecha_llegada' => 'datetime',
-        'clases' => 'array',
-        'servicios' => 'array',
         'activo' => 'boolean',
         'capacidad_total' => 'integer',
         'asientos_disponibles' => 'integer',
