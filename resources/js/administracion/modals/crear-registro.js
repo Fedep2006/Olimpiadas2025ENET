@@ -26,6 +26,7 @@ setTimeout(function () {
             if (form.checkValidity()) {
                 const formData = new FormData(form);
                 const data = Object.fromEntries(formData.entries());
+                console.log(data.activo);
 
                 try {
                     const token = document

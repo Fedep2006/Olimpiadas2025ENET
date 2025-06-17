@@ -45,30 +45,49 @@
                 <div class="filter-group">
                     <label class="form-label">{{$input->label ?? ''}}</label>
                     <div class="input-group" data-input-id-{{$i}}="{{$input->id}}">
-                            @if ( $input->type !== "select")
-                                <input 
-                                    type="{{$input->type ?? ""}}" 
-                                    step="{{$input->step ?? ""}}"
-                                    class="form-control" 
-                                    id="{{$input->id  ?? ""}}" 
-                                    name="{{$input->name ?? $input->id}}" 
-                                    placeholder="{{$input->placeholder ?? ''}}" 
-                                    value="{{request($input->value)}}" 
-                                > 
-                            @else
-                                <select 
-                                    class="form-select" 
-                                    name="{{$input->name ?? $input->id}}" 
-                                    id="{{$input->id  ?? ""}}" 
-                                    value="{{request($input->value)}}" 
-                                    placeholder="{{$input->placeholder ?? ''}}"
-                                >
-                                    <option value="">-- Seleccionar --</option>
-                                    @foreach ($input->options as $option)
-                                        <option value="{{$option->value}}">{{$option->text}}</option>
-                                    @endforeach
-                                </select>
-                            @endif
+                                                        @switch($input->type)
+                                @case("select")
+                                    <select 
+                                        class="form-select" 
+                                        name="{{$input->name ?? $input->id}}" 
+                                        id="{{$input->id  ?? ""}}" 
+                                        value="{{request($input->value)}}" 
+                                        placeholder="{{$input->placeholder ?? ''}}"
+                                    >
+                                        <option value="">-- Seleccionar --</option>
+                                        @foreach ($input->options as $option)
+                                            <option value="{{$option->value}}">{{$option->text}}</option>
+                                        @endforeach
+                                    </select>
+                                    @break
+                                @case("checkbox")
+                                    <div class="form-check">
+                                        <input type="hidden" name="activo" value="false">
+                                        <input 
+                                            class="form-check-input" 
+                                            type="checkbox"
+                                            value="true"
+                                            id="{{$input->id  ?? ""}}" 
+                                            name="{{$input->name ?? $input->id}}" 
+                                             checked
+                                        >
+                                        <label class="form-check-label" for="{{$input->name ?? $input->id}}" >
+                                            {{$input->label ?? ""}}
+                                        </label>
+                                    </div>
+                                    @break
+                            
+                                @default
+                                    <input 
+                                        type="{{$input->type ?? ""}}" 
+                                        step="{{$input->step ?? ""}}"
+                                        class="form-control" 
+                                        id="{{$input->id  ?? ""}}" 
+                                        name="{{$input->name ?? $input->id}}" 
+                                        placeholder="{{$input->placeholder ?? ''}}" 
+                                        value="{{request($input->value)}}" 
+                                    > 
+                            @endswitch
                     </div>
                 </div>
                             

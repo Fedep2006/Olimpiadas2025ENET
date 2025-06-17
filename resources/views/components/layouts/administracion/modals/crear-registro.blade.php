@@ -10,35 +10,54 @@
                 <form id="nuevoRegistroForm">
                     @foreach ( $inputs as $input)
                         <div class="mb-3"">
-                            @if ( $input->type !== "select")
-                                <label 
-                                    for="{{ $input->name ?? $input->name}}" 
-                                    class="form-label">{{$input->label ?? ""}}
-                                </label>
-                                <input 
-                                    type="{{$input->type ?? ""}}" 
-                                    step="{{$input->step ?? ""}}"
-                                    class="form-control" 
-                                    id="{{$input->id  ?? ""}}" 
-                                    name="{{$input->name ?? $input->id}}" 
-                                    required
-                                > 
-                            @else
-                                <label 
-                                    for="{{ $input->name ?? $input->name}}" 
-                                    class="form-label">{{$input->label ?? ""}}
-                                </label>
-                                <select 
-                                    class="form-select" 
-                                    name="{{$input->name ?? $input->id}}" 
-                                    id="{{$input->id  ?? ""}}" 
-                                    required
-                                >
-                                    @foreach ($input->options as $option)
-                                        <option value="{{$option->value}}">{{$option->text}}</option>
-                                    @endforeach
-                                </select>
-                            @endif
+                            @switch($input->type)
+                                @case("select")
+                                     <label 
+                                        for="{{ $input->name ?? $input->name}}" 
+                                        class="form-label">{{$input->label ?? ""}}
+                                    </label>
+                                    <select 
+                                        class="form-select" 
+                                        name="{{$input->name ?? $input->id}}" 
+                                        id="{{$input->id  ?? ""}}" 
+                                        required
+                                    >
+                                        @foreach ($input->options as $option)
+                                            <option value="{{$option->value}}">{{$option->text}}</option>
+                                        @endforeach
+                                    </select>
+                                    @break
+                                @case("checkbox")
+                                    <div class="form-check">
+                                        <input type="hidden" name="activo" value="false">
+                                        <input 
+                                            class="form-check-input" 
+                                            type="checkbox"
+                                            value="true"
+                                            id="{{$input->id  ?? ""}}" 
+                                            name="{{$input->name ?? $input->id}}" 
+                                             checked
+                                        >
+                                        <label class="form-check-label" for="{{$input->name ?? $input->id}}" >
+                                            {{$input->label ?? ""}}
+                                        </label>
+                                    </div>
+                                    @break
+                            
+                                @default
+                                    <label 
+                                        for="{{ $input->name ?? $input->name}}" 
+                                        class="form-label">{{$input->label ?? ""}}
+                                    </label>
+                                    <input 
+                                        type="{{$input->type ?? ""}}" 
+                                        step="{{$input->step ?? ""}}"
+                                        class="form-control" 
+                                        id="{{$input->id  ?? ""}}" 
+                                        name="{{$input->name ?? $input->id}}" 
+                                        required
+                                    >
+                            @endswitch
 
                         </div>
                     @endforeach

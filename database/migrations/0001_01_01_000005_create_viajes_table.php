@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('viajes', function (Blueprint $table) {
             $table->id();
             $table->string('nombre')->comment('Nombre o descripción del viaje');
-            $table->enum('tipo', ['bus', 'avion', 'tren', 'barco', 'transporte_privado'])
+            $table->enum('tipo', ['bus', 'avion', 'tren', 'crucero'])
                 ->comment('Tipo de transporte utilizado');
             $table->string('origen')->comment('Ciudad o lugar de origen');
             $table->string('destino')->comment('Ciudad o lugar de destino');

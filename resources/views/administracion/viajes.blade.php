@@ -11,129 +11,289 @@
         @php
         $camposCrear = [
             (object)[
-                'id' => 'usuario_id',
-                'name' => 'usuario_id',
-                'type' => 'number',
-                'label' => 'ID del Usuario Asociado'
-            ],
-            (object)[
-                'id' => 'puesto',
-                'name' => 'puesto',
+                'id' => 'nombre',
+                'name' => 'nombre',
                 'type' => 'text',
-                'label' => 'Puesto'
+                'label' => 'Nombre del Viaje'
             ],
             (object)[
-                'id' => 'fecha_contratacion',
-                'name' => 'fecha_contratacion',
-                'type' => 'date',
-                'label' => 'Fecha de Contratacion'
-            ],
-            (object)[
-                'id' => 'salario',
-                'name' => 'salario',
-                'type' => 'number',
-                'label' => 'Salario',
-                'step' => '.01'
-            ],
-            (object)[
-                'id' => 'estado',
-                'name' => 'estado',
+                'id' => 'tipo',
+                'name' => 'tipo',
                 'type' => 'select',
-                'label' => 'Estado',
+                'label' => 'Tipo de Viaje',
                 'options' => [
-                    (object)['value' => 'activo', 'text' => 'Activo'],
-                    (object)['value' => 'inactivo', 'text' => 'Inactivo'],
-                    (object)['value' => 'vacaciones', 'text' => 'Vacaciones'],
-                    (object)['value' => 'licencia', 'text' => 'Licencia'],
+                    (object)['value' => 'avion', 'text' => 'Avion'],
+                    (object)['value' => 'bus', 'text' => 'Bus'],
+                    (object)['value' => 'tren', 'text' => 'Tren'],
+                    (object)['value' => 'crucero', 'text' => 'Crucero'],
                 ],
+            ],
+            (object)[
+                'id' => 'origen',
+                'name' => 'origen',
+                'type' => 'text',
+                'label' => 'Ciudad de Origen'
+            ],
+            (object)[
+                'id' => 'destino',
+                'name' => 'destino',
+                'type' => 'text',
+                'label' => 'Ciudad de Destino'
+            ],
+            (object)[
+                'id' => 'fecha_salida',
+                'name' => 'fecha_salida',
+                'type' => 'date',
+                'label' => 'Fecha de Salida'
+            ],
+            (object)[
+                'id' => 'fecha_llegada',
+                'name' => 'fecha_llegada',
+                'type' => 'date',
+                'label' => 'Fecha de Llegada'
+            ],
+            (object)[
+                'id' => 'empresa',
+                'name' => 'empresa',
+                'type' => 'text',
+                'label' => 'Empresa del Viaje'
+            ],
+            (object)[
+                'id' => 'numero_viaje',
+                'name' => 'numero_viaje',
+                'type' => 'text',
+                'label' => 'Codigo del Viaje'
+            ],
+            (object)[
+                'id' => 'capacidad_total',
+                'name' => 'capacidad_total',
+                'type' => 'text',
+                'label' => 'Capacidad del Viaje'
+            ],
+            (object)[
+                'id' => 'precio_base',
+                'name' => 'precio_base',
+                'type' => 'number',
+                'label' => 'Precio del Viaje'
+            ],
+            (object)[
+                'id' => 'clases',
+                'name' => 'clases',
+                'type' => 'select',
+                'label' => 'Clases',
+                'options' => [
+                    (object)['value' => 'economica', 'text' => 'Economica'],
+                    (object)['value' => 'business', 'text' => 'Business'],
+                    (object)['value' => 'primera', 'text' => 'Primera'],
+                ],
+            ],
+            (object)[
+                'id' => 'descripcion',
+                'name' => 'descripcion',
+                'type' => 'text',
+                'label' => 'Descripcion del Viaje',
+            ],
+            (object)[
+                'id' => 'activo',
+                'name' => 'activo',
+                'type' => 'checkbox',
+                'label' => 'Viaje Disponible',
             ]
         ];
         $camposEditar = [
             (object)[
-                'id' => 'editPuesto',
-                'name' => 'puesto',
+                'id' => 'editNombre',
+                'name' => 'nombre',
                 'type' => 'text',
-                'label' => 'Puesto'
+                'label' => 'Nombre del Viaje'
             ],
             (object)[
-                'id' => 'editFecha_contratacion',
-                'name' => 'fecha_contratacion',
-                'type' => 'date',
-                'label' => 'Fecha de Contratacion'
-            ],
-            (object)[
-                'id' => 'editSalario',
-                'name' => 'salario',
-                'type' => 'number',
-                'label' => 'Salario',
-                'step' => '.01'
-            ],
-            (object)[
-                'id' => 'editEstado',
-                'name' => 'estado',
+                'id' => 'editTipo',
+                'name' => 'tipo',
                 'type' => 'select',
-                'label' => 'Estado',
+                'label' => 'Tipo de Viaje',
                 'options' => [
-                    (object)['value' => 'activo', 'text' => 'Activo'],
-                    (object)['value' => 'inactivo', 'text' => 'Inactivo'],
-                    (object)['value' => 'vacaciones', 'text' => 'Vacaciones'],
-                    (object)['value' => 'licencia', 'text' => 'Licencia'],
+                    (object)['value' => 'avion', 'text' => 'Avion'],
+                    (object)['value' => 'bus', 'text' => 'Bus'],
+                    (object)['value' => 'tren', 'text' => 'Tren'],
+                    (object)['value' => 'crucero', 'text' => 'Crucero'],
                 ],
             ],
+            (object)[
+                'id' => 'editOrigen',
+                'name' => 'origen',
+                'type' => 'text',
+                'label' => 'Ciudad de Origen'
+            ],
+            (object)[
+                'id' => 'editDestino',
+                'name' => 'destino',
+                'type' => 'text',
+                'label' => 'Ciudad de Destino'
+            ],
+            (object)[
+                'id' => 'editFecha_salida',
+                'name' => 'fecha_salida',
+                'type' => 'date',
+                'label' => 'Fecha de Salida'
+            ],
+            (object)[
+                'id' => 'editFecha_llegada',
+                'name' => 'fecha_llegada',
+                'type' => 'date',
+                'label' => 'Fecha de Llegada'
+            ],
+            (object)[
+                'id' => 'editEmpresa',
+                'name' => 'empresa',
+                'type' => 'text',
+                'label' => 'Empresa del Viaje'
+            ],
+            (object)[
+                'id' => 'editNumero_viaje',
+                'name' => 'numero_viaje',
+                'type' => 'text',
+                'label' => 'Codigo del Viaje'
+            ],
+            (object)[
+                'id' => 'editCapacidad_total',
+                'name' => 'capacidad_total',
+                'type' => 'text',
+                'label' => 'Capacidad del Viaje'
+            ],
+            (object)[
+                'id' => 'editPrecio_base',
+                'name' => 'precio_base',
+                'type' => 'number',
+                'label' => 'Precio del Viaje'
+            ],
+            (object)[
+                'id' => 'editClases',
+                'name' => 'clases',
+                'type' => 'select',
+                'label' => 'Clases',
+                'options' => [
+                    (object)['value' => 'economica', 'text' => 'Economica'],
+                    (object)['value' => 'business', 'text' => 'Business'],
+                    (object)['value' => 'primera', 'text' => 'Primera'],
+                ],
+            ],
+            (object)[
+                'id' => 'editDescripcion',
+                'name' => 'descripcion',
+                'type' => 'text',
+                'label' => 'Descripcion del Viaje',
+            ],
+            (object)[
+                'id' => 'editActivo',
+                'name' => 'activo',
+                'type' => 'checkbox',
+                'label' => 'Viaje Disponible',
+            ]
         ];
 
         $camposBuscar = [
             (object)[
-                'label' => 'ID del Empleado',
+                'label' => 'ID',
                 'type' => 'text',
                 'name' => 'search_id',
                 'id' => 'searchId',
-                'placeholder' => 'ID',
+                'placeholder' => 'ID del Viaje',
                 'value' => 'search_id'
             ],
             (object)[
-                'label' => 'Empleado',
+                'label' => 'Avion',
                 'type' => 'text',
-                'name' => 'search_empleado',
-                'id' => 'searchUsuario',
-                'placeholder' => 'Usuario o email',
-                'value' => 'search_usuario'
+                'name' => 'search_avion',
+                'id' => 'searchAvion',
+                'placeholder' => 'Numero o tipo de Viaje',
+                'value' => 'search_avion'
             ],
             (object)[
-                'label' => 'Puesto',
+                'label' => 'Nombre',
                 'type' => 'text',
-                'name' => 'search_puesto',
-                'id' => 'searchPuesto',
-                'placeholder' => 'Puesto',
-                'value' => 'search_puesto'
+                'name' => 'search_nombre',
+                'id' => 'searchNombre',
+                'placeholder' => 'Nombre del Viaje',
+                'value' => 'search_nombre'
             ],
             (object)[
-                'label' => 'Salario',
+                'label' => 'Origen',
+                'type' => 'text',
+                'name' => 'search_origen',
+                'id' => 'searchOrigen',
+                'value' => 'search_origen'
+            ],
+            (object)[
+                'label' => 'destino',
+                'type' => 'text',
+                'name' => 'search_destino',
+                'id' => 'searchDestino',
+                'value' => 'search_destino'
+            ],
+            (object)[
+                'label' => 'Fecha de Salida',
+                'type' => 'date',
+                'name' => 'search_fecha_salida',
+                'id' => 'searchFecha_salida',
+                'value' => 'search_fecha_salida'
+            ],
+            (object)[
+                'label' => 'Fecha de Llegada',
+                'type' => 'date',
+                'name' => 'search_fecha_llegada',
+                'id' => 'searchFecha_llegada',
+                'value' => 'search_fecha_llegada'
+            ],
+            (object)[
+                'label' => 'Empresa',
+                'type' => 'text',
+                'name' => 'search_empresa',
+                'id' => 'searchEmpresa',
+                'placeholder' => 'Empresa',
+                'value' => 'search_empresa'
+            ],
+            (object)[
+                'label' => 'Capacidad Total',
                 'type' => 'number',
-                'name' => 'search_salario',
-                'id' => 'searchSalario',
-                'placeholder' => 'Salario',
-                'value' => 'search_salario'
+                'name' => 'search_capacidad_total',
+                'id' => 'searchCapacidad_total',
+                'placeholder' => 'Capacidad',
+                'value' => 'search_capacidad_total'
             ],
             (object)[
-                'label' => 'Estado',
+                'label' => 'Asientos Disponibles',
+                'type' => 'number',
+                'name' => 'search_asientos_disponibles',
+                'id' => 'searchAsientos_disponibles',
+                'placeholder' => 'Asiento',
+                'value' => 'search_asientos_disponibles'
+            ],
+            (object)[
+                'label' => 'Clases',
                 'type' => 'select',
-                'name' => 'search_estado',
-                'id' => 'searchEstado',
-                'value' => 'search_estado',
+                'name' => 'search_clases',
+                'id' => 'searchClases',
+                'value' => 'search_clases',
                 'options' => [
-                    (object)['value' => 'activo', 'text' => 'Activo'],
-                    (object)['value' => 'inactivo', 'text' => 'Inactivo'],
-                    (object)['value' => 'vacaciones', 'text' => 'Vacaciones'],
-                    (object)['value' => 'licencia', 'text' => 'Licencia'],
+                    (object)['value' => 'economica', 'text' => 'Economica'],
+                    (object)['value' => 'business', 'text' => 'Business'],
+                    (object)['value' => 'primera', 'text' => 'Primera']
                 ],
             ],
             (object)[
-                'label' => 'Fecha de Contratacion',
-                'type' => 'date',
-                'name' => 'search_hiring_date',
-                'id' => 'searchHiringDate',
-                'value' => 'search_hiring_date'
+                'label' => 'Descripcion',
+                'type' => 'text',
+                'name' => 'search_descripcion',
+                'id' => 'searchDescripcion',
+                'value' => 'search_descripcion'
+            ],
+            (object)[
+                'label' => 'Viaje Activo',
+                'type' => 'checkbox',
+                'name' => 'search_activo',
+                'id' => 'searchActivo',
+                'value' => 'search_activo'
             ]
         ]
         
@@ -154,7 +314,7 @@
         <!-- Search Bar -->
         <x-layouts.administracion.search-bar :inputs="$camposBuscar"/>
 
-        <!-- Tabla de empleados -->
+        <!-- Tabla de viajes -->
         @php
             $tHead= [
                 "Viaje",//aca ira el numero_viaje, tipo e ID
