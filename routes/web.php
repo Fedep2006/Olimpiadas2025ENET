@@ -18,7 +18,7 @@ use App\Http\Controllers\RegisterController;
 use App\Http\Controllers\ResultsController;
 use App\Http\Controllers\Admin\VehiculosController;
 use App\Http\Controllers\Admin\HospedajeController;
-use App\Http\Controllers\Admin\ViajeController as AdminViajeController;
+use App\Http\Controllers\Admin\ViajeController;
 use App\Http\Controllers\EmpleadoController;
 use App\Http\Controllers\TestCompraController;
 use App\Http\Controllers\TestGmailController;
@@ -136,6 +136,7 @@ Route::prefix('administracion')->middleware('auth')->group(function () {
     Route::post('/paquetes/editar',     [PaquetesController::class, 'Editar'])->name('administracion.paquetes.editar');
     Route::delete('/paquetes/borrar/{id}',       [PaquetesController::class, 'Borrar'])->name('administracion.paquetes.borrar');
 
+
     Route::get('/viajes',                 [AdminViajeController::class, 'index'])->name('administracion.viajes');
     Route::post('/viajes',                [AdminViajeController::class, 'store'])->name('viajes.store');
     // Detalle de viaje
@@ -144,6 +145,12 @@ Route::prefix('administracion')->middleware('auth')->group(function () {
     Route::post('/viajes/{viaje}/reservar', [\App\Http\Controllers\Admin\ViajeController::class, 'reservasViaje'])->name('reservas.viaje');
     Route::put('/viajes/{id}',            [AdminViajeController::class, 'update'])->name('viajes.update');
     Route::delete('/viajes/{id}',         [AdminViajeController::class, 'destroy'])->name('viajes.destroy');
+
+    Route::get('/viajes',                 [ViajeController::class, 'index'])->name('administracion.index');
+    Route::post('/viajes/create',       [ViajeController::class, 'crear'])->name('usuarios.create');
+    Route::put('/viajes/{viaje}',        [ViajeController::class, 'update'])->name('usuarios.update');
+    Route::delete('/viajes/{viaje}', [ViajeController::class, 'destroy'])->name('usuarios.destroy');
+
 
     // Usuarios
     Route::get('/usuarios',               [UserController::class, 'index'])->name('usuarios.index');

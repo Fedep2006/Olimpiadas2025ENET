@@ -20,7 +20,6 @@ class Reserva extends Model
         'fecha_fin',
         'ubicacion',
         'estado',
-        'personas_id',
         'habitaciones_id',
         'precio_total',
         'codigo_reserva',
@@ -34,7 +33,6 @@ class Reserva extends Model
         'fecha_inicio' => 'datetime',
         'fecha_fin' => 'datetime',
         'fecha_pago' => 'date',
-        'personas_id' => 'array',
         'habitaciones_id' => 'array',
         'pagado' => 'boolean',
         'precio_total' => 'decimal:2'
@@ -44,11 +42,6 @@ class Reserva extends Model
     public function usuario()
     {
         return $this->belongsTo(User::class);
-    }
-
-    public function personas()
-    {
-        return $this->belongsToMany(Persona::class, 'personas_id');
     }
 
     public function habitaciones()

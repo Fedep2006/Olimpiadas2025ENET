@@ -29,6 +29,21 @@ class EmpleadoController extends Controller
             $query->where('id', $search);
         }
 
+        if ($request->filled('search_puesto')) {
+            $search = $request->search_puesto;
+            $query->where('puesto', 'like', "%{$search}%");
+        }
+
+        if ($request->filled('search_salario')) {
+            $search = $request->search_salario;
+            $query->where('salario', $search);
+        }
+
+        if ($request->filled('search_estado')) {
+            $search = $request->search_estado;
+            $query->where('estado', $search);
+        }
+
         // Aplicar filtro de fecha
         if ($request->filled('search_hiring_date')) {
             $date = $request->search_hiring_date;
@@ -41,7 +56,7 @@ class EmpleadoController extends Controller
         }])
             ->whereHas('usuario') // Solo empleados con usuario válido
             ->whereNotNull('usuario_id') // Asegurar que usuario_id no sea null
-            ->select(['id', 'usuario_id', 'persona_id', 'puesto', 'nivel', 'salario', 'estado', 'fecha_contratacion'])
+            ->select(['id', 'usuario_id', 'puesto', 'nivel', 'salario', 'estado', 'fecha_contratacion'])
             ->orderBy('fecha_contratacion', 'desc')
             ->paginate(10)
             ->withQueryString();
@@ -79,26 +94,9 @@ class EmpleadoController extends Controller
         }
         try {
             // Crear el empleado
-            $personaId = null;
-            if (!Persona::where('dni', $request->dni)->exists() && !Empleado::where('usuario_id', $request->usuario_id)->exists()) {
-                Persona::create([
-                    'nombre' => $request->nombre,
-                    'apellido' => $request->apellido,
-                    'dni' => $request->dni,
-                    'fecha_nacimiento' => $request->fecha_nacimiento,
-                    'nacionalidad' => $request->nacionalidad,
-                    'ciudad' => $request->ciudad,
-                    'pais' => $request->pais,
-                    'telefono' => $request->telefono,
-                ]);
-            }
-
-            $personaId = Persona::where('dni', $request->dni)->value('id');
-
             Empleado::create([
                 'id' => $request->usuario_id,
                 'usuario_id' => $request->usuario_id,
-                'persona_id' => $personaId,
                 'puesto' => $request->puesto,
                 'nivel' => "0",
                 'fecha_contratacion' => $request->fecha_contratacion,

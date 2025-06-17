@@ -45,56 +45,7 @@
                     (object)['value' => 'vacaciones', 'text' => 'Vacaciones'],
                     (object)['value' => 'licencia', 'text' => 'Licencia'],
                 ],
-            ],
-            (object)[
-                'id' => 'nombre',
-                'name' => 'nombre',
-                'type' => 'text',
-                'label' => 'Nombre'
-            ],
-            (object)[
-                'id' => 'apellido',
-                'name' => 'apellido',
-                'type' => 'text',
-                'label' => 'Apellido'
-            ],
-            (object)[
-                'id' => 'dni',
-                'name' => 'dni',
-                'type' => 'number',
-                'label' => 'DNI'
-            ],
-            (object)[
-                'id' => 'fecha_nacimiento',
-                'name' => 'fecha_nacimiento',
-                'type' => 'date',
-                'label' => 'Fecha de Nacimiento'
-            ],
-            (object)[
-                'id' => 'nacionalidad',
-                'name' => 'nacionalidad',
-                'type' => 'text',
-                'label' => 'Nacionalidad'
-            ],
-            (object)[
-                'id' => 'ciudad',
-                'name' => 'ciudad',
-                'type' => 'text',
-                'label' => 'Ciudad'
-            ],
-            (object)[
-                'id' => 'pais',
-                'name' => 'pais',
-                'type' => 'text',
-                'label' => 'Pais'
-            ],
-            (object)[
-                'id' => 'telefono',
-                'name' => 'telefono',
-                'type' => 'number',
-                'label' => 'Telefono'
             ]
-
         ];
         $camposEditar = [
             (object)[
@@ -132,20 +83,49 @@
 
         $camposBuscar = [
             (object)[
-                'label' => 'Buscar ID',
+                'label' => 'ID del Empleado',
                 'type' => 'text',
                 'name' => 'search_id',
                 'id' => 'searchId',
-                'placeholder' => 'ID del empleado',
+                'placeholder' => 'ID',
                 'value' => 'search_id'
             ],
             (object)[
-                'label' => 'Buscar Empleado',
+                'label' => 'Empleado',
                 'type' => 'text',
                 'name' => 'search_empleado',
                 'id' => 'searchUsuario',
-                'placeholder' => 'Nombre de usuario o email',
+                'placeholder' => 'Usuario o email',
                 'value' => 'search_usuario'
+            ],
+            (object)[
+                'label' => 'Puesto',
+                'type' => 'text',
+                'name' => 'search_puesto',
+                'id' => 'searchPuesto',
+                'placeholder' => 'Puesto',
+                'value' => 'search_puesto'
+            ],
+            (object)[
+                'label' => 'Salario',
+                'type' => 'number',
+                'name' => 'search_salario',
+                'id' => 'searchSalario',
+                'placeholder' => 'Salario',
+                'value' => 'search_salario'
+            ],
+            (object)[
+                'label' => 'Estado',
+                'type' => 'select',
+                'name' => 'search_estado',
+                'id' => 'searchEstado',
+                'value' => 'search_estado',
+                'options' => [
+                    (object)['value' => 'activo', 'text' => 'Activo'],
+                    (object)['value' => 'inactivo', 'text' => 'Inactivo'],
+                    (object)['value' => 'vacaciones', 'text' => 'Vacaciones'],
+                    (object)['value' => 'licencia', 'text' => 'Licencia'],
+                ],
             ],
             (object)[
                 'label' => 'Fecha de Contratacion',

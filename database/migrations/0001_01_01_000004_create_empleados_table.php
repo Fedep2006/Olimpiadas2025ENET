@@ -15,8 +15,6 @@ return new class extends Migration
             $table->id();
             $table->foreignId('usuario_id')->constrained('users')->onDelete('cascade')
                 ->comment('ID del usuario asociado al empleado');
-            $table->foreignId('persona_id')->constrained('personas')->onDelete('cascade')
-                ->comment('ID de la persona asociada al empleado');
             $table->string('puesto')->comment('Cargo o puesto del empleado');
             $table->enum('nivel', [0, 1])->comment('Nivel jerárquico: 0 (básico), 1 (jefe)');
             $table->date('fecha_contratacion')->comment('Fecha en que se contrató al empleado');

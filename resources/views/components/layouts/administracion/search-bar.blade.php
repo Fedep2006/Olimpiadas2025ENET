@@ -25,26 +25,53 @@
         flex: 1;
         min-width: 200px;
     }
+    .form-control,
+    .form-select {
+        width: 100%;
+        border: 2px solid #e9ecef;
+        border-radius: 8px;
+        padding: 0.65rem 1rem;
+        transition: all 0.3s ease;
+    }
 </style>
 <!-- Filters -->
 <div class="content-card">
+    <h4 class="card-title mb-3">Barra de Busqueda</h5>
     <div class="search-filters">
+        
         <form id="searchForm" class="filter-row" data-inputs='@json($inputs)'>
             @php $i = 0; @endphp
             @foreach ( $inputs as $input)
                 <div class="filter-group">
                     <label class="form-label">{{$input->label ?? ''}}</label>
                     <div class="input-group" data-input-id-{{$i}}="{{$input->id}}">
-                        <input 
-                            type="{{$input->type ?? ''}}" 
-                            class="form-control" 
-                            name="{{$input->name ?? ''}}" 
-                            id="{{$input->id ?? ''}}"
-                            placeholder="{{$input->placeholder ?? ''}}" 
-                            value="{{request($input->value)}}" 
-                            autocomplete="off">
+                            @if ( $input->type !== "select")
+                                <input 
+                                    type="{{$input->type ?? ""}}" 
+                                    step="{{$input->step ?? ""}}"
+                                    class="form-control" 
+                                    id="{{$input->id  ?? ""}}" 
+                                    name="{{$input->name ?? $input->id}}" 
+                                    placeholder="{{$input->placeholder ?? ''}}" 
+                                    value="{{request($input->value)}}" 
+                                > 
+                            @else
+                                <select 
+                                    class="form-select" 
+                                    name="{{$input->name ?? $input->id}}" 
+                                    id="{{$input->id  ?? ""}}" 
+                                    value="{{request($input->value)}}" 
+                                    placeholder="{{$input->placeholder ?? ''}}"
+                                >
+                                    <option value="">-- Seleccionar --</option>
+                                    @foreach ($input->options as $option)
+                                        <option value="{{$option->value}}">{{$option->text}}</option>
+                                    @endforeach
+                                </select>
+                            @endif
                     </div>
                 </div>
+                            
                 @php $i++; @endphp
             @endforeach
             <div class="filter-group">

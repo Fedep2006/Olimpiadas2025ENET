@@ -25,13 +25,11 @@ setTimeout(function () {
                     performSearch();
                 });
                 break;
-            case "text":
+            default:
                 inputsElementos[i].addEventListener("input", function () {
                     clearTimeout(searchTimeout);
                     searchTimeout = setTimeout(performSearch, 500);
                 });
-                break;
-            default:
                 break;
         }
     }

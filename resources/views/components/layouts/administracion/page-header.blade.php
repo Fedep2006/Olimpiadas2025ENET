@@ -56,7 +56,7 @@
             <p class="page-subtitle">{{ $contenido }}</p>
         </div>
         <button class="btn-admin orange">
-            <i class="fas fa-user-plus"></i>
+            <i class="{{$botonIcono}}"></i>
             {{ $botonNombre ?? 'Acción' }}
         </button>
     </div>
