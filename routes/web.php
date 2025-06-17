@@ -136,10 +136,21 @@ Route::prefix('administracion')->middleware('auth')->group(function () {
     Route::post('/paquetes/editar',     [PaquetesController::class, 'Editar'])->name('administracion.paquetes.editar');
     Route::delete('/paquetes/borrar/{id}',       [PaquetesController::class, 'Borrar'])->name('administracion.paquetes.borrar');
 
+
+    Route::get('/viajes',                 [AdminViajeController::class, 'index'])->name('administracion.viajes');
+    Route::post('/viajes',                [AdminViajeController::class, 'store'])->name('viajes.store');
+    // Detalle de viaje
+    Route::get('/viajes/{viaje}', [\App\Http\Controllers\Admin\ViajeController::class, 'show'])->name('viajes.show');
+    // Reservar viaje
+    Route::post('/viajes/{viaje}/reservar', [\App\Http\Controllers\Admin\ViajeController::class, 'reservasViaje'])->name('reservas.viaje');
+    Route::put('/viajes/{id}',            [AdminViajeController::class, 'update'])->name('viajes.update');
+    Route::delete('/viajes/{id}',         [AdminViajeController::class, 'destroy'])->name('viajes.destroy');
+
     Route::get('/viajes',                 [ViajeController::class, 'index'])->name('administracion.index');
     Route::post('/viajes/create',       [ViajeController::class, 'crear'])->name('usuarios.create');
     Route::put('/viajes/{viaje}',        [ViajeController::class, 'update'])->name('usuarios.update');
     Route::delete('/viajes/{viaje}', [ViajeController::class, 'destroy'])->name('usuarios.destroy');
+
 
     // Usuarios
     Route::get('/usuarios',               [UserController::class, 'index'])->name('usuarios.index');
@@ -155,6 +166,7 @@ Route::prefix('administracion')->middleware('auth')->group(function () {
 
     // Rutas para habitaciones
     Route::get('/habitaciones/{hospedaje_id}', [App\Http\Controllers\Admin\HabitacionController::class, 'verHabitaciones'])->name('administracion.habitaciones');
+    Route::get('/habitaciones/datos/{id}', [App\Http\Controllers\Admin\HabitacionController::class, 'obtenerDatos'])->name('administracion.habitaciones.datos');
     Route::post('/habitaciones/agregar', [App\Http\Controllers\Admin\HabitacionController::class, 'agregar'])->name('administracion.habitaciones.agregar');
     Route::put('/habitaciones/{id}/editar', [App\Http\Controllers\Admin\HabitacionController::class, 'editar'])->name('administracion.habitaciones.editar');
     Route::put('/habitaciones/{id}/cambiar-estado', [App\Http\Controllers\Admin\HabitacionController::class, 'cambiarEstado'])->name('administracion.habitaciones.cambiar-estado');

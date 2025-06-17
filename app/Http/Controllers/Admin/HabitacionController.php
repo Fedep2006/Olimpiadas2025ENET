@@ -33,12 +33,15 @@ class HabitacionController extends Controller
                 'precio_por_noche' => 'required|numeric|min:0',
                 'precio_extra_persona' => 'nullable|numeric|min:0',
                 'caracteristicas' => 'nullable|string',
-                'servicios' => 'nullable|string',
-                'camas' => 'nullable|string',
+                'servicios' => 'nullable|array',
+                'servicios.*' => 'string',
+                'camas' => 'nullable|array',
+                'camas.*' => 'string',
                 'metros_cuadrados' => 'nullable|integer|min:1',
                 'imagenes' => 'nullable|string',
                 'descripcion' => 'nullable|string',
-                'politicas' => 'nullable|string',
+                'politicas' => 'nullable|array',
+                'politicas.*' => 'string',
                 'observaciones' => 'nullable|string'
             ]);
 
@@ -48,12 +51,23 @@ class HabitacionController extends Controller
 
             $data = $request->all();
             
-            // Convertir strings separados por comas en arrays
-            $arrayFields = ['caracteristicas', 'servicios', 'camas', 'politicas'];
-            foreach ($arrayFields as $field) {
-                if (!empty($data[$field])) {
+            // Convertir strings separados por comas en arrays (solo para campos que no son arrays)
+            $stringArrayFields = ['caracteristicas'];
+            foreach ($stringArrayFields as $field) {
+                if (!empty($data[$field]) && is_string($data[$field])) {
                     $data[$field] = array_map('trim', explode(',', $data[$field]));
                 }
+            }
+
+            // Los servicios, camas y políticas ya vienen como arrays desde los checkboxes
+            if (empty($data['servicios'])) {
+                $data['servicios'] = [];
+            }
+            if (empty($data['camas'])) {
+                $data['camas'] = [];
+            }
+            if (empty($data['politicas'])) {
+                $data['politicas'] = [];
             }
 
             $habitacion = new Habitacion($data);
@@ -79,12 +93,15 @@ class HabitacionController extends Controller
                 'precio_por_noche' => 'required|numeric|min:0',
                 'precio_extra_persona' => 'nullable|numeric|min:0',
                 'caracteristicas' => 'nullable|string',
-                'servicios' => 'nullable|string',
-                'camas' => 'nullable|string',
+                'servicios' => 'nullable|array',
+                'servicios.*' => 'string',
+                'camas' => 'nullable|array',
+                'camas.*' => 'string',
                 'metros_cuadrados' => 'nullable|integer|min:1',
                 'imagenes' => 'nullable|string',
                 'descripcion' => 'nullable|string',
-                'politicas' => 'nullable|string',
+                'politicas' => 'nullable|array',
+                'politicas.*' => 'string',
                 'observaciones' => 'nullable|string'
             ]);
 
@@ -94,12 +111,23 @@ class HabitacionController extends Controller
 
             $data = $request->all();
             
-            // Convertir strings separados por comas en arrays
-            $arrayFields = ['caracteristicas', 'servicios', 'camas', 'politicas'];
-            foreach ($arrayFields as $field) {
-                if (!empty($data[$field])) {
+            // Convertir strings separados por comas en arrays (solo para campos que no son arrays)
+            $stringArrayFields = ['caracteristicas'];
+            foreach ($stringArrayFields as $field) {
+                if (!empty($data[$field]) && is_string($data[$field])) {
                     $data[$field] = array_map('trim', explode(',', $data[$field]));
                 }
+            }
+
+            // Los servicios, camas y políticas ya vienen como arrays desde los checkboxes
+            if (empty($data['servicios'])) {
+                $data['servicios'] = [];
+            }
+            if (empty($data['camas'])) {
+                $data['camas'] = [];
+            }
+            if (empty($data['politicas'])) {
+                $data['politicas'] = [];
             }
 
             $habitacion->update($data);
@@ -146,6 +174,17 @@ class HabitacionController extends Controller
         } catch (\Exception $e) {
             Log::error('Error al obtener detalles de habitación: ' . $e->getMessage());
             return response()->json(['error' => 'Error al obtener los detalles de la habitación'], 500);
+        }
+    }
+
+    public function obtenerDatos($id)
+    {
+        try {
+            $habitacion = Habitacion::findOrFail($id);
+            return response()->json($habitacion);
+        } catch (\Exception $e) {
+            Log::error('Error al obtener datos de habitación: ' . $e->getMessage());
+            return response()->json(['error' => 'Error al obtener los datos de la habitación'], 500);
         }
     }
 } 

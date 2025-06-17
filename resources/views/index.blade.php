@@ -436,7 +436,7 @@
             <div class="row">
             @foreach($hospedajes as $h)
             <div class="col-md-3 mb-4">
-                <a href="{{ route('vehiculos.show', $v->id) }}" style="text-decoration:none;color:inherit;">
+            <a href="{{ route('vehiculos.show', $viaje->id) }}" style="text-decoration:none;color:inherit;">
                     <div class="destination-card position-relative overflow-hidden">
                         <img 
                             src="{{ is_array($h->imagenes) ? $h->imagenes[0] : (is_string($h->imagenes) ? $h->imagenes : '') }}" 
@@ -472,7 +472,7 @@
             <div class="row">
                 @foreach($viajes as $viaje)
                 <div class="col-md-3 mb-4">
-                    <a href="{{ route('vehiculos.show', $v->id) }}" style="text-decoration:none;color:inherit;"><div class="travel-card">
+                <a href="{{ route('viajes.show', $viaje->id) }}" style="text-decoration:none;color:inherit;"><div class="travel-card">
                         <i class="fas fa-map-marked-alt travel-icon"></i>
                         <h5 class="mb-1">{{ $viaje->nombre }}</h5>
                         <p class="price mb-0">Desde ${{ number_format($viaje->precio, 2) }}</p>
@@ -524,19 +524,19 @@
         <div class="container">
             <h2 class="section-title">Vehículos</h2>
             <div class="row">
-            @foreach($vehiculos as $v)
+            @foreach($vehiculos as $viaje)
             <div class="col-md-3 mb-4">
-                <a href="{{ route('vehiculos.show', $v->id) }}" style="text-decoration:none;color:inherit;">
+                <a href="{{ route('vehiculos.show', $viaje->id) }}" style="text-decoration:none;color:inherit;">
                     <div class="destination-card position-relative overflow-hidden">
                         <img 
-                            src="{{ is_array($v->imagenes) ? $v->imagenes[0] : $v->imagenes }}" 
+                            src="{{ is_array($viaje->imagenes) ? $viaje->imagenes[0] : $viaje->imagenes }}" 
                             style="position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;z-index:1;" 
-                            alt="{{ $v->marca }} {{ $v->modelo }}"
+                            alt="{{ $viaje->marca }} {{ $viaje->modelo }}"
                         >
                         <div class="hotel-overlay" style="position:absolute;top:0;left:0;width:100%;height:100%;background:linear-gradient(transparent 40%,rgba(0,0,0,0.85) 100%);z-index:2;transition:opacity 0.4s;"></div>
                         <div class="destination-overlay hotel-overlay-content d-flex flex-column justify-content-end align-items-start p-3" style="position:relative;z-index:3;transition:opacity 0.4s;height:100%;">
-                            <h5 class="mb-1">{{ $v->marca }} {{ $v->modelo }}</h5>
-                            <p class="mb-0">Desde ${{ number_format($v->precio_por_dia, 2) }} / día</p>
+                            <h5 class="mb-1">{{ $viaje->marca }} {{ $viaje->modelo }}</h5>
+                            <p class="mb-0">Desde ${{ number_format($viaje->precio_por_dia, 2) }} / día</p>
                         </div>
                     </div>
                 </a>
