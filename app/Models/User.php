@@ -33,6 +33,7 @@ class User extends Authenticatable
         'email',
         'password',
         'verification_token',
+        'nivel',
     ];
 
     /**
@@ -55,6 +56,7 @@ class User extends Authenticatable
         return [
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
+            'nivel' => 'integer',
         ];
     }
 

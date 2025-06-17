@@ -26,8 +26,10 @@ class AuthController extends Controller
                 return back()->withErrors(['email' => 'Debes verificar tu correo electrónico antes de iniciar sesión.'])->onlyInput('email');
             }
             $request->session()->regenerate();
-            return redirect()->intended('/administracion')
-                ->with('success', 'Has iniciado sesión correctamente.');
+            if ($request->filled('redirect_to')) {
+                return redirect($request->input('redirect_to'))->with('success', 'Has iniciado sesión correctamente.');
+            }
+            return redirect('/administracion')->with('success', 'Has iniciado sesión correctamente.');
         }
 
         // Si falla

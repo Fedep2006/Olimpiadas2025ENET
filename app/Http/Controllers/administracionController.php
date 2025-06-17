@@ -177,10 +177,7 @@ class AdministracionController extends Controller
     {
         return view('administracion.viajes');
     }
-     public function empleados()
-    {
-        return view('administracion.empleados');
-    }
+
 
     /**
      * Aceptar reserva de vehículo: cambia estado a aceptado, envía mail y simula descuento.

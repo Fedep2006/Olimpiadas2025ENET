@@ -1,4 +1,4 @@
-<style>
+
     .action-buttons {
         display: flex;
         gap: 5px;

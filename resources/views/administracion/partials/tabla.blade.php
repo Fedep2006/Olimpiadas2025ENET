@@ -64,8 +64,7 @@
                     @case('usuarios')
                         @include('administracion.partials.tablas.tabla-usuarios-contenido')
                         @break
-                    @case('empleados')
-                        @include('administracion.partials.tablas.tabla-empleados-contenido')
+
                         @break
                     @case('viajes')
                         @include('administracion.partials.tablas.tabla-viajes-contenido')

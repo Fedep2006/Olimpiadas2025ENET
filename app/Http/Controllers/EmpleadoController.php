@@ -1,21 +1,3 @@
-<?php
-
-namespace App\Http\Controllers;
-
-use App\Models\Empleado;
-use App\Models\Persona;
-use App\Models\User;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Validator;
-
-class EmpleadoController extends Controller
-{
-    public function index(Request $request)
-    {
-        $query = Empleado::query();
-
-        // Aplicar búsqueda por nombre o email del usuario
-        if ($request->filled('search_empleado')) {
             $search = $request->search_empleado;
             $query->whereHas('usuario', function ($q) use ($search) {
                 $q->where('name', 'like', "%{$search}%")

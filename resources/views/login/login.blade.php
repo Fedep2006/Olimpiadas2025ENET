@@ -245,9 +245,26 @@
                 </ul>
 
                 <ul class="navbar-nav">
-                    <li class="nav-item">
-                        <a class="nav-link" href="login.html"><i class="fas fa-user"></i> Mi cuenta</a>
-                    </li>
+                    @if(Auth::check())
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                <i class="fas fa-user"></i> {{ Auth::user()->name }}
+                            </a>
+                            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+                                <li><a class="dropdown-item" href="{{ route('logout') }}"
+                                       onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                                    Cerrar sesión
+                                </a></li>
+                            </ul>
+                            <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+                                @csrf
+                            </form>
+                        </li>
+                    @else
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ route('login') }}"><i class="fas fa-user"></i> Mi cuenta</a>
+                        </li>
+                    @endif
                     <li class="nav-item">
                         <a class="nav-link" href="#"><i class="fas fa-headset"></i> Ayuda</a>
                     </li>
@@ -280,18 +297,19 @@
                             </div>
                         @endif
 
-                        <!-- Login Form -->
                         <form method="POST" action="{{ route('login.process') }}">
                             @csrf
+                            @if(request()->has('redirect_to'))
+                                <input type="hidden" name="redirect_to" value="{{ request('redirect_to') }}">
+                            @endif
                             <div class="mb-3">
-                                <label for="email" class="form-label">Email</label>
+                                <label for="email" class="form-label">Correo electrónico</label>
                                 <div class="input-group">
                                     <span class="input-group-text">
                                         <i class="fas fa-envelope"></i>
                                     </span>
                                     <input type="email" name="email" class="form-control" id="email"
                                         placeholder="tu@email.com" required>
-
                                 </div>
                             </div>
 

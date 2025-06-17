@@ -26,20 +26,40 @@
                 'name' => 'password',
                 'type' => 'password',
                 'label' => 'Contraseña'
+            ],
+            (object)[
+                'id' => 'nivel',
+                'name' => 'nivel',
+                'type' => 'select',
+                'label' => 'Nivel',
+                'options' => [
+                    (object)['value' => 0, 'text' => 'Cliente'],
+                    (object)['value' => 1, 'text' => 'Empleado'],
+                    (object)['value' => 2, 'text' => 'SuperAdmin'],
+                ],
             ]
         ];
         $camposEditar = [
             (object)[
-                'id' => 'editName',
-                'name' => 'name',
-                'type' => 'text',
-                'label' => 'Nombre de Usuario'
+                'id' => 'editNivel',
+                'name' => 'nivel',
+                'type' => 'select',
+                'label' => 'Nivel',
+                'options' => [
+                    (object)['value' => 0, 'text' => 'Cliente'],
+                    (object)['value' => 1, 'text' => 'Empleado'],
+                    (object)['value' => 2, 'text' => 'SuperAdmin'],
+                ],
             ],
             (object)[
-                'id' => 'editEmail',
-                'name' => 'email',
-                'type' => 'email',
-                'label' => 'Email'
+                'id' => 'editDeleted',
+                'name' => 'deleted',
+                'type' => 'select',
+                'label' => 'Estado',
+                'options' => [
+                    (object)['value' => 0, 'text' => 'Habilitado'],
+                    (object)['value' => 1, 'text' => 'Deshabilitado'],
+                ],
             ]
         ];
 
@@ -93,6 +113,7 @@
                 "Usuario",
                 "Email",
                 "Fecha Registro",
+                "Nivel",
             ];
         @endphp
         @include('administracion.partials.tabla', 

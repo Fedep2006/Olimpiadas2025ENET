@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('empleados', function (Blueprint $table) {
+        // Eliminada la creación de la tabla empleados
             $table->id();
             $table->foreignId('usuario_id')->constrained('users')->onDelete('cascade')
                 ->comment('ID del usuario asociado al empleado');

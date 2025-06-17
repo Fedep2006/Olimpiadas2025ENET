@@ -24,7 +24,15 @@ class RegisterController extends Controller
     return view('login.register'); // Make sure resources/views/login/register.blade.php exists
     }
     
-    public function register(Request $request){ 
+    public function register(Request $request){
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|email|max:255|unique:users,email',
+            'password' => 'required|string|min:6',
+        ], [
+            'email.unique' => 'El correo electrónico ya está registrado.',
+        ]);
+
         $name = $request->input('name');
         $email = $request->input('email');
         $password = $request->input('password');

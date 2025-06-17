@@ -71,8 +71,8 @@
                                     <div class="tab-content mt-3" id="reservaTabsContent">
                                         <div class="tab-pane fade show active" id="pasajerosTab" role="tabpanel" aria-labelledby="pasajeros-tab">
                                             <div id="modalPasajerosFields">
-    <!-- Los campos de pasajeros se generan dinámicamente aquí -->
-</div>
+                                    <!-- Los campos de pasajeros se generan dinámicamente aquí -->
+                                    </div>
                                             <div class="mb-3">
                                                 <label class="form-label">Total a pagar</label>
                                                 <input type="text" class="form-control" id="modalTotalPagarTab" value="${{ number_format($viaje->precio_base, 2) }}" readonly>

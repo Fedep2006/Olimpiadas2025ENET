@@ -77,6 +77,25 @@
             </td>
             <td>{{ $registro->email }}</td>
             <td>{{ $registro->created_at->format('d/m/Y') }}</td>
+<td>
+    @if($registro->nivel == 0)
+        <span class="badge bg-primary">Cliente</span>
+    @elseif($registro->nivel == 1)
+        <span class="badge bg-warning text-dark">Empleado</span>
+    @elseif($registro->nivel == 2)
+        <span class="badge bg-danger">Superadmin</span>
+    @else
+        <span class="badge bg-secondary">Desconocido</span>
+    @endif
+</td>
+<td>
+    @if(method_exists($registro, 'trashed') && $registro->trashed())
+        <span class="badge bg-secondary">Inhabilitado</span>
+    @else
+        <span class="badge bg-success">Habilitado</span>
+    @endif
+</td>
+</td>
             <td>
                 <div class="action-buttons">
                     <button class="action-btn edit" data-registro="{{ $registro }}" title="Editar">

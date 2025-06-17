@@ -107,15 +107,20 @@ class UserController extends Controller
     public function update(Request $request, User $user)
     {
         $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:users,email,' . $user->id . ',id',
+            'nivel' => 'required|in:0,1,2',
+            'deleted' => 'nullable|boolean',
         ]);
 
         try {
-            $user->update([
-                'name' => $request->name,
-                'email' => $request->email,
-            ]);
+            $user->nivel = $request->nivel;
+            if ($request->has('deleted') && $request->deleted) {
+                $user->delete(); // Soft delete
+            } else {
+                if ($user->trashed()) {
+                    $user->restore(); // Reactivar usuario si estaba inhabilitado
+                }
+            }
+            $user->save();
 
             return response()->json([
                 'message' => 'Usuario actualizado exitosamente',

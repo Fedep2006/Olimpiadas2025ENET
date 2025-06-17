@@ -158,11 +158,7 @@ Route::prefix('administracion')->middleware('auth')->group(function () {
     Route::put('/usuarios/{user}',        [UserController::class, 'update'])->name('usuarios.update');
     Route::delete('/usuarios/{user}', [UserController::class, 'destroy'])->name('usuarios.destroy');
 
-    // Empleados
-    Route::get('/empleados',              [EmpleadoController::class, 'index'])->name('empleados.index');
-    Route::post('/empleados/create',       [EmpleadoController::class, 'crear'])->name('empleados.create');
-    Route::put('/empleados/{empleado}',        [EmpleadoController::class, 'update'])->name('empleados.update');
-    Route::delete('/empleados/{empleado}', [EmpleadoController::class, 'destroy'])->name('empleados.destroy');
+
 
     // Rutas para habitaciones
     Route::get('/habitaciones/{hospedaje_id}', [App\Http\Controllers\Admin\HabitacionController::class, 'verHabitaciones'])->name('administracion.habitaciones');
