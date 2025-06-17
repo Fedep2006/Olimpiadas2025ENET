@@ -260,6 +260,14 @@
                 'value' => 'search_empresa'
             ],
             (object)[
+                'label' => 'Asientos Disponibles',
+                'type' => 'number',
+                'name' => 'search_asientos_disponibles',
+                'id' => 'searchAsientos_disponibles',
+                'placeholder' => 'Asiento',
+                'value' => 'search_asientos_disponibles'
+            ],
+            (object)[
                 'label' => 'Capacidad Total',
                 'type' => 'number',
                 'name' => 'search_capacidad_total',
@@ -268,12 +276,12 @@
                 'value' => 'search_capacidad_total'
             ],
             (object)[
-                'label' => 'Asientos Disponibles',
+                'label' => 'Precio',
                 'type' => 'number',
-                'name' => 'search_asientos_disponibles',
-                'id' => 'searchAsientos_disponibles',
-                'placeholder' => 'Asiento',
-                'value' => 'search_asientos_disponibles'
+                'name' => 'search_precio',
+                'id' => 'searchPrecio',
+                'placeholder' => 'Precio',
+                'value' => 'search_precio'
             ],
             (object)[
                 'label' => 'Clases',

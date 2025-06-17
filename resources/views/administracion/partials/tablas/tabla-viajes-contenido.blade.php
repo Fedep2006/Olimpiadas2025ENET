@@ -57,12 +57,12 @@
         $id = 0;
     @endphp
     @foreach ($registros as $registro)
-        <tr class="{{$registro->activo ? '' : 'bg-gray-600'}}">
+        <tr>
             <td>
                 <div class="flex justify-center items-center">
                     <div class="flex flex-col text-center ids gap-1">
                         <h6>{{ ucfirst($registro->tipo) }}</h6>
-                        <small>#{{ $registro->numero_viaje }}</small>
+                        <small>#{{ mb_strtoupper($registro->numero_viaje) }}</small>
                     </div>
                 </div>
             </td>

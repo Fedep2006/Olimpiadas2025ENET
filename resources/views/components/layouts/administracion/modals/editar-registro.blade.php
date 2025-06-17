@@ -29,6 +29,7 @@
                                     <input 
                                         type="checkbox" 
                                         class="form-check-input" 
+                                        value="true"
                                         id="{{$input->id ?? ''}}" 
                                         name="{{$input->name ?? $input->id}}"
                                     >

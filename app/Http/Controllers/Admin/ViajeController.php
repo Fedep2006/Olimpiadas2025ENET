@@ -25,40 +25,67 @@ class ViajeController extends Controller
     {
         $query = Viaje::query();
 
-        // Aplicar búsqueda por nombre o email del usuario
-        if ($request->filled('search_empleado')) {
-            $search = $request->search_empleado;
-            $query->whereHas('usuario', function ($q) use ($search) {
-                $q->where('name', 'like', "%{$search}%")
-                    ->orWhere('email', 'like', "%{$search}%");
+        if ($request->filled('search_avion')) {
+            $search = $request->search_avion;
+            $query->where(function ($q) use ($search) {
+                $q->where('tipo', 'like', "%{$search}%")
+                    ->orWhere('numero_viaje', 'like', "%{$search}%");
             });
         }
 
-        // Aplicar búsqueda por ID del empleado
-        if ($request->filled('search_id')) {
-            $search = $request->search_id;
-            $query->where('id', $search);
+        if ($request->filled('search_nombre')) {
+            $search = $request->search_nombre;
+            $query->where('nombre', 'like', "%{$search}%");
         }
 
-        if ($request->filled('search_puesto')) {
-            $search = $request->search_puesto;
-            $query->where('puesto', 'like', "%{$search}%");
+        if ($request->filled('search_origen')) {
+            $search = $request->search_origen;
+            $query->where('origen', 'like', "%{$search}%");
         }
 
-        if ($request->filled('search_salario')) {
-            $search = $request->search_salario;
-            $query->where('salario', $search);
+        if ($request->filled('search_destino')) {
+            $search = $request->search_destino;
+            $query->where('destino', 'like', "%{$search}%");
         }
 
-        if ($request->filled('search_estado')) {
-            $search = $request->search_estado;
-            $query->where('estado', $search);
+        if ($request->filled('search_fecha_salida')) {
+            $datetime = $request->search_fecha_salida;
+            $query->where('fecha_salida', $datetime);
         }
 
-        // Aplicar filtro de fecha
-        if ($request->filled('search_hiring_date')) {
-            $date = $request->search_hiring_date;
-            $query->whereDate('fecha_contratacion', $date);
+        if ($request->filled('search_fecha_llegada')) {
+            $datetime = $request->search_fecha_llegada;
+            $query->where('fecha_llegada', $datetime);
+        }
+
+        if ($request->filled('search_empresa')) {
+            $search = $request->search_empresa;
+            $query->where('empresa', 'like', "%{$search}%");
+        }
+
+        if ($request->filled('search_capacidad_total')) {
+            $search = $request->search_capacidad_total;
+            $query->where('capacidad_total', 'like', "%{$search}%");
+        }
+
+        if ($request->filled('search_precio')) {
+            $search = $request->search_precio;
+            $query->where('precio_base', 'like', "%{$search}%");
+        }
+
+        if ($request->filled('search_clases')) {
+            $search = $request->search_clases;
+            $query->where('clases', $search);
+        }
+
+        if ($request->filled('search_descripcion')) {
+            $search = $request->search_descripcion;
+            $query->where('descripcion', 'like', "%{$search}%");
+        }
+
+        if ($request->filled('search_activo')) {
+            $search = $request->search_activo;
+            $query->where('activo', $search);
         }
 
         // Aplicar todas las condiciones y obtener resultados
