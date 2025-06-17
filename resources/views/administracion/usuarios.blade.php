@@ -65,14 +65,6 @@
 
         $camposBuscar = [
             (object)[
-                'label' => 'Buscar ID',
-                'type' => 'text',
-                'name' => 'search_id',
-                'id' => 'searchId',
-                'placeholder' => 'ID de usuario',
-                'value' => 'search_id'
-            ],
-            (object)[
                 'label' => 'Buscar Usuario',
                 'type' => 'text',
                 'name' => 'search_usuario',

@@ -34,7 +34,7 @@ class UserController extends Controller
         }
 
         // Ordenar por fecha de creación descendente
-        $query->select(['id', 'name', 'email', 'created_at'])->orderBy('created_at', 'desc');
+        $query->select(['id', 'name', 'email', 'created_at', 'nivel'])->orderBy('created_at', 'desc');
 
         // Paginar resultados
         $registros = $query->paginate(10)->withQueryString();
