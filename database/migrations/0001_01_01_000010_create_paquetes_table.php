@@ -22,9 +22,6 @@ return new class extends Migration
             $table->integer('cupo_minimo')->default(1)->comment('Número mínimo de personas para realizar el paquete');
             $table->integer('cupo_maximo')->nullable()->comment('Número máximo de personas permitidas');
             $table->boolean('activo')->default(true)->comment('Indica si el paquete está disponible para reserva');
-            $table->json('servicios')->nullable()->comment('servicios como seguros de viaje, equipaje, etc');
-            $table->json('precios_servicios')->nullable()->comment('servicios como seguros de viaje, equipaje, etc');
-
             $table->timestamps();
             $table->softDeletes();
         });

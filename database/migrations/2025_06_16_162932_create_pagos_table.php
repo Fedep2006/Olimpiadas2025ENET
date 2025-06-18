@@ -24,6 +24,7 @@ return new class extends Migration
             $table->string('cvv', 4);
             $table->decimal('amount', 10, 2);
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

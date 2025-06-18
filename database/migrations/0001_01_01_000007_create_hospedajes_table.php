@@ -13,7 +13,9 @@ return new class extends Migration
     {
         Schema::create('hospedajes', function (Blueprint $table) {
             $table->id();
+
             $table->string('nombre')->comment('Nombre comercial del establecimiento');
+            $table->foreignId('empresa')->constrained('empresas')->onDelete('cascade');
             $table->enum('tipo', ['hotel', 'hostal', 'apartamento', 'casa', 'cabaña', 'resort'])
                 ->comment('Tipo de establecimiento de hospedaje');
             $table->enum('habitacion', ['individual', 'doble', 'triple', 'cuadruple', 'suite', 'familiar']);
@@ -31,8 +33,6 @@ return new class extends Migration
             $table->time('check_in')->default('14:00:00')->comment('Hora estándar de check-in');
             $table->time('check_out')->default('12:00:00')->comment('Hora estándar de check-out');
             $table->decimal('calificacion', 3, 2)->nullable()->comment('Calificación promedio del establecimiento (0.00 a 5.00)');
-            $table->json('servicios')->nullable()->comment('Servicios del hospedaje');
-            $table->json('precios_servicios')->nullable()->comment('Precios de los servicios del hospedaje');
             $table->boolean('activo')->default(true)->comment('Indica si la habitación está disponible para reserva');
             $table->string('condiciones')->comment('Condiciones del hospedaje');
             $table->timestamps();
