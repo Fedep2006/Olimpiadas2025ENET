@@ -15,12 +15,10 @@ return new class extends Migration
             $table->id();
             $table->foreignId('paquete_id')->constrained('paquetes')->onDelete('cascade')
                 ->comment('ID del paquete turístico al que pertenece este contenido');
-            $table->enum('tipo_contenido', ['viaje', 'hospedaje', 'vehiculo'])
-                ->comment('Tipo de contenido: viaje (transporte), hospedaje (alojamiento), vehiculo (alquiler)');
+            $table->enum('tipo_contenido', ['viaje', 'habitacion', 'vehiculo'])
+                ->comment('Tipo de contenido: viaje (transporte), habitacion (hospedaje), vehiculo (alquiler)');
             $table->unsignedBigInteger('contenido_id')
                 ->comment('ID del elemento específico según el tipo_contenido (viaje_id, hospedaje_id o vehiculo_id)');
-            $table->text('observaciones')->nullable()
-                ->comment('Notas adicionales sobre este contenido en el paquete');
             $table->timestamps();
             $table->softDeletes();
         });
