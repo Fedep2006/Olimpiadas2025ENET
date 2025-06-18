@@ -20,6 +20,7 @@ return new class extends Migration
             $table->string('codigo_reserva', 8)->unique()->comment('Código único de 8 caracteres para identificar la reserva');
             $table->json('servicios_paquetes')->nullable()->comment('true o false de que servicios estan incluidos');
             $table->json('servicios_hospedajes')->nullable()->comment('true o false de que servicios estan incluidos');
+            $table->json('categoria_viaje')->nullable()->comment('Categoria elegida para el viaje');
             $table->timestamps();
             $table->softDeletes();
         });

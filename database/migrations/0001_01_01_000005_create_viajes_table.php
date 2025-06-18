@@ -25,7 +25,8 @@ return new class extends Migration
             $table->integer('capacidad_total')->comment('Capacidad total de pasajeros');
             $table->integer('asientos_disponibles')->comment('Número de asientos disponibles');
             $table->decimal('precio_base', 10, 2)->comment('Precio base del viaje');
-            $table->enum('categoria', ["economica", "business", "primera"])->comment('Array de categorias disponibles (ej: ["economica", "business", "primera"])');
+            $table->json('categorias')->comment('Categorias que tiene el viaje');
+            $table->json('precios_categorias')->comment('Precio de cada categoria');
             $table->text('descripcion')->nullable()->comment('Descripción detallada del viaje');
             $table->boolean('activo')->default(true)->comment('Indica si el viaje está disponible');
             $table->timestamps();
