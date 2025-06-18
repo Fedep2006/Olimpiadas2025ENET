@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('viajes', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('empresa')->constrained('empresas')->onDelete('cascade');
+            $table->foreignId('empresa_id')->constrained('empresas')->onDelete('cascade');
             $table->string('nombre')->comment('Nombre o descripción del viaje');
             $table->enum('tipo', ['bus', 'avion', 'tren', 'crucero'])
                 ->comment('Tipo de transporte utilizado');

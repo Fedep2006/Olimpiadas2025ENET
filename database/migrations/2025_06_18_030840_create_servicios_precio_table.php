@@ -13,8 +13,8 @@ return new class extends Migration
     {
         Schema::create('servicios_precio', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('servicio')->constrained('servicios')->onDelete('cascade');
-            $table->foreignId('empresa')->constrained('empresas')->onDelete('cascade');
+            $table->foreignId('servicio_id')->constrained('servicios')->onDelete('cascade');
+            $table->foreignId('empresa_id')->constrained('empresas')->onDelete('cascade');
             $table->decimal('precio')->comment('Precio del servicio');
             $table->boolean('por_noche')->default(false)->comment('Indica si el servicio se paga por cada noche o no');
             $table->timestamps();

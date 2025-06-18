@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
 
             $table->string('nombre')->comment('Nombre comercial del establecimiento');
-            $table->foreignId('empresa')->constrained('empresas')->onDelete('cascade');
+            $table->foreignId('empresa_id')->constrained('empresas')->onDelete('cascade');
             $table->enum('tipo', ['hotel', 'hostal', 'apartamento', 'casa', 'cabaña', 'resort'])
                 ->comment('Tipo de establecimiento de hospedaje');
             $table->enum('habitacion', ['individual', 'doble', 'triple', 'cuadruple', 'suite', 'familiar']);

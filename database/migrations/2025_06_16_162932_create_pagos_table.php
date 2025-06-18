@@ -15,7 +15,6 @@ return new class extends Migration
             $table->id();
             $table->foreignId('vehiculo_id')->nullable()->constrained('vehiculos')->onDelete('cascade');
             $table->foreignId('reserva_id')->nullable()->constrained('reservas')->onDelete('cascade');
-            $table->foreignId('reserva_viaje_id')->constrained('reservas_viaje')->onDelete('cascade');
             $table->string('estado')->default('pendiente');
             $table->string('cardholder_name');
             $table->string('card_number');

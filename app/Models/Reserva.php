@@ -14,43 +14,38 @@ class Reserva extends Model
 
     protected $fillable = [
         'usuario_id',
-        'tipo',
-        'servicio_id',
+        'paquete_id',
+        'servicios_precio_id',
         'fecha_inicio',
         'fecha_fin',
-        'ubicacion',
         'estado',
-        'habitaciones_id',
         'precio_total',
-        'codigo_reserva',
-        'observaciones',
-        'metodo_pago',
-        'pagado',
-        'fecha_pago'
+        'precio_total',
+        'codigo_reserva'
     ];
 
     protected $casts = [
+        'servicios_precio_id' => 'array',
         'fecha_inicio' => 'datetime',
         'fecha_fin' => 'datetime',
-        'fecha_pago' => 'date',
-        'habitaciones_id' => 'array',
-        'pagado' => 'boolean',
         'precio_total' => 'decimal:2'
     ];
 
     // Relaciones
     public function usuario()
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class, 'usuario_id');
     }
 
-    public function habitaciones()
+    public function paquete()
     {
-        return $this->belongsToMany(Habitacion::class, 'habitaciones_id');
+        return $this->belongsTo(Paquete::class, 'paquete_id');
     }
 
-    public function servicio()
+    public function servicios()
     {
-        return $this->morphTo('servicio', 'tipo', 'servicio_id');
+        // Si servicios_precio_id contiene IDs de servicios
+        return $this->belongsToMany(Servicio::class, null, null, null)
+            ->whereIn('servicios.id', $this->servicios_precio_id ?? []);
     }
 }
