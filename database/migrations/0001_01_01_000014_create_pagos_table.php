@@ -13,7 +13,6 @@ return new class extends Migration
     {
         Schema::create('pagos', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('vehiculo_id')->nullable()->constrained('vehiculos')->onDelete('cascade');
             $table->foreignId('reserva_id')->nullable()->constrained('reservas')->onDelete('cascade');
             $table->string('estado')->default('pendiente');
             $table->string('cardholder_name');
