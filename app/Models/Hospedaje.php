@@ -12,48 +12,60 @@ class Hospedaje extends Model
 
     protected $fillable = [
         'nombre',
+        'empresa_id',
         'tipo',
+        'habitacion',
+        'habitaciones_disponibles',
+        'capacidad_personas',
+        'precio_por_noche',
         'ubicacion',
         'pais',
         'ciudad',
-        'codigo_postal',
         'estrellas',
-        'disponibilidad',
         'descripcion',
-        'servicios',
-        'imagenes',
         'telefono',
         'email',
         'sitio_web',
         'check_in',
         'check_out',
-        'check_in_24h',
         'calificacion',
-        'politicas',
-        'observaciones'
+        'activo',
+        'condiciones',
     ];
 
     protected $casts = [
-        'servicios' => 'array',
-        'imagenes' => 'array',
-        'politicas' => 'array',
-        'disponibilidad' => 'boolean',
-        'check_in_24h' => 'boolean',
-        'estrellas' => 'integer',
+        'check_in' => 'datetime:H:i:s',
+        'check_out' => 'datetime:H:i:s',
+        'activo' => 'boolean',
+        'precio_por_noche' => 'decimal:2',
         'calificacion' => 'decimal:2',
-        'check_in' => 'datetime',
-        'check_out' => 'datetime',
-        'tipo' => 'string'
     ];
 
     // Relaciones
-    public function habitaciones()
-    {
-        return $this->hasMany(Habitacion::class, 'hospedaje_id');
-    }
-
     public function reservas()
     {
         return $this->morphMany(Reserva::class, 'servicio', 'tipo', 'servicio_id');
+    }
+
+    public function empresa()
+    {
+        return $this->belongsTo(Empresa::class, 'empresa_id');
+    }
+
+    public function serviciosTotales()
+    {
+        return $this->morphMany(Servicio::class, 'serviciable')->whereHas('nombre', function ($query) {
+            $query->where('tabla', 'hospedajes');
+        });
+    }
+
+    // Funciones
+    public function serviciosIndividuales()
+    {
+        return $this->morphMany(Servicio::class, 'serviciable')
+            ->whereHas('nombre', function ($query) {
+                $query->where('tabla', 'hospedajes');
+            })
+            ->where('empresa_id', $this->empresa_id);
     }
 }

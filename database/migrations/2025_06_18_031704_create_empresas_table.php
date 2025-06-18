@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('empresas', function (Blueprint $table) {
             $table->id();
             $table->string('nombre')->comment('Nombre de la empresa');
+            $table->enum('tipo', ['hospedajes', 'viajes', 'paquetes']);
             $table->timestamps();
             $table->softDeletes();
         });

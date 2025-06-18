@@ -6,14 +6,32 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class ServicioPrecio extends Model
+class NombreServicio extends Model
 {
     use HasFactory, SoftDeletes;
 
-    protected $table = 'servicios_precio';
+    protected $table = 'nombre_servicio_id';
 
     protected $fillable = [
-        'servicio_id',
+        'nombre',
+        'tabla',
+    ];
+
+    //Relaciones
+    public function servicios()
+    {
+        return $this->hasMany(Servicio::class, 'nombre_servicio_id');
+    }
+}
+
+class Servicio extends Model
+{
+    use HasFactory, SoftDeletes;
+
+    protected $table = 'servicios';
+
+    protected $fillable = [
+        'nombre_servicio_id',
         'empresa_id',
         'precio',
         'por_noche',
@@ -25,30 +43,41 @@ class ServicioPrecio extends Model
     ];
 
     //Relaciones
-    public function servicio()
+    public function nombreServicio()
     {
-        return $this->belongsTo(Servicio::class, 'servicio_id');
+        return $this->belongsTo(NombreServicio::class, 'nombre_servicio_id');
     }
 
     public function empresa()
     {
         return $this->belongsTo(Empresa::class, 'empresa_id');
     }
+
+    public function reservados()
+    {
+        return $this->hasMany(ServicioReservado::class, 'servicio_id');
+    }
 }
-class Servicio extends Model
+
+class ServicioReservado extends Model
 {
     use HasFactory, SoftDeletes;
 
-    protected $table = 'servicios';
+    protected $table = 'servicios_reservados';
 
     protected $fillable = [
-        'nombre',
-        'tabla',
+        'reserva_id',
+        'servicio_id',
     ];
 
     //Relaciones
-    public function precios()
+    public function servicio()
     {
-        return $this->hasMany(ServicioPrecio::class, 'servicio_id');
+        return $this->belongsTo(Servicio::class, 'servicio_id');
+    }
+
+    public function reservas()
+    {
+        return $this->belongsTo(Reserva::class, 'reserva_id');
     }
 }

@@ -43,6 +43,28 @@ class Viaje extends Model
         return $this->morphMany(Reserva::class, 'servicio', 'tipo', 'servicio_id');
     }
 
+    public function empresa()
+    {
+        return $this->belongsTo(Empresa::class, 'empresa_id');
+    }
+
+    public function serviciosTotales()
+    {
+        return $this->morphMany(Servicio::class, 'serviciable')->whereHas('nombre', function ($query) {
+            $query->where('tabla', 'viajes');
+        });
+    }
+
+    // Funciones
+    public function serviciosIndividuales()
+    {
+        return $this->morphMany(Servicio::class, 'serviciable')
+            ->whereHas('nombre', function ($query) {
+                $query->where('tabla', 'viajes');
+            })
+            ->where('empresa_id', $this->empresa_id);
+    }
+
     public function setImagenAttribute($value)
     {
         if ($value) {

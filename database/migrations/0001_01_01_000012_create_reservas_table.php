@@ -12,7 +12,6 @@ return new class extends Migration
             $table->id();
             $table->foreignId('usuario_id')->constrained('users')->onDelete('cascade');
             $table->foreignId('paquete_id')->constrained('paquetes')->onDelete('cascade');
-            $table->json('servicios_precio_id')->nullable()->comment('Lista de las ids con los servicios incluidos');
             $table->dateTime('fecha_inicio')->comment('Fecha y hora de inicio de la reserva');
             $table->dateTime('fecha_fin')->comment('Fecha y hora de finalización de la reserva');
             $table->enum('estado', ['pendiente', 'confirmada', 'cancelada', 'completada'])->default('pendiente')

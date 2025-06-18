@@ -14,11 +14,22 @@ class Empresa extends Model
 
     protected $fillable = [
         'nombre',
+        'tipo'
     ];
 
     //Relaciones
     public function servicios()
     {
-        return $this->hasMany(ServicioPrecio::class, 'servicio_id');
+        return $this->hasMany(Servicio::class, 'empresa_id');
+    }
+
+    public function viajes()
+    {
+        return $this->hasMany(Viaje::class, 'empresa_id');
+    }
+
+    public function hospedajes()
+    {
+        return $this->hasMany(Hospedaje::class, 'empresa_id');
     }
 }

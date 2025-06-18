@@ -15,20 +15,16 @@ class Reserva extends Model
     protected $fillable = [
         'usuario_id',
         'paquete_id',
-        'servicios_precio_id',
         'fecha_inicio',
         'fecha_fin',
         'estado',
         'precio_total',
-        'precio_total',
-        'codigo_reserva'
+        'codigo_reserva',
     ];
-
     protected $casts = [
-        'servicios_precio_id' => 'array',
         'fecha_inicio' => 'datetime',
         'fecha_fin' => 'datetime',
-        'precio_total' => 'decimal:2'
+        'precio_total' => 'decimal:2',
     ];
 
     // Relaciones
@@ -42,10 +38,8 @@ class Reserva extends Model
         return $this->belongsTo(Paquete::class, 'paquete_id');
     }
 
-    public function servicios()
+    public function serviciosReservados()
     {
-        // Si servicios_precio_id contiene IDs de servicios
-        return $this->belongsToMany(Servicio::class, null, null, null)
-            ->whereIn('servicios.id', $this->servicios_precio_id ?? []);
+        return $this->hasMany(ServicioReservado::class, 'reserva_id');
     }
 }

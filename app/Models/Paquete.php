@@ -41,4 +41,21 @@ class Paquete extends Model
     {
         return $this->morphMany(Reserva::class, 'servicio', 'tipo', 'servicio_id');
     }
+
+    public function serviciosTotales()
+    {
+        return $this->morphMany(Servicio::class, 'serviciable')->whereHas('nombre', function ($query) {
+            $query->where('tabla', 'paquetes');
+        });
+    }
+
+    // Funciones
+    public function serviciosIndividuales()
+    {
+        return $this->morphMany(Servicio::class, 'serviciable')
+            ->whereHas('nombre', function ($query) {
+                $query->where('tabla', 'paquetes');
+            })
+            ->where('empresa_id', $this->empresa_id);
+    }
 }
