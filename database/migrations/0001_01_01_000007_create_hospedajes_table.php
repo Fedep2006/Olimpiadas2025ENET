@@ -17,7 +17,7 @@ return new class extends Migration
             $table->enum('tipo', ['hotel', 'hostal', 'apartamento', 'casa', 'cabaña', 'resort'])
                 ->comment('Tipo de establecimiento de hospedaje');
             $table->enum('habitacion', ['individual', 'doble', 'triple', 'cuadruple', 'suite', 'familiar']);
-            $table->integer('habitacions_disponibles')->comment('Número de habitaciones iguales disponibles');
+            $table->integer('habitaciones_disponibles')->comment('Número de habitaciones iguales disponibles');
             $table->integer('capacidad_personas')->comment('Número máximo de personas que pueden ocupar la habitación');
             $table->decimal('precio_por_noche', 10, 2)->comment('Precio por noche en la moneda base del sistema');
             $table->string('ubicacion')->comment('Dirección física del establecimiento');
