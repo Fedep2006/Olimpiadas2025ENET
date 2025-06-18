@@ -30,13 +30,6 @@ return new class extends Migration
             $table->timestamps();
             $table->softDeletes();
         });
-
-        Schema::create('servicios_reservados', function (Blueprint $table) {
-            $table->id();
-            $table->foreignId('reserva_id')->constrained('reservas')->onDelete('cascade');
-            $table->foreignId('servicio_id')->constrained('reservas')->onDelete('cascade');
-            $table->timestamps();
-        });
     }
 
     /**
@@ -46,6 +39,5 @@ return new class extends Migration
     {
         Schema::dropIfExists('servicios');
         Schema::dropIfExists('servicios_precios');
-        Schema::dropIfExists('servicios_reservados');
     }
 };
