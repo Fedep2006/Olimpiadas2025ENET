@@ -35,11 +35,22 @@
                 'options' => [
                     (object)['value' => 0, 'text' => 'Cliente'],
                     (object)['value' => 1, 'text' => 'Empleado'],
-                    (object)['value' => 2, 'text' => 'SuperAdmin'],
                 ],
             ]
         ];
         $camposEditar = [
+            (object)[
+                'id' => 'editName',
+                'name' => 'name',
+                'type' => 'text',
+                'label' => 'Nombre de Usuario'
+            ],
+            (object)[
+                'id' => 'editEmail',
+                'name' => 'email',
+                'type' => 'email',
+                'label' => 'Email'
+            ],
             (object)[
                 'id' => 'editNivel',
                 'name' => 'nivel',
@@ -48,17 +59,6 @@
                 'options' => [
                     (object)['value' => 0, 'text' => 'Cliente'],
                     (object)['value' => 1, 'text' => 'Empleado'],
-                    (object)['value' => 2, 'text' => 'SuperAdmin'],
-                ],
-            ],
-            (object)[
-                'id' => 'editDeleted',
-                'name' => 'deleted',
-                'type' => 'select',
-                'label' => 'Estado',
-                'options' => [
-                    (object)['value' => 0, 'text' => 'Habilitado'],
-                    (object)['value' => 1, 'text' => 'Deshabilitado'],
                 ],
             ]
         ];
@@ -78,8 +78,19 @@
                 'name' => 'search_registration_date',
                 'id' => 'searchRegistrationDate',
                 'value' => 'search_registration_date'
+            ],
+            (object)[
+                'label' => 'Nivel del Usuario',
+                'type' => 'select',
+                'name' => 'search_nivel',
+                'id' => 'searchNivel',
+                'value' => 'search_nivel',
+                'options' => [
+                    (object)['value' => 0, 'text' => 'Cliente'],
+                    (object)['value' => 1, 'text' => 'Empleado'],
+                ],
             ]
-        ]
+        ];
         
     @endphp
     <!-- Sidebar -->
@@ -106,6 +117,7 @@
                 "Email",
                 "Fecha Registro",
                 "Nivel",
+                "Estado"
             ];
         @endphp
         @include('administracion.partials.tabla', 

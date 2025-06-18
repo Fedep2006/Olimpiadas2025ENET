@@ -71,7 +71,6 @@
                     </div>
                     <div class="user-info">
                         <h6>{{ $registro->name }}</h6>
-                        <small>ID: {{ $registro->id }}</small>
                     </div>
                 </div>
             </td>

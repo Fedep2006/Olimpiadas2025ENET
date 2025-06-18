@@ -5,7 +5,6 @@
 
     .table th {
         background-color: var(--despegar-light-blue);
-        text-align: center;
         color: var(--despegar-blue);
         font-weight: bold;
         border: none;
