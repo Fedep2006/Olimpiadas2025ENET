@@ -12,15 +12,13 @@ return new class extends Migration
             $table->id();
             $table->foreignId('usuario_id')->constrained('users')->onDelete('cascade');
             $table->foreignId('paquete_id')->constrained('paquetes')->onDelete('cascade');
+            $table->json('servicios_precio_id')->nullable()->comment('Lista de las ids con los servicios incluidos');
             $table->dateTime('fecha_inicio')->comment('Fecha y hora de inicio de la reserva');
             $table->dateTime('fecha_fin')->comment('Fecha y hora de finalización de la reserva');
             $table->enum('estado', ['pendiente', 'confirmada', 'cancelada', 'completada'])->default('pendiente')
                 ->comment('Estado actual de la reserva: pendiente (recién creada), confirmada (pago verificado y verificada por un administrador), cancelada (anulada), completada (servicio realizado)');
             $table->decimal('precio_total', 10, 2)->comment('Precio total de la reserva en la moneda base del sistema');
             $table->string('codigo_reserva', 8)->unique()->comment('Código único de 8 caracteres para identificar la reserva');
-            $table->json('servicios_paquetes')->nullable()->comment('true o false de que servicios estan incluidos');
-            $table->json('servicios_hospedajes')->nullable()->comment('true o false de que servicios estan incluidos');
-            $table->json('categoria_viaje')->nullable()->comment('Categoria elegida para el viaje');
             $table->timestamps();
             $table->softDeletes();
         });
