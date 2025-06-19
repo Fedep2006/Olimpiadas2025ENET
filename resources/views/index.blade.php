@@ -530,8 +530,6 @@
                     <ul class="list-unstyled">
                         <li><a href="#" class="text-light text-decoration-none">Quiénes somos</a></li>
                         <li><a href="#" class="text-light text-decoration-none">Trabaja con nosotros</a></li>
-                        <li><a href="#" class="text-light text-decoration-none">Prensa</a></li>
-                        <li><a href="#" class="text-light text-decoration-none">Inversores</a></li>
                     </ul>
                 </div>
                 <div class="col-md-3 mb-4">
@@ -546,10 +544,8 @@
                 <div class="col-md-3 mb-4">
                     <h5>Ayuda</h5>
                     <ul class="list-unstyled">
-                        <li><a href="#" class="text-light text-decoration-none">Centro de ayuda</a></li>
                         <li><a href="#" class="text-light text-decoration-none">Contacto</a></li>
-                        <li><a href="#" class="text-light text-decoration-none">Términos y condiciones</a></li>
-                        <li><a href="#" class="text-light text-decoration-none">Privacidad</a></li>
+                        <li><a href="{{ route("terminos") }}" class="text-light text-decoration-none">Términos y condiciones</a></li>
                     </ul>
                 </div>
                 <div class="col-md-3 mb-4">
