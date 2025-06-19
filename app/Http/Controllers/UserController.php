@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\UserRequest;
 use Illuminate\Http\Request;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
@@ -22,9 +23,10 @@ class UserController extends Controller
                     ->orWhere('email', 'like', "%{$search}%");
             });
         }
-        if ($request->filled('search_id')) {
-            $search = $request->search_id;
-            $query->where('id', $search);
+
+        if ($request->filled('search_nivel')) {
+            $search = $request->search_nivel;
+            $query->Where('nivel', $search);
         }
 
         // Aplicar filtro de fecha
@@ -53,48 +55,18 @@ class UserController extends Controller
         return view('administracion.usuarios', compact('registros'));
     }
 
-    public function crear(Request $request)
+    public function crear(UserRequest $request)
     {
         try {
-            // Verificar la informacion
-            $validator = Validator::make($request->all(), [
-                'name' => 'required|string|max:255|unique:users,name',
-                'email' => 'required|string|email|max:255|unique:users,email',
-                'password' => 'required|string|min:8',
-            ], [
-                'name.required' => 'El nombre es obligatorio',
-                'name.string' => 'El nombre debe ser texto',
-                'name.max' => 'El nombre no puede tener más de 255 caracteres',
-                'name.unique' => 'Este nombre de usuario ya está registrado',
-                'email.required' => 'El correo electrónico es obligatorio',
-                'email.string' => 'El correo electrónico debe ser texto',
-                'email.email' => 'El correo electrónico debe ser válido',
-                'email.max' => 'El correo electrónico no puede tener más de 255 caracteres',
-                'email.unique' => 'Este correo electrónico ya está registrado',
-                'password.required' => 'La contraseña es obligatoria',
-                'password.string' => 'La contraseña debe ser texto',
-                'password.min' => 'La contraseña debe tener al menos 8 caracteres'
-            ]);
+            // Crear el usuario
+            $data = $request->validated();
+            $data['password'] = Hash::make($data['password']);
+            User::create($data);
 
-            if ($validator->fails()) {
-                return response()->json([
-                    'success' => false,
-                    'message' => 'Error de validación',
-                    'errors' => $validator->errors()
-                ], 422);
-            } else {
-                // Crear el usuario
-                User::create([
-                    'name' => $request->name,
-                    'email' => $request->email,
-                    'password' => Hash::make($request->password),
-                ]);
-
-                return response()->json([
-                    'success' => true,
-                    'message' => 'Usuario creado exitosamente'
-                ], 201);
-            }
+            return response()->json([
+                'success' => true,
+                'message' => 'Usuario creado exitosamente'
+            ], 201);
         } catch (\Exception $e) {
             return response()->json([
                 'success' => false,
@@ -104,23 +76,11 @@ class UserController extends Controller
         }
     }
 
-    public function update(Request $request, User $user)
+    public function update(UserRequest $request, User $user)
     {
-        $request->validate([
-            'nivel' => 'required|in:0,1,2',
-            'deleted' => 'nullable|boolean',
-        ]);
 
         try {
-            $user->nivel = $request->nivel;
-            if ($request->has('deleted') && $request->deleted) {
-                $user->delete(); // Soft delete
-            } else {
-                if ($user->trashed()) {
-                    $user->restore(); // Reactivar usuario si estaba inhabilitado
-                }
-            }
-            $user->save();
+            $user->update($request->validated());
 
             return response()->json([
                 'message' => 'Usuario actualizado exitosamente',

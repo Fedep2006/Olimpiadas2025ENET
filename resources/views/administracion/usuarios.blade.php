@@ -117,7 +117,6 @@
                 "Email",
                 "Fecha Registro",
                 "Nivel",
-                "Estado"
             ];
         @endphp
         @include('administracion.partials.tabla', 

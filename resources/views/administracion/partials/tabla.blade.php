@@ -68,6 +68,9 @@
                     @case('viajes')
                         @include('administracion.partials.tablas.tabla-viajes-contenido')
                         @break
+                    @case('empresas')
+                        @include('administracion.partials.tablas.tabla-empresas-contenido')
+                        @break
                     @default
                         
                 @endswitch

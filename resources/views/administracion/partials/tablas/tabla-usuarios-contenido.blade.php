@@ -87,13 +87,6 @@
         <span class="badge bg-secondary">Desconocido</span>
     @endif
 </td>
-<td>
-    @if(method_exists($registro, 'trashed') && $registro->trashed())
-        <span class="badge bg-secondary">Inhabilitado</span>
-    @else
-        <span class="badge bg-success">Habilitado</span>
-    @endif
-</td>
 </td>
             <td>
                 <div class="action-buttons">
