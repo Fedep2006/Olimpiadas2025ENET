@@ -192,6 +192,10 @@
                     <i class="fas fa-users"></i>
                     <span class="menu-text">Usuarios</span>
                 </a>
+                <a href="/administracion/empresas" class="menu-item {{ $empresas ?? '' }}">
+                    <i class="fas fa-tachometer-alt"></i>
+                    <span class="menu-text">Empresas</span>
+                </a>
                 <a href="/administracion/viajes" class="menu-item {{ $viajes ?? '' }}">
                     <i class="fas fa-plane"></i>
                     <span class="menu-text">Viajes</span>

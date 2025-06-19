@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Admin\EmpresasController;
 use App\Http\Controllers\Admin\PaquetesController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Http\Request;
@@ -105,6 +106,7 @@ Route::prefix('administracion')->middleware('auth')->group(function () {
     Route::get('/',        [administracionController::class, 'inicio'])->name('administracion.inicio');
     Route::get('/reportes', [administracionController::class, 'reportes'])->name('administracion.reportes');
 
+
     // Reservas
     Route::get('/reservas', [AdministracionController::class, 'reservas']);
     // Acciones de reservas de vehículos
@@ -116,6 +118,12 @@ Route::prefix('administracion')->middleware('auth')->group(function () {
     // Acciones de reservas de hospedaje
     Route::post('/reservas/hospedaje/{reserva}/aceptar', [AdministracionController::class, 'aceptarReservaHospedaje'])->name('administracion.reservas.hospedaje.aceptar');
     Route::post('/reservas/hospedaje/{reserva}/rechazar', [AdministracionController::class, 'rechazarReservaHospedaje'])->name('administracion.reservas.hospedaje.rechazar');
+
+    //empresas
+    Route::get('/empresas', [EmpresasController::class, 'index'])->name('administracion.empresas');
+    Route::post('/empresas/añadir', [EmpresasController::class, 'crear'])->name('administracion.empresas.añadir');
+    Route::post('/empresas/editar', [EmpresasController::class, 'editar'])->name('administracion.empresas.editar');
+    Route::delete('/empresas/borrar/{id}', [EmpresasController::class, 'borrar'])->name('administracion.empresas.borrar');
 
     // Vehículos
     Route::get('/vehiculos',                [VehiculosController::class, 'index'])->name('administracion.vehiculos');
