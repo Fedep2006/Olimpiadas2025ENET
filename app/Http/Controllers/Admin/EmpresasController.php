@@ -3,39 +3,72 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\EmpresaRequest;
 use Illuminate\Http\Request;
-use App\Models\Empresa; 
+use App\Models\Empresa;
 
 class EmpresasController extends Controller
 {
-    public function index(){
+    public function index()
+    {
         $empresas = Empresa::all();
-        return view("administracion.empresas" ,compact("empresas"));
+        return view("administracion.empresas", compact("empresas"));
     }
 
-    public function crear(Request $request){
-        $empresas = new Empresa();
-        $empresas->nombre = $request->nombreEmpresa;
-        $empresas->tipo = $request->tipoEmpresa;
-        $empresas->save();
-        return redirect()->route('administracion.empresas')->with('success', 'Empresa creada exitosamente.');
-        
+    public function crear(EmpresaRequest $request)
+    {
+        try {
+            // Crear el viaje
+            Empresa::create($request->validated());
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Empresa creado exitosamente'
+            ], 201);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Error al crear el empresa',
+                'error' => $e->getMessage()
+            ], 500);
+        }
     }
 
-    public function editar(Request $request){
-        $empresas = Empresa::find($request->id);
-        $empresas->nombre = $request->nombreEmpresa;
-        $empresas->tipo = $request->tipoEmpresa;
-        $empresas->save();
-        return redirect()->route('administracion.empresas')->with('success', 'Empresa actualizada exitosamente.');
+    public function update(EmpresaRequest $request, Empresa $empresa)
+    {
 
+        try {
+            $empresa->update($request->validated());
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Empresa actualizada exitosamente',
+                'empresa' => $empresa
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Error al actualizar la empresa',
+                'error' => $e->getMessage()
+            ], 500);
+        }
     }
 
-    public function borrar(Request $request){
+    public function destroy(Empresa $empresa)
+    {
+        try {
+            $empresa->delete();
 
-        $empresas = Empresa::find($request->id);
-        $empresas->delete();
-        return redirect()->route('administracion.empresas')->with('success', 'Empresa eliminada exitosamente.');
-        
+
+            return response()->json([
+                'message' => 'Empresa eliminado exitosamente',
+            ]);
+        } catch (\Exception $e) {
+
+            return response()->json([
+                'message' => 'Error al eliminar el empresa',
+                'error' => $e->getMessage()
+            ], 500);
+        }
     }
 }
