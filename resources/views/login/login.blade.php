@@ -9,20 +9,20 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <style>
         :root {
-            --despegar-blue: #0066cc;
-            --despegar-orange: #ff6600;
-            --despegar-light-blue: #e6f3ff;
+            --frategar-blue: #0066cc;
+            --frategar-orange: #ff6600;
+            --frategar-light-blue: #e6f3ff;
         }
 
         body {
-            background: linear-gradient(135deg, var(--despegar-light-blue) 0%, #f8f9fa 100%);
+            background: linear-gradient(135deg, var(--frategar-light-blue) 0%, #f8f9fa 100%);
             min-height: 100vh;
         }
 
         .navbar-brand {
             font-weight: bold;
             font-size: 1.8rem;
-            color: var(--despegar-blue) !important;
+            color: var(--frategar-blue) !important;
         }
 
         .login-container {
@@ -47,7 +47,7 @@
         }
 
         .login-header h2 {
-            color: var(--despegar-blue);
+            color: var(--frategar-blue);
             font-weight: bold;
             margin-bottom: 10px;
         }
@@ -66,7 +66,7 @@
         }
 
         .form-control:focus {
-            border-color: var(--despegar-blue);
+            border-color: var(--frategar-blue);
             box-shadow: 0 0 0 0.2rem rgba(0, 102, 204, 0.25);
         }
 
@@ -74,7 +74,7 @@
             background-color: #f8f9fa;
             border: 2px solid #e9ecef;
             border-radius: 10px 0 0 10px;
-            color: var(--despegar-blue);
+            color: var(--frategar-blue);
         }
 
         .input-group .form-control {
@@ -83,11 +83,11 @@
         }
 
         .input-group:focus-within .input-group-text {
-            border-color: var(--despegar-blue);
+            border-color: var(--frategar-blue);
         }
 
         .btn-login {
-            background-color: var(--despegar-blue);
+            background-color: var(--frategar-blue);
             border: none;
             border-radius: 10px;
             padding: 12px;
@@ -114,7 +114,7 @@
         }
 
         .btn-social:hover {
-            border-color: var(--despegar-blue);
+            border-color: var(--frategar-blue);
             transform: translateY(-2px);
         }
 
@@ -150,13 +150,13 @@
         }
 
         .forgot-password {
-            color: var(--despegar-blue);
+            color: var(--frategar-blue);
             text-decoration: none;
             font-size: 14px;
         }
 
         .forgot-password:hover {
-            color: var(--despegar-orange);
+            color: var(--frategar-orange);
             text-decoration: underline;
         }
 
@@ -168,13 +168,13 @@
         }
 
         .register-link a {
-            color: var(--despegar-blue);
+            color: var(--frategar-blue);
             text-decoration: none;
             font-weight: bold;
         }
 
         .register-link a:hover {
-            color: var(--despegar-orange);
+            color: var(--frategar-orange);
             text-decoration: underline;
         }
 
@@ -186,14 +186,14 @@
         }
 
         .benefits {
-            background: var(--despegar-light-blue);
+            background: var(--frategar-light-blue);
             border-radius: 15px;
             padding: 20px;
             margin-bottom: 25px;
         }
 
         .benefits h6 {
-            color: var(--despegar-blue);
+            color: var(--frategar-blue);
             font-weight: bold;
             margin-bottom: 15px;
         }
@@ -206,7 +206,7 @@
         }
 
         .benefit-item i {
-            color: var(--despegar-blue);
+            color: var(--frategar-blue);
             margin-right: 10px;
             width: 16px;
         }
@@ -353,7 +353,7 @@
                 <!-- Side Information -->
                 <div class="col-lg-4 col-md-5 d-none d-md-block">
                     <div class="ms-4">
-                        <h3 class="text-primary fw-bold mb-4">¿Por qué elegir Despegar?</h3>
+                        <h3 class="text-primary fw-bold mb-4">¿Por qué elegir Frategar?</h3>
 
                         <div class="d-flex align-items-start mb-4">
                             <div class="me-3">

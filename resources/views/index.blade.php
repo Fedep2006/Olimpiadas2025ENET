@@ -458,54 +458,27 @@
         </div>
     </section>
 
-    <!-- Hospedajes -->
+    <!-- Paquetes (desde base de datos) -->
     <section class="py-5">
         <div class="container">
-            <h2 class="section-title">Hospedajes</h2>
+            <h2 class="section-title">Paquetes</h2>
             <div class="row">
-            @foreach($hospedajes as $h)
-            <div class="col-md-3 mb-4">
-            <a href="{{ route('vehiculos.show', $viaje->id) }}" style="text-decoration:none;color:inherit;">
-                    <div class="destination-card position-relative overflow-hidden">
-                        <img 
-                            src="{{ is_array($h->imagenes) ? $h->imagenes[0] : (is_string($h->imagenes) ? $h->imagenes : '') }}" 
-                            style="position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;z-index:1;" 
-                            alt="{{ $h->nombre }}"
-                        >
+                @foreach($paquetes as $paquete)
+                <div class="col-md-4 mb-4">
+                    <div class="destination-card position-relative overflow-hidden h-100">
+                        @php
+                            $img = is_array($paquete->imagenes) ? ($paquete->imagenes[0] ?? null) : (is_string($paquete->imagenes) ? $paquete->imagenes : null);
+                        @endphp
+                        @if($img)
+                        <img src="{{ $img }}" alt="{{ $paquete->nombre }}" style="position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;z-index:1;">
+                        @endif
                         <div class="hotel-overlay" style="position:absolute;top:0;left:0;width:100%;height:100%;background:linear-gradient(transparent 40%,rgba(0,0,0,0.85) 100%);z-index:2;transition:opacity 0.4s;"></div>
                         <div class="destination-overlay hotel-overlay-content d-flex flex-column justify-content-end align-items-start p-3" style="position:relative;z-index:3;transition:opacity 0.4s;height:100%;">
-                            <h5 class="mb-1">{{ $h->nombre }}</h5>
-                            @php
-    $minPrecio = $h->habitaciones->min('precio_por_noche');
-@endphp
-<p class="mb-0">
-    @if($minPrecio !== null)
-        Desde ${{ number_format($minPrecio, 2) }} / noche
-    @else
-        No disponible
-    @endif
-</p>
+                            <h5 class="mb-1">{{ $paquete->nombre }}</h5>
+                            <p class="mb-1">{{ $paquete->descripcion }}</p>
+                            <p class="mb-0 fw-bold">${{ number_format($paquete->precio_total, 2) }}</p>
                         </div>
                     </div>
-                </a>
-            </div>
-            @endforeach
-        </div>
-    </div>
-</section>
-
-    <!-- Viajes - MODIFICADO: Sin imágenes, solo cards con datos de BD -->
-    <section class="py-5 bg-light">
-        <div class="container">
-            <h2 class="section-title">Viajes</h2>
-            <div class="row">
-                @foreach($viajes as $viaje)
-                <div class="col-md-3 mb-4">
-                <a href="{{ route('viajes.show', $viaje->id) }}" style="text-decoration:none;color:inherit;"><div class="travel-card">
-                        <i class="fas fa-map-marked-alt travel-icon"></i>
-                        <h5 class="mb-1">{{ $viaje->nombre }}</h5>
-                        <p class="price mb-0">Desde ${{ number_format($viaje->precio, 2) }}</p>
-                    </div></a>
                 </div>
                 @endforeach
             </div>
@@ -545,40 +518,6 @@
                     <p class="text-muted">Alquiler de autos y otros servicios</p>
                 </div>
             </div>
-        </div>
-    </section>
-
-    <!-- Vehículos -->
-    <section class="py-5 bg-light">
-        <div class="container">
-            <h2 class="section-title">Vehículos</h2>
-            <div class="row">
-            @foreach($vehiculos as $viaje)
-            <div class="col-md-3 mb-4">
-                <a href="{{ route('vehiculos.show', $viaje->id) }}" style="text-decoration:none;color:inherit;">
-                    <div class="destination-card position-relative overflow-hidden">
-                        <img 
-                            src="{{ is_array($viaje->imagenes) ? $viaje->imagenes[0] : $viaje->imagenes }}" 
-                            style="position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;z-index:1;" 
-                            alt="{{ $viaje->marca }} {{ $viaje->modelo }}"
-                        >
-                        <div class="hotel-overlay" style="position:absolute;top:0;left:0;width:100%;height:100%;background:linear-gradient(transparent 40%,rgba(0,0,0,0.85) 100%);z-index:2;transition:opacity 0.4s;"></div>
-                        <div class="destination-overlay hotel-overlay-content d-flex flex-column justify-content-end align-items-start p-3" style="position:relative;z-index:3;transition:opacity 0.4s;height:100%;">
-                            <h5 class="mb-1">{{ $viaje->marca }} {{ $viaje->modelo }}</h5>
-                            <p class="mb-0">Desde ${{ number_format($viaje->precio_por_dia, 2) }} / día</p>
-                        </div>
-                    </div>
-                </a>
-            </div>
-            @endforeach
-        </div>
-    </div>
-</section>
-
-    <!-- Paquetes (Solo Visual) -->
-    <section class="py-5">
-        <div class="container">
-            <h2 class="section-title">Paquetes</h2>
         </div>
     </section>
 
