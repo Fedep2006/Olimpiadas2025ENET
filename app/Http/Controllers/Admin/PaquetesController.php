@@ -3,58 +3,71 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
+use App\Http\Requests\PaqueteRequest;
 use App\Models\Paquete;
-use App\Models\PaqueteContenido;
-use Illuminate\Support\Facades\DB;
 
 class PaquetesController extends Controller
 {
-    public function index(){
+    public function index()
+    {
         $paquetes = Paquete::all();
-        return view("administracion.paquetes",compact("paquetes"));
+        return view("administracion.paquetes", compact("paquetes"));
     }
 
-    public function Añadir(Request $request){
-        $paquetes = new Paquete();
-        $paquetes->nombre = $request->nombre;
-        $paquetes->descripcion = $request->descripcion;
-        $paquetes->precio_total = $request->precio_total;
-        $paquetes->duracion = $request->duracion;
-        $paquetes->ubicacion = $request->ubicacion;
-        $paquetes->cupo_minimo = $request->cupo_minimo;
-        $paquetes->cupo_maximo = $request->cupo_maximo;
-        $paquetes->activo = $request->activo;
-        $paquetes->condiciones = $request->condiciones;
-        $paquetes->imagenes = $request->imagenes;
-        $paquetes->save();
-        
-        return redirect()->route("administracion.paquetes");
-    }
+    public function crear(PaqueteRequest $request)
+    {
+        try {
+            // Crear el viaje
+            Paquete::create($request->validated());
 
-    public function Borrar($id){
-        $paquete = Paquete::find($id);
-        $paquete->delete();
-         return redirect()->route("administracion.paquetes");
-    }
-
-    public function Editar(Request $request){
-        $paquete = Paquete::find($request->id);
-        if (!$paquete) {
-            return redirect()->route("administracion.paquetes")->withErrors(['Paquete no encontrado.']);
+            return response()->json([
+                'success' => true,
+                'message' => 'Paquete creado exitosamente'
+            ], 201);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Error al crear el paquete',
+                'error' => $e->getMessage()
+            ], 500);
         }
-        $paquete->nombre = $request->nombre;
-        $paquete->descripcion = $request->descripcion;
-        $paquete->precio_total = $request->precio_total;
-        $paquete->duracion = $request->duracion;
-        $paquete->ubicacion = $request->ubicacion;
-        $paquete->cupo_minimo = $request->cupo_minimo;
-        $paquete->cupo_maximo = $request->cupo_maximo;
-        $paquete->activo = $request->activo;
-        $paquete->condiciones = $request->condiciones;
-        $paquete->imagenes = $request->imagenes;
-        $paquete->save();
+    }
 
-        return redirect()->route("administracion.paquetes");    
+    public function update(PaqueteRequest $request, Paquete $paquete)
+    {
+
+        try {
+            $paquete->update($request->validated());
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Paquete actualizado exitosamente',
+                'paquete' => $paquete
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Error al actualizar el paquete',
+                'error' => $e->getMessage()
+            ], 500);
+        }
+    }
+
+    public function destroy(Paquete $paquete)
+    {
+        try {
+            $paquete->delete();
+
+
+            return response()->json([
+                'message' => 'Paquete eliminado exitosamente',
+            ]);
+        } catch (\Exception $e) {
+
+            return response()->json([
+                'message' => 'Error al eliminar el paquete',
+                'error' => $e->getMessage()
+            ], 500);
+        }
     }
 }

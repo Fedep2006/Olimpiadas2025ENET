@@ -3,80 +3,72 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
+use App\Http\Requests\HospedajeRequest;
 use App\Models\Hospedaje;
-use App\Models\empresas;
-use Illuminate\Support\Facades\Validator;
-use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\DB;
 
 class HospedajeController extends Controller
 {
     public function index()
     {
-            $hospedajes = Hospedaje::all();
-            
-            return view('administracion.hospedaje', compact('hospedajes'));
+        $hospedajes = Hospedaje::all();
 
+        return view('administracion.hospedaje', compact('hospedajes'));
     }
 
-    public function HospedajeAgregar(Request $request)
-    {
-        $hospedaje = new Hospedaje();
-
-        $hospedaje->save();
-        return redirect()->route('administracion.hospedaje')->with('success', 'Hospedaje agregado correctamente');
-    }
-    public function HospedajeEditar(Request $request)
-    {
-        $hospedaje = Hospedaje::find($request->id);
-        
-        if (!$hospedaje) {
-            return redirect()->route('administracion.hospedaje')->with('error', 'El hospedaje no existe');
-        }
-
-        $hospedaje->nombre = $request->nombre;
-        $hospedaje->tipo = $request->tipo;
-        $hospedaje->ubicacion = $request->ubicacion;
-        $hospedaje->pais = $request->pais;
-        $hospedaje->ciudad = $request->ciudad;
-        $hospedaje->codigo_postal = $request->codigo_postal;
-        $hospedaje->estrellas = $request->estrellas;
-        $hospedaje->calificacion = $request->calificacion;
-        $hospedaje->descripcion = $request->descripcion;
-        $hospedaje->servicios = $request->servicios;
-        $hospedaje->politicas = $request->politicas;
-        $hospedaje->imagenes = $request->imagenes;
-        $hospedaje->telefono = $request->telefono;
-        $hospedaje->email = $request->email;
-        $hospedaje->sitio_web = $request->sitio_web;
-        $hospedaje->check_in = $request->check_in;
-        $hospedaje->check_out = $request->check_out;
-        if ($request->check_in_24h == 1) {
-            $hospedaje->check_in_24h = 1;
-        } else {
-            $hospedaje->check_in_24h = 0;
-        }
-        $hospedaje->disponibilidad = $request->disponibilidad;
-        $hospedaje->observaciones = $request->observaciones;
-        $hospedaje->save();
-        return redirect()->route('administracion.hospedaje')->with('success', 'Hospedaje actualizado correctamente');
-    }
-    public function EliminarHospedaje($id)
-    {
-        $hospedaje = Hospedaje::find($id);
-        $hospedaje->delete();
-        return redirect()->route('administracion.hospedaje')->with('success', 'Hospedaje eliminado correctamente');
-    }
-
-    public function verHabitaciones($id)
+    public function crear(HospedajeRequest $request)
     {
         try {
-            $hospedaje = Hospedaje::with('habitaciones')->findOrFail($id);
-            return view('administracion.habitaciones', compact('hospedaje'));
+            // Crear el viaje
+            Hospedaje::create($request->validated());
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Hospedaje creado exitosamente'
+            ], 201);
         } catch (\Exception $e) {
-            Log::error('Error al cargar las habitaciones: ' . $e->getMessage());
-            return redirect()->route('administracion.hospedaje')->with('error', 'Error al cargar las habitaciones');
+            return response()->json([
+                'success' => false,
+                'message' => 'Error al crear el hospedaje',
+                'error' => $e->getMessage()
+            ], 500);
+        }
+    }
+
+    public function update(HospedajeRequest $request, Hospedaje $hospedaje)
+    {
+
+        try {
+            $hospedaje->update($request->validated());
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Hospedaje actualizado exitosamente',
+                'hospedaje' => $hospedaje
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Error al actualizar el hospedaje',
+                'error' => $e->getMessage()
+            ], 500);
+        }
+    }
+
+    public function destroy(Hospedaje $hospedaje)
+    {
+        try {
+            $hospedaje->delete();
+
+
+            return response()->json([
+                'message' => 'Hospedaje eliminado exitosamente',
+            ]);
+        } catch (\Exception $e) {
+
+            return response()->json([
+                'message' => 'Error al eliminar el hospedaje',
+                'error' => $e->getMessage()
+            ], 500);
         }
     }
 }
