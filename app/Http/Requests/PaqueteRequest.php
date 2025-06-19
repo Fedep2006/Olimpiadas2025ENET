@@ -11,7 +11,11 @@ class PaqueteRequest extends FormRequest
 
     public function authorize(): bool
     {
-        return $this->autorizarEmpleado();
+        if ($this->isMethod('DELETE')) {
+            return $this->autorizarEmpleado();
+        } else {
+            return true;
+        }
     }
 
     /**

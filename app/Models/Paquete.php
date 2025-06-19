@@ -19,13 +19,14 @@ class Paquete extends Model
         'cupo_minimo',
         'cupo_maximo',
         'activo',
-        'imagenes',
+        'hecho_por_usuario',
         'condiciones'
     ];
 
     protected $casts = [
         'imagenes' => 'array',
         'activo' => 'boolean',
+        'hecho_por_usuario' => 'boolean',
         'precio_total' => 'decimal:2',
         'cupo_minimo' => 'integer',
         'cupo_maximo' => 'integer'

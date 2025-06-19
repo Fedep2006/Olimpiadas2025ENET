@@ -2,16 +2,20 @@
 
 namespace App\Http\Requests;
 
+use App\Http\Requests\Traits\AutorizarEmpleado;
 use Illuminate\Foundation\Http\FormRequest;
 
 class ReservaRequest extends FormRequest
 {
-    /**
-     * Determine if the user is authorized to make this request.
-     */
+    use AutorizarEmpleado;
+
     public function authorize(): bool
     {
-        return false;
+        if ($this->isMethod('DELETE')) {
+            return $this->autorizarEmpleado();
+        } else {
+            return true;
+        }
     }
 
     /**
