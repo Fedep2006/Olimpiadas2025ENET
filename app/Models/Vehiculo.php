@@ -21,19 +21,29 @@ class Vehiculo extends Model
         'ubicacion',
         'precio_por_dia',
         'disponible',
-        'imagenes',
         'caracteristicas',
-        'observaciones'
     ];
 
-    protected $casts = [
-        // 'imagenes' => 'array', // Quitamos el cast a array
-        'caracteristicas' => 'array',
-        'disponible' => 'boolean',
-        'capacidad_pasajeros' => 'integer',
-        'precio_por_dia' => 'decimal:2',
-        'tipo' => 'string'
-    ];
+    protected function casts(): array
+    {
+        return [
+            'caracteristicas' => 'array',
+            'disponible' => 'boolean',
+            'capacidad_pasajeros' => 'integer',
+            'precio_por_dia' => 'decimal:2',
+            'tipo' => 'string',
+            'created_at' => 'datetime',
+            'updated_at' => 'datetime',
+            'deleted_at' => 'datetime',
+        ];
+    }
+
+    protected function hidden(): array
+    {
+        return [
+            'deleted_at',
+        ];
+    }
 
     // Relaciones
     public function reservas()

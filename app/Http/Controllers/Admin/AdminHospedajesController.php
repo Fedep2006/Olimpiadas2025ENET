@@ -7,7 +7,7 @@ use App\Http\Requests\HospedajeRequest;
 use App\Models\Hospedaje;
 use Illuminate\Http\Request;
 
-class AdminHospedajeController extends Controller
+class AdminHospedajesController extends Controller
 {
     public function index(Request $request)
     {

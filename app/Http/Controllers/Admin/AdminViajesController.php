@@ -7,7 +7,7 @@ use App\Models\Viaje;
 use Illuminate\Http\Request;
 use App\Http\Requests\ViajeRequest;
 
-class AdminViajeController extends Controller
+class AdminViajesController extends Controller
 {
 
     public function index(Request $request)

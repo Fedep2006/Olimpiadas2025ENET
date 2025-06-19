@@ -24,9 +24,22 @@ class Persona extends Model
         'telefono',
     ];
 
-    protected $casts = [
-        'fecha_nacimiento' => 'date',
-    ];
+    protected function casts(): array
+    {
+        return [
+            'fecha_nacimiento' => 'date',
+            'created_at' => 'datetime',
+            'updated_at' => 'datetime',
+            'deleted_at' => 'datetime',
+        ];
+    }
+
+    protected function hidden(): array
+    {
+        return [
+            'deleted_at',
+        ];
+    }
 
     public function personasConReservas()
     {

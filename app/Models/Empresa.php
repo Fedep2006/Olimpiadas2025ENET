@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Str;
 
 class Empresa extends Model
 {
@@ -16,6 +17,27 @@ class Empresa extends Model
         'nombre',
         'tipo'
     ];
+
+    protected function casts(): array
+    {
+        return [
+            'created_at' => 'datetime',
+            'updated_at' => 'datetime',
+            'deleted_at' => 'datetime',
+        ];
+    }
+
+    protected function hidden(): array
+    {
+        return [
+            'deleted_at',
+        ];
+    }
+
+    public function setNombreAttribute($value): void
+    {
+        $this->attributes['nombre'] = Str::title(Str::trim($value));
+    }
 
     //Relaciones
     public function servicios()

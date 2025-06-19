@@ -16,12 +16,24 @@ class PaqueteContenido extends Model
         'paquete_id',
         'tipo_contenido',
         'contenido_id',
-        'observaciones'
     ];
 
-    protected $casts = [
-        'tipo_contenido' => 'string'
-    ];
+    protected function casts(): array
+    {
+        return [
+            'tipo_contenido' => 'string',
+            'created_at' => 'datetime',
+            'updated_at' => 'datetime',
+            'deleted_at' => 'datetime',
+        ];
+    }
+
+    protected function hidden(): array
+    {
+        return [
+            'deleted_at',
+        ];
+    }
 
     // Relaciones
     public function paquete()

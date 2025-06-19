@@ -17,6 +17,22 @@ class NombreServicio extends Model
         'tabla',
     ];
 
+    protected function casts(): array
+    {
+        return [
+            'created_at' => 'datetime',
+            'updated_at' => 'datetime',
+            'deleted_at' => 'datetime',
+        ];
+    }
+
+    protected function hidden(): array
+    {
+        return [
+            'deleted_at',
+        ];
+    }
+
     //Relaciones
     public function servicios()
     {

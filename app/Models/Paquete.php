@@ -20,17 +20,29 @@ class Paquete extends Model
         'cupo_maximo',
         'activo',
         'hecho_por_usuario',
-        'condiciones'
+        'condiciones',
     ];
 
-    protected $casts = [
-        'imagenes' => 'array',
-        'activo' => 'boolean',
-        'hecho_por_usuario' => 'boolean',
-        'precio_total' => 'decimal:2',
-        'cupo_minimo' => 'integer',
-        'cupo_maximo' => 'integer'
-    ];
+    protected function casts(): array
+    {
+        return [
+            'activo' => 'boolean',
+            'hecho_por_usuario' => 'boolean',
+            'precio_total' => 'decimal:2',
+            'cupo_minimo' => 'integer',
+            'cupo_maximo' => 'integer',
+            'created_at' => 'datetime',
+            'updated_at' => 'datetime',
+            'deleted_at' => 'datetime',
+        ];
+    }
+
+    protected function hidden(): array
+    {
+        return [
+            'deleted_at',
+        ];
+    }
 
     // Relaciones
     public function contenidos()

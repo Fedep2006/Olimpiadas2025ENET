@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Models\Vehiculo;
 use App\Http\Controllers\Controller;
+use App\Models\Vehiculo;
 use App\Http\Requests\VehiculoRequest;
 use Illuminate\Http\Request;
 

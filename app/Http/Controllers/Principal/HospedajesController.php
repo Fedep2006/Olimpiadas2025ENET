@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Http\Controllers\Admin;
+namespace App\Http\Controllers\Principal;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\HospedajeRequest;
 use App\Models\Hospedaje;
 
-class HospedajeController extends Controller {}
+class HospedajesController extends Controller {}

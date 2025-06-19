@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Http\Controllers\Admin;
+namespace App\Http\Controllers\Principal;
 
 use App\Http\Controllers\Controller;
 use App\Models\Viaje;
 use App\Http\Requests\ViajeRequest;
 
-class ViajeController extends Controller
+class ViajesController extends Controller
 {
     /**
      * Muestra el detalle de un viaje

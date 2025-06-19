@@ -27,15 +27,28 @@ class Viaje extends Model
         'activo'
     ];
 
-    protected $casts = [
-        'fecha_salida' => 'datetime',
-        'fecha_llegada' => 'datetime',
-        'activo' => 'boolean',
-        'capacidad_total' => 'integer',
-        'asientos_disponibles' => 'integer',
-        'precio_base' => 'decimal:2',
-        'tipo' => 'string'
-    ];
+    protected function casts(): array
+    {
+        return [
+            'fecha_salida' => 'datetime',
+            'fecha_llegada' => 'datetime',
+            'activo' => 'boolean',
+            'capacidad_total' => 'integer',
+            'asientos_disponibles' => 'integer',
+            'precio_base' => 'decimal:2',
+            'tipo' => 'string',
+            'created_at' => 'datetime',
+            'updated_at' => 'datetime',
+            'deleted_at' => 'datetime',
+        ];
+    }
+
+    protected function hidden(): array
+    {
+        return [
+            'deleted_at',
+        ];
+    }
 
     // Relaciones
     public function reservas()

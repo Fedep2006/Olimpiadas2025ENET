@@ -33,13 +33,31 @@ class Hospedaje extends Model
         'condiciones',
     ];
 
-    protected $casts = [
-        'check_in' => 'datetime:H:i:s',
-        'check_out' => 'datetime:H:i:s',
-        'activo' => 'boolean',
-        'precio_por_noche' => 'decimal:2',
-        'calificacion' => 'decimal:2',
-    ];
+    protected function casts(): array
+    {
+        return [
+            'check_in' => 'datetime:H:i:s',
+            'check_out' => 'datetime:H:i:s',
+            'activo' => 'boolean',
+            'precio_por_noche' => 'decimal:2',
+            'calificacion' => 'decimal:2',
+            'created_at' => 'datetime',
+            'updated_at' => 'datetime',
+            'deleted_at' => 'datetime',
+            'created_at' => 'datetime',
+            'updated_at' => 'datetime',
+            'deleted_at' => 'datetime',
+        ];
+    }
+
+    protected function hidden(): array
+    {
+        return [
+            'deleted_at',
+        ];
+    }
+
+
 
     // Relaciones
     public function reservas()

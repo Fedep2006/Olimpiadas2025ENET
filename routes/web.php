@@ -1,32 +1,35 @@
 <?php
 
+use App\Http\Controllers\Admin\AdminUsuariosController;
 use App\Http\Controllers\Admin\AdminEmpresasController;
-use App\Http\Controllers\Admin\AdminHospedajeController;
+use App\Http\Controllers\Admin\AdminHospedajesController;
 use App\Http\Controllers\Admin\AdminPaquetesController;
+use App\Http\Controllers\Admin\AdminReservasController;
 use App\Http\Controllers\Admin\AdminVehiculosController;
-use App\Http\Controllers\Admin\AdminViajeController;
-use App\Http\Controllers\Admin\EmpresasController;
-use App\Http\Controllers\Admin\PaquetesController;
+use App\Http\Controllers\Admin\AdminViajesController;
+
+use App\Http\Controllers\Principal\VehiculosController;
+use App\Http\Controllers\Principal\ReservasController;
+use App\Http\Controllers\Principal\UsuariosController;
+use App\Http\Controllers\Principal\EmpresasController;
+use App\Http\Controllers\Principal\HospedajesController;
+use App\Http\Controllers\Principal\PaquetesController;
+use App\Http\Controllers\Principal\ViajesController;
+
 use Illuminate\Support\Facades\Route;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
-// Controladores
 use App\Http\Controllers\PagoController;
 
+
 Route::post('/vehiculos/{id}/pago-ficticio', [PagoController::class, 'storeFicticio'])->name('vehiculos.pago_ficticio');
-Route::post('/vehiculos/{id}/reservar', [App\Http\Controllers\Admin\VehiculosController::class, 'reservar'])->name('vehiculos.reservar');
+Route::post('/vehiculos/{id}/reservar', [VehiculosController::class, 'reservar'])->name('vehiculos.reservar');
 
 use App\Http\Controllers\administracionController;
 use App\Http\Controllers\AuthController;
-use App\Http\Controllers\UserController;
 use App\Http\Controllers\RegisterController;
 use App\Http\Controllers\ResultsController;
-use App\Http\Controllers\Admin\VehiculosController;
-use App\Http\Controllers\Admin\HospedajeController;
-use App\Http\Controllers\Admin\ViajeController;
-use App\Http\Controllers\AdminUserController;
-use App\Http\Controllers\EmpleadoController;
 use App\Http\Controllers\TestCompraController;
 use App\Http\Controllers\TestGmailController;
 use App\Http\Controllers\TestEmailController;
@@ -92,7 +95,7 @@ Route::get('/register', [RegisterController::class, 'index'])->name('register');
 Route::post('/CrearRegistro', [RegisterController::class, 'register'])->name('register.process');
 
 // Verificación de email
-Route::get('/verify-email', [\App\Http\Controllers\RegisterController::class, 'verifyEmail'])->name('verify.email');
+Route::get('/verify-email', [RegisterController::class, 'verifyEmail'])->name('verify.email');
 
 // Vistas estáticas
 Route::get('/detalles', function () {
@@ -112,7 +115,10 @@ Route::prefix('administracion')->middleware('auth')->group(function () {
 
 
     // Reservar
-    Route::get('/reservas', [AdministracionController::class, 'reservas']);
+    Route::get('/reservas',                 [AdminReservasController::class, 'index'])->name('reservas.index');
+    Route::post('/reservas/create',         [AdminReservasController::class, 'create'])->name('reservas.create');
+    Route::put('/reservas/{reserva}',       [AdminReservasController::class, 'update'])->name('reservas.update');
+    Route::delete('/reservas/{reserva}',    [AdminReservasController::class, 'destroy'])->name('reservas.destroy');
 
     //empresas
     Route::get('/empresas',                 [AdminEmpresasController::class, 'index'])->name('empresas.index');
@@ -127,10 +133,10 @@ Route::prefix('administracion')->middleware('auth')->group(function () {
     Route::delete('/vehiculos/{vehiculo}',  [AdminVehiculosController::class, 'destroy'])->name('vehiculos.destroy');
 
     // Hospedajes
-    Route::get('/hospedajes',               [AdminHospedajeController::class, 'index'])->name('hospedajes.index');
-    Route::post('/hospedajes/create',       [AdminHospedajeController::class, 'create'])->name('hospedajes.create');
-    Route::put('/hospedajes/{hospedaje}',   [AdminHospedajeController::class, 'update'])->name('hospedajes.update');
-    Route::delete('/hospedajes/{hospedaje}', [AdminHospedajeController::class, 'destroy'])->name('hospedajes.destroy');
+    Route::get('/hospedajes',               [AdminHospedajesController::class, 'index'])->name('hospedajes.index');
+    Route::post('/hospedajes/create',       [AdminHospedajesController::class, 'create'])->name('hospedajes.create');
+    Route::put('/hospedajes/{hospedaje}',   [AdminHospedajesController::class, 'update'])->name('hospedajes.update');
+    Route::delete('/hospedajes/{hospedaje}', [AdminHospedajesController::class, 'destroy'])->name('hospedajes.destroy');
 
     // Paquetes
     Route::get('/paquetes',                 [AdminPaquetesController::class, 'index'])->name('paquetes.index');
@@ -141,17 +147,17 @@ Route::prefix('administracion')->middleware('auth')->group(function () {
 
     // Detalle de viaje
 
-    Route::get('/viajes',                   [AdminViajeController::class, 'index'])->name('viajes.index');
-    Route::post('/viajes/create',           [AdminViajeController::class, 'create'])->name('viajes.create');
-    Route::put('/viajes/{viaje}',           [AdminViajeController::class, 'update'])->name('viajes.update');
-    Route::delete('/viajes/{viaje}',        [AdminViajeController::class, 'destroy'])->name('viajes.destroy');
+    Route::get('/viajes',                   [AdminViajesController::class, 'index'])->name('viajes.index');
+    Route::post('/viajes/create',           [AdminViajesController::class, 'create'])->name('viajes.create');
+    Route::put('/viajes/{viaje}',           [AdminViajesController::class, 'update'])->name('viajes.update');
+    Route::delete('/viajes/{viaje}',        [AdminViajesController::class, 'destroy'])->name('viajes.destroy');
 
 
     // Usuarios
-    Route::get('/usuarios',                 [AdminUserController::class, 'index'])->name('usuarios.index');
-    Route::post('/usuarios/create',         [AdminUserController::class, 'create'])->name('usuarios.create');
-    Route::put('/usuarios/{user}',          [AdminUserController::class, 'update'])->name('usuarios.update');
-    Route::delete('/usuarios/{user}',       [AdminUserController::class, 'destroy'])->name('usuarios.destroy');
+    Route::get('/usuarios',                 [AdminUsuariosController::class, 'index'])->name('usuarios.index');
+    Route::post('/usuarios/create',         [AdminUsuariosController::class, 'create'])->name('usuarios.create');
+    Route::put('/usuarios/{user}',          [AdminUsuariosController::class, 'update'])->name('usuarios.update');
+    Route::delete('/usuarios/{user}',       [AdminUsuariosController::class, 'destroy'])->name('usuarios.destroy');
 });
 
 Route::get('/terminos', function () {

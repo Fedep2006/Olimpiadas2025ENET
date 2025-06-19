@@ -21,11 +21,25 @@ class Reserva extends Model
         'precio_total',
         'codigo_reserva',
     ];
-    protected $casts = [
-        'fecha_inicio' => 'datetime',
-        'fecha_fin' => 'datetime',
-        'precio_total' => 'decimal:2',
-    ];
+
+    protected function casts(): array
+    {
+        return [
+            'fecha_inicio' => 'datetime',
+            'fecha_fin' => 'datetime',
+            'precio_total' => 'decimal:2',
+            'created_at' => 'datetime',
+            'updated_at' => 'datetime',
+            'deleted_at' => 'datetime',
+        ];
+    }
+
+    protected function hidden(): array
+    {
+        return [
+            'deleted_at',
+        ];
+    }
 
     // Relaciones
     public function usuario()

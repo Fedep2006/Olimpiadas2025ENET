@@ -11,19 +11,9 @@ use Illuminate\Support\Facades\Hash;
 
 class User extends Authenticatable
 {
-    /** @use HasFactory<\Database\Factories\UserFactory> */
+
     use HasFactory, Notifiable, SoftDeletes;
 
-    public function reservas()
-    {
-        return $this->hasMany(Reserva::class, 'usuario_id');
-    }
-
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var list<string>
-     */
     protected $fillable = [
         'name',
         'email',
@@ -32,29 +22,32 @@ class User extends Authenticatable
         'nivel',
     ];
 
-    /**
-     * The attributes that should be hidden for serialization.
-     *
-     * @var list<string>
-     */
-    protected $hidden = [
-        'password',
-        'remember_token',
-    ];
-
-    /**
-     * Get the attributes that should be cast.
-     *
-     * @return array<string, string>
-     */
     protected function casts(): array
     {
         return [
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
             'nivel' => 'integer',
+            'created_at' => 'datetime',
+            'updated_at' => 'datetime',
+            'deleted_at' => 'datetime',
         ];
     }
+
+    protected function hidden(): array
+    {
+        return [
+            'password',
+            'remember_token',
+            'deleted_at',
+        ];
+    }
+
+    public function reservas()
+    {
+        return $this->hasMany(Reserva::class, 'usuario_id');
+    }
+
     protected function setPasswordAttribute($value)
     {
         if (!empty($value)) {
