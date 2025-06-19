@@ -4,10 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\PaqueteRequest;
-use Illuminate\Http\Request;
 use App\Models\Paquete;
-use App\Models\PaqueteContenido;
-use Illuminate\Support\Facades\DB;
 
 class PaquetesController extends Controller
 {
@@ -56,7 +53,7 @@ class PaquetesController extends Controller
         }
     }
 
-    public function destroy(PaqueteRequest $paquete)
+    public function destroy(Paquete $paquete)
     {
         try {
             $paquete->delete();

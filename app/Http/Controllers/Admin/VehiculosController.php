@@ -66,7 +66,7 @@ class VehiculosController extends Controller
         }
     }
 
-    public function destroy(VehiculoRequest $vehiculo)
+    public function destroy(Vehiculo $vehiculo)
     {
         try {
             $vehiculo->delete();

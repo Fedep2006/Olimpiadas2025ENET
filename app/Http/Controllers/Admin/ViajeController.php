@@ -142,7 +142,7 @@ class ViajeController extends Controller
         }
     }
 
-    public function destroy(ViajeRequest $viaje)
+    public function destroy(Viaje $viaje)
     {
         try {
             $viaje->delete();

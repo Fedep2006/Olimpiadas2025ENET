@@ -94,7 +94,7 @@ class UserController extends Controller
         }
     }
 
-    public function destroy(UserRequest $user)
+    public function destroy(User $user)
     {
         try {
             $user->delete();
