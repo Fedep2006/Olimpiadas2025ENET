@@ -21,9 +21,4 @@ class VehiculosController extends Controller
             ->first();
         return view('detalles', compact('vehiculo', 'reserva'));
     }
-    public function index()
-    {
-        $vehiculo = Vehiculo::all();
-        return view("administracion.vehiculos", compact("vehiculo"));
-    }
 }

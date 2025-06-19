@@ -9,14 +9,6 @@ use App\Http\Requests\ViajeRequest;
 
 class AdminViajeController extends Controller
 {
-    /**
-     * Muestra el detalle de un viaje
-     */
-    public function show($id)
-    {
-        $viaje = \App\Models\Viaje::findOrFail($id);
-        return view('administracion.viajes-show', compact('viaje'));
-    }
 
     public function index(Request $request)
     {
