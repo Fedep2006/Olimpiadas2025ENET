@@ -127,10 +127,10 @@ Route::prefix('administracion')->middleware('auth')->group(function () {
     Route::delete('/vehiculos/{vehiculo}',  [AdminVehiculosController::class, 'destroy'])->name('vehiculos.destroy');
 
     // Hospedajes
-    Route::get('/hospedajes',               [AdminHospedajeController::class, 'index'])->name('administracion.index');
-    Route::post('/hospedajes/create',       [AdminHospedajeController::class, 'create'])->name('administracion.create');
-    Route::put('/hospedajes/{hospedaje}',   [AdminHospedajeController::class, 'update'])->name('administracion.update');
-    Route::delete('/hospedajes/{hospedaje}', [AdminHospedajeController::class, 'destroy'])->name('administracion.destroy');
+    Route::get('/hospedajes',               [AdminHospedajeController::class, 'index'])->name('hospedajes.index');
+    Route::post('/hospedajes/create',       [AdminHospedajeController::class, 'create'])->name('hospedajes.create');
+    Route::put('/hospedajes/{hospedaje}',   [AdminHospedajeController::class, 'update'])->name('hospedajes.update');
+    Route::delete('/hospedajes/{hospedaje}', [AdminHospedajeController::class, 'destroy'])->name('hospedajes.destroy');
 
     // Paquetes
     Route::get('/paquetes',                 [AdminPaquetesController::class, 'index'])->name('paquetes.index');
@@ -141,10 +141,10 @@ Route::prefix('administracion')->middleware('auth')->group(function () {
 
     // Detalle de viaje
 
-    Route::get('/viajes',                   [AdminViajeController::class, 'index'])->name('administracion.index');
-    Route::post('/viajes/create',           [AdminViajeController::class, 'create'])->name('usuarios.create');
-    Route::put('/viajes/{viaje}',           [AdminViajeController::class, 'update'])->name('usuarios.update');
-    Route::delete('/viajes/{viaje}',        [AdminViajeController::class, 'destroy'])->name('usuarios.destroy');
+    Route::get('/viajes',                   [AdminViajeController::class, 'index'])->name('viajes.index');
+    Route::post('/viajes/create',           [AdminViajeController::class, 'create'])->name('viajes.create');
+    Route::put('/viajes/{viaje}',           [AdminViajeController::class, 'update'])->name('viajes.update');
+    Route::delete('/viajes/{viaje}',        [AdminViajeController::class, 'destroy'])->name('viajes.destroy');
 
 
     // Usuarios

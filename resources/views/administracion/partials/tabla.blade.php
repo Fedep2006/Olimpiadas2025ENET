@@ -63,10 +63,20 @@
                     @case('usuarios')
                         @include('administracion.partials.tablas.tabla-usuarios-contenido')
                         @break
-
-                        @break
                     @case('viajes')
                         @include('administracion.partials.tablas.tabla-viajes-contenido')
+                        @break
+                    @case('vehiculos')
+                        @include('administracion.partials.tablas.tabla-vehiculos-contenido')
+                        @break
+                    @case('reservas')
+                        @include('administracion.partials.tablas.tabla-reservas-contenido')
+                        @break
+                    @case('paquetes')
+                        @include('administracion.partials.tablas.tabla-paquetes-contenido')
+                        @break
+                    @case('hospedajes')
+                        @include('administracion.partials.tablas.tabla-hospedajes-contenido')
                         @break
                     @case('empresas')
                         @include('administracion.partials.tablas.tabla-empresas-contenido')
