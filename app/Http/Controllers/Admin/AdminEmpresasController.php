@@ -42,8 +42,7 @@ class AdminEmpresasController extends Controller
 
             return response()->json([
                 'success' => true,
-                'message' => 'Empresa actualizada exitosamente',
-                'empresa' => $empresa
+                'message' => 'Empresa actualizada exitosamente'
             ]);
         } catch (\Exception $e) {
             return response()->json([
@@ -61,11 +60,13 @@ class AdminEmpresasController extends Controller
 
 
             return response()->json([
+                'success' => true,
                 'message' => 'Empresa eliminado exitosamente',
             ]);
         } catch (\Exception $e) {
 
             return response()->json([
+                'success' => false,
                 'message' => 'Error al eliminar el empresa',
                 'error' => $e->getMessage()
             ], 500);

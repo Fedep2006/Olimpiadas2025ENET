@@ -42,8 +42,7 @@ class AdminHospedajeController extends Controller
 
             return response()->json([
                 'success' => true,
-                'message' => 'Hospedaje actualizado exitosamente',
-                'hospedaje' => $hospedaje
+                'message' => 'Hospedaje actualizado exitosamente'
             ]);
         } catch (\Exception $e) {
             return response()->json([
@@ -61,11 +60,13 @@ class AdminHospedajeController extends Controller
 
 
             return response()->json([
+                'success' => true,
                 'message' => 'Hospedaje eliminado exitosamente',
             ]);
         } catch (\Exception $e) {
 
             return response()->json([
+                'success' => false,
                 'message' => 'Error al eliminar el hospedaje',
                 'error' => $e->getMessage()
             ], 500);

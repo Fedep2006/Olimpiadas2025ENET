@@ -41,8 +41,7 @@ class AdminPaquetesController extends Controller
 
             return response()->json([
                 'success' => true,
-                'message' => 'Paquete actualizado exitosamente',
-                'paquete' => $paquete
+                'message' => 'Paquete actualizado exitosamente'
             ]);
         } catch (\Exception $e) {
             return response()->json([
@@ -60,11 +59,13 @@ class AdminPaquetesController extends Controller
 
 
             return response()->json([
+                'success' => true,
                 'message' => 'Paquete eliminado exitosamente',
             ]);
         } catch (\Exception $e) {
 
             return response()->json([
+                'success' => false,
                 'message' => 'Error al eliminar el paquete',
                 'error' => $e->getMessage()
             ], 500);

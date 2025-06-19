@@ -7,7 +7,6 @@ use App\Http\Requests\UserRequest;
 use Illuminate\Http\Request;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Validator;
 
 class AdminUserController extends Controller
 {
@@ -83,11 +82,12 @@ class AdminUserController extends Controller
             $user->update($request->validated());
 
             return response()->json([
+                'success' => true,
                 'message' => 'Usuario actualizado exitosamente',
-                'user' => $user
             ]);
         } catch (\Exception $e) {
             return response()->json([
+                'success' => false,
                 'message' => 'Error al actualizar el usuario',
                 'error' => $e->getMessage()
             ], 500);
@@ -101,11 +101,13 @@ class AdminUserController extends Controller
 
 
             return response()->json([
+                'success' => true,
                 'message' => 'Usuario eliminado exitosamente',
             ]);
         } catch (\Exception $e) {
 
             return response()->json([
+                'success' => false,
                 'message' => 'Error al eliminar el usuario',
                 'error' => $e->getMessage()
             ], 500);

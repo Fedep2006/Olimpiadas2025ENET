@@ -21,6 +21,7 @@ return new class extends Migration
             $table->string('ubicacion')->comment('Ubicación principal o destino del paquete');
             $table->integer('cupo_minimo')->default(1)->comment('Número mínimo de personas para realizar el paquete');
             $table->integer('cupo_maximo')->nullable()->comment('Número máximo de personas permitidas');
+            $table->string('numero_paquete')->comment('Número o código del paquete');
             $table->boolean('activo')->default(true)->comment('Indica si el paquete está disponible para reserva');
             $table->timestamps();
             $table->softDeletes();

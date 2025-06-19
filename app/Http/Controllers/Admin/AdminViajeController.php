@@ -124,7 +124,6 @@ class AdminViajeController extends Controller
             return response()->json([
                 'success' => true,
                 'message' => 'Viaje actualizado exitosamente',
-                'data' => $viaje
             ]);
         } catch (\Exception $e) {
             return response()->json([
@@ -140,11 +139,13 @@ class AdminViajeController extends Controller
             $viaje->delete();
 
             return response()->json([
+                'success' => true,
                 'message' => 'Viaje eliminado exitosamente'
             ]);
         } catch (\Exception $e) {
 
             return response()->json([
+                'success' => false,
                 'message' => 'Error al eliminar el viaje',
                 'error' => $e->getMessage()
             ], 500);
