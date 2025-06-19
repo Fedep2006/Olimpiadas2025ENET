@@ -328,104 +328,77 @@
                 <table class="table">
                     <thead>
                         <tr>
-                            <th>Hospedaje</th>
-                            <th>Estrellas</th>
+                            <th>ID</th>
+                            <th>Nombre</th>
+                            <th>Habitación</th>
+                            <th>Capacidad Personas</th>
+                            <th>Precio por Noche</th>
                             <th>Ubicación</th>
-                            <th>Categoría</th>
-                            <th>Servicios</th>
-                            <th>Politicas</th>
-                            <th>Descripcion</th>
-                            <th>Contacto</th>
-                            <th>Horario</th>
-                            <th>Estado</th>
+                            <th>Calificacion</th>
+                            <th>Datos</th>
+                            <th>Horarios</th>
+                            <th>Descripción</th>
+                            <th>Condiciones</th>
+                            <th>Activo</th>
                             <th>Acciones</th>
                         </tr>
                     </thead>
                     <tbody>
                         @foreach ($hospedajes as $hospedaje)
                             <tr>
+                                <td>{{ $hospedaje->id }}</td>
+                                <td>{{ $hospedaje->nombre }}</td>
                                 <td>
-                                    <div class="hotel-info">
-                                        <div class="hotel-image">
-                                            <img src="{{ is_array($hospedaje->imagenes) ? $hospedaje->imagenes[0] : $hospedaje->imagenes }}" alt="Imagen del hospedaje" height="45" width="60">
-                                        </div>
-                                        <div class="hotel-details">
-                                            <h6>{{ $hospedaje->nombre }}</h6>
-                                            <small>ID: {{ $hospedaje->id }}</small>
-                                        </div>
-                                    </div>
+                                <small>Tipo:{{ $hospedaje->tipo ?? '-' }}</small>
+                                <small>Habitación:{{ $hospedaje->habitacion ?? '-' }}</small>
+                                <small>Disponibles:{{ $hospedaje->habitaciones_disponibles ?? '-' }}</small>
+                                </td>
+                                <td>{{ $hospedaje->capacidad_personas ?? '-' }}</td>
+                                <td>{{ $hospedaje->precio_por_noche ?? '-' }}</td>
+                                <td>
+                                    <small>Ubicacion:{{ $hospedaje->ubicacion }}</small>
+                                    <br>
+                                    <small>Pais: {{ $hospedaje->pais }}</small>
+                                    <br>
+                                    <small>Ciudad:{{ $hospedaje->ciudad }}</small>
+                            
+                                 </td>
+                                <td>
+                                    <small>Estrellas:{{ $hospedaje->estrellas ?? '-' }}</small>
+                                <br>
+                                    <small>Usuarios:{{ $hospedaje->calificacion ?? '-' }}</small>
                                 </td>
                                 <td>
-                                    <div class="rating-stars">
-                                        @for ($i = 0; $i < $hospedaje->estrellas; $i++)
-                                            <i class="fas fa-star"></i>
-                                        @endfor
-                                        @for ($i = $hospedaje->estrellas; $i < 5; $i++)
-                                            <i class="far fa-star"></i>
-                                        @endfor
-                                        <small class="text-muted">{{ $hospedaje->clasificacion }}</small>
-                                    </div>
-                                    <small class="text-muted"> Estrellas</small>
+
+                                <small>Telefono:{{ $hospedaje->telefono }}</small>
+                                <br>
+                                <small>Correo:{{ $hospedaje->email }}</small>
+                                <br>
+                                <small>Web:{{ $hospedaje->sitio_web }}</small>
+
                                 </td>
                                 <td>
-                                    <small class="text-muted">{{ $hospedaje->ubicacion }}</small>
-                                    <small class="text-muted">{{ $hospedaje->pais }}</small>
-                                    <small class="text-muted">{{ $hospedaje->ciudad }}</small>
-                                    <small class="text-muted">{{ $hospedaje->codigo_postal }}</small>
+                                    <small>Entrada: {{ \Carbon\Carbon::parse($hospedaje->check_in)->format('H:i') }}</small>
+                                    <br>
+                                    <small>Salida: {{  \Carbon\Carbon::parse($hospedaje->check_out)->format('H:i') }}</small>
+                                    <br>
+                            
+                                </td>
+                                 <td>{{ $hospedaje->descripcion }}</td>
+                                <td>
+                                    <small class="text-muted">
+                                        {{ is_array($hospedaje->condiciones ?? null) ? implode(', ', $hospedaje->condiciones) : ($hospedaje->condiciones ?? '-') }}
+                                    </small>
                                 </td>
                                 <td>
-                                    <div><strong>{{ $hospedaje->tipo }}</strong></div>
-                                </td>
-                                <td>
-                                    <small class="text-muted">{{ is_array($hospedaje->servicios) ? implode(', ', $hospedaje->servicios) : $hospedaje->servicios }}</small>
-                                   
-                                </td>
-                                <td>
-                                <small class="text-muted">{{ is_array($hospedaje->politicas) ? implode(', ', $hospedaje->politicas) : $hospedaje->politicas }}</small>
-                                </td>
-                                <td>
-                                    <div><strong>{{ $hospedaje->descripcion }}</strong></div>
-                                </td>
-                                <td>
-                                    <div><strong>{{ $hospedaje->telefono }}</strong></div>
-                                    <small class="text-muted">{{ $hospedaje->email }}</small>
-                                    <small class="text-muted">{{ $hospedaje->sitio_web }}</small>
-                                </td>
-                                <td>
-                                    @if ($hospedaje->check_in_24h == 1) 
-                                        <div><strong>24 horas</strong></div>
-                                    @else
-                                        <div><small class="text-muted">{{ $hospedaje->check_in }}</small></div>
-                                        <div><small class="text-muted">{{ $hospedaje->check_out }}</small></div>
-                                    @endif
-                                </td>
-                                <td>
-                                    @if ($hospedaje->disponibilidad == 1)
+                                    @if ($hospedaje->activo ?? $hospedaje->disponibilidad ?? false)
                                         <span class="status-badge status-active">Activo</span>
                                     @else
                                         <span class="status-badge status-inactive">Inactivo</span>
                                     @endif
                                 </td>
                                 <td>
-                                    <div class="action-buttons">
-                                        <a href="{{ route('administracion.hospedaje.habitaciones', $hospedaje->id) }}" class="action-btn view" title="Ver habitaciones">
-                                            <i class="fas fa-bed"></i>
-                                        </a>
-                                        
-                                        <button type="button" class="action-btn view" 
-                                            data-bs-toggle="modal" 
-                                            data-bs-target="#verModal"
-                                            data-nombre="{{ $hospedaje->nombre }}"
-                                            data-estrellas="{{ $hospedaje->estrellas }}"
-                                            data-ubicacion="{{ $hospedaje->ubicacion }}"
-                                            data-categoria="{{ $hospedaje->categoria }}"
-                                            data-servicios="{{ is_array($hospedaje->servicios) ? implode(', ', $hospedaje->servicios) : $hospedaje->servicios }}"
-                                            data-politicas="{{ is_array($hospedaje->politicas) }}"
-                                            data-descripcion="{{ $hospedaje->descripcion }}"
-                                            data-contacto="Tel: {{ $hospedaje->telefono }}, Email: {{ $hospedaje->email }}"
-                                            data-horario="{{ $hospedaje->check_in_24h == 1 ? '24 horas' : $hospedaje->check_in . ' - ' . $hospedaje->check_out }}"
-                                            data-disponibilidad="{{ $hospedaje->disponibilidad }}"
-                                            title="Ver detalles">
+                                        <button type="button" class="action-btn view">
                                             <i class="fas fa-eye"></i>
                                         </button>
                                         <button class="action-btn edit" title="Editar" data-bs-toggle="modal" data-bs-target="#editarModal" data-hospedaje-id="{{ $hospedaje->id }}">
