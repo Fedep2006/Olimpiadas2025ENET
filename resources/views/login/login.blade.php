@@ -239,9 +239,6 @@
                     <li class="nav-item">
                         <a class="nav-link" href="#"><i class="fas fa-car"></i> Autos</a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#"><i class="fas fa-ship"></i> Cruceros</a>
-                    </li>
                 </ul>
 
                 <ul class="navbar-nav">
