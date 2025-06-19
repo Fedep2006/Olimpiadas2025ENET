@@ -5,9 +5,6 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Viaje;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Validator;
 use App\Http\Requests\ViajeRequest;
 
 class ViajeController extends Controller
@@ -138,7 +135,6 @@ class ViajeController extends Controller
                 'data' => $viaje
             ]);
         } catch (\Exception $e) {
-            DB::rollBack();
             return response()->json([
                 'success' => false,
                 'message' => 'Error al actualizar el viaje: ' . $e->getMessage()
@@ -146,7 +142,7 @@ class ViajeController extends Controller
         }
     }
 
-    public function destroy(Viaje $viaje)
+    public function destroy(ViajeRequest $viaje)
     {
         try {
             $viaje->delete();
