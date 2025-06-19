@@ -5,14 +5,16 @@ namespace App\Http\Requests;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
+use App\Http\Requests\Traits\AutorizarEmpleado;
+
 
 class ViajeRequest extends FormRequest
 {
+    use AutorizarEmpleado;
+
     public function authorize(): bool
     {
-        $usuarioActual = Auth::user();
-
-        return $usuarioActual && $usuarioActual->nivel > 0;
+        return $this->autorizarEmpleado();
     }
 
     public function rules(): array

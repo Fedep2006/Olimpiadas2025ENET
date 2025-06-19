@@ -127,60 +127,6 @@ class ViajeController extends Controller
         }
     }
 
-    public function reservasViaje(Request $request, $viajeId)
-    {
-        $request->validate([
-            'cantidad' => 'required|integer|min:1',
-            'pasajeros' => 'required|json',
-            'cardholder_name' => 'required|string|max:255',
-            'card_number' => 'required|digits_between:13,19',
-            'expiration_month' => 'required|digits:2',
-            'expiration_year' => 'required|digits:4',
-            'cvv' => 'required|digits_between:3,4',
-        ]);
-
-        $viaje = Viaje::findOrFail($viajeId);
-        $cantidad = $request->input('cantidad');
-        $pasajeros = json_decode($request->input('pasajeros'), true);
-        $precio_total = $viaje->precio_base * $cantidad;
-
-        DB::beginTransaction();
-        try {
-            $reserva = new \App\Models\ReservaViaje();
-            $reserva->usuario_id = auth()->id();
-            $reserva->viaje_id = $viaje->id;
-            $reserva->cantidad = $cantidad;
-            $reserva->pasajeros = $pasajeros;
-            $reserva->precio_total = $precio_total;
-            $reserva->estado = 'pendiente';
-            $reserva->metodo_pago = 'tarjeta';
-            $reserva->pagado = true;
-            $reserva->fecha_pago = now();
-            $reserva->observaciones = null;
-            $reserva->save();
-
-            $pago = new \App\Models\Pagos();
-            $pago->reserva_viaje_id = $reserva->id;
-            $pago->cardholder_name = $request->input('cardholder_name');
-            $pago->card_number = $request->input('card_number');
-            $pago->expiration_month = $request->input('expiration_month');
-            $pago->expiration_year = $request->input('expiration_year');
-            $pago->cvv = $request->input('cvv');
-            $pago->amount = $precio_total;
-            $pago->estado = 'pendiente';
-            $pago->save();
-
-            // Enviar email de confirmación
-            \Mail::to(auth()->user()->email)->send(new \App\Mail\ReservaViajeEnviada($viaje, $reserva));
-
-            DB::commit();
-            return redirect()->route('viajes.show', $viaje->id)->with('status', 'Reserva y pago realizados correctamente.');
-        } catch (\Exception $e) {
-            DB::rollBack();
-            return back()->withErrors(['error' => 'Error al procesar la reserva: ' . $e->getMessage()]);
-        }
-    }
-
     public function update(ViajeRequest $request, Viaje $viaje)
     {
         try {

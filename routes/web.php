@@ -105,17 +105,8 @@ Route::prefix('administracion')->middleware('auth')->group(function () {
     Route::get('/reportes', [administracionController::class, 'reportes'])->name('administracion.reportes');
 
 
-    // Reservas
+    // Reservar
     Route::get('/reservas', [AdministracionController::class, 'reservas']);
-    // Acciones de reservas de vehículos
-    Route::post('/reservas/vehiculos/{reserva}/aceptar', [AdministracionController::class, 'aceptarReservaVehiculo'])->name('administracion.reservas.vehiculos.aceptar');
-    Route::post('/reservas/vehiculos/{reserva}/rechazar', [AdministracionController::class, 'rechazarReservaVehiculo'])->name('administracion.reservas.vehiculos.rechazar');
-    // Acciones de reservas de hospedaje (añadido sin afectar rutas existentes)
-    Route::post('/reservas/hospedaje/{reserva}/aceptar', [AdministracionController::class, 'aceptarReservaHospedaje'])->name('administracion.reservas.hospedaje.aceptar');
-    Route::post('/reservas/hospedaje/{reserva}/rechazar', [AdministracionController::class, 'rechazarReservaHospedaje'])->name('administracion.reservas.hospedaje.rechazar');
-    // Acciones de reservas de hospedaje
-    Route::post('/reservas/hospedaje/{reserva}/aceptar', [AdministracionController::class, 'aceptarReservaHospedaje'])->name('administracion.reservas.hospedaje.aceptar');
-    Route::post('/reservas/hospedaje/{reserva}/rechazar', [AdministracionController::class, 'rechazarReservaHospedaje'])->name('administracion.reservas.hospedaje.rechazar');
 
     //empresas
     Route::get('/empresas', [EmpresasController::class, 'index'])->name('administracion.empresas');
@@ -144,8 +135,6 @@ Route::prefix('administracion')->middleware('auth')->group(function () {
 
 
     // Detalle de viaje
-    // Reservar viaje
-    Route::post('/viajes/{viajeId}/reservar', [ViajeController::class, 'reservasViaje'])->name('reservas.viaje');
 
     Route::get('/viajes',                 [ViajeController::class, 'index'])->name('administracion.index');
     Route::post('/viajes/create',       [ViajeController::class, 'crear'])->name('usuarios.create');
@@ -158,16 +147,6 @@ Route::prefix('administracion')->middleware('auth')->group(function () {
     Route::post('/usuarios/create',       [UserController::class, 'crear'])->name('usuarios.create');
     Route::put('/usuarios/{user}',        [UserController::class, 'update'])->name('usuarios.update');
     Route::delete('/usuarios/{user}', [UserController::class, 'destroy'])->name('usuarios.destroy');
-
-
-
-    // Rutas para habitaciones
-    Route::get('/habitaciones/{hospedaje_id}', [App\Http\Controllers\Admin\HabitacionController::class, 'verHabitaciones'])->name('administracion.habitaciones');
-    Route::get('/habitaciones/datos/{id}', [App\Http\Controllers\Admin\HabitacionController::class, 'obtenerDatos'])->name('administracion.habitaciones.datos');
-    Route::post('/habitaciones/agregar', [App\Http\Controllers\Admin\HabitacionController::class, 'agregar'])->name('administracion.habitaciones.agregar');
-    Route::put('/habitaciones/{id}/editar', [App\Http\Controllers\Admin\HabitacionController::class, 'editar'])->name('administracion.habitaciones.editar');
-    Route::put('/habitaciones/{id}/cambiar-estado', [App\Http\Controllers\Admin\HabitacionController::class, 'cambiarEstado'])->name('administracion.habitaciones.cambiar-estado');
-    Route::delete('/habitaciones/{id}', [App\Http\Controllers\Admin\HabitacionController::class, 'eliminar'])->name('administracion.habitaciones.eliminar');
 });
 
 Route::get('/terminos', function () {

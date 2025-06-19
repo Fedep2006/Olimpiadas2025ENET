@@ -2,27 +2,26 @@
 
 namespace App\Http\Requests;
 
+use App\Http\Requests\Traits\AutorizarEmpleado;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Auth;
 
 class UserRequest extends FormRequest
 {
-    /**
-     * Determine if the user is authorized to make this request.
-     */
+    use AutorizarEmpleado;
+
     public function authorize(): bool
     {
-        $usuarioActual = Auth::user();
         $usuarioObjetivo = $this->route('user');
 
         // Si está creando, permitir si es nivel >= 1
         if ($this->isMethod('post')) {
-            return $usuarioActual->nivel >= 1;
+            return $this->autorizarEmpleado();
         }
 
         // Si está editando o borrando, permitir solo si su nivel es mayor al del objetivo
         if ($usuarioObjetivo) {
-            return $usuarioActual->nivel > $usuarioObjetivo->nivel;
+            return Auth::user()->nivel > $usuarioObjetivo->nivel;
         }
 
         return false;
