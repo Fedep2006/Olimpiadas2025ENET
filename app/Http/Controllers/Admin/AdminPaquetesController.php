@@ -5,13 +5,52 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\PaqueteRequest;
 use App\Models\Paquete;
+use Illuminate\Http\Request;
 
 class AdminPaquetesController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $paquetes = Paquete::all();
-        return view("administracion.paquetes", compact("paquetes"));
+        $query = Paquete::query();
+
+        // Aplicar búsqueda
+        if ($request->filled('search_usuario')) {
+            $search = $request->search_usuario;
+            $query->where(function ($q) use ($search) {
+                $q->where('name', 'like', "%{$search}%")
+                    ->orWhere('email', 'like', "%{$search}%");
+            });
+        }
+
+        if ($request->filled('search_nivel')) {
+            $search = $request->search_nivel;
+            $query->Where('nivel', $search);
+        }
+
+        // Aplicar filtro de fecha
+        if ($request->filled('search_registration_date')) {
+            $date = $request->search_registration_date;
+            $query->whereDate('created_at', $date);
+        }
+
+        // Ordenar por fecha de creación descendente
+        $query->select(['id', 'nombre', 'descripcion', 'precio_total', 'duracion', 'ubicacion', 'cupo_minimo', 'cupo_maximo', 'numero_paquete', 'activo', 'created_at'])->orderBy('created_at', 'desc');
+
+        // Paginar resultados
+        $registros = $query->paginate(10)->withQueryString();
+
+        if ($request->ajax()) {
+            $view = view('administracion.partials.tablas.tabla-paquetes-contenido', compact('registros'))->render();
+            $pagination = view('administracion.partials.pagination', compact('registros'))->render();
+
+            return response()->json([
+                'view' => $view,
+                'pagination' => $pagination,
+                'paginationInfo' => "Mostrando {$registros->firstItem()} - {$registros->lastItem()} de {$registros->total()} paquetes"
+            ]);
+        }
+
+        return view('administracion.paquetes', compact('registros'));
     }
 
     public function create(PaqueteRequest $request)
