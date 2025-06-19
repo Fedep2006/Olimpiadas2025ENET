@@ -19,20 +19,24 @@ class ViajeRequest extends FormRequest
 
     public function rules(): array
     {
+        if ($this->isMethod('DELETE')) {
+            return [];
+        }
+        $isUpdating = $this->isMethod('PUT') || $this->isMethod('PATCH');
+        $viajeId = $this->route('viaje');
+
         $rules = [
             'nombre' => ['required', 'string', 'max:255', 'min:3'],
             'tipo' => ['required', Rule::in(['bus', 'avion', 'tren', 'crucero'])],
             'origen' => ['required', 'string', 'max:255', 'min:2'],
             'destino' => ['required', 'string', 'max:255', 'min:2', 'different:origen'],
-            'fecha_salida' => ['required', 'date', 'after:now'],
-            'fecha_llegada' => ['required', 'date', 'after:fecha_salida'],
             'empresa' => ['required', 'string', 'max:255', 'min:2'],
             'numero_viaje' => [
                 'required',
                 'string',
                 'max:255',
-                $this->isMethod('PUT') || $this->isMethod('PATCH')
-                    ? Rule::unique('viajes', 'numero_viaje')->ignore($this->route('viaje'))
+                $isUpdating
+                    ? Rule::unique('viajes', 'numero_viaje')->ignore($viajeId)
                     : 'unique:viajes,numero_viaje'
             ],
             'capacidad_total' => ['required', 'integer', 'min:1', 'max:1000'],
@@ -40,8 +44,19 @@ class ViajeRequest extends FormRequest
             'precio_base' => ['required', 'numeric', 'min:0.01', 'max:999999.99', 'regex:/^\d+(\.\d{1,2})?$/'],
             'clases' => ['required', Rule::in(['economica', 'business', 'primera'])],
             'descripcion' => ['nullable', 'string', 'max:1000'],
-            'activo' => ['boolean']
+            'activo' => ['sometimes', 'boolean']
         ];
+
+        // Validación de fechas diferente para crear vs editar
+        if ($isUpdating) {
+            // En edición, permitir fechas pasadas pero validar lógica
+            $rules['fecha_salida'] = ['required', 'date'];
+            $rules['fecha_llegada'] = ['required', 'date', 'after:fecha_salida'];
+        } else {
+            // En creación, fecha debe ser futura
+            $rules['fecha_salida'] = ['required', 'date', 'after:now'];
+            $rules['fecha_llegada'] = ['required', 'date', 'after:fecha_salida'];
+        }
 
         return $rules;
     }
@@ -158,6 +173,13 @@ class ViajeRequest extends FormRequest
         if (!$this->has('activo')) {
             $this->merge([
                 'activo' => true
+            ]);
+        }
+
+        // Convierte precio_base a un numero
+        if ($this->has('precio_base')) {
+            $this->merge([
+                'precio_base' => number_format((float)$this->precio_base, 2, '.', '')
             ]);
         }
     }
