@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
@@ -9,101 +10,40 @@ class ViajeRequest extends FormRequest
 {
     public function authorize(): bool
     {
-        return true;
+        $usuarioActual = Auth::user();
+
+        return $usuarioActual && $usuarioActual->nivel > 0;
     }
-    /**
-     * Get the validation rules that apply to the request.
-     */
+
     public function rules(): array
     {
         $rules = [
-            'nombre' => [
-                'required',
-                'string',
-                'max:255',
-                'min:3'
-            ],
-            'tipo' => [
-                'required',
-                Rule::in(['bus', 'avion', 'tren', 'crucero'])
-            ],
-            'origen' => [
-                'required',
-                'string',
-                'max:255',
-                'min:2'
-            ],
-            'destino' => [
-                'required',
-                'string',
-                'max:255',
-                'min:2',
-                'different:origen' // El destino debe ser diferente al origen
-            ],
-            'fecha_salida' => [
-                'required',
-                'date',
-                'after:now' // La fecha de salida debe ser futura
-            ],
-            'fecha_llegada' => [
-                'required',
-                'date',
-                'after:fecha_salida' // La fecha de llegada debe ser posterior a la salida
-            ],
-            'empresa' => [
-                'required',
-                'string',
-                'max:255',
-                'min:2'
-            ],
+            'nombre' => ['required', 'string', 'max:255', 'min:3'],
+            'tipo' => ['required', Rule::in(['bus', 'avion', 'tren', 'crucero'])],
+            'origen' => ['required', 'string', 'max:255', 'min:2'],
+            'destino' => ['required', 'string', 'max:255', 'min:2', 'different:origen'],
+            'fecha_salida' => ['required', 'date', 'after:now'],
+            'fecha_llegada' => ['required', 'date', 'after:fecha_salida'],
+            'empresa' => ['required', 'string', 'max:255', 'min:2'],
             'numero_viaje' => [
                 'required',
                 'string',
                 'max:255',
-                // Validación de unicidad considerando si es actualización
                 $this->isMethod('PUT') || $this->isMethod('PATCH')
                     ? Rule::unique('viajes', 'numero_viaje')->ignore($this->route('viaje'))
                     : 'unique:viajes,numero_viaje'
             ],
-            'capacidad_total' => [
-                'required',
-                'integer',
-                'min:1',
-                'max:1000' // Ajustar según necesidades
-            ],
-            'asientos_disponibles' => [
-                'required',
-                'integer',
-                'min:0',
-                'lte:capacidad_total' // Debe ser menor o igual a la capacidad total
-            ],
-            'precio_base' => [
-                'required',
-                'numeric',
-                'min:0.01',
-                'max:999999.99',
-                'regex:/^\d+(\.\d{1,2})?$/' // Máximo 2 decimales
-            ],
-            'clases' => [
-                'required',
-                Rule::in(['economica', 'business', 'primera'])
-            ],
-            'descripcion' => [
-                'nullable',
-                'string',
-                'max:1000'
-            ],
-            'activo' => [
-                'boolean'
-            ]
+            'capacidad_total' => ['required', 'integer', 'min:1', 'max:1000'],
+            'asientos_disponibles' => ['required', 'integer', 'min:0', 'lte:capacidad_total'],
+            'precio_base' => ['required', 'numeric', 'min:0.01', 'max:999999.99', 'regex:/^\d+(\.\d{1,2})?$/'],
+            'clases' => ['required', Rule::in(['economica', 'business', 'primera'])],
+            'descripcion' => ['nullable', 'string', 'max:1000'],
+            'activo' => ['boolean']
         ];
 
         return $rules;
     }
 
-    /**
-     * Get custom messages for validator errors.
-     */
     public function messages(): array
     {
         return [
@@ -183,9 +123,6 @@ class ViajeRequest extends FormRequest
         ];
     }
 
-    /**
-     * Get custom attributes for validator errors.
-     */
     public function attributes(): array
     {
         return [
@@ -206,9 +143,6 @@ class ViajeRequest extends FormRequest
         ];
     }
 
-    /**
-     * Prepare the data for validation.
-     */
     protected function prepareForValidation(): void
     {
         // Convertir el checkbox 'activo' a boolean si viene como string
