@@ -21,10 +21,26 @@ return new class extends Migration
             $table->timestamps();
             $table->softDeletes();
         });
+
+        Schema::create('reservas_servicios', function (Blueprint $table) {
+            $table->id();
+            $table->foreignId('reserva_id')->constrained('reservas')->onDelete('cascade');
+            $table->foreignId('servicio_id')->constrained('reservas')->onDelete('cascade');
+            $table->timestamps();
+        });
+
+        Schema::create('reservas_personas', function (Blueprint $table) {
+            $table->id();
+            $table->foreignId('reserva_id')->constrained('reservas')->onDelete('cascade');
+            $table->foreignId('persona_id')->constrained('personas')->onDelete('cascade');
+            $table->timestamps();
+        });
     }
 
     public function down()
     {
         Schema::dropIfExists('reservas');
+        Schema::dropIfExists('reservas_servicios');
+        Schema::dropIfExists('reservas_personas');
     }
 };
