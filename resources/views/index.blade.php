@@ -31,39 +31,44 @@
             color: var(--despegar-blue) !important;
         }
 
-        /* Hero con video de fondo mejorado */
+        /* Hero con fondo gradiente mejorado */
         .hero-section {
             position: relative;
             color: white;
             padding: 100px 0;
-            background: none;
+            background: linear-gradient(135deg, #1e3a8a 0%, #1e40af 25%, #2563eb 50%, #3b82f6 75%, #60a5fa 100%);
             overflow: hidden;
             min-height: 100vh;
             display: flex;
             align-items: center;
         }
         
-        .hero-video-bg {
-            position: absolute;
-            top: 0; 
-            left: 0; 
-            width: 100%; 
-            height: 100%;
-            object-fit: cover;
-            z-index: 0;
-        }
-        
+        /* Elementos decorativos para el fondo */
         .hero-section::before {
             content: "";
             position: absolute;
-            inset: 0;
-            background: rgba(0, 0, 0, 0.5);
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: 
+                radial-gradient(circle at 20% 20%, rgba(255, 255, 255, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 80% 80%, rgba(255, 102, 0, 0.2) 0%, transparent 50%),
+                radial-gradient(circle at 40% 60%, rgba(59, 130, 246, 0.15) 0%, transparent 50%);
             z-index: 1;
+        }
+        
+        .hero-section::after {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.3);
+            z-index: 2;
         }
         
         .hero-section .container {
             position: relative;
-            z-index: 2;
+            z-index: 3;
             width: 100%;
         }
 
@@ -370,7 +375,6 @@
 
     <!-- Hero Section -->
     <section class="hero-section">
-        <video class="hero-video-bg" src="{{ asset('img/fondo.mp4') }}" autoplay loop muted playsinline></video>
         <div class="container">
             <div class="row justify-content-center">
                 <div class="col-lg-10">
@@ -465,19 +469,13 @@
             <div class="row">
                 @foreach($paquetes as $paquete)
                 <div class="col-md-4 mb-4">
-                    <div class="destination-card position-relative overflow-hidden h-100">
-                        @php
-                            $img = is_array($paquete->imagenes) ? ($paquete->imagenes[0] ?? null) : (is_string($paquete->imagenes) ? $paquete->imagenes : null);
-                        @endphp
-                        @if($img)
-                        <img src="{{ $img }}" alt="{{ $paquete->nombre }}" style="position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;z-index:1;">
-                        @endif
-                        <div class="hotel-overlay" style="position:absolute;top:0;left:0;width:100%;height:100%;background:linear-gradient(transparent 40%,rgba(0,0,0,0.85) 100%);z-index:2;transition:opacity 0.4s;"></div>
-                        <div class="destination-overlay hotel-overlay-content d-flex flex-column justify-content-end align-items-start p-3" style="position:relative;z-index:3;transition:opacity 0.4s;height:100%;">
-                            <h5 class="mb-1">{{ $paquete->nombre }}</h5>
-                            <p class="mb-1">{{ $paquete->descripcion }}</p>
-                            <p class="mb-0 fw-bold">${{ number_format($paquete->precio_total, 2) }}</p>
+                    <div class="travel-card">
+                        <div class="travel-icon">
+                            <i class="fas fa-suitcase"></i>
                         </div>
+                        <h5>{{ $paquete->nombre }}</h5>
+                        <p class="mb-3">{{ $paquete->descripcion }}</p>
+                        <p class="price">${{ number_format($paquete->precio_total, 2) }}</p>
                     </div>
                 </div>
                 @endforeach
