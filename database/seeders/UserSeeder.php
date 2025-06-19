@@ -17,6 +17,7 @@ class UserSeeder extends Seeder
             'name' => 'admin',
             'email' => 'admin@admin.com',
             'password' => Hash::make('password'),
+            'nivel' => 2,
             'email_verified_at' => now(),
         ]);
         // Create 400 users using the factory
