@@ -38,10 +38,8 @@ Route::get('/results', [ResultsController::class, 'index'])
 
 // Página de inicio
 Route::get('/', function (Request $request) {
-    $viajes     = Viaje::all();
-    $hospedajes = Hospedaje::all();
-    $vehiculos  = Vehiculo::all();
-    return view('index', compact('viajes', 'hospedajes', 'vehiculos'));
+    $paquetes = Paquete::all();
+    return view('index', compact('paquetes'));
 });
 
 // Detalles de un vehículo

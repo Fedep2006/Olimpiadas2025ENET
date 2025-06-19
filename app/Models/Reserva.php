@@ -42,4 +42,9 @@ class Reserva extends Model
     {
         return $this->hasMany(ServicioReservado::class, 'reserva_id');
     }
+
+    public function personasConReservas()
+    {
+        return $this->hasMany(PersonaReserva::class, 'reserva_id');
+    }
 }
