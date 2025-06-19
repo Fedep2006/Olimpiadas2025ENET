@@ -7,7 +7,7 @@ use App\Http\Requests\EmpresaRequest;
 use Illuminate\Http\Request;
 use App\Models\Empresa;
 
-class EmpresasController extends Controller
+class AdminEmpresasController extends Controller
 {
     public function index()
     {
@@ -15,7 +15,7 @@ class EmpresasController extends Controller
         return view("administracion.empresas", compact("empresas"));
     }
 
-    public function crear(EmpresaRequest $request)
+    public function create(EmpresaRequest $request)
     {
         try {
             // Crear el viaje

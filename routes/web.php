@@ -1,5 +1,10 @@
 <?php
 
+use App\Http\Controllers\Admin\AdminEmpresasController;
+use App\Http\Controllers\Admin\AdminHospedajeController;
+use App\Http\Controllers\Admin\AdminPaquetesController;
+use App\Http\Controllers\Admin\AdminVehiculosController;
+use App\Http\Controllers\Admin\AdminViajeController;
 use App\Http\Controllers\Admin\EmpresasController;
 use App\Http\Controllers\Admin\PaquetesController;
 use Illuminate\Support\Facades\Route;
@@ -20,6 +25,7 @@ use App\Http\Controllers\ResultsController;
 use App\Http\Controllers\Admin\VehiculosController;
 use App\Http\Controllers\Admin\HospedajeController;
 use App\Http\Controllers\Admin\ViajeController;
+use App\Http\Controllers\AdminUserController;
 use App\Http\Controllers\EmpleadoController;
 use App\Http\Controllers\TestCompraController;
 use App\Http\Controllers\TestGmailController;
@@ -109,44 +115,43 @@ Route::prefix('administracion')->middleware('auth')->group(function () {
     Route::get('/reservas', [AdministracionController::class, 'reservas']);
 
     //empresas
-    Route::get('/empresas', [EmpresasController::class, 'index'])->name('administracion.empresas');
-    Route::post('/empresas/añadir', [EmpresasController::class, 'crear'])->name('administracion.empresas.añadir');
-    Route::post('/empresas/editar', [EmpresasController::class, 'editar'])->name('administracion.empresas.editar');
-    Route::delete('/empresas/borrar/{id}', [EmpresasController::class, 'borrar'])->name('administracion.empresas.borrar');
+    Route::get('/empresas',                 [AdminEmpresasController::class, 'index'])->name('empresas.index');
+    Route::post('/empresas/create',         [AdminEmpresasController::class, 'create'])->name('empresas.create');
+    Route::put('/empresas/{empresa}',       [AdminEmpresasController::class, 'update'])->name('empresas.update');
+    Route::delete('/empresas/{empresa}',    [AdminEmpresasController::class, 'destroy'])->name('empresas.destroy');
 
     // Vehículos
-    Route::get('/vehiculos',                [VehiculosController::class, 'index'])->name('administracion.vehiculos');
-    Route::post('/vehiculos/añadir',        [VehiculosController::class, 'AñadirVehiculo'])->name('administracion.vehiculos.añadir');
-    Route::post('/vehiculos/editar',        [VehiculosController::class, 'EditarVehiculo'])->name('administracion.vehiculos.editar');
-    Route::delete('/vehiculos/borrar/{id}', [VehiculosController::class, 'EliminarVehiculo'])->name('administracion.vehiculos.borrar');
+    Route::get('/vehiculos',                [AdminVehiculosController::class, 'index'])->name('vehiculos.index');
+    Route::post('/vehiculos/create',        [AdminVehiculosController::class, 'create'])->name('vehiculos.create');
+    Route::put('/vehiculos/{vehiculo}',     [AdminVehiculosController::class, 'update'])->name('vehiculos.update');
+    Route::delete('/vehiculos/{vehiculo}',  [AdminVehiculosController::class, 'destroy'])->name('vehiculos.destroy');
 
     // Hospedajes
-    Route::get('/hospedajes',               [HospedajeController::class, 'index'])->name('administracion.hospedaje');
-    Route::post('/hospedaje/store',         [HospedajeController::class, 'HospedajeAgregar'])->name('administracion.hospedaje.Agregar');
-    Route::post('/hospedaje/edit',          [HospedajeController::class, 'HospedajeEditar'])->name('administracion.hospedaje.Editar');
-    Route::delete('/hospedaje/delete/{id}', [HospedajeController::class, 'EliminarHospedaje'])->name('administracion.hospedaje.Borrar');
-    Route::get('/hospedaje/{id}/habitaciones', [HospedajeController::class, 'verHabitaciones'])->name('administracion.hospedaje.habitaciones');
+    Route::get('/hospedajes',               [AdminHospedajeController::class, 'index'])->name('administracion.index');
+    Route::post('/hospedajes/create',       [AdminHospedajeController::class, 'create'])->name('administracion.create');
+    Route::put('/hospedajes/{hospedaje}',   [AdminHospedajeController::class, 'update'])->name('administracion.update');
+    Route::delete('/hospedajes/{hospedaje}', [AdminHospedajeController::class, 'destroy'])->name('administracion.destroy');
 
-    // Paquetes y Viajes Admin
-    Route::get('/paquetes',               [PaquetesController::class, 'index'])->name('administracion.paquetes');
-    Route::post('/paquetes/añadir',              [PaquetesController::class, 'Añadir'])->name('administracion.paquetes.añadir');
-    Route::post('/paquetes/editar',     [PaquetesController::class, 'Editar'])->name('administracion.paquetes.editar');
-    Route::delete('/paquetes/borrar/{id}',       [PaquetesController::class, 'Borrar'])->name('administracion.paquetes.borrar');
+    // Paquetes
+    Route::get('/paquetes',                 [AdminPaquetesController::class, 'index'])->name('paquetes.index');
+    Route::post('/paquetes/create',         [AdminPaquetesController::class, 'create'])->name('paquetes.create');
+    Route::put('/paquetes/{paquete}',       [AdminPaquetesController::class, 'update'])->name('paquetes.update');
+    Route::delete('/paquetes/{paquete}',    [AdminPaquetesController::class, 'destroy'])->name('paquetes.destroy');
 
 
     // Detalle de viaje
 
-    Route::get('/viajes',                 [ViajeController::class, 'index'])->name('administracion.index');
-    Route::post('/viajes/create',       [ViajeController::class, 'crear'])->name('usuarios.create');
-    Route::put('/viajes/{viaje}',        [ViajeController::class, 'update'])->name('usuarios.update');
-    Route::delete('/viajes/{viaje}', [ViajeController::class, 'destroy'])->name('usuarios.destroy');
+    Route::get('/viajes',                   [AdminViajeController::class, 'index'])->name('administracion.index');
+    Route::post('/viajes/create',           [AdminViajeController::class, 'create'])->name('usuarios.create');
+    Route::put('/viajes/{viaje}',           [AdminViajeController::class, 'update'])->name('usuarios.update');
+    Route::delete('/viajes/{viaje}',        [AdminViajeController::class, 'destroy'])->name('usuarios.destroy');
 
 
     // Usuarios
-    Route::get('/usuarios',               [UserController::class, 'index'])->name('usuarios.index');
-    Route::post('/usuarios/create',       [UserController::class, 'crear'])->name('usuarios.create');
-    Route::put('/usuarios/{user}',        [UserController::class, 'update'])->name('usuarios.update');
-    Route::delete('/usuarios/{user}', [UserController::class, 'destroy'])->name('usuarios.destroy');
+    Route::get('/usuarios',                 [AdminUserController::class, 'index'])->name('usuarios.index');
+    Route::post('/usuarios/create',         [AdminUserController::class, 'create'])->name('usuarios.create');
+    Route::put('/usuarios/{user}',          [AdminUserController::class, 'update'])->name('usuarios.update');
+    Route::delete('/usuarios/{user}',       [AdminUserController::class, 'destroy'])->name('usuarios.destroy');
 });
 
 Route::get('/terminos', function () {
