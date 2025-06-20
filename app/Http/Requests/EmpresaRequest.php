@@ -45,7 +45,7 @@ class EmpresaRequest extends FormRequest
             'tipo' => [
                 'required',
                 'string',
-                Rule::in(['hospedajes', 'viajes', 'paquetes']),
+                Rule::in(['hospedajes', 'viajes']),
             ],
         ];
 
