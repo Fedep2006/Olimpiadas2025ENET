@@ -21,6 +21,9 @@ class VehiculoRequest extends FormRequest
      */
     public function rules(): array
     {
+        if ($this->isMethod('DELETE')) {
+            return [];
+        }
         return [
             //
         ];

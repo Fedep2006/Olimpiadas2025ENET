@@ -58,9 +58,7 @@ class AdminUsuariosController extends Controller
     {
         try {
             // Crear el usuario
-            $data = $request->validated();
-            $data['password'] = Hash::make($data['password']);
-            User::create($data);
+            User::create($request->validated());
 
             return response()->json([
                 'success' => true,

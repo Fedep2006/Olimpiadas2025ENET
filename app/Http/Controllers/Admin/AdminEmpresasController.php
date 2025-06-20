@@ -91,11 +91,10 @@ class AdminEmpresasController extends Controller
         }
     }
 
-    public function destroy(Empresa $empresa)
+    public function destroy(EmpresaRequest $request, Empresa $empresa)
     {
         try {
             $empresa->delete();
-
 
             return response()->json([
                 'success' => true,

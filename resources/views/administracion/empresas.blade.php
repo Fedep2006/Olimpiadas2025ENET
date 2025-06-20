@@ -4,11 +4,10 @@
 <head>
     @include('administracion.partials.head')
     <title>Gestión de Empresas - Frategar Admin</title>
- 
 </head>
 
 <body>
-        @php
+    @php
         $camposCrear = [
             (object)[
                 'id' => 'nombre',
@@ -23,7 +22,7 @@
                 'label' => 'Tipo de Empresa',
                 'options' => [
                     (object)['value' => 'hospedajes', 'text' => 'Hospedajes'],
-                    (object)['value' => 'viajes' => 'Viajes'],
+                    (object)['value' => 'viajes', 'text' => 'Viajes'],
                 ],
             ]
         ];
@@ -41,11 +40,11 @@
                 'label' => 'Tipo de Empresa',
                 'options' => [
                     (object)['value' => 'hospedajes', 'text' => 'Hospedajes'],
-                    (object)['value' => 'viajes' => 'Viajes'],
+                    (object)['value' => 'viajes', 'text' => 'Viajes'],
                 ],
             ]
         ];
-
+        
         $camposBuscar = [
             (object)[
                 'label' => 'Buscar Empresa',
@@ -63,7 +62,7 @@
                 'value' => 'search_tipo',
                 'options' => [
                     (object)['value' => 'hospedajes', 'text' => 'Hospedajes'],
-                    (object)['value' => 'viajes' => 'Viajes'],
+                    (object)['value' => 'viajes', 'text' => 'Viajes'],
                 ],
             ]
         ];
@@ -113,5 +112,6 @@
     @vite('resources/js/sidebar.js')
     @vite('resources/js/administracion/search-bar.js')
     @vite('resources/js/administracion/paginacion.js')
+</body>
 
-</script>
+</html>

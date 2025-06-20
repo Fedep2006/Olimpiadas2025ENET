@@ -65,29 +65,11 @@
     @foreach ($registros as $registro)
         <tr>
             <td>
-                <div class="user-profile">
-                    <div class="user-profile-avatar">
-                        {{ substr($registro->name, 0, 2) }}
-                    </div>
-                    <div class="user-info">
-                        <h6>{{ $registro->name }}</h6>
-                    </div>
+                <div class="user-info">
+                    <h6>{{ $registro->nombre }}</h6>
                 </div>
             </td>
-            <td>{{ $registro->email }}</td>
-            <td>{{ $registro->created_at->format('d/m/Y') }}</td>
-<td>
-    @if($registro->nivel == 0)
-        <span class="badge bg-primary">Cliente</span>
-    @elseif($registro->nivel == 1)
-        <span class="badge bg-warning text-dark">Empleado</span>
-    @elseif($registro->nivel == 2)
-        <span class="badge bg-danger">Superadmin</span>
-    @else
-        <span class="badge bg-secondary">Desconocido</span>
-    @endif
-</td>
-</td>
+            <td>{{ ucfirst($registro->tipo) }}</td>
             <td>
                 <div class="action-buttons">
                     <button class="action-btn edit" data-registro="{{ $registro }}" title="Editar">

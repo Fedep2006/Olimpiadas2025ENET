@@ -28,6 +28,12 @@
                 'label' => 'Contraseña'
             ],
             (object)[
+                'id' => 'passwordConfirmation',
+                'name' => 'password_confirmation',
+                'type' => 'password',
+                'label' => 'Confirmar Contraseña'
+            ],
+            (object)[
                 'id' => 'nivel',
                 'name' => 'nivel',
                 'type' => 'select',
