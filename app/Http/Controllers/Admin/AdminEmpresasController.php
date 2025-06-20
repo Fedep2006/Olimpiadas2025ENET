@@ -14,27 +14,18 @@ class AdminEmpresasController extends Controller
         $query = Empresa::query();
 
         // Aplicar búsqueda
-        if ($request->filled('search_usuario')) {
-            $search = $request->search_usuario;
-            $query->where(function ($q) use ($search) {
-                $q->where('name', 'like', "%{$search}%")
-                    ->orWhere('email', 'like', "%{$search}%");
-            });
+        if ($request->filled('search_empresa')) {
+            $search = $request->search_empresa;
+            $query->where('nombre', 'like', "%{$search}%");
         }
 
-        if ($request->filled('search_nivel')) {
-            $search = $request->search_nivel;
-            $query->Where('nivel', $search);
-        }
-
-        // Aplicar filtro de fecha
-        if ($request->filled('search_registration_date')) {
-            $date = $request->search_registration_date;
-            $query->whereDate('created_at', $date);
+        if ($request->filled('search_tipo')) {
+            $search = $request->search_tipo;
+            $query->Where('tipo', $search);
         }
 
         // Ordenar por fecha de creación descendente
-        $query->select(['id', 'nombre', 'tipo', 'created_at'])->orderBy('created_at', 'desc');
+        $query->select(['id', 'nombre', 'tipo'])->orderBy('id', 'asc');
 
         // Paginar resultados
         $registros = $query->paginate(10)->withQueryString();

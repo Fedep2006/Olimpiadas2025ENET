@@ -63,6 +63,7 @@
                 'options' => [
                     (object)['value' => 'hospedajes', 'text' => 'Hospedajes'],
                     (object)['value' => 'viajes', 'text' => 'Viajes'],
+                    (object)['value' => 'paquetes', 'text' => 'Paquetes'],
                 ],
             ]
         ];

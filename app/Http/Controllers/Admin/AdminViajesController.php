@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Viaje;
 use Illuminate\Http\Request;
 use App\Http\Requests\ViajeRequest;
+use App\Models\Empresa;
 
 class AdminViajesController extends Controller
 {
@@ -78,7 +79,11 @@ class AdminViajesController extends Controller
         }
 
         // Aplicar todas las condiciones y obtener resultados
-        $registros = $query->select(['id', 'nombre', 'tipo', 'origen', 'destino', 'fecha_salida', 'fecha_llegada', 'empresa', 'numero_viaje', 'capacidad_total', 'asientos_disponibles', 'precio_base', 'clases', 'descripcion', 'activo'])
+        $registros = $query->whereHas('empresa', function ($query) {
+            $query->where('tipo', 'viajes');
+        })
+            ->with('empresa')
+            ->select(['id', 'nombre', 'tipo', 'origen', 'destino', 'fecha_salida', 'fecha_llegada', 'empresa_id', 'numero_viaje', 'capacidad_total', 'asientos_disponibles', 'precio_base', 'descripcion', 'activo'])
             ->orderBy('created_at', 'desc')
             ->paginate(10)
             ->withQueryString();
@@ -95,7 +100,11 @@ class AdminViajesController extends Controller
             ]);
         }
 
-        return view('administracion.viajes', compact('registros'));
+        $empresas = Empresa::query()->where('tipo', 'viajes')
+            ->select('id', 'nombre')
+            ->orderBy('id', 'asc')
+            ->get();;
+        return view('administracion.viajes', compact(['empresas', 'registros']));
     }
     public function create(ViajeRequest $request)
     {

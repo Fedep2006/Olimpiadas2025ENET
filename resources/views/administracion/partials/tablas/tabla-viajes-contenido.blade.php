@@ -70,7 +70,6 @@
                 <div class="flex justify-center items-center">
                     <div class="flex flex-col text-center ids gap-1">
                         <h6>{{ $registro->nombre }}</h6>
-                        <small>{{ $registro->clases }}</small>
                     </div>
                 </div>
             </td>

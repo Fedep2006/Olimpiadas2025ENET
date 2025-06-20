@@ -29,6 +29,15 @@
                 ],
             ],
             (object)[
+                'id' => 'empresa_id',
+                'name' => 'empresa_id',
+                'type' => 'select',
+                'label' => 'Empresa del Viaje',
+                'options' => $empresas->map(function($empresa) {
+                    return (object)['value' => $empresa->id, 'text' => $empresa->nombre];
+                })->toArray()
+            ],
+            (object)[
                 'id' => 'origen',
                 'name' => 'origen',
                 'type' => 'text',
@@ -81,17 +90,6 @@
                 'name' => 'precio_base',
                 'type' => 'number',
                 'label' => 'Precio del Viaje'
-            ],
-            (object)[
-                'id' => 'clases',
-                'name' => 'clases',
-                'type' => 'select',
-                'label' => 'Clases',
-                'options' => [
-                    (object)['value' => 'economica', 'text' => 'Economica'],
-                    (object)['value' => 'business', 'text' => 'Business'],
-                    (object)['value' => 'primera', 'text' => 'Primera'],
-                ],
             ],
             (object)[
                 'id' => 'descripcion',
@@ -178,17 +176,6 @@
                 'name' => 'precio_base',
                 'type' => 'number',
                 'label' => 'Precio del Viaje'
-            ],
-            (object)[
-                'id' => 'editClases',
-                'name' => 'clases',
-                'type' => 'select',
-                'label' => 'Clases',
-                'options' => [
-                    (object)['value' => 'economica', 'text' => 'Economica'],
-                    (object)['value' => 'business', 'text' => 'Business'],
-                    (object)['value' => 'primera', 'text' => 'Primera'],
-                ],
             ],
             (object)[
                 'id' => 'editDescripcion',
@@ -282,18 +269,6 @@
                 'id' => 'searchPrecio',
                 'placeholder' => 'Precio',
                 'value' => 'search_precio'
-            ],
-            (object)[
-                'label' => 'Clases',
-                'type' => 'select',
-                'name' => 'search_clases',
-                'id' => 'searchClases',
-                'value' => 'search_clases',
-                'options' => [
-                    (object)['value' => 'economica', 'text' => 'Economica'],
-                    (object)['value' => 'business', 'text' => 'Business'],
-                    (object)['value' => 'primera', 'text' => 'Primera']
-                ],
             ],
             (object)[
                 'label' => 'Descripcion',

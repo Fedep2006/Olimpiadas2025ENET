@@ -22,7 +22,6 @@ class Viaje extends Model
         'capacidad_total',
         'asientos_disponibles',
         'precio_base',
-        'clases',
         'descripcion',
         'activo'
     ];

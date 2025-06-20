@@ -41,7 +41,6 @@ class ViajeRequest extends FormRequest
             'capacidad_total' => ['required', 'integer', 'min:1', 'max:1000'],
             'asientos_disponibles' => ['required', 'integer', 'min:0', 'lte:capacidad_total'],
             'precio_base' => ['required', 'numeric', 'min:0.01', 'max:999999.99', 'regex:/^\d+(\.\d{1,2})?$/'],
-            'clases' => ['required', Rule::in(['economica', 'business', 'primera'])],
             'descripcion' => ['nullable', 'string', 'max:1000'],
             'activo' => ['sometimes', 'boolean']
         ];
@@ -126,10 +125,6 @@ class ViajeRequest extends FormRequest
             'precio_base.max' => 'El precio base no puede exceder 999,999.99.',
             'precio_base.regex' => 'El precio base debe tener máximo 2 decimales.',
 
-            // Clases
-            'clases.required' => 'La clase es obligatoria.',
-            'clases.in' => 'La clase debe ser: económica, business o primera.',
-
             // Descripción
             'descripcion.string' => 'La descripción debe ser una cadena de texto.',
             'descripcion.max' => 'La descripción no puede exceder los 1000 caracteres.',
@@ -153,7 +148,6 @@ class ViajeRequest extends FormRequest
             'capacidad_total' => 'capacidad total',
             'asientos_disponibles' => 'asientos disponibles',
             'precio_base' => 'precio base',
-            'clases' => 'clase',
             'descripcion' => 'descripción',
             'activo' => 'estado activo',
         ];
