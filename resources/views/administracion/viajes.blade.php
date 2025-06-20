@@ -62,12 +62,6 @@
                 'label' => 'Fecha de Llegada'
             ],
             (object)[
-                'id' => 'empresa',
-                'name' => 'empresa',
-                'type' => 'text',
-                'label' => 'Empresa del Viaje'
-            ],
-            (object)[
                 'id' => 'numero_viaje',
                 'name' => 'numero_viaje',
                 'type' => 'number',
@@ -124,6 +118,15 @@
                 ],
             ],
             (object)[
+                'id' => 'editEmpresa_id',
+                'name' => 'empresa_id',
+                'type' => 'select',
+                'label' => 'Empresa del Viaje',
+                'options' => $empresas->map(function($empresa) {
+                    return (object)['value' => $empresa->id, 'text' => $empresa->nombre];
+                })->toArray()
+            ],
+            (object)[
                 'id' => 'editOrigen',
                 'name' => 'origen',
                 'type' => 'text',
@@ -146,12 +149,6 @@
                 'name' => 'fecha_llegada',
                 'type' => 'datetime-local',
                 'label' => 'Fecha de Llegada'
-            ],
-            (object)[
-                'id' => 'editEmpresa',
-                'name' => 'empresa',
-                'type' => 'text',
-                'label' => 'Empresa del Viaje'
             ],
             (object)[
                 'id' => 'editNumero_viaje',
@@ -209,6 +206,16 @@
                 'value' => 'search_nombre'
             ],
             (object)[
+                'id' => 'searchEmpresa_id',
+                'name' => 'search_empresa_id',
+                'type' => 'select',
+                'label' => 'Empresa del Viaje',
+                'value' => 'search_empresa_id',
+                'options' => $empresas->map(function($empresa) {
+                    return (object)['value' => $empresa->id, 'text' => $empresa->nombre];
+                })->toArray()
+            ],
+            (object)[
                 'label' => 'Origen',
                 'type' => 'text',
                 'name' => 'search_origen',
@@ -237,14 +244,6 @@
                 'name' => 'search_fecha_llegada',
                 'id' => 'searchFecha_llegada',
                 'value' => 'search_fecha_llegada'
-            ],
-            (object)[
-                'label' => 'Empresa',
-                'type' => 'text',
-                'name' => 'search_empresa',
-                'id' => 'searchEmpresa',
-                'placeholder' => 'Empresa',
-                'value' => 'search_empresa'
             ],
             (object)[
                 'label' => 'Asientos Disponibles',
@@ -280,10 +279,14 @@
             ],
             (object)[
                 'label' => 'Viaje Activo',
-                'type' => 'checkbox',
+                'type' => 'select',
                 'name' => 'search_activo',
                 'id' => 'searchActivo',
-                'value' => 'search_activo'
+                'value' => 'search_activo',
+                'options' => [
+                    (object)['value' => '1', 'text' => 'Activo'],
+                    (object)['value' => '0', 'text' => 'Inactivo'],
+                ],
             ]
         ]
         

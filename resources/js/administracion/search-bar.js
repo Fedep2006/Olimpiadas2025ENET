@@ -25,16 +25,10 @@ setTimeout(function () {
                     performSearch();
                 });
                 break;
-            case "checkbox":
-                inputsElementos[i].value = inputsElementos[i].value ? "1" : "0";
-                inputsElementos[i].addEventListener("input", function () {
-                    performSearch();
-                });
-                break;
             default:
                 inputsElementos[i].addEventListener("input", function () {
                     clearTimeout(searchTimeout);
-                    searchTimeout = setTimeout(performSearch, 500);
+                    searchTimeout = setTimeout(performSearch, 200);
                 });
                 break;
         }

@@ -94,7 +94,7 @@
                     </div>
                 </div>
             </td>
-            <td>{{ $registro->empresa }}</td>
+            <td>{{ $registro->empresa->nombre }}</td>
             <td>
                 {{ $registro->asientos_disponibles }}
                 /

@@ -55,7 +55,7 @@ setTimeout(function () {
                             input.value = parseInt(registro[key]);
                             break;
                         case "checkbox":
-                            input.value = true;
+                            input.value = 1;
                             if (input.value == registro[key]) {
                                 input.checked = true;
                             }

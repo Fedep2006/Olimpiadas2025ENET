@@ -25,11 +25,11 @@
                                     </select>
                                     @break
                                 @case("checkbox")
-                                    <input type="hidden" name="activo" value='false'>
+                                    <input type="hidden" name="activo" value="0">
                                     <input 
                                         type="checkbox" 
                                         class="form-check-input" 
-                                        value="true"
+                                        value="1"
                                         id="{{$input->id ?? ''}}" 
                                         name="{{$input->name ?? $input->id}}"
                                     >

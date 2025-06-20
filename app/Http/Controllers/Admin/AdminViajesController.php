@@ -58,14 +58,19 @@ class AdminViajesController extends Controller
             $query->where('capacidad_total', 'like', "%{$search}%");
         }
 
+        if ($request->filled('search_asientos_disponibles')) {
+            $search = $request->search_asientos_disponibles;
+            $query->where('asientos_disponibles', 'like', "%{$search}%");
+        }
+
         if ($request->filled('search_precio')) {
             $search = $request->search_precio;
             $query->where('precio_base', 'like', "%{$search}%");
         }
 
-        if ($request->filled('search_clases')) {
-            $search = $request->search_clases;
-            $query->where('clases', $search);
+        if ($request->filled('search_empresa_id')) {
+            $search = $request->search_empresa_id;
+            $query->where('empresa_id', $search);
         }
 
         if ($request->filled('search_descripcion')) {
@@ -119,7 +124,7 @@ class AdminViajesController extends Controller
         } catch (\Exception $e) {
             return response()->json([
                 'success' => false,
-                'message' => "Error al crear el Viaje",
+                'message' => "Error al crear el viaje",
                 'error' => $e->getMessage()
             ], 500);
         }

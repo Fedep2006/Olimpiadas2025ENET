@@ -11,31 +11,31 @@ class Viaje extends Model
     use HasFactory, SoftDeletes;
 
     protected $fillable = [
+        'empresa_id',
         'nombre',
         'tipo',
         'origen',
         'destino',
         'fecha_salida',
         'fecha_llegada',
-        'empresa',
         'numero_viaje',
         'capacidad_total',
         'asientos_disponibles',
         'precio_base',
         'descripcion',
-        'activo'
+        'activo',
     ];
 
     protected function casts(): array
     {
         return [
+            'empresa_id' => 'integer',
             'fecha_salida' => 'datetime',
             'fecha_llegada' => 'datetime',
-            'activo' => 'boolean',
             'capacidad_total' => 'integer',
             'asientos_disponibles' => 'integer',
             'precio_base' => 'decimal:2',
-            'tipo' => 'string',
+            'activo' => 'boolean',
             'created_at' => 'datetime',
             'updated_at' => 'datetime',
             'deleted_at' => 'datetime',

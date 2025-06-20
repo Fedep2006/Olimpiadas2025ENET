@@ -29,11 +29,11 @@
                                     @break
                                 @case("checkbox")
                                     <div class="form-check">
-                                        <input type="hidden" name="activo" value="false">
+                                        <input type="hidden" name="activo" value="0">
                                         <input 
                                             class="form-check-input" 
                                             type="checkbox"
-                                            value="true"
+                                            value="1"
                                             id="{{$input->id  ?? ""}}" 
                                             name="{{$input->name ?? $input->id}}" 
                                              checked
