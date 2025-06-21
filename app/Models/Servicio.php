@@ -4,6 +4,8 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class NombreServicio extends Model
@@ -34,7 +36,7 @@ class NombreServicio extends Model
     }
 
     //Relaciones
-    public function servicios()
+    public function servicios(): HasMany
     {
         return $this->hasMany(Servicio::class, 'nombre_servicio_id');
     }
@@ -72,17 +74,17 @@ class Servicio extends Model
     }
 
     //Relaciones
-    public function nombreServicio()
+    public function nombreServicio(): BelongsTo
     {
         return $this->belongsTo(NombreServicio::class, 'nombre_servicio_id');
     }
 
-    public function empresa()
+    public function empresa(): BelongsTo
     {
         return $this->belongsTo(Empresa::class, 'empresa_id');
     }
 
-    public function reservados()
+    public function reservados(): HasMany
     {
         return $this->hasMany(ServicioReservado::class, 'servicio_id');
     }
@@ -116,12 +118,12 @@ class ServicioReservado extends Model
     }
 
     //Relaciones
-    public function servicio()
+    public function servicio(): BelongsTo
     {
         return $this->belongsTo(Servicio::class, 'servicio_id');
     }
 
-    public function reservas()
+    public function reservas(): BelongsTo
     {
         return $this->belongsTo(Reserva::class, 'reserva_id');
     }

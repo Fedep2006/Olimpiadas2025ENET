@@ -4,6 +4,8 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\MorphTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class PaqueteContenido extends Model
@@ -14,14 +16,12 @@ class PaqueteContenido extends Model
 
     protected $fillable = [
         'paquete_id',
-        'tipo_contenido',
-        'contenido_id',
     ];
 
     protected function casts(): array
     {
         return [
-            'tipo_contenido' => 'string',
+            'paquete_id' => 'integer',
             'created_at' => 'datetime',
             'updated_at' => 'datetime',
             'deleted_at' => 'datetime',
@@ -36,13 +36,13 @@ class PaqueteContenido extends Model
     }
 
     // Relaciones
-    public function paquete()
+    public function paquete(): BelongsTo
     {
         return $this->belongsTo(Paquete::class, 'paquete_id');
     }
 
-    public function contenido()
+    public function contenido(): MorphTo
     {
-        return $this->morphTo('contenido', 'tipo_contenido', 'contenido_id');
+        return $this->morphTo('contenido');
     }
 }

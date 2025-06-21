@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Pagos extends Model
@@ -42,13 +43,7 @@ class Pagos extends Model
         ];
     }
 
-
-    public function vehiculo()
-    {
-        return $this->belongsTo(Vehiculo::class);
-    }
-
-    public function reserva()
+    public function reserva(): BelongsTo
     {
         return $this->belongsTo(Reserva::class);
     }

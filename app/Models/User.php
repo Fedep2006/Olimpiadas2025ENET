@@ -4,6 +4,7 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -43,11 +44,13 @@ class User extends Authenticatable
         ];
     }
 
-    public function reservas()
+    // Relaciones
+    public function reservas(): HasMany
     {
         return $this->hasMany(Reserva::class, 'usuario_id');
     }
 
+    // Funciones
     protected function setPasswordAttribute($value)
     {
         if (!empty($value)) {

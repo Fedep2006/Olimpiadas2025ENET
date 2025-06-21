@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Str;
 
@@ -40,17 +41,17 @@ class Empresa extends Model
     }
 
     //Relaciones
-    public function servicios()
+    public function servicios(): HasMany
     {
         return $this->hasMany(Servicio::class, 'empresa_id');
     }
 
-    public function viajes()
+    public function viajes(): HasMany
     {
         return $this->hasMany(Viaje::class, 'empresa_id');
     }
 
-    public function hospedajes()
+    public function hospedajes(): HasMany
     {
         return $this->hasMany(Hospedaje::class, 'empresa_id');
     }

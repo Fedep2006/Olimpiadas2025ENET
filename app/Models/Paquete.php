@@ -4,6 +4,8 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Paquete extends Model
@@ -45,17 +47,17 @@ class Paquete extends Model
     }
 
     // Relaciones
-    public function contenidos()
+    public function contenidos(): HasMany
     {
         return $this->hasMany(PaqueteContenido::class, 'paquete_id');
     }
 
-    public function reservas()
+    public function reservas(): HasMany
     {
-        return $this->morphMany(Reserva::class, 'servicio', 'tipo', 'servicio_id');
+        return $this->hasMany(Reserva::class, 'paquete_id');
     }
 
-    public function serviciosTotales()
+    public function serviciosTotales(): MorphMany
     {
         return $this->morphMany(Servicio::class, 'serviciable')->whereHas('nombre', function ($query) {
             $query->where('tabla', 'paquetes');

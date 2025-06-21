@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Vehiculo extends Model
@@ -45,8 +46,8 @@ class Vehiculo extends Model
     }
 
     // Relaciones
-    public function reservas()
+    public function paquetesContenidos(): MorphMany
     {
-        return $this->morphMany(Reserva::class, 'servicio', 'tipo', 'servicio_id');
+        return $this->morphMany(PaqueteContenido::class, 'contenido');
     }
 }

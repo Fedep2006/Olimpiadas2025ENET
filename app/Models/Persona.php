@@ -5,6 +5,8 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Persona extends Model
 {
@@ -41,7 +43,7 @@ class Persona extends Model
         ];
     }
 
-    public function personasConReservas()
+    public function personasConReservas(): HasMany
     {
         return $this->hasMany(PersonaReserva::class, 'persona_id');
     }
@@ -58,11 +60,12 @@ class PersonaReserva extends Model
         'persona_id'
     ];
 
-    public function persona()
+    //Relaciones
+    public function persona(): BelongsTo
     {
         return $this->belongsTo(Persona::class, 'persona_id');
     }
-    public function reserva()
+    public function reserva(): BelongsTo
     {
         return $this->belongsTo(Reserva::class, 'reserva_id');
     }
