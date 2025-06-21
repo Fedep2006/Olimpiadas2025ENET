@@ -50,13 +50,6 @@ class User extends Authenticatable
         return $this->hasMany(Reserva::class, 'usuario_id');
     }
 
-    // Funciones
-    protected function setPasswordAttribute($value)
-    {
-        if (!empty($value)) {
-            $this->attributes['password'] = Hash::make($value);
-        }
-    }
 
 
     public function hasVerifiedEmail()

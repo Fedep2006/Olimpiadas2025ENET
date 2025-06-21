@@ -320,31 +320,33 @@
                         <!-- Benefits -->
 
                         <!-- Register Form -->
-                        <form id="registerForm" action="{{ route("register.process") }}" method="POST">
+                        <form id="registerForm" action="{{ route('register.process') }}" method="POST">
                             @csrf
                             <div class="row mb-3">
-                                
-                                    <label for="nom" class="form-label">Nombre</label>
-                                    <div class="input-group">
-                                        <span class="input-group-text">
-                                            <i class="fas fa-user"></i>
-                                        </span>                                        
-                                        <input type="text" class="form-control" id="name" name="name" placeholder="Tu nombre" value="" required>
-                                         
-                                    </div>
-                                    <div class="form-text" id="firstNameFeedback"></div>
-                                
+                                <label for="name" class="form-label">Nombre</label>
+                                <div class="input-group">
+                                    <span class="input-group-text">
+                                        <i class="fas fa-user"></i>
+                                    </span>
+                                    <input type="text" class="form-control" id="name" name="name" placeholder="Tu nombre" value="{{ old('name') }}" required maxlength="255">
+                                </div>
+                                <div class="form-text" id="firstNameFeedback"></div>
+                                @error('name')
+                                    <div class="text-danger small">{{ $message }}</div>
+                                @enderror
                             </div>
-
                             <div class="mb-3">
                                 <label for="email" class="form-label">Email</label>
                                 <div class="input-group">
                                     <span class="input-group-text">
                                         <i class="fas fa-envelope"></i>
                                     </span>
-                                    <input type="email" class="form-control" id="email" name="email" placeholder="tu@email.com" required>
+                                    <input type="email" class="form-control" id="email" name="email" placeholder="tu@email.com" value="{{ old('email') }}" required maxlength="255">
                                 </div>
                                 <div class="form-text" id="emailFeedback"></div>
+                                @error('email')
+                                    <div class="text-danger small">{{ $message }}</div>
+                                @enderror
                             </div>
                             <div class="mb-3">
                                 <label for="password" class="form-label">Contraseña</label>
@@ -352,7 +354,7 @@
                                     <span class="input-group-text">
                                         <i class="fas fa-lock"></i>
                                     </span>
-                                    <input type="password" class="form-control" id="password" name="password" placeholder="Creá una contraseña segura" required>
+                                    <input type="password" class="form-control" id="password" name="password" placeholder="Creá una contraseña segura" required minlength="6">
                                 </div>
                                 <div class="password-strength">
                                     <div class="strength-bar">
@@ -360,16 +362,18 @@
                                     </div>
                                     <div class="strength-text" id="strengthText"></div>
                                 </div>
-                                <div class="form-text">Mínimo 8 caracteres, incluye mayúsculas, minúsculas y números</div>
+                                <div class="form-text">Mínimo 6 caracteres, incluye mayúsculas, minúsculas y números</div>
+                                @error('password')
+                                    <div class="text-danger small">{{ $message }}</div>
+                                @enderror
                             </div>
-
                             <div class="mb-3">
                                 <label for="confirmPassword" class="form-label">Confirmar Contraseña</label>
                                 <div class="input-group">
                                     <span class="input-group-text">
                                         <i class="fas fa-lock"></i>
                                     </span>
-                                    <input type="password" class="form-control" id="confirmPassword" name="password_confirmation" placeholder="Repetí tu contraseña" required>
+                                    <input type="password" class="form-control" id="confirmPassword" name="password_confirmation" placeholder="Repetí tu contraseña" required minlength="6">
                                 </div>
                                 <div class="form-text" id="confirmPasswordFeedback"></div>
                             </div>
@@ -377,15 +381,20 @@
                                 <div class="form-check">
                                     <input class="form-check-input" type="checkbox" id="terms" name="terms" required>
                                     <label class="form-check-label" for="terms">
-                                        Acepto los <a href="{{ route('terminos') }}" class="text-muted">Términos y Condiciones Política y la de Privacidad</a>  
+                                        Acepto los <a href="{{ route('terminos') }}" class="text-muted">Términos y Condiciones Política y la de Privacidad</a>
                                     </label>
                                 </div>
                             </div>
-
                             <button type="submit" class="btn btn-register" id="registerBtn">
                                 <i class="fas fa-user-plus me-2"></i>Crear mi cuenta
                             </button>
                         </form>
+                        @if(session('success'))
+                            <div class="alert alert-success mt-3">{{ session('success') }}</div>
+                        @endif
+                        @if(session('error'))
+                            <div class="alert alert-danger mt-3">{{ session('error') }}</div>
+                        @endif
 
                         <!-- Login Link -->
                         <div class="login-link">
