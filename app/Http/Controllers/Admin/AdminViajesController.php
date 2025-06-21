@@ -108,7 +108,7 @@ class AdminViajesController extends Controller
         $empresas = Empresa::query()->where('tipo', 'viajes')
             ->select('id', 'nombre')
             ->orderBy('id', 'asc')
-            ->get();;
+            ->get();
         return view('administracion.viajes', compact(['empresas', 'registros']));
     }
     public function create(ViajeRequest $request)

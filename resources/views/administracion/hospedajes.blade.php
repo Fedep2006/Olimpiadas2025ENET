@@ -3,439 +3,240 @@
 
 <head>
     @include('administracion.partials.head')
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4Q6Gf2aSP4eDXB8Miphtr37CMZZQ5oXLH2yaXMJ2w8e2ZtHTl7GptT4jmndRuHDT" crossorigin="anonymous">
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/js/bootstrap.bundle.min.js" integrity="sha384-j1CDi7MgGQ12Z7Qab0qlWQ/Qqz24Gc6BM0thvEMVjHnfYGF0rmFCozFSxQBxwHKO" crossorigin="anonymous"></script>
-    <title>Gestión de Hospedaje - Frategar Admin</title>
-    <style>
-        .page-header {
-            background: white;
-            border-radius: 15px;
-            padding: 25px;
-            margin-bottom: 25px;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
-        }
-
-        .page-title {
-            color: var(--despegar-blue);
-            font-size: 1.8rem;
-            font-weight: bold;
-            margin: 0;
-        }
-
-        .page-subtitle {
-            color: #6c757d;
-            margin: 5px 0 0 0;
-        }
-
-        .content-card {
-            background: white;
-            border-radius: 15px;
-            padding: 25px;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
-            margin-bottom: 25px;
-        }
-
-        .card-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 20px;
-            padding-bottom: 15px;
-            border-bottom: 1px solid #e9ecef;
-        }
-
-        .card-title {
-            color: var(--despegar-blue);
-            font-weight: bold;
-            margin: 0;
-        }
-
-        .btn-admin {
-            background-color: var(--despegar-blue);
-            border: none;
-            color: white;
-            padding: 10px 20px;
-            border-radius: 8px;
-            font-weight: bold;
-            text-decoration: none;
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .btn-admin:hover {
-            background-color: #0052a3;
-            color: white;
-        }
-
-        .btn-admin.orange {
-            background-color: var(--despegar-orange);
-        }
-
-        .btn-admin.success {
-            background-color: #28a745;
-        }
-
-        .btn-admin.warning {
-            background-color: #ffc107;
-            color: #212529;
-        }
-
-        .status-badge {
-            padding: 6px 12px;
-            border-radius: 20px;
-            font-size: 0.8rem;
-            font-weight: bold;
-        }
-
-        .status-active {
-            background-color: #d4edda;
-            color: #155724;
-        }
-
-        .status-inactive {
-            background-color: #f8d7da;
-            color: #721c24;
-        }
-
-        .status-maintenance {
-            background-color: #fff3cd;
-            color: #856404;
-        }
-
-        .search-filters {
-            background: #f8f9fa;
-            border-radius: 10px;
-            padding: 20px;
-            margin-bottom: 20px;
-        }
-
-        .filter-row {
-            display: flex;
-            gap: 15px;
-            align-items: end;
-            flex-wrap: wrap;
-        }
-
-        .filter-group {
-            flex: 1;
-            min-width: 200px;
-        }
-
-        .form-label {
-            font-weight: 500;
-            color: var(--despegar-blue);
-            margin-bottom: 5px;
-        }
-
-        .form-control,
-        .form-select {
-            border-radius: 8px;
-            border: 1px solid #ddd;
-            padding: 10px 12px;
-        }
-
-        .table-container {
-            overflow-x: auto;
-        }
-
-        .table th {
-            background-color: var(--despegar-light-blue);
-            color: var(--despegar-blue);
-            font-weight: bold;
-            border: none;
-            padding: 15px 12px;
-        }
-
-        .table td {
-            padding: 15px 12px;
-            vertical-align: middle;
-            border-bottom: 1px solid #e9ecef;
-        }
-
-        .table tbody tr:hover {
-            background-color: #f8f9fa;
-        }
-
-        .action-buttons {
-            display: flex;
-            gap: 5px;
-        }
-
-        .action-btn {
-            width: 32px;
-            height: 32px;
-            border: none;
-            border-radius: 6px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            font-size: 0.9rem;
-        }
-
-        .action-btn.view {
-            background-color: #17a2b8;
-            color: white;
-        }
-
-        .action-btn.edit {
-            background-color: #ffc107;
-            color: #212529;
-        }
-
-        .action-btn.delete {
-            background-color: #dc3545;
-            color: white;
-        }
-
-        .stats-row {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 20px;
-            margin-bottom: 25px;
-        }
-
-        .stat-card {
-            background: white;
-            border-radius: 10px;
-            padding: 20px;
-            text-align: center;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
-            border-left: 4px solid var(--despegar-blue);
-        }
-
-        .stat-number {
-            font-size: 2rem;
-            font-weight: bold;
-            color: var(--despegar-blue);
-        }
-
-        .stat-label {
-            color: #6c757d;
-            font-size: 0.9rem;
-        }
-
-        .hotel-info {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-
-        .hotel-image {
-            width: 60px;
-            height: 45px;
-            border-radius: 8px;
-            background: linear-gradient(135deg, var(--despegar-light-blue), #cce7ff);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: var(--despegar-blue);
-            font-size: 1.2rem;
-        }
-
-        .hotel-details h6 {
-            margin: 0;
-            font-weight: bold;
-        }
-
-        .hotel-details small {
-            color: #6c757d;
-        }
-
-        .rating-stars {
-            color: #ffc107;
-            margin-right: 5px;
-        }
-
-        .price-info {
-            text-align: right;
-        }
-
-        .price-amount {
-            font-size: 1.2rem;
-            font-weight: bold;
-            color: var(--despegar-orange);
-        }
-
-        .occupancy-info {
-            display: flex;
-            flex-direction: column;
-            gap: 3px;
-        }
-
-        .occupancy-bar {
-            width: 100px;
-            height: 6px;
-            background-color: #e9ecef;
-            border-radius: 3px;
-            overflow: hidden;
-        }
-
-        .occupancy-fill {
-            height: 100%;
-            border-radius: 3px;
-        }
-
-        .occupancy-high {
-            background-color: #dc3545;
-        }
-
-        .occupancy-medium {
-            background-color: #ffc107;
-        }
-
-        .occupancy-low {
-            background-color: #28a745;
-        }
-    </style>
+    <title>Gestión de Hospedajes - Frategar Admin</title>
 </head>
 
 <body>
-
+    @php
+        $camposCrear = [
+            (object)[
+                'id' => 'nombre',
+                'name' => 'nombre',
+                'type' => 'text',
+                'label' => 'Nombre del Hospedaje'
+            ],
+            (object)[
+                'id' => 'empresa_id',
+                'name' => 'empresa_id',
+                'type' => 'select',
+                'label' => 'Empresa del Hospedaje',
+                'options' => $empresas->map(function($empresa) {
+                    return (object)['value' => $empresa->id, 'text' => $empresa->nombre];
+                })->toArray()
+            ],
+            (object)[
+                'id' => 'tipo',
+                'name' => 'tipo',
+                'type' => 'select',
+                'label' => 'Tipo de Hospedaje',
+                'options' => [
+                    (object)['value' => 'hotel', 'text' => 'Hotel'],
+                    (object)['value' => 'hostal', 'text' => 'Hostal'],
+                    (object)['value' => 'apartamento', 'text' => 'Apartamento'],
+                    (object)['value' => 'casa', 'text' => 'Casa'],
+                    (object)['value' => 'cabaña', 'text' => 'Cabaña'],
+                    (object)['value' => 'resort', 'text' => 'Resort'],
+                ],
+            ],
+            (object)[
+                'id' => 'habitacion',
+                'name' => 'habitacion',
+                'type' => 'select',
+                'label' => 'Tipo de Habitacion',
+                'options' => [
+                    (object)['value' => 'individual', 'text' => 'Individual'],
+                    (object)['value' => 'doble', 'text' => 'Doble'],
+                    (object)['value' => 'triple', 'text' => 'Triple'],
+                    (object)['value' => 'cuadruple', 'text' => 'Cuadruple'],
+                    (object)['value' => 'suite', 'text' => 'Suite'],
+                    (object)['value' => 'familiar', 'text' => 'Familiar'],
+                ],
+            ],
+            (object)[
+                'id' => 'habitaciones_disponibles',
+                'name' => 'habitaciones_disponibles',
+                'type' => 'number',
+                'label' => 'Habitaciones Disponibles'
+            ],
+            (object)[
+                'id' => 'capacidad_personas',
+                'name' => 'capacidad_personas',
+                'type' => 'number',
+                'label' => 'Capacidad de Personas'
+            ],
+            (object)[
+                'id' => 'precio_por_noche',
+                'name' => 'precio_por_noche',
+                'type' => 'number',
+                'label' => 'Precio por Noche'
+            ],
+            (object)[
+                'id' => 'ubicacion',
+                'name' => 'nombre',
+                'type' => 'text',
+                'label' => 'Ubicacion del Hospedaje'
+            ],
+            (object)[
+                'id' => 'pais',
+                'name' => 'pais',
+                'type' => 'text',
+                'label' => 'Pais del Hospedaje'
+            ],
+            (object)[
+                'id' => 'ciudad',
+                'name' => 'ciudad',
+                'type' => 'text',
+                'label' => 'Ciudad del Hospedaje'
+            ],
+            (object)[
+                'id' => 'estrellas',
+                'name' => 'estrellas',
+                'type' => 'number',
+                'label' => 'Estrellas del Hospedaje'
+            ],
+            (object)[
+                'id' => 'descripcion',
+                'name' => 'descripcion',
+                'type' => 'text',
+                'label' => 'Descripcion del Hospedaje'
+            ],
+            (object)[
+                'id' => 'telefono',
+                'name' => 'telefono',
+                'type' => 'number',
+                'label' => 'Telefono del Hospedaje'
+            ],
+            (object)[
+                'id' => 'email',
+                'name' => 'email',
+                'type' => 'email',
+                'label' => 'Email del Hospedaje'
+            ],
+            (object)[
+                'id' => 'sitio_web',
+                'name' => 'sitio_web',
+                'type' => 'text',
+                'label' => 'Sitio Web del Hospedaje'
+            ],
+            (object)[
+                'id' => 'check_in',
+                'name' => 'check_in',
+                'type' => 'time',
+                'label' => 'Check-in del Hospedaje'
+            ],
+            (object)[
+                'id' => 'check_out',
+                'name' => 'check_out',
+                'type' => 'time',
+                'label' => 'Check-out del Hospedaje'
+            ],
+            (object)[
+                'id' => 'calificacion',
+                'name' => 'calificacion',
+                'type' => 'number',
+                'label' => 'Calificacion del Hospedaje'
+                'step' => '1',
+            ],
+            (object)[
+                'id' => 'activo',
+                'name' => 'activo',
+                'type' => 'checkbox',
+                'label' => 'Hospedaje Disponible',
+            ],
+            (object)[
+                'id' => 'condiciones',
+                'name' => 'condiciones',
+                'type' => 'text',
+                'label' => 'Condiciones del Hospedaje'
+            ]
+        ];
+        $camposEditar = [
+            (object)[
+                'id' => 'editNombre',
+                'name' => 'nombre',
+                'type' => 'text',
+                'label' => 'Nombre de la Empresa'
+            ],
+            (object)[
+                'id' => 'editTipo',
+                'name' => 'tipo',
+                'type' => 'select',
+                'label' => 'Tipo de Empresa',
+                'options' => [
+                    (object)['value' => 'hospedajes', 'text' => 'Hospedajes'],
+                    (object)['value' => 'viajes', 'text' => 'Viajes'],
+                ],
+            ]
+        ];
+        
+        $camposBuscar = [
+            (object)[
+                'label' => 'Buscar Empresa',
+                'type' => 'text',
+                'name' => 'search_empresa',
+                'id' => 'searchEmpresa',
+                'placeholder' => 'Nombre de la Empresa',
+                'value' => 'search_empresa'
+            ],
+            (object)[
+                'label' => 'Tipo de Empresa',
+                'type' => 'select',
+                'name' => 'search_tipo',
+                'id' => 'searchTipo',
+                'value' => 'search_tipo',
+                'options' => [
+                    (object)['value' => 'hospedajes', 'text' => 'Hospedajes'],
+                    (object)['value' => 'viajes', 'text' => 'Viajes'],
+                    (object)['value' => 'paquetes', 'text' => 'Paquetes'],
+                ],
+            ]
+        ];
+        
+    @endphp
     <!-- Sidebar -->
     <x-layouts.administracion.sidebar hospedajes="active" />
 
     <!-- Main Content -->
     <x-layouts.administracion.main nameHeader="Gestión de Hospedajes">
-        <!-- Page Header -->
-        <div class="page-header">
-            <div class="d-flex justify-content-between align-items-center">
-                <div>
-                    <h1 class="page-title">Gestión de Hospedaje</h1>
-                    <p class="page-subtitle">Administra el inventario de hoteles y habitaciones</p>
-                </div>
-                <a href="{{ route('administracion.hospedaje') }}" class="btn-admin warning">
-                        <i class="fas fa-sync"></i>
-                        Sincronizar
-                    </a>
-                <a href="#" class="btn-admin orange" data-bs-toggle="modal" data-bs-target="#agregarModal">
-                    <i class="fas fa-plus"></i>
-                    Nuevo Hotel
-                </a>
-            </div>
-        </div>
+                <!-- Page Header -->
+        <x-layouts.administracion.page-header 
+            titulo="Gestion de Hospedajes" 
+            contenido="Administra y gestiona los hospedajes"
+            botonIcono="fas fa-plus" 
+            botonNombre="Nuevo Hospedaje" 
+        />
 
-        <!-- Hotels Table -->
-        <div class="content-card">
-            <div class="card-header">
-                <h5 class="card-title">Lista de Hospedajes</h5>
-                <div class="d-flex gap-2">
-                </div>
-            </div>
-<br>
-            <div class="table-container">
-                <table class="table">
-                    <thead>
-                        <tr>
-                            <th>ID</th>
-                            <th>Nombre</th>
-                            <th>Habitación</th>
-                            <th>Capacidad Personas</th>
-                            <th>Precio por Noche</th>
-                            <th>Ubicación</th>
-                            <th>Calificacion</th>
-                            <th>Datos</th>
-                            <th>Horarios</th>
-                            <th>Descripción</th>
-                            <th>Condiciones</th>
-                            <th>Activo</th>
-                            <th>Acciones</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach ($hospedajes as $hospedaje)
-                            <tr>
-                                <td>{{ $hospedaje->id }}</td>
-                                <td>{{ $hospedaje->nombre }}</td>
-                                <td>
-                                <small>Tipo:{{ $hospedaje->tipo ?? '-' }}</small>
-                                <small>Habitación:{{ $hospedaje->habitacion ?? '-' }}</small>
-                                <small>Disponibles:{{ $hospedaje->habitaciones_disponibles ?? '-' }}</small>
-                                </td>
-                                <td>{{ $hospedaje->capacidad_personas ?? '-' }}</td>
-                                <td>{{ $hospedaje->precio_por_noche ?? '-' }}</td>
-                                <td>
-                                    <small>Ubicacion:{{ $hospedaje->ubicacion }}</small>
-                                    <br>
-                                    <small>Pais: {{ $hospedaje->pais }}</small>
-                                    <br>
-                                    <small>Ciudad:{{ $hospedaje->ciudad }}</small>
-                            
-                                 </td>
-                                <td>
-                                    <small>Estrellas:{{ $hospedaje->estrellas ?? '-' }}</small>
-                                <br>
-                                    <small>Usuarios:{{ $hospedaje->calificacion ?? '-' }}</small>
-                                </td>
-                                <td>
+        <!-- Search Bar -->
+        <x-layouts.administracion.search-bar :inputs="$camposBuscar"/>
 
-                                <small>Telefono:{{ $hospedaje->telefono }}</small>
-                                <br>
-                                <small>Correo:{{ $hospedaje->email }}</small>
-                                <br>
-                                <small>Web:{{ $hospedaje->sitio_web }}</small>
-
-                                </td>
-                                <td>
-                                    <small>Entrada: {{ \Carbon\Carbon::parse($hospedaje->check_in)->format('H:i') }}</small>
-                                    <br>
-                                    <small>Salida: {{  \Carbon\Carbon::parse($hospedaje->check_out)->format('H:i') }}</small>
-                                    <br>
-                            
-                                </td>
-                                 <td>{{ $hospedaje->descripcion }}</td>
-                                <td>
-                                    <small class="text-muted">
-                                        {{ is_array($hospedaje->condiciones ?? null) ? implode(', ', $hospedaje->condiciones) : ($hospedaje->condiciones ?? '-') }}
-                                    </small>
-                                </td>
-                                <td>
-                                    @if ($hospedaje->activo ?? $hospedaje->disponibilidad ?? false)
-                                        <span class="status-badge status-active">Activo</span>
-                                    @else
-                                        <span class="status-badge status-inactive">Inactivo</span>
-                                    @endif
-                                </td>
-                                <td>
-                                        <button type="button" class="action-btn view">
-                                            <i class="fas fa-eye"></i>
-                                        </button>
-                                        <button class="action-btn edit" title="Editar" data-bs-toggle="modal" data-bs-target="#editarModal" data-hospedaje-id="{{ $hospedaje->id }}">
-                                            <i class="fas fa-edit"></i>
-                                        </button>
-                                        <button class="action-btn delete" title="Desactivar" data-bs-toggle="modal" data-bs-target="#eliminarModal" data-hospedaje-id="{{ $hospedaje->id }}">
-                                            <i class="fas fa-ban"></i>
-                                        </button>
-                                    </div>
-                                </td>
-                            </tr>
-                        @endforeach
-                    </tbody>
-            <!---    </table>
-                <nav class="d-flex justify-content-center">
-                <ul class="pagination">
-                    <li class="page-item disabled">
-                        <a class="page-link" href="#" tabindex="-1">Anterior</a>
-                    </li>
-                    <li class="page-item active">
-                        <a class="page-link" href="#">1</a>
-                    </li>
-                    <li class="page-item">
-                        <a class="page-link" href="#">2</a>
-                    </li>
-                    <li class="page-item">
-                        <a class="page-link" href="#">3</a>
-                    </li>
-                    <li class="page-item">
-                        <a class="page-link" href="#">Siguiente</a>
-                    </li>
-                </ul>
-            </nav>
-            </div>
-        </div>--->
+        <!-- Users Table -->
+        @php
+            $tHead= [
+                "Nombre",
+                "Tipo de Empresa",
+            ];
+        @endphp
+        @include('administracion.partials.tabla', 
+                [
+                    'tHead' => $tHead,
+                    'nombre' => 'hospedajes'
+                ])
     </x-layouts.administracion.main>
 
-    @vite('resources/js/sidebar.js')
+    <!-- ABM Modals -->
+    <x-layouts.administracion.modals.modals 
+        tituloCrear="Crear Nuevo Hospedaje"
+        tituloEditar="Modificar Hospedaje"
+        tituloEliminar="Eliminar Hospedaje"
+        :camposCrear="$camposCrear"
+        :camposEditar="$camposEditar"
+    />
+    <!-- Toast Notifications -->
+    <x-layouts.administracion.modals.toast />
 
-</script>
+    @vite('resources/js/sidebar.js')
+    @vite('resources/js/administracion/search-bar.js')
+    @vite('resources/js/administracion/paginacion.js')
+</body>
+
+</html>
