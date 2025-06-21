@@ -43,6 +43,7 @@
                                         class="form-control" 
                                         id="{{$input->id  ?? ""}}" 
                                         name="{{$input->name ?? $input->id}}" 
+                                        step="{{$input->step ?? ""}}"
                                         required
                                     >
                             @endswitch

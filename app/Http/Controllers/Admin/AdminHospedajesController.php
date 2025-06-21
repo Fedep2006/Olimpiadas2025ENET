@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\HospedajeRequest;
+use App\Models\Empresa;
 use App\Models\Hospedaje;
 use Illuminate\Http\Request;
 
@@ -49,8 +50,12 @@ class AdminHospedajesController extends Controller
                 'paginationInfo' => "Mostrando {$registros->firstItem()} - {$registros->lastItem()} de {$registros->total()} hospedajes"
             ]);
         }
+        $empresas = Empresa::query()->where('tipo', 'hospedajes')
+            ->select('id', 'nombre')
+            ->orderBy('id', 'asc')
+            ->get();
 
-        return view('administracion.hospedajes', compact('registros'));
+        return view('administracion.hospedajes', compact(['registros', 'empresas']));
     }
 
     public function create(HospedajeRequest $request)
