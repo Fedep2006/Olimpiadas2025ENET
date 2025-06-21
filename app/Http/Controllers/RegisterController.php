@@ -39,7 +39,7 @@ class RegisterController extends Controller
         $result = \App\Models\User::create([
             'name' => $name,
             'email' => $email,
-            'password' => bcrypt($password),
+            'password' => $password,
         ]);
         // Generar token de verificación seguro y sin caracteres problemáticos
         $token = \Illuminate\Support\Str::random(40);
