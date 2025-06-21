@@ -134,8 +134,10 @@
                 'id' => 'calificacion',
                 'name' => 'calificacion',
                 'type' => 'number',
-                'label' => 'Calificacion del Hospedaje'
-                'step' => '1',
+                'label' => 'Calificacion del Hospedaje',
+                'min' => '0.1',
+                'step' => '0.1',
+                'max' => '5',
             ],
             (object)[
                 'id' => 'activo',

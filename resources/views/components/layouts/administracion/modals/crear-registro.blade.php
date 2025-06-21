@@ -49,6 +49,8 @@
                                         id="{{$input->id  ?? ""}}" 
                                         name="{{$input->name ?? $input->id}}" 
                                         step="{{$input->step ?? ""}}"
+                                        min="{{$input->min ?? ""}}"
+                                        max="{{$input->max ?? ""}}"
                                         required
                                     >
                             @endswitch
