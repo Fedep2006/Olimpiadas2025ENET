@@ -10,21 +10,23 @@ class Pagos extends Model
 {
     use HasFactory, SoftDeletes;
 
+    protected $table = 'pagos';
+
     protected $fillable = [
-        'vehiculo_id',
         'reserva_id',
+        'estado',
         'cardholder_name',
         'card_number',
         'expiration_month',
         'expiration_year',
         'cvv',
         'amount',
-        'estado',
     ];
 
     protected function casts(): array
     {
         return [
+            'amount' => 'decimal:2',
             'created_at' => 'datetime',
             'updated_at' => 'datetime',
             'deleted_at' => 'datetime',
@@ -34,9 +36,12 @@ class Pagos extends Model
     protected function hidden(): array
     {
         return [
+            'card_number',
+            'cvv',
             'deleted_at',
         ];
     }
+
 
     public function vehiculo()
     {

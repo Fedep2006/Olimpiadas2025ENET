@@ -18,20 +18,19 @@ class Vehiculo extends Model
         'patente',
         'color',
         'capacidad_pasajeros',
+        'pais',
         'ubicacion',
         'precio_por_dia',
         'disponible',
-        'caracteristicas',
+        'descripcion',
     ];
 
     protected function casts(): array
     {
         return [
-            'caracteristicas' => 'array',
+            'precio_por_dia' => 'decimal:2',
             'disponible' => 'boolean',
             'capacidad_pasajeros' => 'integer',
-            'precio_por_dia' => 'decimal:2',
-            'tipo' => 'string',
             'created_at' => 'datetime',
             'updated_at' => 'datetime',
             'deleted_at' => 'datetime',

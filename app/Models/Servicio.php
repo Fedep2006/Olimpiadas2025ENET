@@ -53,10 +53,23 @@ class Servicio extends Model
         'por_noche',
     ];
 
-    protected $casts = [
-        'precio' => 'decimal:2',
-        'por_noche' => 'boolean',
-    ];
+    protected function casts(): array
+    {
+        return [
+            'precio' => 'decimal:2',
+            'por_noche' => 'boolean',
+            'created_at' => 'datetime',
+            'updated_at' => 'datetime',
+            'deleted_at' => 'datetime',
+        ];
+    }
+
+    protected function hidden(): array
+    {
+        return [
+            'deleted_at',
+        ];
+    }
 
     //Relaciones
     public function nombreServicio()
@@ -85,6 +98,22 @@ class ServicioReservado extends Model
         'reserva_id',
         'servicio_id',
     ];
+
+    protected function casts(): array
+    {
+        return [
+            'created_at' => 'datetime',
+            'updated_at' => 'datetime',
+            'deleted_at' => 'datetime',
+        ];
+    }
+
+    protected function hidden(): array
+    {
+        return [
+            'deleted_at',
+        ];
+    }
 
     //Relaciones
     public function servicio()

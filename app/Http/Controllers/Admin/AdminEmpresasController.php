@@ -82,7 +82,7 @@ class AdminEmpresasController extends Controller
         }
     }
 
-    public function destroy(EmpresaRequest $request, Empresa $empresa)
+    public function destroy(Empresa $empresa)
     {
         try {
             $empresa->delete();

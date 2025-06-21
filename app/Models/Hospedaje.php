@@ -10,6 +10,8 @@ class Hospedaje extends Model
 {
     use HasFactory, SoftDeletes;
 
+    protected $table = 'hospedajes';
+
     protected $fillable = [
         'nombre',
         'empresa_id',
@@ -33,14 +35,18 @@ class Hospedaje extends Model
         'condiciones',
     ];
 
+
     protected function casts(): array
     {
         return [
-            'check_in' => 'datetime:H:i:s',
-            'check_out' => 'datetime:H:i:s',
-            'activo' => 'boolean',
             'precio_por_noche' => 'decimal:2',
             'calificacion' => 'decimal:2',
+            'activo' => 'boolean',
+            'check_in' => 'datetime:H:i',
+            'check_out' => 'datetime:H:i',
+            'habitaciones_disponibles' => 'integer',
+            'capacidad_personas' => 'integer',
+            'estrellas' => 'integer',
             'created_at' => 'datetime',
             'updated_at' => 'datetime',
             'deleted_at' => 'datetime',

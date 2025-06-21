@@ -18,19 +18,19 @@ class Paquete extends Model
         'ubicacion',
         'cupo_minimo',
         'cupo_maximo',
-        'activo',
+        'numero_paquete',
         'hecho_por_usuario',
-        'condiciones',
+        'activo',
     ];
 
     protected function casts(): array
     {
         return [
-            'activo' => 'boolean',
-            'hecho_por_usuario' => 'boolean',
             'precio_total' => 'decimal:2',
             'cupo_minimo' => 'integer',
             'cupo_maximo' => 'integer',
+            'hecho_por_usuario' => 'boolean',
+            'activo' => 'boolean',
             'created_at' => 'datetime',
             'updated_at' => 'datetime',
             'deleted_at' => 'datetime',
