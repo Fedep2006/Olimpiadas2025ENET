@@ -109,7 +109,7 @@ Route::get('/busqueda', function () {
 });
 
 // Área de administración (requiere auth)
-Route::prefix('administracion')->middleware('auth')->group(function () {
+Route::prefix('administracion')->middleware(['auth', 'level:1'])->group(function () {
     Route::get('/',        [administracionController::class, 'inicio'])->name('administracion.inicio');
     Route::get('/reportes', [administracionController::class, 'reportes'])->name('administracion.reportes');
 

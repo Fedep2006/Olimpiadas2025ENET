@@ -3,21 +3,23 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Rule;
-use App\Http\Requests\Traits\AutorizarEmpleado;
 
 
 class ViajeRequest extends FormRequest
 {
-    use AutorizarEmpleado;
 
     public function authorize(): bool
     {
-        return $this->autorizarEmpleado();
+        return true;
     }
 
     public function rules(): array
     {
+        if ($this->isMethod('DELETE')) {
+            return [];
+        }
         $rules = [
             'empresa_id' => [
                 'required',
