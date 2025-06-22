@@ -16,9 +16,6 @@ class ViajeRequest extends FormRequest
 
     public function rules(): array
     {
-        if ($this->isMethod('DELETE')) {
-            return [];
-        }
         $rules = [
             'empresa_id' => [
                 'required',
@@ -27,6 +24,27 @@ class ViajeRequest extends FormRequest
                 Rule::exists('empresas', 'id')->where(function ($query) {
                     $query->where('tipo', 'viajes');
                 }),
+            ],
+            'pais_id' => [
+                'required',
+                'integer',
+                'exists:paises,id',
+            ],
+            'provincia_id' => [
+                'required',
+                'integer',
+                'exists:provincias,id',
+            ],
+            'ciudad_id' => [
+                'required',
+                'integer',
+                'exists:ciudades,id',
+            ],
+            'ubicacion' => [
+                'required',
+                'string',
+                'max:255',
+                'min:2',
             ],
             'nombre' => [
                 'required',

@@ -18,6 +18,10 @@ class Viaje extends Model
         'tipo',
         'origen',
         'destino',
+        'ciudad_id',
+        'provincia_id',
+        'pais_id',
+        'ubicacion',
         'fecha_salida',
         'fecha_llegada',
         'numero_viaje',
@@ -32,6 +36,9 @@ class Viaje extends Model
     {
         return [
             'empresa_id' => 'integer',
+            'ciudad_id' => 'integer',
+            'provincia_id' => 'integer',
+            'pais_id' => 'integer',
             'fecha_salida' => 'datetime',
             'fecha_llegada' => 'datetime',
             'capacidad_total' => 'integer',
@@ -52,6 +59,18 @@ class Viaje extends Model
     }
 
     // Relaciones
+    public function pais(): BelongsTo
+    {
+        return $this->belongsTo(Pais::class, 'pais_id');
+    }
+    public function provincia(): BelongsTo
+    {
+        return $this->belongsTo(Provincia::class, 'provincia_id');
+    }
+    public function ciudad(): BelongsTo
+    {
+        return $this->belongsTo(Ciudad::class, 'ciudad_id');
+    }
     public function paquetesContenidos(): MorphMany
     {
         return $this->morphMany(PaqueteContenido::class, 'contenido');

@@ -61,17 +61,26 @@ class VehiculoRequest extends FormRequest
                 'min:1',
                 'max:50'
             ],
-            'pais' => [
+            'pais_id' => [
                 'required',
-                'string',
-                'max:255',
-                'min:2'
+                'integer',
+                'exists:paises,id',
+            ],
+            'provincia_id' => [
+                'required',
+                'integer',
+                'exists:provincias,id',
+            ],
+            'ciudad_id' => [
+                'required',
+                'integer',
+                'exists:ciudades,id',
             ],
             'ubicacion' => [
                 'required',
                 'string',
                 'max:255',
-                'min:5'
+                'min:2',
             ],
             'precio_por_dia' => [
                 'required',

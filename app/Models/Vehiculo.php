@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
@@ -19,7 +20,9 @@ class Vehiculo extends Model
         'patente',
         'color',
         'capacidad_pasajeros',
-        'pais',
+        'pais_id',
+        'provincia_id',
+        'ciudad_id',
         'ubicacion',
         'precio_por_dia',
         'disponible',
@@ -49,5 +52,17 @@ class Vehiculo extends Model
     public function paquetesContenidos(): MorphMany
     {
         return $this->morphMany(PaqueteContenido::class, 'contenido');
+    }
+    public function pais(): BelongsTo
+    {
+        return $this->belongsTo(Pais::class, 'pais_id');
+    }
+    public function provincia(): BelongsTo
+    {
+        return $this->belongsTo(Provincia::class, 'provincia_id');
+    }
+    public function ciudad(): BelongsTo
+    {
+        return $this->belongsTo(Ciudad::class, 'ciudad_id');
     }
 }
