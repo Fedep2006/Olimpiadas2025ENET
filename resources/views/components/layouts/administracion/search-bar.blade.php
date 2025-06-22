@@ -86,6 +86,8 @@
                                         name="{{$input->name ?? $input->id}}" 
                                         placeholder="{{$input->placeholder ?? ''}}" 
                                         value="{{request($input->value)}}" 
+                                        min="{{$input->min ?? ""}}"
+                                        max="{{$input->max ?? ""}}"
                                     > 
                             @endswitch
                     </div>

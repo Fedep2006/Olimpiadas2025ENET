@@ -23,18 +23,75 @@ class AdminHospedajesController extends Controller
             });
         }
 
-        if ($request->filled('search_nivel')) {
-            $search = $request->search_nivel;
-            $query->Where('nivel', $search);
+        if ($request->filled('search_hospedaje')) {
+            $search = $request->search_hospedaje;
+            $query->Where('nombre', 'like', "%{$search}%");
+        }
+        if ($request->filled('search_tipo')) {
+            $search = $request->search_tipo;
+            $query->Where('tipo', $search);
+        }
+        if ($request->filled('search_empresa_id')) {
+            $search = $request->search_empresa_id;
+            $query->Where('empresa_id', $search);
+        }
+        if ($request->filled('search_habitacion')) {
+            $search = $request->search_habitacion;
+            $query->Where('habitacion', $search);
+        }
+        if ($request->filled('search_maximo_personas')) {
+            $search = $request->search_maximo_personas;
+            $query->Where('capacidad_personas', $search);
+        }
+        if ($request->filled('search_hospedajes_disponibles')) {
+            $search = $request->search_hospedajes_disponibles;
+            $query->Where('habitaciones_disponibles', $search);
+        }
+        if ($request->filled('search_ubicacion')) {
+            $search = $request->search_ubicacion;
+            $query->where(function ($q) use ($search) {
+                $q->where('ubicacion', 'like', "%{$search}%")
+                    ->orWhere('pais', 'like', "%{$search}%")
+                    ->orWhere('ciudad', 'like', "%{$search}%");
+            });
+        }
+        if ($request->filled('search_calificacion')) {
+            $search = $request->search_calificacion;
+            $query->where(function ($q) use ($search) {
+                $q->where('estrellas', $search)
+                    ->orWhere('calificacion', $search);
+            });
+        }
+        if ($request->filled('search_descripcion')) {
+            $search = $request->search_descripcion;
+            $query->Where('descripcion', 'like', "%{$search}%");
+        }
+        if ($request->filled('search_check_in')) {
+            $search = $request->search_check_in;
+            $query->WhereTime('check_in', $search);
+        }
+        if ($request->filled('search_check_out')) {
+            $search = $request->search_check_out;
+            $query->WhereTime('check_out', $search);
+        }
+        if ($request->filled('search_contacto')) {
+            $search = $request->search_contacto;
+            $query->where(function ($q) use ($search) {
+                $q->where('email', 'like', "%{$search}%")
+                    ->orWhere('telefono', 'like', "%{$search}%")
+                    ->orWhere('sitio_web', 'like', "%{$search}%");
+            });
+        }
+        if ($request->filled('search_condiciones')) {
+            $search = $request->search_condiciones;
+            $query->Where('condiciones', 'like', "%{$search}%");
+        }
+        if ($request->filled('search_activo')) {
+            $search = $request->search_activo;
+            $query->where('activo', $search);
         }
 
-        // Aplicar filtro de fecha
-        if ($request->filled('search_registration_date')) {
-            $date = $request->search_registration_date;
-            $query->whereDate('created_at', $date);
-        }
-
-        // Ordenar por fecha de creación descendente
+        // Ordenar campos
         $query->select(['id', 'empresa_id', 'nombre', 'tipo', 'habitacion', 'habitaciones_disponibles', 'capacidad_personas', 'precio_por_noche', 'ubicacion', 'pais', 'ciudad', 'estrellas', 'descripcion', 'telefono', 'email', 'sitio_web', 'check_in', 'check_out', 'calificacion', 'activo', 'condiciones', 'created_at'])->orderBy('created_at', 'desc');
 
         // Paginar resultados

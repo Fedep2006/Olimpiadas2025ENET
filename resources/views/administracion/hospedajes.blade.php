@@ -299,23 +299,145 @@
         
         $camposBuscar = [
             (object)[
-                'label' => 'Buscar Empresa',
+                'label' => 'Hospedaje',
                 'type' => 'text',
-                'name' => 'search_empresa',
-                'id' => 'searchEmpresa',
-                'placeholder' => 'Nombre de la Empresa',
+                'name' => 'search_hospedaje',
+                'id' => 'searchHospedaje',
+                'placeholder' => 'Nombre del hospedaje',
                 'value' => 'search_empresa'
             ],
             (object)[
-                'label' => 'Tipo de Empresa',
+                'label' => 'Tipo de Hospedaje',
                 'type' => 'select',
                 'name' => 'search_tipo',
                 'id' => 'searchTipo',
                 'value' => 'search_tipo',
                 'options' => [
-                    (object)['value' => 'hospedajes', 'text' => 'Hospedajes'],
-                    (object)['value' => 'viajes', 'text' => 'Viajes'],
-                    (object)['value' => 'paquetes', 'text' => 'Paquetes'],
+                    (object)['value' => 'hotel', 'text' => 'Hotel'],
+                    (object)['value' => 'hostal', 'text' => 'Hostal'],
+                    (object)['value' => 'apartamento', 'text' => 'Apartamento'],
+                    (object)['value' => 'casa', 'text' => 'Casa'],
+                    (object)['value' => 'cabaña', 'text' => 'Cabaña'],
+                    (object)['value' => 'resort', 'text' => 'Resort'],
+                ],
+            ],
+            (object)[
+                'id' => 'searchEmpresa_id',
+                'name' => 'search_empresa_id',
+                'type' => 'select',
+                'label' => 'Empresa',
+                'value' => 'search_empresa_id',
+                'options' => $empresas->map(function($empresa) {
+                    return (object)['value' => $empresa->id, 'text' => $empresa->nombre];
+                })->toArray()
+            ],
+            (object)[
+                'id' => 'searchHabitacion',
+                'name' => 'search_habitacion',
+                'type' => 'select',
+                'label' => 'Tipo de Habitacion',
+                'value' => 'search_habitacion',
+                'options' => [
+                    (object)['value' => 'individual', 'text' => 'Individual'],
+                    (object)['value' => 'doble', 'text' => 'Doble'],
+                    (object)['value' => 'triple', 'text' => 'Triple'],
+                    (object)['value' => 'cuadruple', 'text' => 'Cuadruple'],
+                    (object)['value' => 'suite', 'text' => 'Suite'],
+                    (object)['value' => 'familiar', 'text' => 'Familiar'],
+                ],
+            ],
+            (object)[
+                'label' => 'Maximo de Personas',
+                'type' => 'number',
+                'name' => 'search_maximo_personas',
+                'id' => 'searchMaximo_personas',
+                'placeholder' => 'Maximo de personas',
+                'value' => 'search_maximo_personas'
+            ],
+            (object)[
+                'label' => 'Hospedajes Disponibles',
+                'type' => 'number',
+                'name' => 'search_hospedajes_disponibles',
+                'id' => 'searchHospedajes_disponibles',
+                'placeholder' => 'Hospedajes Disponibles',
+                'value' => 'search_hospedajes_disponibles',
+            ],
+            (object)[
+                'label' => 'Precio',
+                'type' => 'number',
+                'name' => 'search_precio',
+                'id' => 'searchPrecio',
+                'placeholder' => 'Precio del hospedaje',
+                'value' => 'search_precio',
+            ],
+            (object)[
+                'label' => 'Ubicacion',
+                'type' => 'text',
+                'name' => 'search_ubicacion',
+                'id' => 'searchUbicacion',
+                'placeholder' => 'Ubicacion del hospedaje',
+                'value' => 'search_ubicacion',
+            ],
+            (object)[
+                'id' => 'searchCalificacion',
+                'name' => 'search_calificacion',
+                'type' => 'number',
+                'label' => 'Calificacion',
+                'value' => 'search_calificacion',
+                'min' => '0.1',
+                'step' => '0.1',
+                'max' => '5',
+                'placeholder' => 'Calificacion o Estrellas',
+            ],
+            (object)[
+                'label' => 'Descripcion',
+                'type' => 'text',
+                'name' => 'search_descripcion',
+                'id' => 'searchDescripcion',
+                'placeholder' => 'Texto',
+                'value' => 'search_descripcion'
+            ],
+            (object)[
+                'label' => 'Check-in',
+                'type' => 'time',
+                'name' => 'search_check_in',
+                'id' => 'searchCheck_in',
+                'placeholder' => 'Hora de entrada',
+                'value' => 'search_check_in'
+            ],
+            (object)[
+                'label' => 'Check-out',
+                'type' => 'time',
+                'name' => 'search_check_out',
+                'id' => 'searchCheck_out',
+                'placeholder' => 'Hora de salida',
+                'value' => 'search_check_out'
+            ],
+            (object)[
+                'label' => 'Contacto',
+                'type' => 'text',
+                'name' => 'search_contacto',
+                'id' => 'searchContacto',
+                'placeholder' => 'Email, sitio web o telefono',
+                'value' => 'search_contacto'
+            ],
+            (object)[
+                'label' => 'Condiciones',
+                'type' => 'text',
+                'name' => 'search_condiciones',
+                'id' => 'searchCondiciones',
+                'placeholder' => 'Condiciones del hospedaje',
+                'value' => 'search_condiciones'
+            ],
+            (object)[
+                'label' => 'Hospedaje Activo',
+                'type' => 'select',
+                'name' => 'search_activo',
+                'id' => 'searchActivo',
+                'value' => 'search_activo',
+                'options' => [
+                    (object)['value' => '1', 'text' => 'Activo'],
+                    (object)['value' => '0', 'text' => 'Inactivo'],
                 ],
             ]
         ];
