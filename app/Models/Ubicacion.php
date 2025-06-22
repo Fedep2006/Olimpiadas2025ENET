@@ -36,69 +36,21 @@ class Ciudad extends Model
     }
 
     //Relaciones
-    public function servicios(): HasMany
+    public function provincia(): BelongsTo
     {
-        return $this->hasMany(Servicio::class, 'nombre_servicio_id');
+        return $this->belongsTo(Provincia::class, 'provincia_id');
     }
 }
 
-class Servicio extends Model
+class Provincia extends Model
 {
     use HasFactory, SoftDeletes;
 
-    protected $table = 'servicios';
+    protected $table = 'provincias';
 
     protected $fillable = [
-        'nombre_servicio_id',
-        'empresa_id',
-        'precio',
-        'por_noche',
-    ];
-
-    protected function casts(): array
-    {
-        return [
-            'precio' => 'decimal:2',
-            'por_noche' => 'boolean',
-            'created_at' => 'datetime',
-            'updated_at' => 'datetime',
-            'deleted_at' => 'datetime',
-        ];
-    }
-
-    protected function hidden(): array
-    {
-        return [
-            'deleted_at',
-        ];
-    }
-
-    //Relaciones
-    public function nombreServicio(): BelongsTo
-    {
-        return $this->belongsTo(NombreServicio::class, 'nombre_servicio_id');
-    }
-
-    public function empresa(): BelongsTo
-    {
-        return $this->belongsTo(Empresa::class, 'empresa_id');
-    }
-
-    public function reservados(): HasMany
-    {
-        return $this->hasMany(ServicioReservado::class, 'servicio_id');
-    }
-}
-
-class ServicioReservado extends Model
-{
-    use HasFactory, SoftDeletes;
-
-    protected $table = 'servicios_reservados';
-
-    protected $fillable = [
-        'reserva_id',
-        'servicio_id',
+        'nombre',
+        'pais_id',
     ];
 
     protected function casts(): array
@@ -118,13 +70,46 @@ class ServicioReservado extends Model
     }
 
     //Relaciones
-    public function servicio(): BelongsTo
+    public function ciudades(): HasMany
     {
-        return $this->belongsTo(Servicio::class, 'servicio_id');
+        return $this->hasMany(Ciudad::class, 'provincia_id');
     }
 
-    public function reservas(): BelongsTo
+    public function pais(): BelongsTo
     {
-        return $this->belongsTo(Reserva::class, 'reserva_id');
+        return $this->belongsTo(Pais::class, 'pais_id');
+    }
+}
+
+class Pais extends Model
+{
+    use HasFactory, SoftDeletes;
+
+    protected $table = 'paises';
+
+    protected $fillable = [
+        'nombre',
+    ];
+
+    protected function casts(): array
+    {
+        return [
+            'created_at' => 'datetime',
+            'updated_at' => 'datetime',
+            'deleted_at' => 'datetime',
+        ];
+    }
+
+    protected function hidden(): array
+    {
+        return [
+            'deleted_at',
+        ];
+    }
+
+    //Relaciones
+    public function provincias(): HasMany
+    {
+        return $this->hasMany(Provincia::class, 'pais_id');
     }
 }
