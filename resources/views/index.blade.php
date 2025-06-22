@@ -538,6 +538,30 @@
         </div>
     </section>
 
+    <!-- Vehiculos (desde base de datos) -->
+    <section class="py-5">
+        <div class="container">
+            <h2 class="section-title">Vehículos</h2>
+            <div class="row">
+                @foreach($vehiculos as $vehiculo)
+                <div class="col-md-4 mb-4">
+                    <a href="{{ url('/details/vehiculo/'.$vehiculo->id) }}" class="text-decoration-none text-dark">
+                        <div class="travel-card h-100">
+                            <div class="travel-icon">
+                                <i class="fas fa-car"></i>
+                            </div>
+                            <h5>{{ $vehiculo->marca }} {{ $vehiculo->modelo }}</h5>
+                            <p class="mb-3">{{ $vehiculo->tipo }}</p>
+                            <p class="price">${{ number_format($vehiculo->precio_por_dia ?? 0, 2) }} / día</p>
+                            <span class="badge bg-info">{{ $vehiculo->ubicacion ?? '' }}</span>
+                        </div>
+                    </a>
+                </div>
+                @endforeach
+            </div>
+        </div>
+    </section>
+
     <!-- Servicios -->
     <section class="py-5">
         <div class="container">
