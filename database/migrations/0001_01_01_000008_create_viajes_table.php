@@ -14,8 +14,8 @@ return new class extends Migration
             $table->string('nombre')->comment('Nombre o descripción del viaje');
             $table->enum('tipo', ['bus', 'avion', 'tren', 'crucero'])
                 ->comment('Tipo de transporte utilizado');
-            $table->string('origen')->comment('Ciudad o lugar de origen');
-            $table->string('destino')->comment('Ciudad o lugar de destino');
+            $table->bigInteger('origen')->comment('Ciudad o lugar de origen');
+            $table->bigInteger('destino')->comment('Ciudad o lugar de destino');
             $table->foreignId('pais_id')->constrained('paises')->onDelete('cascade');
             $table->foreignId('provincia_id')->constrained('provincias')->onDelete('cascade');
             $table->foreignId('ciudad_id')->constrained('ciudades')->onDelete('cascade');

@@ -38,16 +38,40 @@
                 })->toArray()
             ],
             (object)[
+                'id' => 'pais_id',
+                'name' => 'pais_id',
+                'type' => 'select',
+                'label' => 'Pais',
+                'options' => $paises->map(function($pais) {
+                    return (object)['value' => $pais->id, 'text' => $pais->nombre];
+                })->toArray()
+            ],
+            (object)[
+                'id' => 'provicia_id',
+                'name' => 'provicia_id',
+                'type' => 'select',
+                'label' => 'Provincia',
+                'options' => $provincias->map(function($provincia) {
+                    return (object)['value' => $provincia->id, 'text' => $provincia->nombre];
+                })->toArray()
+            ],
+            (object)[
                 'id' => 'origen',
                 'name' => 'origen',
-                'type' => 'text',
-                'label' => 'Ciudad de Origen'
+                'type' => 'select',
+                'label' => 'Ciudad de Origen',
+                'options' => $ciudades->map(function($ciudad) {
+                    return (object)['value' => $ciudad->id, 'text' => $ciudad->nombre];
+                })->toArray()
             ],
             (object)[
                 'id' => 'destino',
                 'name' => 'destino',
-                'type' => 'text',
-                'label' => 'Ciudad de Destino'
+                'type' => 'select',
+                'label' => 'Ciudad de Destino',
+                'options' => $ciudades->map(function($ciudad) {
+                    return (object)['value' => $ciudad->id, 'text' => $ciudad->nombre];
+                })->toArray()
             ],
             (object)[
                 'id' => 'fecha_salida',
@@ -127,16 +151,40 @@
                 })->toArray()
             ],
             (object)[
+                'id' => 'editPais_id',
+                'name' => 'pais_id',
+                'type' => 'select',
+                'label' => 'Pais',
+                'options' => $paises->map(function($pais) {
+                    return (object)['value' => $pais->id, 'text' => $pais->nombre];
+                })->toArray()
+            ],
+            (object)[
+                'id' => 'editProvicia_id',
+                'name' => 'provicia_id',
+                'type' => 'select',
+                'label' => 'Provincia',
+                'options' => $provincias->map(function($provincia) {
+                    return (object)['value' => $provincia->id, 'text' => $provincia->nombre];
+                })->toArray()
+            ],
+            (object)[
                 'id' => 'editOrigen',
                 'name' => 'origen',
-                'type' => 'text',
-                'label' => 'Ciudad de Origen'
+                'type' => 'select',
+                'label' => 'Ciudad de Origen',
+                'options' => $ciudades->map(function($ciudad) {
+                    return (object)['value' => $ciudad->id, 'text' => $ciudad->nombre];
+                })->toArray()
             ],
             (object)[
                 'id' => 'editDestino',
                 'name' => 'destino',
-                'type' => 'text',
-                'label' => 'Ciudad de Destino'
+                'type' => 'select',
+                'label' => 'Ciudad de Destino',
+                'options' => $ciudades->map(function($ciudad) {
+                    return (object)['value' => $ciudad->id, 'text' => $ciudad->nombre];
+                })->toArray()
             ],
             (object)[
                 'id' => 'editFecha_salida',
@@ -216,20 +264,44 @@
                 })->toArray()
             ],
             (object)[
-                'label' => 'Origen',
-                'type' => 'text',
-                'name' => 'search_origen',
-                'id' => 'searchOrigen',
-                'placeholder' => 'Ciudad',
-                'value' => 'search_origen'
+                'id' => 'searchPais_id',
+                'name' => 'search_pais_id',
+                'type' => 'select',
+                'label' => 'Pais',
+                'value' => 'search_pais_id',
+                'options' => $paises->map(function($pais) {
+                    return (object)['value' => $pais->id, 'text' => $pais->nombre];
+                })->toArray()
             ],
             (object)[
-                'label' => 'destino',
-                'type' => 'text',
-                'name' => 'search_destino',
+                'id' => 'searchProvicia_id',
+                'name' => 'search_provicia_id',
+                'type' => 'select',
+                'label' => 'Provincia',
+                'value' => 'search_provicia_id',
+                'options' => $provincias->map(function($provincia) {
+                    return (object)['value' => $provincia->id, 'text' => $provincia->nombre];
+                })->toArray()
+            ],
+            (object)[
+                'id' => 'searchOrigen',
+                'name' => 'search_origen',
+                'type' => 'select',
+                'label' => 'Ciudad de Origen',
+                'value' => 'search_origen',
+                'options' => $ciudades->map(function($ciudad) {
+                    return (object)['value' => $ciudad->id, 'text' => $ciudad->nombre];
+                })->toArray()
+            ],
+            (object)[
                 'id' => 'searchDestino',
-                'placeholder' => 'Ciudad',
-                'value' => 'search_destino'
+                'name' => 'search_destino',
+                'type' => 'select',
+                'label' => 'Ciudad de Destino',
+                'value' => 'search_destino',
+                'options' => $ciudades->map(function($ciudad) {
+                    return (object)['value' => $ciudad->id, 'text' => $ciudad->nombre];
+                })->toArray()
             ],
             (object)[
                 'label' => 'Fecha de Salida',

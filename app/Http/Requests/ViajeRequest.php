@@ -35,11 +35,6 @@ class ViajeRequest extends FormRequest
                 'integer',
                 'exists:provincias,id',
             ],
-            'ciudad_id' => [
-                'required',
-                'integer',
-                'exists:ciudades,id',
-            ],
             'ubicacion' => [
                 'required',
                 'string',
@@ -59,15 +54,11 @@ class ViajeRequest extends FormRequest
             ],
             'origen' => [
                 'required',
-                'string',
-                'max:255',
-                'min:2',
+                'integer',
             ],
             'destino' => [
                 'required',
-                'string',
-                'max:255',
-                'min:2',
+                'integer',
                 'different:origen',
             ],
             'fecha_salida' => [
@@ -191,10 +182,10 @@ class ViajeRequest extends FormRequest
         // Limpiar espacios en blanco
         $this->merge([
             'nombre' => trim($this->nombre ?? ''),
-            'origen' => trim($this->origen ?? ''),
-            'destino' => trim($this->destino ?? ''),
             'numero_viaje' => trim($this->numero_viaje ?? ''),
             'descripcion' => trim($this->descripcion ?? ''),
+            'ciudad_id' => $this->origen,
+            'origen' => $this->origen,
         ]);
 
         // Convierte precio_base a un numero

@@ -147,7 +147,7 @@ class AdminViajesController extends Controller
         $paises = Pais::query()->get();
         $provincias = Provincia::query()->get();
         $ciudades = Ciudad::query()->get();
-        return view('administracion.viajes', compact(['registros', 'empresas', 'provincias', 'ciudades']));
+        return view('administracion.viajes', compact(['registros', 'empresas', 'paises', 'provincias', 'ciudades']));
     }
     public function create(ViajeRequest $request)
     {

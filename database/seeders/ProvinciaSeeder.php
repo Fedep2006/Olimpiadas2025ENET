@@ -1,0 +1,242 @@
+<?php
+
+namespace Database\Seeders;
+
+use App\Models\ubicacion\Pais;
+use App\Models\ubicacion\Provincia;
+use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use Illuminate\Database\Seeder;
+
+class ProvinciaSeeder extends Seeder
+{
+    /**
+     * Run the database seeds.
+     */
+    public function run(): void
+    {
+        $paises = [
+            "Argentina" => [
+                "Buenos Aires",
+                "Catamarca",
+                "Chaco",
+                "Chubut",
+                "Córdoba",
+                "Corrientes",
+                "Entre Ríos",
+                "Formosa",
+                "Jujuy",
+                "La Pampa",
+                "La Rioja",
+                "Mendoza",
+                "Misiones",
+                "Neuquén",
+                "Río Negro",
+                "Salta",
+                "San Juan",
+                "San Luis",
+                "Santa Cruz",
+                "Santa Fe",
+                "Santiago del Estero",
+                "Tierra del Fuego",
+                "Tucumán",
+                "Ciudad Autónoma de Buenos Aires"
+            ],
+            "Bolivia" => [
+                "Beni",
+                "Chuquisaca",
+                "Cochabamba",
+                "La Paz",
+                "Oruro",
+                "Pando",
+                "Potosí",
+                "Santa Cruz",
+                "Tarija"
+            ],
+            "Brasil" => [
+                "Acre",
+                "Alagoas",
+                "Amapá",
+                "Amazonas",
+                "Bahia",
+                "Ceará",
+                "Distrito Federal",
+                "Espírito Santo",
+                "Goiás",
+                "Maranhão",
+                "Mato Grosso",
+                "Mato Grosso do Sul",
+                "Minas Gerais",
+                "Pará",
+                "Paraíba",
+                "Paraná",
+                "Pernambuco",
+                "Piauí",
+                "Rio de Janeiro",
+                "Rio Grande do Norte",
+                "Rio Grande do Sul",
+                "Rondônia",
+                "Roraima",
+                "Santa Catarina",
+                "São Paulo",
+                "Sergipe",
+                "Tocantins"
+            ],
+            "Chile" => [
+                "Arica y Parinacota",
+                "Tarapacá",
+                "Antofagasta",
+                "Atacama",
+                "Coquimbo",
+                "Valparaíso",
+                "Metropolitana de Santiago",
+                "Libertador General Bernardo O'Higgins",
+                "Maule",
+                "Ñuble",
+                "Biobío",
+                "La Araucanía",
+                "Los Ríos",
+                "Los Lagos",
+                "Aysén del General Carlos Ibáñez del Campo",
+                "Magallanes y de la Antártica Chilena"
+            ],
+            "Colombia" => [
+                "Amazonas",
+                "Antioquia",
+                "Arauca",
+                "Atlántico",
+                "Bolívar",
+                "Boyacá",
+                "Caldas",
+                "Caquetá",
+                "Casanare",
+                "Cauca",
+                "Cesar",
+                "Chocó",
+                "Córdoba",
+                "Cundinamarca",
+                "Guainía",
+                "Guaviare",
+                "Huila",
+                "La Guajira",
+                "Magdalena",
+                "Meta",
+                "Nariño",
+                "Norte de Santander",
+                "Putumayo",
+                "Quindío",
+                "Risaralda",
+                "San Andrés y Providencia",
+                "Santander",
+                "Sucre",
+                "Tolima",
+                "Valle del Cauca",
+                "Vaupés",
+                "Vichada",
+                "Bogotá D.C."
+            ],
+            "Ecuador" => [
+                "Azuay",
+                "Bolívar",
+                "Cañar",
+                "Carchi",
+                "Chimborazo",
+                "Cotopaxi",
+                "El Oro",
+                "Esmeraldas",
+                "Galápagos",
+                "Guayas",
+                "Imbabura",
+                "Loja",
+                "Los Ríos",
+                "Manabí",
+                "Morona Santiago",
+                "Napo",
+                "Orellana",
+                "Pastaza",
+                "Pichincha",
+                "Santa Elena",
+                "Santo Domingo de los Tsáchilas",
+                "Sucumbíos",
+                "Tungurahua",
+                "Zamora-Chinchipe"
+            ],
+            "Paraguay" => [
+                "Alto Paraguay",
+                "Alto Paraná",
+                "Amambay",
+                "Boquerón",
+                "Caaguazú",
+                "Caazapá",
+                "Canindeyú",
+                "Central",
+                "Concepción",
+                "Cordillera",
+                "Guairá",
+                "Itapúa",
+                "Misiones",
+                "Ñeembucú",
+                "Paraguarí",
+                "Presidente Hayes",
+                "San Pedro",
+                "Asunción"
+            ],
+            "Perú" => [
+                "Amazonas",
+                "Áncash",
+                "Apurímac",
+                "Arequipa",
+                "Ayacucho",
+                "Cajamarca",
+                "Callao",
+                "Cusco",
+                "Huancavelica",
+                "Huánuco",
+                "Ica",
+                "Junín",
+                "La Libertad",
+                "Lambayeque",
+                "Lima",
+                "Loreto",
+                "Madre de Dios",
+                "Moquegua",
+                "Pasco",
+                "Piura",
+                "Puno",
+                "San Martín",
+                "Tacna",
+                "Tumbes",
+                "Ucayali"
+            ],
+            "Uruguay" => [
+                "Artigas",
+                "Canelones",
+                "Cerro Largo",
+                "Colonia",
+                "Durazno",
+                "Flores",
+                "Florida",
+                "Lavalleja",
+                "Maldonado",
+                "Montevideo",
+                "Paysandú",
+                "Río Negro",
+                "Rivera",
+                "Rocha",
+                "Salto",
+                "San José",
+                "Soriano",
+                "Tacuarembó",
+                "Treinta y Tres"
+            ]
+        ];
+        foreach ($paises as $pais => $valores) {
+            $paisProvincia = Pais::query()->where('nombre', 'like', "%$pais%")->first();
+            foreach ($valores as $valor) {
+                Provincia::create([
+                    'nombre' => $valor,
+                    'pais_id' => $paisProvincia->id
+                ]);
+            }
+        }
+    }
+}
