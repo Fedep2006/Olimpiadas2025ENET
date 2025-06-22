@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class HospedajeRequest extends FormRequest
 {
@@ -42,10 +43,18 @@ class HospedajeRequest extends FormRequest
             if ($this->filled('email')) {
                 $rules['email'] .= '|unique:hospedajes,email,' . $hospedajeId;
             }
+
+            if (isset($rules['empresa_id'])) {
+                $rules['empresa_id'][] = Rule::unique('empresas', 'empresa_id')->ignore($hospedajeId);
+            }
         } else {
 
             if ($this->filled('email')) {
                 $rules['email'] .= '|unique:hospedajes,email';
+            }
+
+            if (isset($rules['empresa_id'])) {
+                $rules['empresa_id'][] = Rule::unique('empresas', 'empresa_id');
             }
         }
 
