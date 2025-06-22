@@ -17,7 +17,7 @@ class HospedajeRequest extends FormRequest
     {
         $rules = [
             'nombre' => 'required|string|max:255',
-            'empresa_id' => 'required|exists:empresas,id',
+            'empresa_id' => 'required|integer|exists:empresas,id',
             'tipo' => 'required|in:hotel,hostal,apartamento,casa,cabaña,resort',
             'habitacion' => 'required|in:individual,doble,triple,cuadruple,suite,familiar',
             'habitaciones_disponibles' => 'required|integer|min:1',
@@ -43,9 +43,8 @@ class HospedajeRequest extends FormRequest
             if ($this->filled('email')) {
                 $rules['email'] .= '|unique:hospedajes,email,' . $hospedajeId;
             }
-
-            if (isset($rules['empresa_id'])) {
-                $rules['empresa_id'][] = Rule::unique('empresas', 'empresa_id')->ignore($hospedajeId);
+            if ($this->filled('empresa_id')) {
+                $rules['empresa_id'] .= '|unique:hospedajes,empresa_id,' . $hospedajeId;
             }
         } else {
 
@@ -53,8 +52,8 @@ class HospedajeRequest extends FormRequest
                 $rules['email'] .= '|unique:hospedajes,email';
             }
 
-            if (isset($rules['empresa_id'])) {
-                $rules['empresa_id'][] = Rule::unique('empresas', 'empresa_id');
+            if ($this->filled('empresa_id')) {
+                $rules['empresa_id'] .= '|unique:hospedajes,empresa_id';
             }
         }
 
@@ -173,5 +172,10 @@ class HospedajeRequest extends FormRequest
             'sitio_web' => $this->sitio_web ? trim($this->sitio_web) : null,
             'telefono' => $this->telefono ? trim($this->telefono) : null,
         ]);
+        if ($this->has('empresa_id')) {
+            $this->merge([
+                'empresa_id' => number_format((int)$this->empresa_id)
+            ]);
+        }
     }
 }
