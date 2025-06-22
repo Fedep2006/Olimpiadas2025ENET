@@ -45,10 +45,24 @@ use App\Models\Paquete;
 Route::get('/results', [ResultsController::class, 'index'])
     ->name('results.index');
 
+// Mostrar carrito
+Route::get('/login/carrito', function () {
+    $carrito = session('carrito', []);
+    return view('login.carrito', compact('carrito'));
+})->name('carrito');
+// Añadir hospedaje al carrito
+Route::post('/carrito/hospedaje/{id}', [ReservasController::class, 'addHospedajeToCart'])->name('carrito.hospedaje.add');
+// Eliminar producto del carrito (AJAX)
+Route::post('/carrito/remove', [ReservasController::class, 'removeFromCart'])->name('carrito.remove');
+// Reservar hospedaje directamente
+Route::post('/reservar/hospedaje/{id}', [ReservasController::class, 'reservarHospedaje'])->name('reservar.hospedaje');
+
 // Página de inicio
 Route::get('/', function (Request $request) {
     $paquetes = Paquete::all();
-    return view('index', compact('paquetes'));
+    $hospedajes = Hospedaje::all();
+    $viajes = Viaje::all();
+    return view('index', compact('paquetes', 'hospedajes', 'viajes'));
 });
 
 // Detalles de un vehículo
