@@ -6,11 +6,20 @@ use App\Http\Controllers\Controller;
 use App\Models\Viaje;
 use Illuminate\Http\Request;
 use App\Http\Requests\ViajeRequest;
+use App\Models\Ciudad;
 use App\Models\Empresa;
+use App\Models\Pais;
+use App\Models\Provincia;
 
 class AdminViajesController extends Controller
 {
-
+    public function getProvicias($paisId)
+    {
+        return Provincia::where('pais_id', $paisId)
+            ->select('id', 'nombre')
+            ->orderBy('nombre')
+            ->get();
+    }
     public function index(Request $request)
     {
         $query = Viaje::query();
@@ -87,8 +96,34 @@ class AdminViajesController extends Controller
         $registros = $query->whereHas('empresa', function ($query) {
             $query->where('tipo', 'viajes');
         })
-            ->with('empresa')
-            ->select(['id', 'nombre', 'tipo', 'origen', 'destino', 'fecha_salida', 'fecha_llegada', 'empresa_id', 'numero_viaje', 'capacidad_total', 'asientos_disponibles', 'precio_base', 'descripcion', 'activo'])
+            ->whereHas('pais')
+            ->whereHas('provincia')
+            ->whereHas('ciudad')
+            ->with([
+                'empresa:id,nombre,tipo',
+                'pais:id,nombre',
+                'provincia:id,nombre,pais_id',
+                'ciudad:id,nombre,provincia_id'
+            ])
+            ->select([
+                'id',
+                'empresa_id',
+                'nombre',
+                'tipo',
+                'origen',
+                'destino',
+                'pais_id',
+                'provincia_id',
+                'ciudad_id',
+                'fecha_salida',
+                'fecha_llegada',
+                'numero_viaje',
+                'capacidad_total',
+                'asientos_disponibles',
+                'precio_base',
+                'descripcion',
+                'activo'
+            ])
             ->orderBy('created_at', 'desc')
             ->paginate(10)
             ->withQueryString();
@@ -109,7 +144,10 @@ class AdminViajesController extends Controller
             ->select('id', 'nombre')
             ->orderBy('id', 'asc')
             ->get();
-        return view('administracion.viajes', compact(['empresas', 'registros']));
+        $paises = Pais::query()->get();
+        $provincias = Provincia::query()->get();
+        $ciudades = Ciudad::query()->get();
+        return view('administracion.viajes', compact(['registros', 'empresas', 'provincias', 'ciudades']));
     }
     public function create(ViajeRequest $request)
     {

@@ -18,6 +18,7 @@ return new class extends Migration
             $table->id();
             $table->string('nombre', 100);
             $table->timestamps();
+            $table->softDeletes();
         });
 
         // Tabla de provincias
@@ -26,6 +27,7 @@ return new class extends Migration
             $table->string('nombre', 100);
             $table->foreignId('pais_id')->constrained('paises')->onDelete('cascade');
             $table->timestamps();
+            $table->softDeletes();
         });
 
         // Tabla de ciudades
@@ -34,6 +36,7 @@ return new class extends Migration
             $table->string('nombre', 100);
             $table->foreignId('provincia_id')->constrained('provincias')->onDelete('cascade');
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 
