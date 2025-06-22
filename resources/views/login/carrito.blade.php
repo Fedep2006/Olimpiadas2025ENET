@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>Carrito de Compras - Frategar</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
@@ -417,174 +418,59 @@
         </div>
 
         <!-- Savings Alert -->
-        <div class="savings-alert">
-            <div class="d-flex align-items-center">
-                <i class="fas fa-piggy-bank me-3 fa-2x"></i>
-                <div>
-                    <strong>¡Estás ahorrando $245 USD!</strong><br>
-                    <small>Al comprar vuelo + hotel juntos obtenés descuentos exclusivos</small>
-                </div>
-            </div>
-        </div>
+
 
         <div class="row">
             <!-- Cart Items -->
             <div class="col-lg-8">
                 <div class="cart-card">
                     <h5 class="mb-4"><i class="fas fa-shopping-cart text-primary me-2"></i>Productos en tu carrito</h5>
-                    
-                    <!-- Flight Item -->
-                    <div class="cart-item">
-                        <div class="row align-items-center">
-                            <div class="col-md-2">
-                                <div class="item-image">
-                                    <i class="fas fa-plane fa-2x text-primary"></i>
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="item-details">
-                                    <div class="d-flex align-items-center gap-2 mb-2">
-                                        <h6 class="mb-0">Vuelo Buenos Aires - Miami</h6>
-                                        <span class="item-tag">OFERTA</span>
+                    @php $cart = session('cart', []); @endphp
+                    @if(count($cart) === 0)
+                        <div class="empty-cart">
+                            <i class="fas fa-shopping-cart"></i>
+                            <p>Tu carrito está vacío.<br>Agrega productos para verlos aquí.</p>
+                        </div>
+                    @else
+                        @foreach($cart as $key => $item)
+                        <div class="cart-item">
+                            <div class="row align-items-center">
+                                <div class="col-md-2">
+                                    <div class="item-image">
+                                        @if(isset($item['imagen']))
+                                            <img src="{{ $item['imagen'] }}" alt="{{ $item['nombre'] }}" class="img-fluid rounded">
+                                        @else
+                                            <i class="fas fa-box-open fa-2x text-primary"></i>
+                                        @endif
                                     </div>
-                                    <div class="flight-route">
-                                        <span><strong>EZE</strong> 08:30</span>
-                                        <i class="fas fa-arrow-right route-arrow"></i>
-                                        <span><strong>MIA</strong> 14:15</span>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="item-details">
+                                        <h6 class="mb-1">{{ $item['nombre'] }}</h6>
+                                        @if(isset($item['descripcion']))
+                                            <p class="text-muted mb-1">{{ $item['descripcion'] }}</p>
+                                        @endif
                                     </div>
-                                    <p class="text-muted mb-1">American Airlines • 15 Mar 2024</p>
-                                    <small class="text-success">Vuelo directo • 8h 45m</small>
                                 </div>
-                            </div>
-                            <div class="col-md-2">
-                                <div class="quantity-controls">
-                                    <button class="quantity-btn" onclick="updateQuantity('flight', -1)">
-                                        <i class="fas fa-minus"></i>
-                                    </button>
-                                    <input type="number" class="quantity-input" value="2" min="1" id="flight-qty">
-                                    <button class="quantity-btn" onclick="updateQuantity('flight', 1)">
-                                        <i class="fas fa-plus"></i>
-                                    </button>
+                                <div class="col-md-2">
+                                    <div class="quantity-controls">
+                                        <input type="number" class="quantity-input" value="{{ $item['cantidad'] }}" min="1" onchange="updateCartItem('{{ $key }}', this.value)">
+                                    </div>
                                 </div>
-                                <small class="text-muted d-block text-center mt-1">pasajeros</small>
-                            </div>
-                            <div class="col-md-2 text-end">
-                                <div class="item-price">$1,798</div>
-                                <small class="text-muted">$899 x 2</small>
-                                <div class="mt-2">
-                                    <i class="fas fa-trash remove-item" onclick="removeItem('flight')" title="Eliminar"></i>
+                                <div class="col-md-2 text-end">
+                                    <div class="item-price">${{ number_format($item['precio'], 2, ',', '.') }}</div>
+                                    <small class="text-muted">${{ number_format($item['precio'], 2, ',', '.') }} x {{ $item['cantidad'] }}</small>
+                                    <div class="mt-2">
+    <i class="fas fa-trash remove-item" style="cursor:pointer;" onclick="removeCartItem('{{ $key }}')" title="Eliminar"></i>
+</div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-
-                    <!-- Hotel Item -->
-                    <div class="cart-item">
-                        <div class="row align-items-center">
-                            <div class="col-md-2">
-                                <div class="item-image">
-                                    <i class="fas fa-bed fa-2x text-primary"></i>
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="item-details">
-                                    <div class="d-flex align-items-center gap-2 mb-2">
-                                        <h6 class="mb-0">Hotel Fontainebleau Miami Beach</h6>
-                                        <span class="item-tag">POPULAR</span>
-                                    </div>
-                                    <p class="text-muted mb-1">Habitación Deluxe Ocean View</p>
-                                    <p class="text-muted mb-1">15 Mar - 22 Mar 2024 • 7 noches</p>
-                                    <div class="d-flex align-items-center">
-                                        <div class="text-warning me-2">
-                                            <i class="fas fa-star"></i>
-                                            <i class="fas fa-star"></i>
-                                            <i class="fas fa-star"></i>
-                                            <i class="fas fa-star"></i>
-                                            <i class="fas fa-star"></i>
-                                        </div>
-                                        <small class="text-muted">4.8/5 (1,247 reseñas)</small>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-2">
-                                <div class="quantity-controls">
-                                    <button class="quantity-btn" onclick="updateQuantity('hotel', -1)">
-                                        <i class="fas fa-minus"></i>
-                                    </button>
-                                    <input type="number" class="quantity-input" value="1" min="1" id="hotel-qty">
-                                    <button class="quantity-btn" onclick="updateQuantity('hotel', 1)">
-                                        <i class="fas fa-plus"></i>
-                                    </button>
-                                </div>
-                                <small class="text-muted d-block text-center mt-1">habitación</small>
-                            </div>
-                            <div class="col-md-2 text-end">
-                                <div class="item-price">$1,400</div>
-                                <small class="text-muted">$200 x 7 noches</small>
-                                <div class="mt-2">
-                                    <i class="fas fa-trash remove-item" onclick="removeItem('hotel')" title="Eliminar"></i>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Car Rental Item -->
-                    <div class="cart-item">
-                        <div class="row align-items-center">
-                            <div class="col-md-2">
-                                <div class="item-image">
-                                    <i class="fas fa-car fa-2x text-primary"></i>
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="item-details">
-                                    <h6>Alquiler de Auto - Compact</h6>
-                                    <p class="text-muted mb-1">Toyota Corolla o similar</p>
-                                    <p class="text-muted mb-1">15 Mar - 22 Mar 2024 • 7 días</p>
-                                    <small class="text-success">Incluye seguro básico</small>
-                                </div>
-                            </div>
-                            <div class="col-md-2">
-                                <div class="quantity-controls">
-                                    <button class="quantity-btn" onclick="updateQuantity('car', -1)">
-                                        <i class="fas fa-minus"></i>
-                                    </button>
-                                    <input type="number" class="quantity-input" value="1" min="1" id="car-qty">
-                                    <button class="quantity-btn" onclick="updateQuantity('car', 1)">
-                                        <i class="fas fa-plus"></i>
-                                    </button>
-                                </div>
-                                <small class="text-muted d-block text-center mt-1">auto</small>
-                            </div>
-                            <div class="col-md-2 text-end">
-                                <div class="item-price">$350</div>
-                                <small class="text-muted">$50 x 7 días</small>
-                                <div class="mt-2">
-                                    <i class="fas fa-trash remove-item" onclick="removeItem('car')" title="Eliminar"></i>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                        @endforeach
+                    @endif
                 </div>
 
-                <!-- Promo Code Section -->
-                <div class="cart-card">
-                    <h6><i class="fas fa-tag text-primary me-2"></i>Código promocional</h6>
-                    <div class="promo-section">
-                        <div class="row">
-                            <div class="col-md-8">
-                                <input type="text" class="form-control promo-input" placeholder="Ingresá tu código promocional">
-                            </div>
-                            <div class="col-md-4">
-                                <button class="btn btn-promo w-100">Aplicar</button>
-                            </div>
-                        </div>
-                        <small class="text-muted mt-2 d-block">
-                            <i class="fas fa-info-circle me-1"></i>
-                            Los códigos promocionales se aplican al total de la compra
-                        </small>
-                    </div>
-                </div>
+
 
                 <!-- Continue Shopping -->
                 <div class="text-center">
@@ -599,32 +485,22 @@
                 <div class="summary-card">
                     <h5 class="mb-4 text-center">Resumen de compra</h5>
                     
+                    @php
+                        $cart = session('cart', []);
+                        $subtotal = 0;
+                    @endphp
+                    @foreach($cart as $item)
+                        @php $subtotal += $item['precio'] * $item['cantidad']; @endphp
+                    @endforeach
                     <div class="summary-row">
-                        <span>Vuelos (2 pasajeros)</span>
-                        <span>$1,798</span>
-                    </div>
-                    <div class="summary-row">
-                        <span>Hotel (7 noches)</span>
-                        <span>$1,400</span>
-                    </div>
-                    <div class="summary-row">
-                        <span>Auto (7 días)</span>
-                        <span>$350</span>
-                    </div>
-                    <div class="summary-row">
-                        <span>Tasas e impuestos</span>
-                        <span>$298</span>
-                    </div>
-                    <div class="summary-row">
-                        <span class="text-success">Descuento paquete</span>
-                        <span class="text-success">-$245</span>
+                        <span>Subtotal</span>
+                        <span>${{ number_format($subtotal, 2, ',', '.') }}</span>
                     </div>
                     <hr>
                     <div class="summary-row">
                         <span>Total</span>
-                        <span>$3,601</span>
+                        <span>${{ number_format($subtotal, 2, ',', '.') }}</span>
                     </div>
-                    
                     <button class="btn btn-checkout mt-4">
                         <i class="fas fa-credit-card me-2"></i>Proceder al pago
                     </button>
@@ -723,4 +599,5 @@
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
+    <script src="/js/cart.js"></script>
 </html>
