@@ -35,7 +35,7 @@ class AdminVehiculosController extends Controller
         }
 
         // Ordenar por fecha de creación descendente
-        $query->select(['id', 'tipo', 'marca', 'modelo', 'antiguedad', 'patente', 'color', 'capacidad_pasajeros', 'pais', 'ubicacion', 'precio_por_dia', 'disponible', 'descripcion', 'created_at'])->orderBy('created_at', 'desc');
+        $query->select(['id', 'tipo', 'marca', 'modelo', 'antiguedad', 'patente', 'color', 'capacidad_pasajeros', 'pais', 'ciudad', 'ubicacion', 'precio_por_dia', 'disponible', 'descripcion', 'created_at'])->orderBy('created_at', 'desc');
 
         // Paginar resultados
         $registros = $query->paginate(10)->withQueryString();

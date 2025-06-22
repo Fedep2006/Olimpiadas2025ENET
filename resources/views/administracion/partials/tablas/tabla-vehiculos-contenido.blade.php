@@ -25,33 +25,20 @@
         background-color: #dc3545;
         color: white;
     }
-
-    .user-profile {
-        display: flex;
-        align-items: center;
-        gap: 12px;
-    }
-
-    .user-profile-avatar {
-        width: 45px;
-        height: 45px;
-        border-radius: 50%;
-        background: var(--despegar-light-blue);
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        color: var(--despegar-blue);
-        font-weight: bold;
-        font-size: 1.1rem;
-    }
-
-    .user-info h6 {
+        .ids h6 {
         margin: 0;
-        font-weight: bold;
+        font-weight: normal;
     }
 
-    .user-info small {
+    small {
         color: #6c757d;
+        font-size: 12px;
+        line-height: 1;
+    }
+    .camino-text{
+        color: #6c757d;
+        font-size: 14px;
+        line-height: 0.95;
     }
 </style>
 @php
@@ -59,35 +46,32 @@
 @endphp
 @if ($registros->isEmpty())
     <tr>
-        <td colspan="4" class="text-center">No se encontraron usuarios</td>
+        <td colspan="4" class="text-center">No se encontraron vehiculos</td>
     </tr>
 @else
     @foreach ($registros as $registro)
         <tr>
             <td>
-                <div class="user-profile">
-                    <div class="user-profile-avatar">
-                        {{ substr($registro->name, 0, 2) }}
-                    </div>
-                    <div class="user-info">
-                        <h6>{{ $registro->name }}</h6>
+                <div class="flex flex-col text-center justify-between h-full w-fit ">
+                    <h6>{{ ucfirst($registro->modelo) }}</h6>
+                    <small class="pb-2 font-bold">{{ ucfirst($registro->marca) }}</small>
+                    <small class="pb-1">{{ ucfirst($registro->tipo) }}</small>
+                </div>
+            </td>
+            <td>{{ $registro->patente }}</td>
+            <td>{{ $registro->antiguedad }}</td>
+            <td>{{ $registro->precio_por_dia }}</td>
+            <td>{{ $registro->ubicacion }}</td>
+            <td>
+                <div class="flex justify-center items-center">
+                    <div class="flex flex-col text-center ids gap-1">
+                        <h6>{{ ucfirst($registro->pais) }}</h6>
+                        <small class="camino-text">
+                            {{ $registro->ciudad }} 
+                        </small>
                     </div>
                 </div>
             </td>
-            <td>{{ $registro->email }}</td>
-            <td>{{ $registro->created_at->format('d/m/Y') }}</td>
-<td>
-    @if($registro->nivel == 0)
-        <span class="badge bg-primary">Cliente</span>
-    @elseif($registro->nivel == 1)
-        <span class="badge bg-warning text-dark">Empleado</span>
-    @elseif($registro->nivel == 2)
-        <span class="badge bg-danger">Superadmin</span>
-    @else
-        <span class="badge bg-secondary">Desconocido</span>
-    @endif
-</td>
-</td>
             <td>
                 <div class="action-buttons">
                     <button class="action-btn edit" data-registro="{{ $registro }}" title="Editar">

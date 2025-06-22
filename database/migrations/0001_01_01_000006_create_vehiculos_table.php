@@ -18,11 +18,14 @@ return new class extends Migration
             $table->string('patente', 10)->unique()->comment('Número de patente o matrícula del vehículo');
             $table->string('color')->comment('Color del vehículo');
             $table->integer('capacidad_pasajeros')->comment('Número máximo de pasajeros permitidos');
-            $table->string('pais')->comment('País donde se encuentra el vehiculo');
+            $table->integer('vehiculos_disponibles')->comment('Numero restante de vehiculos');
+            $table->foreignId('pais_id')->constrained('paises')->onDelete('cascade');
+            $table->foreignId('provincia_id')->constrained('provincias')->onDelete('cascade');
+            $table->foreignId('ciudad_id')->constrained('ciudades')->onDelete('cascade');
             $table->string('ubicacion')->comment('Ubicación actual del vehículo');
             $table->decimal('precio_por_dia', 10, 2)->comment('Precio de alquiler por día en la moneda base');
-            $table->boolean('disponible')->default(true)->comment('Indica si el vehículo está disponible para alquiler');
             $table->text('descripcion')->nullable()->comment('Descripción detallada del vehiculo');
+            $table->boolean('disponible')->default(true)->comment('Indica si el vehículo está disponible para alquiler');
             $table->timestamps();
             $table->softDeletes();
         });

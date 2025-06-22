@@ -304,7 +304,7 @@
                 'name' => 'search_hospedaje',
                 'id' => 'searchHospedaje',
                 'placeholder' => 'Nombre del hospedaje',
-                'value' => 'search_empresa'
+                'value' => 'search_hospedaje'
             ],
             (object)[
                 'label' => 'Tipo de Hospedaje',

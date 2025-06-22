@@ -19,9 +19,10 @@ return new class extends Migration
             $table->integer('habitaciones_disponibles')->comment('Número de habitaciones iguales disponibles');
             $table->integer('capacidad_personas')->comment('Número máximo de personas que pueden ocupar la habitación');
             $table->decimal('precio_por_noche', 10, 2)->comment('Precio por noche en la moneda base del sistema');
-            $table->string('ubicacion')->comment('Dirección física del establecimiento');
-            $table->string('pais')->comment('País donde se encuentra el establecimiento');
-            $table->string('ciudad')->comment('Ciudad donde se encuentra el establecimiento');
+            $table->foreignId('pais_id')->constrained('paises')->onDelete('cascade');
+            $table->foreignId('provincia_id')->constrained('provincias')->onDelete('cascade');
+            $table->foreignId('ciudad_id')->constrained('ciudades')->onDelete('cascade');
+            $table->string('ubicacion')->comment('Ubicación fisica del establecimiento');
             $table->integer('estrellas')->nullable()->comment('Clasificación del establecimiento (1 a 5 estrellas)');
             $table->text('descripcion')->nullable()->comment('Descripción detallada del establecimiento y sus instalaciones');
             $table->string('telefono')->nullable()->comment('Número de teléfono de contacto');

@@ -16,6 +16,10 @@ return new class extends Migration
                 ->comment('Tipo de transporte utilizado');
             $table->string('origen')->comment('Ciudad o lugar de origen');
             $table->string('destino')->comment('Ciudad o lugar de destino');
+            $table->foreignId('pais_id')->constrained('paises')->onDelete('cascade');
+            $table->foreignId('provincia_id')->constrained('provincias')->onDelete('cascade');
+            $table->foreignId('ciudad_id')->constrained('ciudades')->onDelete('cascade');
+            $table->string('ubicacion')->comment('Ubicación actual del vehículo');
             $table->dateTime('fecha_salida')->comment('Fecha y hora de salida');
             $table->dateTime('fecha_llegada')->comment('Fecha y hora estimada de llegada');
             $table->string('numero_viaje')->comment('Número o código del viaje');
