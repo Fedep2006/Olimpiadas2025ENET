@@ -62,7 +62,8 @@ Route::get('/', function (Request $request) {
     $paquetes = Paquete::all();
     $hospedajes = Hospedaje::all();
     $viajes = Viaje::all();
-    return view('index', compact('paquetes', 'hospedajes', 'viajes'));
+    $vehiculos = Vehiculo::all();
+    return view('index', compact('paquetes', 'hospedajes', 'viajes', 'vehiculos'));
 });
 
 // Detalles de un vehículo
