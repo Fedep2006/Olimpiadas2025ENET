@@ -24,7 +24,7 @@ return new class extends Migration
         Schema::create('provincias', function (Blueprint $table) {
             $table->id();
             $table->string('nombre', 100);
-            $table->foreignId('id_pais')->constrained('paises')->onDelete('cascade');
+            $table->foreignId('pais_id')->constrained('paises')->onDelete('cascade');
             $table->timestamps();
         });
 
@@ -32,7 +32,7 @@ return new class extends Migration
         Schema::create('ciudades', function (Blueprint $table) {
             $table->id();
             $table->string('nombre', 100);
-            $table->foreignId('id_provincia')->constrained('provincias')->onDelete('cascade');
+            $table->foreignId('provincia_id')->constrained('provincias')->onDelete('cascade');
             $table->timestamps();
         });
     }

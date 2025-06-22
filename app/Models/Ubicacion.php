@@ -16,7 +16,7 @@ class Ciudad extends Model
 
     protected $fillable = [
         'nombre',
-        'tabla',
+        'provincia_id',
     ];
 
     protected function casts(): array
