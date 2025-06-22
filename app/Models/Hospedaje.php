@@ -22,9 +22,10 @@ class Hospedaje extends Model
         'habitaciones_disponibles',
         'capacidad_personas',
         'precio_por_noche',
+        'pais_id',
+        'provincia_id',
+        'ciudad_id',
         'ubicacion',
-        'pais',
-        'ciudad',
         'estrellas',
         'descripcion',
         'telefono',
@@ -80,6 +81,18 @@ class Hospedaje extends Model
         return $this->morphMany(Servicio::class, 'serviciable')->whereHas('nombre', function ($query) {
             $query->where('tabla', 'hospedajes');
         });
+    }
+    public function pais(): BelongsTo
+    {
+        return $this->belongsTo(Pais::class, 'pais_id');
+    }
+    public function provincia(): BelongsTo
+    {
+        return $this->belongsTo(Provincia::class, 'provincia_id');
+    }
+    public function ciudad(): BelongsTo
+    {
+        return $this->belongsTo(Ciudad::class, 'ciudad_id');
     }
 
     // Funciones
