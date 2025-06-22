@@ -6,10 +6,10 @@ use App\Http\Controllers\Controller;
 use App\Models\Viaje;
 use Illuminate\Http\Request;
 use App\Http\Requests\ViajeRequest;
-use App\Models\Ciudad;
 use App\Models\Empresa;
-use App\Models\Pais;
-use App\Models\Provincia;
+use App\Models\ubicacion\Ciudad;
+use App\Models\ubicacion\Pais;
+use App\Models\ubicacion\Provincia;
 
 class AdminViajesController extends Controller
 {
