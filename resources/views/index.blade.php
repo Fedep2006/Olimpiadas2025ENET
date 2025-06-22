@@ -474,15 +474,65 @@
             <div class="row">
                 @foreach($paquetes as $paquete)
                 <div class="col-md-4 mb-4">
-                    <div class="travel-card">
-                        <div class="travel-icon">
-                            <i class="fas fa-suitcase"></i>
-                        </div>
-                        <h5>{{ $paquete->nombre }}</h5>
-                        <p class="mb-3">{{ $paquete->descripcion }}</p>
-                        <p class="price">${{ number_format($paquete->precio_total, 2) }}</p>
-                    </div>
-                </div>
+    <a href="{{ url('/details/paquete/'.$paquete->id) }}" class="text-decoration-none text-dark">
+        <div class="travel-card h-100">
+            <div class="travel-icon">
+                <i class="fas fa-suitcase"></i>
+            </div>
+            <h5>{{ $paquete->nombre }}</h5>
+            <p class="mb-3">{{ $paquete->descripcion }}</p>
+            <p class="price">${{ number_format($paquete->precio_total, 2) }}</p>
+        </div>
+    </a>
+</div>
+                @endforeach
+            </div>
+        </div>
+    </section>
+
+    <!-- Hospedajes (desde base de datos) -->
+    <section class="py-5">
+        <div class="container">
+            <h2 class="section-title">Hospedajes</h2>
+            <div class="row">
+                @foreach($hospedajes as $hospedaje)
+                <div class="col-md-4 mb-4">
+    <a href="{{ url('/details/hospedaje/'.$hospedaje->id) }}" class="text-decoration-none text-dark">
+        <div class="travel-card h-100">
+            <div class="travel-icon">
+                <i class="fas fa-bed"></i>
+            </div>
+            <h5>{{ $hospedaje->nombre }}</h5>
+            <p class="mb-3">{{ $hospedaje->descripcion }}</p>
+            <p class="price">${{ number_format($hospedaje->precio_por_noche ?? 0, 2) }} / noche</p>
+            <span class="badge bg-info">{{ $hospedaje->ciudad ?? '' }}</span>
+        </div>
+    </a>
+</div>
+                @endforeach
+            </div>
+        </div>
+    </section>
+
+    <!-- Viajes individuales (desde base de datos) -->
+    <section class="py-5">
+        <div class="container">
+            <h2 class="section-title">Viajes</h2>
+            <div class="row">
+                @foreach($viajes as $viaje)
+                <div class="col-md-4 mb-4">
+    <a href="{{ url('/details/viaje/'.$viaje->id) }}" class="text-decoration-none text-dark">
+        <div class="travel-card h-100">
+            <div class="travel-icon">
+                <i class="fas fa-bus"></i>
+            </div>
+            <h5>{{ $viaje->nombre }}</h5>
+            <p class="mb-3">{{ $viaje->origen }} → {{ $viaje->destino }}</p>
+            <p class="price">${{ number_format($viaje->precio_base ?? 0, 2) }}</p>
+            <span class="badge bg-info">Salida: {{ optional($viaje->fecha_salida)->format('d/m/Y H:i') }}</span>
+        </div>
+    </a>
+</div>
                 @endforeach
             </div>
         </div>

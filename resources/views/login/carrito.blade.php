@@ -20,20 +20,6 @@
             color: var(--despegar-blue) !important;
         }
         
-        .breadcrumb-section {
-            background-color: #f8f9fa;
-            padding: 15px 0;
-        }
-        
-        .breadcrumb-item a {
-            color: var(--despegar-blue);
-            text-decoration: none;
-        }
-        
-        .breadcrumb-item a:hover {
-            color: var(--despegar-orange);
-        }
-        
         .cart-header {
             background: linear-gradient(135deg, var(--despegar-blue) 0%, #004499 100%);
             color: white;
@@ -83,31 +69,6 @@
             font-size: 1.2rem;
             font-weight: bold;
             color: var(--despegar-orange);
-        }
-        
-        .quantity-controls {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-        
-        .quantity-btn {
-            width: 35px;
-            height: 35px;
-            border: 1px solid #ddd;
-            background: white;
-            border-radius: 8px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-        
-        .quantity-btn:hover {
-            background-color: var(--despegar-blue);
-            color: white;
-            border-color: var(--despegar-blue);
         }
         
         .quantity-input {
@@ -183,31 +144,6 @@
         
         .btn-continue:hover {
             background-color: var(--despegar-blue);
-            color: white;
-        }
-        
-        .promo-section {
-            background: #f8f9fa;
-            border-radius: 10px;
-            padding: 20px;
-            margin-bottom: 20px;
-        }
-        
-        .promo-input {
-            border-radius: 8px;
-            border: 1px solid #ddd;
-        }
-        
-        .btn-promo {
-            background-color: var(--despegar-blue);
-            border: none;
-            color: white;
-            border-radius: 8px;
-            padding: 8px 20px;
-        }
-        
-        .btn-promo:hover {
-            background-color: #0052a3;
             color: white;
         }
         
@@ -292,34 +228,6 @@
             background-color: #e9ecef;
             margin: 0 15px;
         }
-        
-        .savings-alert {
-            background: linear-gradient(135deg, #28a745, #20c997);
-            color: white;
-            border-radius: 10px;
-            padding: 15px;
-            margin-bottom: 20px;
-        }
-        
-        .item-tag {
-            background-color: var(--despegar-orange);
-            color: white;
-            padding: 2px 8px;
-            border-radius: 12px;
-            font-size: 0.75rem;
-            font-weight: bold;
-        }
-        
-        .flight-route {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            margin: 5px 0;
-        }
-        
-        .route-arrow {
-            color: var(--despegar-blue);
-        }
     </style>
 </head>
 <body>
@@ -354,19 +262,46 @@
                 </ul>
                 
                 <ul class="navbar-nav">
-                    <li class="nav-item">
-                        <a class="nav-link" href="login.html"><i class="fas fa-user"></i> Mi cuenta</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#"><i class="fas fa-headset"></i> Ayuda</a>
-                    </li>
-                </ul>
+    @auth
+    <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle fw-bold d-flex align-items-center" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            <i class="fas fa-user me-1"></i> {{ Auth::user()->name }}
+        </a>
+        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+            <li>
+                <a class="dropdown-item" href="{{ route('logout') }}"
+                   onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                    Cerrar sesión
+                </a>
+            </li>
+        </ul>
+        <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+            @csrf
+        </form>
+    </li>
+@else
+    <li class="nav-item">
+        <a class="nav-link" href="{{ route('login') }}"><i class="fas fa-user"></i> Mi cuenta</a>
+    </li>
+@endauth
+<li class="nav-item">
+    <a class="nav-link" href="#"><i class="fas fa-headset"></i> Ayuda</a>
+</li>
+</ul>
             </div>
         </div>
     </nav>
 
     <!-- Main Content -->
     <div class="container my-4">
+        <!-- Success Alert -->
+        @if(session('success'))
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                {{ session('success') }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        @endif
+
         <!-- Progress Steps -->
         <div class="progress-steps">
             <div class="step active">
@@ -398,135 +333,141 @@
                     <p class="mb-0">Revisá los detalles de tu viaje antes de continuar</p>
                 </div>
                 <div class="text-end">
-                    <div class="h4 mb-0">3 productos</div>
-                    <small>en tu carrito</small>
+                    @php 
+    $carrito = session('carrito', []);
+    $carrito_total_quantity = array_sum(array_map(function($item) { return isset($item['cantidad']) ? $item['cantidad'] : 1; }, $carrito));
+@endphp
+<div class="h4 mb-0">{{ $carrito_total_quantity }} producto{{ $carrito_total_quantity == 1 ? '' : 's' }}</div>
+<small>en tu carrito</small>
                 </div>
             </div>
         </div>
 
-        <!-- Savings Alert -->
-
-
-        <div class="row">
-            <!-- Cart Items -->
-            <div class="col-lg-8">
-                <div class="cart-card">
-                    <h5 class="mb-4"><i class="fas fa-shopping-cart text-primary me-2"></i>Productos en tu carrito</h5>
-                    @php $cart = session('cart', []); @endphp
-                    @if(count($cart) === 0)
-                        <div class="empty-cart">
-                            <i class="fas fa-shopping-cart"></i>
-                            <p>Tu carrito está vacío.<br>Agrega productos para verlos aquí.</p>
-                        </div>
-                    @else
-                        @foreach($cart as $key => $item)
-                        <div class="cart-item">
-                            <div class="row align-items-center">
-                                <div class="col-md-2">
-                                    <div class="item-image">
-                                        @if(isset($item['imagen']))
-                                            <img src="{{ $item['imagen'] }}" alt="{{ $item['nombre'] }}" class="img-fluid rounded">
-                                        @else
-                                            <i class="fas fa-box-open fa-2x text-primary"></i>
-                                        @endif
+        <!-- Cart Content -->
+        @php 
+            $cart = session('cart', []);
+            $carrito = isset($carrito) ? $carrito : $cart;
+        @endphp
+        
+        @if(count($carrito) > 0)
+            <div class="row">
+                <!-- Cart Items -->
+                <div class="col-lg-8">
+                    <div class="cart-card">
+                        <h5 class="mb-4"><i class="fas fa-shopping-cart text-primary me-2"></i>Productos en tu carrito</h5>
+                        
+                        @php $total = 0; @endphp
+                        @foreach($carrito as $key => $item)
+                            @php $subtotal = $item['precio'] * $item['cantidad']; $total += $subtotal; @endphp
+                            <div class="cart-item">
+                                <div class="row align-items-center">
+                                    <div class="col-md-2">
+                                        <div class="item-image">
+                                            @if(isset($item['imagen']))
+                                                <img src="{{ $item['imagen'] }}" alt="{{ $item['nombre'] }}" class="img-fluid rounded">
+                                            @else
+                                                <i class="fas fa-box-open fa-2x text-primary"></i>
+                                            @endif
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="item-details">
-                                        <h6 class="mb-1">{{ $item['nombre'] }}</h6>
-                                        @if(isset($item['descripcion']))
-                                            <p class="text-muted mb-1">{{ $item['descripcion'] }}</p>
-                                        @endif
+                                    <div class="col-md-5">
+                                        <div class="item-details">
+                                            <h6>{{ $item['nombre'] }}</h6>
+                                            @if(isset($item['tipo']))
+                                                <div class="small text-muted mb-1">Tipo: {{ ucfirst($item['tipo']) }}</div>
+                                            @endif
+                                            @if(isset($item['descripcion']))
+                                                <p class="text-muted mb-1">{{ $item['descripcion'] }}</p>
+                                            @endif
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="col-md-2">
-                                    <div class="quantity-controls">
+                                    <div class="col-md-2">
                                         <input type="number" class="quantity-input" value="{{ $item['cantidad'] }}" min="1" onchange="updateCartItem('{{ $key }}', this.value)">
                                     </div>
-                                </div>
-                                <div class="col-md-2 text-end">
-                                    <div class="item-price">${{ number_format($item['precio'], 2, ',', '.') }}</div>
-                                    <small class="text-muted">${{ number_format($item['precio'], 2, ',', '.') }} x {{ $item['cantidad'] }}</small>
-                                    <div class="mt-2">
-    <i class="fas fa-trash remove-item" style="cursor:pointer;" onclick="removeCartItem('{{ $key }}')" title="Eliminar"></i>
-</div>
+                                    <div class="col-md-2 text-end">
+                                        <div class="item-price">${{ number_format($item['precio'], 2) }}</div>
+                                        <small class="text-muted">x{{ $item['cantidad'] }}</small>
+                                    </div>
+                                    <div class="col-md-1 text-end">
+                                        <i class="fas fa-trash remove-item" onclick="removeCartItem('{{ $key }}')" title="Eliminar"></i>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
                         @endforeach
-                    @endif
-                </div>
-
-
-
-                <!-- Continue Shopping -->
-                <div class="text-center">
-                    <a href="index.html" class="btn btn-continue">
-                        <i class="fas fa-arrow-left me-2"></i>Continuar comprando
-                    </a>
-                </div>
-            </div>
-
-            <!-- Summary Sidebar -->
-            <div class="col-lg-4">
-                <div class="summary-card">
-                    <h5 class="mb-4 text-center">Resumen de compra</h5>
-                    
-                    @php
-                        $cart = session('cart', []);
-                        $subtotal = 0;
-                    @endphp
-                    @foreach($cart as $item)
-                        @php $subtotal += $item['precio'] * $item['cantidad']; @endphp
-                    @endforeach
-                    <div class="summary-row">
-                        <span>Subtotal</span>
-                        <span>${{ number_format($subtotal, 2, ',', '.') }}</span>
                     </div>
-                    <hr>
-                    <div class="summary-row">
-                        <span>Total</span>
-                        <span>${{ number_format($subtotal, 2, ',', '.') }}</span>
-                    </div>
-                    <button class="btn btn-checkout mt-4">
-                        <i class="fas fa-credit-card me-2"></i>Proceder al pago
-                    </button>
-                    
-                    <div class="text-center mt-3">
-                        <small class="text-muted">
-                            <i class="fas fa-shield-alt me-1"></i>
-                            Compra 100% segura y protegida
-                        </small>
+
+                    <!-- Continue Shopping -->
+                    <div class="text-center">
+                        <a href="index.html" class="btn btn-continue">
+                            <i class="fas fa-arrow-left me-2"></i>Continuar comprando
+                        </a>
                     </div>
                 </div>
 
-                <!-- Security Badges -->
-                <div class="security-badges">
-                    <div class="security-badge">
-                        <i class="fas fa-lock"></i>
-                        <div style="font-size: 0.8rem;">SSL</div>
+                <!-- Summary Sidebar -->
+                <div class="col-lg-4">
+                    <div class="summary-card">
+                        <h5 class="mb-4 text-center">Resumen de compra</h5>
+                        
+                        <div class="summary-row">
+                            <span>Subtotal</span>
+                            <span>${{ number_format($total, 2) }}</span>
+                        </div>
+                        <hr>
+                        <div class="summary-row">
+                            <span>Total</span>
+                            <span class="fs-4">${{ number_format($total, 2) }}</span>
+                        </div>
+                        
+                        <button class="btn btn-checkout mt-4">
+                            <i class="fas fa-credit-card me-2"></i>Proceder al pago
+                        </button>
+                        
+                        <div class="text-center mt-3">
+                            <small class="text-muted">
+                                <i class="fas fa-shield-alt me-1"></i>
+                                Compra 100% segura y protegida
+                            </small>
+                        </div>
                     </div>
-                    <div class="security-badge">
-                        <i class="fas fa-shield-alt"></i>
-                        <div style="font-size: 0.8rem;">Seguro</div>
-                    </div>
-                    <div class="security-badge">
-                        <i class="fas fa-credit-card"></i>
-                        <div style="font-size: 0.8rem;">Pagos</div>
-                    </div>
-                </div>
 
-                <!-- Help Section -->
-                <div class="cart-card mt-3">
-                    <h6><i class="fas fa-headset text-primary me-2"></i>¿Necesitás ayuda?</h6>
-                    <p class="mb-2">Nuestros expertos están disponibles 24/7</p>
-                    <p class="mb-0">
-                        <strong>+54 11 4000-1234</strong><br>
-                        <small class="text-muted">Llamada gratuita</small>
-                    </p>
+                    <!-- Security Badges -->
+                    <div class="security-badges">
+                        <div class="security-badge">
+                            <i class="fas fa-lock"></i>
+                            <div style="font-size: 0.8rem;">SSL</div>
+                        </div>
+                        <div class="security-badge">
+                            <i class="fas fa-shield-alt"></i>
+                            <div style="font-size: 0.8rem;">Seguro</div>
+                        </div>
+                        <div class="security-badge">
+                            <i class="fas fa-credit-card"></i>
+                            <div style="font-size: 0.8rem;">Pagos</div>
+                        </div>
+                    </div>
+
+                    <!-- Help Section -->
+                    <div class="cart-card mt-3">
+                        <h6><i class="fas fa-headset text-primary me-2"></i>¿Necesitás ayuda?</h6>
+                        <p class="mb-2">Nuestros expertos están disponibles 24/7</p>
+                        <p class="mb-0">
+                            <strong>+54 11 4000-1234</strong><br>
+                            <small class="text-muted">Llamada gratuita</small>
+                        </p>
+                    </div>
                 </div>
             </div>
-        </div>
+        @else
+            <div class="empty-cart">
+                <i class="fas fa-shopping-cart"></i>
+                <h4>¡Tu carrito está vacío!</h4>
+                <p>Agrega hospedajes, paquetes o viajes para continuar.</p>
+                <a href="index.html" class="btn btn-continue mt-3">
+                    <i class="fas fa-search me-2"></i>Explorar productos
+                </a>
+            </div>
+        @endif
     </div>
 
     <!-- Footer -->
@@ -578,13 +519,46 @@
             
             <div class="row">
                 <div class="col-12 text-center">
-                    <p class="mb-0">&copy; 2025 Frategar. Todos los derechos reservados.</p>
+                    <p class="mb-0">&copy; 2025 Frategar. Todos los derechos reservados.<br>
+    @auth
+        <span class="fw-bold">Sesión iniciada como: {{ Auth::user()->name }}</span>
+    @endauth
+</p>
                 </div>
             </div>
         </div>
     </footer>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-</body>
     <script src="/js/cart.js"></script>
+    
+    <script>
+        function updateCartItem(key, quantity) {
+            // Función para actualizar cantidad del item
+            console.log('Actualizando item:', key, 'cantidad:', quantity);
+        }
+        
+        function removeCartItem(key) {
+    if(confirm('¿Estás seguro de que querés eliminar este producto?')) {
+        fetch('/carrito/remove', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+            },
+            body: JSON.stringify({ key: key })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if(data.success) {
+                location.reload();
+            } else {
+                alert('No se pudo eliminar el producto del carrito.');
+            }
+        })
+        .catch(() => alert('Error al eliminar producto.'));
+    }
+}
+    </script>
+</body>
 </html>
