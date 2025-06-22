@@ -347,9 +347,14 @@
                 <ul class="navbar-nav">
                     @if(Auth::check())
                         <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                <i class="fas fa-user"></i> {{ Auth::user()->name }}
-                            </a>
+    <div class="d-flex align-items-center gap-4">
+        <a href="{{ route('carrito') }}" class="btn btn-link p-0 m-0" style="font-size:1.2rem;" title="Carrito">
+            <i class="fas fa-shopping-cart"></i>
+        </a>
+        <a class="nav-link d-flex align-items-center dropdown-toggle p-0" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            <i class="fas fa-user"></i> {{ Auth::user()->name }}
+        </a>
+    </div>
                             <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
                                 <li><a class="dropdown-item" href="{{ route('logout') }}"
                                        onclick="event.preventDefault(); document.getElementById('logout-form').submit();">

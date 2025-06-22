@@ -101,9 +101,12 @@ Route::get('/verify-email', [RegisterController::class, 'verifyEmail'])->name('v
 Route::get('/detalles', function () {
     return view('detalles');
 });
-Route::get('/carrito',  function () {
-    return view('login.carrito');
-});
+use App\Http\Controllers\CartController;
+Route::get('/carrito', [CartController::class, 'index'])->name('carrito');
+Route::post('/cart/add', [CartController::class, 'add'])->name('cart.add');
+Route::post('/cart/update', [CartController::class, 'update'])->name('cart.update');
+Route::post('/cart/remove', [CartController::class, 'remove'])->name('cart.remove');
+Route::post('/cart/clear', [CartController::class, 'clear'])->name('cart.clear');
 Route::get('/busqueda', function () {
     return view('busqueda');
 });
