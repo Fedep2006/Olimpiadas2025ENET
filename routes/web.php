@@ -103,7 +103,7 @@ Route::get('/detalles', function () {
 });
 Route::get('/carrito',  function () {
     return view('login.carrito');
-});
+})->name('carrito');
 Route::get('/busqueda', function () {
     return view('busqueda');
 });
