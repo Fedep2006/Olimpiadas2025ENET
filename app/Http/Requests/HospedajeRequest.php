@@ -164,18 +164,5 @@ class HospedajeRequest extends FormRequest
             'sitio_web' => $this->sitio_web ? trim($this->sitio_web) : null,
             'telefono' => $this->telefono ? trim($this->telefono) : null,
         ]);
-
-        // Asegurar formato correcto para horarios si vienen sin segundos
-        if ($this->has('check_in') && $this->check_in && !preg_match('/^\d{2}:\d{2}:\d{2}$/', $this->check_in)) {
-            $this->merge([
-                'check_in' => $this->check_in . ':00',
-            ]);
-        }
-
-        if ($this->has('check_out') && $this->check_out && !preg_match('/^\d{2}:\d{2}:\d{2}$/', $this->check_out)) {
-            $this->merge([
-                'check_out' => $this->check_out . ':00',
-            ]);
-        }
     }
 }

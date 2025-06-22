@@ -72,7 +72,7 @@
             ],
             (object)[
                 'id' => 'ubicacion',
-                'name' => 'nombre',
+                'name' => 'ubicacion',
                 'type' => 'text',
                 'label' => 'Ubicacion del Hospedaje'
             ],
@@ -157,17 +157,143 @@
                 'id' => 'editNombre',
                 'name' => 'nombre',
                 'type' => 'text',
-                'label' => 'Nombre de la Empresa'
+                'label' => 'Nombre del Hospedaje'
+            ],
+            (object)[
+                'id' => 'editEmpresa_id',
+                'name' => 'empresa_id',
+                'type' => 'select',
+                'label' => 'Empresa del Hospedaje',
+                'options' => $empresas->map(function($empresa) {
+                    return (object)['value' => $empresa->id, 'text' => $empresa->nombre];
+                })->toArray()
             ],
             (object)[
                 'id' => 'editTipo',
                 'name' => 'tipo',
                 'type' => 'select',
-                'label' => 'Tipo de Empresa',
+                'label' => 'Tipo de Hospedaje',
                 'options' => [
-                    (object)['value' => 'hospedajes', 'text' => 'Hospedajes'],
-                    (object)['value' => 'viajes', 'text' => 'Viajes'],
+                    (object)['value' => 'hotel', 'text' => 'Hotel'],
+                    (object)['value' => 'hostal', 'text' => 'Hostal'],
+                    (object)['value' => 'apartamento', 'text' => 'Apartamento'],
+                    (object)['value' => 'casa', 'text' => 'Casa'],
+                    (object)['value' => 'cabaña', 'text' => 'Cabaña'],
+                    (object)['value' => 'resort', 'text' => 'Resort'],
                 ],
+            ],
+            (object)[
+                'id' => 'editHabitacion',
+                'name' => 'habitacion',
+                'type' => 'select',
+                'label' => 'Tipo de Habitacion',
+                'options' => [
+                    (object)['value' => 'individual', 'text' => 'Individual'],
+                    (object)['value' => 'doble', 'text' => 'Doble'],
+                    (object)['value' => 'triple', 'text' => 'Triple'],
+                    (object)['value' => 'cuadruple', 'text' => 'Cuadruple'],
+                    (object)['value' => 'suite', 'text' => 'Suite'],
+                    (object)['value' => 'familiar', 'text' => 'Familiar'],
+                ],
+            ],
+            (object)[
+                'id' => 'editHabitaciones_disponibles',
+                'name' => 'habitaciones_disponibles',
+                'type' => 'number',
+                'label' => 'Habitaciones Disponibles'
+            ],
+            (object)[
+                'id' => 'editCapacidad_personas',
+                'name' => 'capacidad_personas',
+                'type' => 'number',
+                'label' => 'Capacidad de Personas'
+            ],
+            (object)[
+                'id' => 'editPrecio_por_noche',
+                'name' => 'precio_por_noche',
+                'type' => 'number',
+                'label' => 'Precio por Noche'
+            ],
+            (object)[
+                'id' => 'editUbicacion',
+                'name' => 'ubicacion',
+                'type' => 'text',
+                'label' => 'Ubicacion del Hospedaje'
+            ],
+            (object)[
+                'id' => 'editPais',
+                'name' => 'pais',
+                'type' => 'text',
+                'label' => 'Pais del Hospedaje'
+            ],
+            (object)[
+                'id' => 'editCiudad',
+                'name' => 'ciudad',
+                'type' => 'text',
+                'label' => 'Ciudad del Hospedaje'
+            ],
+            (object)[
+                'id' => 'editEstrellas',
+                'name' => 'estrellas',
+                'type' => 'number',
+                'label' => 'Estrellas del Hospedaje'
+            ],
+            (object)[
+                'id' => 'editDescripcion',
+                'name' => 'descripcion',
+                'type' => 'text',
+                'label' => 'Descripcion del Hospedaje'
+            ],
+            (object)[
+                'id' => 'editTelefono',
+                'name' => 'telefono',
+                'type' => 'number',
+                'label' => 'Telefono del Hospedaje'
+            ],
+            (object)[
+                'id' => 'editEmail',
+                'name' => 'email',
+                'type' => 'email',
+                'label' => 'Email del Hospedaje'
+            ],
+            (object)[
+                'id' => 'editSitio_web',
+                'name' => 'sitio_web',
+                'type' => 'text',
+                'label' => 'Sitio Web del Hospedaje'
+            ],
+            (object)[
+                'id' => 'editCheck_in',
+                'name' => 'check_in',
+                'type' => 'time',
+                'label' => 'Check-in del Hospedaje'
+            ],
+            (object)[
+                'id' => 'editCheck_out',
+                'name' => 'check_out',
+                'type' => 'time',
+                'label' => 'Check-out del Hospedaje'
+            ],
+            (object)[
+                'id' => 'editCalificacion',
+                'name' => 'calificacion',
+                'type' => 'number',
+                'label' => 'Calificacion del Hospedaje',
+                'min' => '0.1',
+                'step' => '0.1',
+                'max' => '5',
+            ],
+            (object)[
+                'id' => 'editActivo',
+                'name' => 'activo',
+                'type' => 'checkbox',
+                'label' => 'Hospedaje Disponible',
+            ],
+            (object)[
+                'id' => 'editCondiciones',
+                'name' => 'condiciones',
+                'type' => 'text',
+                'label' => 'Condiciones del Hospedaje'
             ]
         ];
         
@@ -215,7 +341,18 @@
         @php
             $tHead= [
                 "Nombre",
-                "Tipo de Empresa",
+                "Empresa",
+                "Habitacion",
+                "Precio",
+                "Ubicacion",
+                "Lugar",
+                "Calificacion",
+                "descripcion",
+                "Contacto",
+                "Horarios",
+                "condiciones",
+                "activo",
+
             ];
         @endphp
         @include('administracion.partials.tabla', 

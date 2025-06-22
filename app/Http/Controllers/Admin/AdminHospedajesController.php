@@ -35,7 +35,7 @@ class AdminHospedajesController extends Controller
         }
 
         // Ordenar por fecha de creación descendente
-        $query->select(['id', 'empresa_id', 'tipo', 'habitacion', 'habitaciones_disponibles', 'capacidad_personas', 'precio_por_noche', 'ubicacion', 'pais', 'ciudad', 'estrellas', 'descripcion', 'telefono', 'email', 'sitio_web', 'check_in', 'check_out', 'calificacion', 'activo', 'condiciones', 'created_at'])->orderBy('created_at', 'desc');
+        $query->select(['id', 'empresa_id', 'nombre', 'tipo', 'habitacion', 'habitaciones_disponibles', 'capacidad_personas', 'precio_por_noche', 'ubicacion', 'pais', 'ciudad', 'estrellas', 'descripcion', 'telefono', 'email', 'sitio_web', 'check_in', 'check_out', 'calificacion', 'activo', 'condiciones', 'created_at'])->orderBy('created_at', 'desc');
 
         // Paginar resultados
         $registros = $query->paginate(10)->withQueryString();

@@ -107,7 +107,15 @@
                 </span>
             </td>
             <td>
-                <x-layouts.administracion.modals.mostrar-registro id={{$id}} titulo="Descripcion" contenido="{{ $registro->descripcion }}"/>
+                @php
+                    $detalles = [
+                        (object)[
+                            'titulo' => '',
+                            'contenido' => $registro->descripcion,
+                        ]
+                    ];
+                @endphp
+                <x-layouts.administracion.modals.mostrar-registro id={{$id}} titulo="Descripcion" :detalles="$detalles"/>
             </td>
             <td>
                 <div class="action-buttons flex justify-center">

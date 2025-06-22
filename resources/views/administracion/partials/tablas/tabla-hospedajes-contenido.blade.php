@@ -26,33 +26,20 @@
         background-color: #dc3545;
         color: white;
     }
-
-    .user-profile {
-        display: flex;
-        align-items: center;
-        gap: 12px;
-    }
-
-    .user-profile-avatar {
-        width: 45px;
-        height: 45px;
-        border-radius: 50%;
-        background: var(--despegar-light-blue);
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        color: var(--despegar-blue);
-        font-weight: bold;
-        font-size: 1.1rem;
-    }
-
-    .user-info h6 {
+    .ids h6 {
         margin: 0;
-        font-weight: bold;
+        font-weight: normal;
     }
 
-    .user-info small {
+    small {
         color: #6c757d;
+        font-size: 12px;
+        line-height: 1;
+    }
+    .camino-text{
+        color: #6c757d;
+        font-size: 14px;
+        line-height: 0.95;
     }
 </style>
 @php
@@ -60,27 +47,130 @@
 @endphp
 @if ($registros->isEmpty())
     <tr>
-        <td colspan="4" class="text-center">No se encontraron empleados</td>
+        <td colspan="4" class="text-center">No se encontraron hospedajes</td>
     </tr>
 @else
+    @php
+        $id1 = 0;
+        $id2 = 100;
+        $id3 = 200;
+        $id4 = 300;
+    @endphp
     @foreach ($registros as $registro)
         <tr>
             <td>
-                <div class="user-profile">
-                    <div class="user-profile-avatar">
-                        {{ substr($registro->usuario->name, 0, 2) }}
-                    </div>
-                    <div class="user-info">
-                        <h6>{{ $registro->usuario->name }}</h6>
-                        <small>ID: {{ $registro->id }}</small>
+                <div class="flex flex-col text-center justify-between h-full w-fit ">
+                    <h6>{{ ucfirst($registro->nombre) }}</h6>
+                    <small class="pb-1">{{ ucfirst($registro->tipo) }}</small>
+                    <span class="pt-1 w-full border-t border-gray-300 ">
+                        @for ($i = 0; $i < $registro->estrellas; $i++)
+                            <i class="fas fa-star text-[0.7rem]" style="color: gold;"></i>
+                        @endfor
+                    </span>
+                </div>
+            </td>
+            <td>{{ ucfirst($registro->empresa->nombre) }}</td>
+            <td>
+                <div class="flex justify-center items-center">
+                    <div class="flex flex-col text-center ids gap-1">
+                        <h6>{{ ucfirst($registro->habitacion) }}</h6>
+                        <small class="camino-text">
+                            {{"Maximo ".$registro->capacidad_personas.($registro->capacidad_personas > 0 ? " personas": " persona")}} 
+                        </small>
+                        <small class="camino-text">Disponibles: {{ $registro->habitaciones_disponibles }}</small>
                     </div>
                 </div>
             </td>
-            <td>{{ $registro->usuario->email }}</td>
-            <td>{{ $registro->puesto }}</td>
-            <td>{{ '$' . number_format($registro->salario, 0, ',', '.') }}</td>
-            <td>{{ $registro->estado }}</td>
-            <td>{{ $registro->fecha_contratacion->format('d/m/Y') }}</td>
+            <td>
+                <div class="flex items-center flex-col">
+                        <span>{{ '$' . number_format($registro->precio_por_noche, 0, ',', '.')}}</span>
+                        <small class="camino-text">por noche</small>
+                </div>
+            </td>
+            <td>{{ $registro->ubicacion }}</td>
+            <td>
+                <div class="flex justify-center items-center">
+                    <div class="flex flex-col text-center ids gap-1">
+                        <h6>{{ ucfirst($registro->pais) }}</h6>
+                        <small class="camino-text">
+                            {{ $registro->ciudad }} 
+                        </small>
+                    </div>
+                </div>
+            </td>
+            <td>
+                <div class="flex justify-center">
+                    <div class="flex flex-col text-center justify-between h-full w-fit ">
+                        <span class=" pb-1 mb-1 w-full">
+                            {{ number_format($registro->calificacion, 1, '.', ',') }}
+                        </span>
+                    </div>
+                </div>
+            </td>
+            <td>
+                @php
+                    $detalles = [
+                        (object)[
+                            'titulo' => '',
+                            'contenido' => $registro->descripcion,
+                        ]
+                        
+                    ];
+                @endphp
+                <x-layouts.administracion.modals.mostrar-registro id={{$id1}} titulo="Descripcion" :detalles="$detalles"/>
+            </td>
+            <td>
+                @php
+                    $contacto = [
+                        (object)[
+                            'titulo' => 'Telefono',
+                            'contenido' => $registro->telefono,
+                        ],
+                        (object)[
+                            'titulo' => 'Email',
+                            'contenido' => $registro->email,
+                        ],
+                        (object)[
+                            'titulo' => 'Sitio Web',
+                            'contenido' => $registro->sitio_web,
+                        ],
+                        
+                    ];
+                @endphp
+                <x-layouts.administracion.modals.mostrar-registro id={{$id2}} titulo="Contacto" :detalles="$contacto"/>
+            </td>
+            <td>
+                @php
+                    $horarios = [
+                        (object)[
+                            'titulo' => 'Check-in',
+                            'contenido' => $registro->check_in->format('H:i'),
+                        ],
+                        (object)[
+                            'titulo' => 'Check-out',
+                            'contenido' => $registro->check_out->format('H:i'),
+                        ],
+                        
+                    ];
+                @endphp
+                <x-layouts.administracion.modals.mostrar-registro id={{$id3}} titulo="Horarios" :detalles="$horarios"/>
+            </td>
+            <td>
+                @php
+                    $condiciones = [
+                        (object)[
+                            'titulo' => '',
+                            'contenido' => $registro->condiciones,
+                        ]
+                    ];
+                @endphp
+                <x-layouts.administracion.modals.mostrar-registro id={{$id4}} titulo="Condiciones" :detalles="$condiciones"/>
+            </td>
+            <td>
+                <span class="badge bg-{{ $registro->activo ? 'success' : 'danger' }}">
+                    {{ $registro->activo ? 'Activo' : 'Inactivo' }}
+                </span>
+            </td>
             <td>
                 <div class="action-buttons">
                     <button class="action-btn edit" data-registro="{{ $registro }}" title="Editar">
@@ -92,5 +182,11 @@
                 </div>
             </td>
         </tr>
+        @php
+            $id1++;
+            $id2++;
+            $id3++;
+            $id4++;
+        @endphp
     @endforeach
 @endif

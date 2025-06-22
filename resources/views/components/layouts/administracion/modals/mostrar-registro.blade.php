@@ -7,7 +7,10 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
             </div>
             <div class="modal-body">
-                <p>{{$contenido ?? ''}}</p>
+                @foreach ( $detalles as $detalle)
+                    <h5>{{ $detalle->titulo}}</h3>
+                    <p>{{$detalle->contenido ?? ''}}</p>
+                @endforeach
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Salir</button>
