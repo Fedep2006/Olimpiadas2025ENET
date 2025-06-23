@@ -47,13 +47,19 @@
                 })->toArray()
             ],
             (object)[
-                'id' => 'provicia_id',
-                'name' => 'provicia_id',
+                'id' => 'provincia_id',
+                'name' => 'provincia_id',
                 'type' => 'select',
                 'label' => 'Provincia',
                 'options' => $provincias->map(function($provincia) {
                     return (object)['value' => $provincia->id, 'text' => $provincia->nombre];
                 })->toArray()
+            ],
+            (object)[
+                'id' => 'ubicacion',
+                'name' => 'ubicacion',
+                'type' => 'text',
+                'label' => 'Ubicacion donde esta el Viaje',
             ],
             (object)[
                 'id' => 'origen',

@@ -82,6 +82,15 @@
                     </div>
                 </div>
             </td>
+            <td>
+                <div class="flex justify-center items-center">
+                    <div class="flex flex-col text-center ids gap-1">
+                        <h6>{{ $registro->pais }}</h6>
+                        <small class="camino-text">a</small>
+                        <h6>{{ $registro->provincia }}</h6>
+                    </div>
+                </div>
+            </td>
             <td >
                 <div class="flex justify-center">
                     <div class="flex flex-col text-center justify-between h-full w-fit ">

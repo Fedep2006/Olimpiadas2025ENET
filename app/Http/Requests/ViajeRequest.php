@@ -35,6 +35,11 @@ class ViajeRequest extends FormRequest
                 'integer',
                 'exists:provincias,id',
             ],
+            'ciudad_id' => [
+                'required',
+                'integer',
+                'exists:ciudades,id',
+            ],
             'ubicacion' => [
                 'required',
                 'string',
