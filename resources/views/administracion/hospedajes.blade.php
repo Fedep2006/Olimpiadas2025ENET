@@ -101,7 +101,7 @@
                 'id' => 'ubicacion',
                 'name' => 'ubicacion',
                 'type' => 'text',
-                'label' => 'Ubicacion donde esta el Viaje',
+                'label' => 'Ubicacion donde esta el Hospedaje',
             ],
             (object)[
                 'id' => 'estrellas',
@@ -260,7 +260,7 @@
                 'id' => 'editUbicacion',
                 'name' => 'ubicacion',
                 'type' => 'text',
-                'label' => 'Ubicacion donde esta el Viaje',
+                'label' => 'Ubicacion donde esta el Hospedaje',
             ],
             (object)[
                 'id' => 'editEstrellas',

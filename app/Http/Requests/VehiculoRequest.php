@@ -4,6 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
+use Illuminate\Support\Str;
 
 class VehiculoRequest extends FormRequest
 {
@@ -15,7 +16,7 @@ class VehiculoRequest extends FormRequest
 
     public function rules(): array
     {
-        $vehiculoId = $this->route('vehiculo') ? $this->route('vehiculo')->id : null;
+        $vehiculoId = $this->route('vehiculo')?->id;
 
         return [
             'tipo' => [
@@ -38,15 +39,14 @@ class VehiculoRequest extends FormRequest
             'antiguedad' => [
                 'required',
                 'string',
-                'max:255',
-                'regex:/^\d{4}$/' // Valida que sea un año de 4 dígitos
+                'max:255'
             ],
             'patente' => [
                 'required',
                 'string',
                 'max:10',
-                'min:6',
-                'regex:/^[A-Za-z0-9\-\s]+$/', // Permite letras, números, guiones y espacios
+                'min:4',
+                'regex:/^[A-Z0-9\-\s]+$/i',
                 Rule::unique('vehiculos', 'patente')->ignore($vehiculoId)
             ],
             'color' => [
@@ -61,42 +61,47 @@ class VehiculoRequest extends FormRequest
                 'min:1',
                 'max:50'
             ],
+            'vehiculos_disponibles' => [
+                'required',
+                'integer',
+                'min:0',
+                'max:1000'
+            ],
             'pais_id' => [
                 'required',
                 'integer',
-                'exists:paises,id',
+                'exists:paises,id'
             ],
             'provincia_id' => [
                 'required',
                 'integer',
-                'exists:provincias,id',
+                'exists:provincias,id'
             ],
             'ciudad_id' => [
                 'required',
                 'integer',
-                'exists:ciudades,id',
+                'exists:ciudades,id'
             ],
             'ubicacion' => [
                 'required',
                 'string',
                 'max:255',
-                'min:2',
+                'min:5'
             ],
             'precio_por_dia' => [
                 'required',
                 'numeric',
                 'min:0.01',
-                'max:99999999.99',
+                'max:999999.99',
                 'decimal:0,2'
-            ],
-            'disponible' => [
-                'required',
-                'boolean'
             ],
             'descripcion' => [
                 'nullable',
                 'string',
                 'max:2000'
+            ],
+            'disponible' => [
+                'boolean'
             ]
         ];
     }
@@ -115,12 +120,12 @@ class VehiculoRequest extends FormRequest
             'modelo.min' => 'El modelo debe tener al menos 2 caracteres.',
             'modelo.max' => 'El modelo no puede exceder los 255 caracteres.',
 
-            'antiguedad.required' => 'El año de fabricación es obligatorio.',
-            'antiguedad.regex' => 'El año debe tener formato YYYY (4 dígitos).',
+            'antiguedad.required' => 'La antigüedad del vehículo es obligatoria.',
+            'antiguedad.max' => 'La antigüedad no puede exceder los 255 caracteres.',
 
             'patente.required' => 'La patente del vehículo es obligatoria.',
             'patente.unique' => 'Esta patente ya está registrada en el sistema.',
-            'patente.min' => 'La patente debe tener al menos 6 caracteres.',
+            'patente.min' => 'La patente debe tener al menos 4 caracteres.',
             'patente.max' => 'La patente no puede exceder los 10 caracteres.',
             'patente.regex' => 'La patente solo puede contener letras, números, guiones y espacios.',
 
@@ -130,27 +135,36 @@ class VehiculoRequest extends FormRequest
 
             'capacidad_pasajeros.required' => 'La capacidad de pasajeros es obligatoria.',
             'capacidad_pasajeros.integer' => 'La capacidad de pasajeros debe ser un número entero.',
-            'capacidad_pasajeros.min' => 'La capacidad mínima es de 1 pasajero.',
-            'capacidad_pasajeros.max' => 'La capacidad máxima es de 50 pasajeros.',
+            'capacidad_pasajeros.min' => 'La capacidad de pasajeros debe ser al menos 1.',
+            'capacidad_pasajeros.max' => 'La capacidad de pasajeros no puede exceder 50.',
 
-            'pais.required' => 'El país es obligatorio.',
-            'pais.min' => 'El país debe tener al menos 2 caracteres.',
-            'pais.max' => 'El país no puede exceder los 255 caracteres.',
+            'vehiculos_disponibles.required' => 'La cantidad de vehículos disponibles es obligatoria.',
+            'vehiculos_disponibles.integer' => 'La cantidad debe ser un número entero.',
+            'vehiculos_disponibles.min' => 'La cantidad de vehículos disponibles no puede ser negativa.',
+            'vehiculos_disponibles.max' => 'La cantidad de vehículos disponibles no puede exceder 1000.',
 
-            'ubicacion.required' => 'La ubicación es obligatoria.',
+            'pais_id.required' => 'El país es obligatorio.',
+            'pais_id.exists' => 'El país seleccionado no existe.',
+
+            'provincia_id.required' => 'La provincia es obligatoria.',
+            'provincia_id.exists' => 'La provincia seleccionada no existe.',
+
+            'ciudad_id.required' => 'La ciudad es obligatoria.',
+            'ciudad_id.exists' => 'La ciudad seleccionada no existe.',
+
+            'ubicacion.required' => 'La ubicación del vehículo es obligatoria.',
             'ubicacion.min' => 'La ubicación debe tener al menos 5 caracteres.',
             'ubicacion.max' => 'La ubicación no puede exceder los 255 caracteres.',
 
             'precio_por_dia.required' => 'El precio por día es obligatorio.',
-            'precio_por_dia.numeric' => 'El precio debe ser un valor numérico.',
-            'precio_por_dia.min' => 'El precio mínimo es de 0.01.',
-            'precio_por_dia.max' => 'El precio máximo es de 99,999,999.99.',
-            'precio_por_dia.decimal' => 'El precio puede tener máximo 2 decimales.',
+            'precio_por_dia.numeric' => 'El precio por día debe ser un número válido.',
+            'precio_por_dia.min' => 'El precio por día debe ser mayor a 0.',
+            'precio_por_dia.max' => 'El precio por día no puede exceder 999,999.99.',
+            'precio_por_dia.decimal' => 'El precio por día puede tener máximo 2 decimales.',
 
-            'disponible.required' => 'El estado de disponibilidad es obligatorio.',
-            'disponible.boolean' => 'El estado de disponibilidad debe ser verdadero o falso.',
+            'descripcion.max' => 'La descripción no puede exceder los 2000 caracteres.',
 
-            'descripcion.max' => 'La descripción no puede exceder los 2000 caracteres.'
+            'disponible.boolean' => 'El campo disponible debe ser verdadero o falso.'
         ];
     }
 
@@ -160,36 +174,36 @@ class VehiculoRequest extends FormRequest
             'tipo' => 'tipo de vehículo',
             'marca' => 'marca',
             'modelo' => 'modelo',
-            'antiguedad' => 'año de fabricación',
+            'antiguedad' => 'antigüedad',
             'patente' => 'patente',
             'color' => 'color',
             'capacidad_pasajeros' => 'capacidad de pasajeros',
-            'pais' => 'país',
+            'vehiculos_disponibles' => 'vehículos disponibles',
+            'pais_id' => 'país',
+            'provincia_id' => 'provincia',
+            'ciudad_id' => 'ciudad',
             'ubicacion' => 'ubicación',
             'precio_por_dia' => 'precio por día',
-            'disponible' => 'disponibilidad',
-            'descripcion' => 'descripción'
+            'descripcion' => 'descripción',
+            'disponible' => 'disponibilidad'
         ];
     }
+
     protected function prepareForValidation(): void
     {
-
-        // Limpiar espacios en blanco
-        $this->merge([
-            'tipo' => trim($this->tipo ?? ''),
-            'marca' => trim($this->marca ?? ''),
-            'modelo' => trim($this->modelo ?? ''),
-            'color' => trim($this->color ?? ''),
-            'pais' => trim($this->pais ?? ''),
-            'ubicacion' => trim($this->ubicacion ?? ''),
-            'descripcion' => trim($this->descripcion ?? ''),
-        ]);
-
-        // Convierte precio_base a un numero
-        if ($this->has('precio_base')) {
+        if ($this->has('patente')) {
             $this->merge([
-                'precio_base' => number_format((float)$this->precio_base, 2, '.', '')
+                'patente' => Str::upper(trim($this->patente))
             ]);
+        }
+
+        $textFields = ['marca', 'modelo', 'color', 'ubicacion', 'descripcion'];
+        foreach ($textFields as $field) {
+            if ($this->has($field)) {
+                $this->merge([
+                    $field => trim($this->$field)
+                ]);
+            }
         }
     }
 }

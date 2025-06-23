@@ -52,28 +52,49 @@
                 'label' => 'Color del Vehiculo'
             ],
             (object)[
+                'id' => 'vehiculos_disponibles',
+                'name' => 'vehiculos_disponibles',
+                'type' => 'number',
+                'label' => 'Vehiculos Disponibles'
+            ],
+            (object)[
                 'id' => 'capacidad_pasajeros',
                 'name' => 'capacidad_pasajeros',
                 'type' => 'number',
                 'label' => 'Capacidad de Pasajeros'
             ],
             (object)[
-                'id' => 'pais',
-                'name' => 'pais',
-                'type' => 'text',
-                'label' => 'Pais donde se encuentra el Vehiculo'
+                'id' => 'pais_id',
+                'name' => 'pais_id',
+                'type' => 'select',
+                'label' => 'Pais',
+                'options' => $paises->map(function($pais) {
+                    return (object)['value' => $pais->id, 'text' => $pais->nombre];
+                })->toArray()
             ],
             (object)[
-                'id' => 'ciudad',
-                'name' => 'ciudad',
-                'type' => 'text',
-                'label' => 'Ciudad donde se encuentra el Vehiculo'
+                'id' => 'provincia_id',
+                'name' => 'provincia_id',
+                'type' => 'select',
+                'label' => 'Provincia',
+                'options' => $provincias->map(function($provincia) {
+                    return (object)['value' => $provincia->id, 'text' => $provincia->nombre];
+                })->toArray()
+            ],
+            (object)[
+                'id' => 'ciudad_id',
+                'name' => 'ciudad_id',
+                'type' => 'select',
+                'label' => 'Ciudad',
+                'options' => $ciudades->map(function($ciudad) {
+                    return (object)['value' => $ciudad->id, 'text' => $ciudad->nombre];
+                })->toArray()
             ],
             (object)[
                 'id' => 'ubicacion',
                 'name' => 'ubicacion',
                 'type' => 'text',
-                'label' => 'Ubicacion del Vehiculo'
+                'label' => 'Ubicacion donde esta el Vehiculo',
             ],
             (object)[
                 'id' => 'precio_por_dia',
@@ -116,7 +137,7 @@
             ],
             (object)[
                 'id' => 'editModelo',
-                'name' => 'editModelo',
+                'name' => 'modelo',
                 'type' => 'text',
                 'label' => 'Modelo del Vehiculo'
             ],
@@ -139,28 +160,49 @@
                 'label' => 'Color del Vehiculo'
             ],
             (object)[
+                'id' => 'editVehiculos_disponibles',
+                'name' => 'vehiculos_disponibles',
+                'type' => 'number',
+                'label' => 'Vehiculos Disponibles'
+            ],
+            (object)[
                 'id' => 'editCapacidad_pasajeros',
                 'name' => 'capacidad_pasajeros',
                 'type' => 'number',
                 'label' => 'Capacidad de Pasajeros'
             ],
             (object)[
-                'id' => 'editPais',
-                'name' => 'pais',
-                'type' => 'text',
-                'label' => 'Pais donde se encuentra el Vehiculo'
+                'id' => 'editPais_id',
+                'name' => 'pais_id',
+                'type' => 'select',
+                'label' => 'Pais',
+                'options' => $paises->map(function($pais) {
+                    return (object)['value' => $pais->id, 'text' => $pais->nombre];
+                })->toArray()
             ],
             (object)[
-                'id' => 'editCiudad',
-                'name' => 'ciudad',
-                'type' => 'text',
-                'label' => 'Ciudad donde se encuentra el Vehiculo'
+                'id' => 'editProvincia_id',
+                'name' => 'provincia_id',
+                'type' => 'select',
+                'label' => 'Provincia',
+                'options' => $provincias->map(function($provincia) {
+                    return (object)['value' => $provincia->id, 'text' => $provincia->nombre];
+                })->toArray()
+            ],
+            (object)[
+                'id' => 'editCiudad_id',
+                'name' => 'ciudad_id',
+                'type' => 'select',
+                'label' => 'Ciudad',
+                'options' => $ciudades->map(function($ciudad) {
+                    return (object)['value' => $ciudad->id, 'text' => $ciudad->nombre];
+                })->toArray()
             ],
             (object)[
                 'id' => 'editUbicacion',
                 'name' => 'ubicacion',
                 'type' => 'text',
-                'label' => 'Ubicacion del Vehiculo'
+                'label' => 'Ubicacion donde esta el Vehiculo',
             ],
             (object)[
                 'id' => 'editPrecio_por_dia',
@@ -185,132 +227,140 @@
         
         $camposBuscar = [
             (object)[
-                'label' => 'Vehiculo',
-                'type' => 'text',
-                'name' => 'search_vehiculo',
-                'id' => 'searchVehiculo',
-                'placeholder' => 'Nombre del vehiculo',
-                'value' => 'search_vehiculo'
-            ],
-            (object)[
-                'label' => 'Tipo de Hospedaje',
-                'type' => 'select',
-                'name' => 'search_tipo',
                 'id' => 'searchTipo',
+                'name' => 'search_tipo',
+                'type' => 'select',
+                'label' => 'Tipo de Vehiculo',
                 'value' => 'search_tipo',
+                'placeholder' => 'Tipo de vehiculo',
                 'options' => [
-                    (object)['value' => 'hotel', 'text' => 'Hotel'],
-                    (object)['value' => 'hostal', 'text' => 'Hostal'],
-                    (object)['value' => 'apartamento', 'text' => 'Apartamento'],
-                    (object)['value' => 'casa', 'text' => 'Casa'],
-                    (object)['value' => 'cabaña', 'text' => 'Cabaña'],
-                    (object)['value' => 'resort', 'text' => 'Resort'],
+                    (object)['value' => 'auto', 'text' => 'Auto'],
+                    (object)['value' => 'camioneta', 'text' => 'Camioneta'],
+                    (object)['value' => 'moto', 'text' => 'Moto'],
+                    (object)['value' => 'bicicleta', 'text' => 'Bicicleta'],
                 ],
             ],
             (object)[
-                'id' => 'searchHabitacion',
-                'name' => 'search_habitacion',
-                'type' => 'select',
-                'label' => 'Tipo de Habitacion',
-                'value' => 'search_habitacion',
-                'options' => [
-                    (object)['value' => 'individual', 'text' => 'Individual'],
-                    (object)['value' => 'doble', 'text' => 'Doble'],
-                    (object)['value' => 'triple', 'text' => 'Triple'],
-                    (object)['value' => 'cuadruple', 'text' => 'Cuadruple'],
-                    (object)['value' => 'suite', 'text' => 'Suite'],
-                    (object)['value' => 'familiar', 'text' => 'Familiar'],
-                ],
-            ],
-            (object)[
-                'label' => 'Maximo de Personas',
-                'type' => 'number',
-                'name' => 'search_maximo_personas',
-                'id' => 'searchMaximo_personas',
-                'placeholder' => 'Maximo de personas',
-                'value' => 'search_maximo_personas'
-            ],
-            (object)[
-                'label' => 'Hospedajes Disponibles',
-                'type' => 'number',
-                'name' => 'search_hospedajes_disponibles',
-                'id' => 'searchHospedajes_disponibles',
-                'placeholder' => 'Hospedajes Disponibles',
-                'value' => 'search_hospedajes_disponibles',
-            ],
-            (object)[
-                'label' => 'Precio',
-                'type' => 'number',
-                'name' => 'search_precio',
-                'id' => 'searchPrecio',
-                'placeholder' => 'Precio del hospedaje',
-                'value' => 'search_precio',
-            ],
-            (object)[
-                'label' => 'Ubicacion',
+                'id' => 'searchMarca',
+                'name' => 'search_marca',
                 'type' => 'text',
-                'name' => 'search_ubicacion',
+                'label' => 'Marca del Vehiculo',
+                'value' => 'search_marca',
+                'placeholder' => 'Marca del vehiculo',
+            ],
+            (object)[
+                'id' => 'searchModelo',
+                'name' => 'search_modelo',
+                'type' => 'text',
+                'label' => 'Modelo del Vehiculo',
+                'value' => 'search_modelo',
+                'placeholder' => 'Modelo del vehiculo',
+            ],
+            (object)[
+                'id' => 'searchAntiguedad',
+                'name' => 'search_antiguedad',
+                'type' => 'number',
+                'label' => 'Año de Fabricacion',
+                'value' => 'search_antiguedad',
+                'placeholder' => 'Antiguedad del vehiculo',
+            ],
+            (object)[
+                'id' => 'searchPatente',
+                'name' => 'search_patente',
+                'type' => 'text',
+                'label' => 'Patente del Vehiculo',
+                'value' => 'search_patente',
+                'placeholder' => 'Patente del vehiculo',
+            ],
+            (object)[
+                'id' => 'searchColor',
+                'name' => 'search_color',
+                'type' => 'text',
+                'label' => 'Color del Vehiculo',
+                'value' => 'search_color',
+                'placeholder' => 'Color del vehiculo',
+            ],
+            (object)[
+                'id' => 'searchVehiculos_disponibles',
+                'name' => 'search_vehiculos_disponibles',
+                'type' => 'number',
+                'label' => 'Vehiculos Disponibles',
+                'value' => 'search_vehiculos_disponibles',
+                'placeholder' => 'Cantidad de vehiculos',
+            ],
+            (object)[
+                'id' => 'searchCapacidad_pasajeros',
+                'name' => 'search_capacidad_pasajeros',
+                'type' => 'number',
+                'label' => 'Capacidad de Pasajeros',
+                'value' => 'search_capacidad_pasajeros',
+                'placeholder' => 'Cantidad de pasajeros',
+            ],
+            (object)[
+                'id' => 'searchPais_id',
+                'name' => 'search_pais_id',
+                'type' => 'select',
+                'label' => 'Pais',
+                'value' => 'search_pais_id',
+                'placeholder' => 'Pais',
+                'options' => $paises->map(function($pais) {
+                    return (object)['value' => $pais->id, 'text' => $pais->nombre];
+                })->toArray()
+            ],
+            (object)[
+                'id' => 'searchProvincia_id',
+                'name' => 'search_provincia_id',
+                'type' => 'select',
+                'label' => 'Provincia',
+                'value' => 'search_provincia_id',
+                'placeholder' => 'Provincia',
+                'options' => $provincias->map(function($provincia) {
+                    return (object)['value' => $provincia->id, 'text' => $provincia->nombre];
+                })->toArray()
+            ],
+            (object)[
+                'id' => 'searchCiudad_id',
+                'name' => 'search_ciudad_id',
+                'type' => 'select',
+                'label' => 'Ciudad',
+                'value' => 'search_ciudad_id',
+                'placeholder' => 'Ciudad',
+                'options' => $ciudades->map(function($ciudad) {
+                    return (object)['value' => $ciudad->id, 'text' => $ciudad->nombre];
+                })->toArray()
+            ],
+            (object)[
                 'id' => 'searchUbicacion',
-                'placeholder' => 'Ubicacion del hospedaje',
+                'name' => 'search_ubicacion',
+                'type' => 'text',
+                'label' => 'Ubicacion donde esta el Vehiculo',
                 'value' => 'search_ubicacion',
+                'placeholder' => 'Ubicacion del vehiculo',
             ],
             (object)[
-                'id' => 'searchCalificacion',
-                'name' => 'search_calificacion',
+                'id' => 'searchPrecio_por_dia',
+                'name' => 'search_precio_por_dia',
                 'type' => 'number',
-                'label' => 'Calificacion',
-                'value' => 'search_calificacion',
-                'min' => '0.1',
-                'step' => '0.1',
-                'max' => '5',
-                'placeholder' => 'Calificacion o Estrellas',
+                'label' => 'Precio por dia',
+                'step' => '0.01',
+                'value' => 'search_precio_por_dia',
+                'placeholder' => 'Precio por dia',
             ],
             (object)[
-                'label' => 'Descripcion',
-                'type' => 'text',
-                'name' => 'search_descripcion',
                 'id' => 'searchDescripcion',
-                'placeholder' => 'Texto',
-                'value' => 'search_descripcion'
-            ],
-            (object)[
-                'label' => 'Check-in',
-                'type' => 'time',
-                'name' => 'search_check_in',
-                'id' => 'searchCheck_in',
-                'placeholder' => 'Hora de entrada',
-                'value' => 'search_check_in'
-            ],
-            (object)[
-                'label' => 'Check-out',
-                'type' => 'time',
-                'name' => 'search_check_out',
-                'id' => 'searchCheck_out',
-                'placeholder' => 'Hora de salida',
-                'value' => 'search_check_out'
-            ],
-            (object)[
-                'label' => 'Contacto',
+                'name' => 'search_descripcion',
                 'type' => 'text',
-                'name' => 'search_contacto',
-                'id' => 'searchContacto',
-                'placeholder' => 'Email, sitio web o telefono',
-                'value' => 'search_contacto'
+                'label' => 'Descripcion del Vehiculo',
+                'value' => 'search_descripcion',
+                'placeholder' => 'Descripcion',
             ],
             (object)[
-                'label' => 'Condiciones',
-                'type' => 'text',
-                'name' => 'search_condiciones',
-                'id' => 'searchCondiciones',
-                'placeholder' => 'Condiciones del hospedaje',
-                'value' => 'search_condiciones'
-            ],
-            (object)[
-                'label' => 'Hospedaje Activo',
-                'type' => 'select',
-                'name' => 'search_activo',
                 'id' => 'searchActivo',
+                'name' => 'search_activo',
+                'type' => 'select',
+                'label' => 'Vehiculo Disponible',
                 'value' => 'search_activo',
+                'placeholder' => 'Disponibilidad',
                 'options' => [
                     (object)['value' => '1', 'text' => 'Activo'],
                     (object)['value' => '0', 'text' => 'Inactivo'],
@@ -339,9 +389,9 @@
         @php
             $tHead= [
                 "Vehiculo", //tipo de vehiculo, marca y modelo
+                "Caracteristicas",
                 "Patente", //patente y antiguedad
-                "Capacidad",
-                "precio",
+                "Precio",
                 "Ubicacion",
                 "Lugar",
                 "Descripcion", //descripcion y color

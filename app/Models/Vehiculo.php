@@ -23,13 +23,14 @@ class Vehiculo extends Model
         'patente',
         'color',
         'capacidad_pasajeros',
+        'vehiculos_disponibles',
         'pais_id',
         'provincia_id',
         'ciudad_id',
         'ubicacion',
         'precio_por_dia',
-        'disponible',
         'descripcion',
+        'disponible'
     ];
 
     protected function casts(): array

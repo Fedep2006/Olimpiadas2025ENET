@@ -30,6 +30,7 @@
                                 @case("checkbox")
                                     <div class="form-check">
                                         <input type="hidden" name="activo" value="0">
+                                        <input type="hidden" name="disponible" value="0">
                                         <input 
                                             class="form-check-input" 
                                             type="checkbox"
