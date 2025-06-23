@@ -522,7 +522,7 @@
                             <h5>{{ $hospedaje->nombre }}</h5>
                             <p class="mb-3">{{ $hospedaje->descripcion }}</p>
                             <p class="price">${{ number_format($hospedaje->precio_por_noche ?? 0, 2) }} / noche</p>
-                            <span class="badge bg-info">{{ $hospedaje->ciudad ?? '' }}</span>
+                            <span class="badge bg-info">{{ $hospedaje->ciudad?->nombre ?? '' }}</span>
                         </a>
                         <div class="mt-3" style="position: relative; z-index: 1;">
                             <form method="POST" action="{{ route('carrito.hospedaje.add', $hospedaje->id) }}" class="d-inline">
@@ -586,7 +586,7 @@
                             <h5>{{ $vehiculo->marca }} {{ $vehiculo->modelo }}</h5>
                             <p class="mb-3">{{ $vehiculo->tipo }}</p>
                             <p class="price">${{ number_format($vehiculo->precio_por_dia ?? 0, 2) }} / día</p>
-                            <span class="badge bg-info">{{ $vehiculo->ubicacion ?? '' }}</span>
+                            <span class="badge bg-info">{{ $vehiculo->ubicacion?->nombre ?? '' }}</span>
                         </a>
                         <div class="mt-3" style="position: relative; z-index: 1;">
                             <form method="POST" action="{{ route('carrito.vehiculo.add', $vehiculo->id) }}" class="d-inline">
