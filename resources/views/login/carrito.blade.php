@@ -262,32 +262,46 @@
                 </ul>
                 
                 <ul class="navbar-nav">
-    @auth
-    <li class="nav-item dropdown">
-        <a class="nav-link dropdown-toggle fw-bold d-flex align-items-center" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-            <i class="fas fa-user me-1"></i> {{ Auth::user()->name }}
-        </a>
-        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-            <li>
-                <a class="dropdown-item" href="{{ route('logout') }}"
-                   onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
-                    Cerrar sesión
-                </a>
-            </li>
-        </ul>
-        <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
-            @csrf
-        </form>
-    </li>
-@else
-    <li class="nav-item">
-        <a class="nav-link" href="{{ route('login') }}"><i class="fas fa-user"></i> Mi cuenta</a>
-    </li>
-@endauth
-<li class="nav-item">
-    <a class="nav-link" href="#"><i class="fas fa-headset"></i> Ayuda</a>
-</li>
-</ul>
+                    @if(Auth::check())
+                        <li class="nav-item dropdown">
+                            <div class="d-flex align-items-center gap-4">
+                                <a href="{{ route('carrito') }}" class="btn btn-link p-0 m-0 position-relative" style="font-size:1.2rem;" title="Carrito">
+                                    <i class="fas fa-shopping-cart"></i>
+                                    @php
+                                        $carrito = session('carrito', []);
+                                        $totalItems = array_sum(array_column($carrito, 'cantidad'));
+                                    @endphp
+                                    @if($totalItems > 0)
+                                        <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" style="font-size:0.7rem;">
+                                            {{ $totalItems }}
+                                        </span>
+                                    @endif
+                                </a>
+                                <a class="nav-link d-flex align-items-center dropdown-toggle p-0" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                    <i class="fas fa-user"></i> {{ Auth::user()->name }}
+                                </a>
+                            </div>
+                            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+                                <li>
+                                    <a class="dropdown-item" href="{{ route('logout') }}"
+                                       onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                                        Cerrar sesión
+                                    </a>
+                                </li>
+                            </ul>
+                            <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+                                @csrf
+                            </form>
+                        </li>
+                    @else
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ route('login') }}"><i class="fas fa-user"></i> Mi cuenta</a>
+                        </li>
+                    @endauth
+                    <li class="nav-item">
+                        <a class="nav-link" href="#"><i class="fas fa-headset"></i> Ayuda</a>
+                    </li>
+                </ul>
             </div>
         </div>
     </nav>
@@ -423,6 +437,10 @@
                             <i class="fas fa-credit-card me-2"></i>Proceder al pago
                         </button>
                         
+                        <button class="btn btn-outline-danger mt-2" onclick="clearCart()" style="width: 100%;">
+                            <i class="fas fa-trash me-2"></i>Vaciar carrito
+                        </button>
+                        
                         <div class="text-center mt-3">
                             <small class="text-muted">
                                 <i class="fas fa-shield-alt me-1"></i>
@@ -533,32 +551,14 @@
     <script src="/js/cart.js"></script>
     
     <script>
-        function updateCartItem(key, quantity) {
-            // Función para actualizar cantidad del item
-            console.log('Actualizando item:', key, 'cantidad:', quantity);
-        }
+        // Mostrar notificación si hay mensaje de éxito
+        @if(session('success'))
+            showNotification('{{ session('success') }}', 'success');
+        @endif
         
-        function removeCartItem(key) {
-    if(confirm('¿Estás seguro de que querés eliminar este producto?')) {
-        fetch('/carrito/remove', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
-            },
-            body: JSON.stringify({ key: key })
-        })
-        .then(response => response.json())
-        .then(data => {
-            if(data.success) {
-                location.reload();
-            } else {
-                alert('No se pudo eliminar el producto del carrito.');
-            }
-        })
-        .catch(() => alert('Error al eliminar producto.'));
-    }
-}
+        @if(session('error'))
+            showNotification('{{ session('error') }}', 'danger');
+        @endif
     </script>
 </body>
 </html>
