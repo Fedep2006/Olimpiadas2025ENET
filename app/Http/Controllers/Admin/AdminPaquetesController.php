@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\PaqueteRequest;
 use App\Models\Paquete;
+use App\Models\PaqueteContenido;
 use Illuminate\Http\Request;
 
 class AdminPaquetesController extends Controller

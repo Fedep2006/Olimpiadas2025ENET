@@ -5,6 +5,9 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Vehiculo;
 use App\Http\Requests\VehiculoRequest;
+use App\Models\ubicacion\Ciudad;
+use App\Models\ubicacion\Pais;
+use App\Models\ubicacion\Provincia;
 use Illuminate\Http\Request;
 
 class AdminVehiculosController extends Controller
@@ -15,27 +18,78 @@ class AdminVehiculosController extends Controller
         $query = Vehiculo::query();
 
         // Aplicar búsqueda
-        if ($request->filled('search_usuario')) {
-            $search = $request->search_usuario;
-            $query->where(function ($q) use ($search) {
-                $q->where('name', 'like', "%{$search}%")
-                    ->orWhere('email', 'like', "%{$search}%");
-            });
+        if ($request->filled('search_tipo')) {
+            $search = $request->search_tipo;
+            $query->where('tipo', $search);
+        }
+        if ($request->filled('search_marca')) {
+            $search = $request->search_marca;
+            $query->where('marca', 'like', "%{$search}%");
+        }
+        if ($request->filled('search_modelo')) {
+            $search = $request->search_modelo;
+            $query->where('modelo', 'like', "%{$search}%");
+        }
+        if ($request->filled('search_antiguedad')) {
+            $search = $request->search_antiguedad;
+            $query->where('antiguedad', $search);
+        }
+        if ($request->filled('search_patente')) {
+            $search = $request->search_patente;
+            $query->where('patente', 'like', "%{$search}%");
+        }
+        if ($request->filled('search_color')) {
+            $search = $request->search_color;
+            $query->where('color', 'like', "%{$search}%");
+        }
+        if ($request->filled('search_vehiculos_disponibles')) {
+            $search = $request->search_vehiculos_disponibles;
+            $query->where('vehiculos_disponibles', $search);
+        }
+        if ($request->filled('search_capacidad_pasajeros')) {
+            $search = $request->search_capacidad_pasajeros;
+            $query->where('capacidad_pasajeros', $search);
+        }
+        if ($request->filled('search_provincia_id')) {
+            $search = $request->search_provincia_id;
+            $query->where('provincia_id', $search);
+        }
+        if ($request->filled('search_pais_id')) {
+            $search = $request->search_pais_id;
+            $query->where('pais_id', $search);
         }
 
-        if ($request->filled('search_nivel')) {
-            $search = $request->search_nivel;
-            $query->Where('nivel', $search);
+        if ($request->filled('search_ciudad_id')) {
+            $search = $request->search_ciudad_id;
+            $query->where('ciudad_id', $search);
         }
-
-        // Aplicar filtro de fecha
-        if ($request->filled('search_registration_date')) {
-            $date = $request->search_registration_date;
-            $query->whereDate('created_at', $date);
+        if ($request->filled('search_ubicacion')) {
+            $search = $request->search_ubicacion;
+            $query->Where('ubicacion', 'like', "%{$search}%");
+        }
+        if ($request->filled('search_precio_por_dia')) {
+            $search = $request->search_precio_por_dia;
+            $query->Where('precio_por_dia', 'like', "%{$search}%");
+        }
+        if ($request->filled('search_descripcion')) {
+            $search = $request->search_descripcion;
+            $query->Where('descripcion', 'like', "%{$search}%");
+        }
+        if ($request->filled('search_activo')) {
+            $search = $request->search_activo;
+            $query->Where('disponible', $search);
         }
 
         // Ordenar por fecha de creación descendente
-        $query->select(['id', 'tipo', 'marca', 'modelo', 'antiguedad', 'patente', 'color', 'capacidad_pasajeros', 'pais', 'ciudad', 'ubicacion', 'precio_por_dia', 'disponible', 'descripcion', 'created_at'])->orderBy('created_at', 'desc');
+        $registros = $query
+            ->whereHas('pais')
+            ->whereHas('provincia')
+            ->whereHas('ciudad')
+            ->with([
+                'pais:id,nombre',
+                'provincia:id,nombre,pais_id',
+                'ciudad:id,nombre,provincia_id'
+            ])->select(['id', 'tipo', 'marca', 'modelo', 'antiguedad', 'patente', 'color', 'capacidad_pasajeros', 'vehiculos_disponibles', 'pais_id', 'provincia_id', 'ciudad_id', 'ubicacion', 'precio_por_dia', 'disponible', 'descripcion', 'created_at'])->orderBy('created_at', 'desc');
 
         // Paginar resultados
         $registros = $query->paginate(10)->withQueryString();
@@ -50,8 +104,10 @@ class AdminVehiculosController extends Controller
                 'paginationInfo' => "Mostrando {$registros->firstItem()} - {$registros->lastItem()} de {$registros->total()} vehiculos"
             ]);
         }
-
-        return view('administracion.vehiculos', compact('registros'));
+        $paises = Pais::query()->get();
+        $provincias = Provincia::query()->get();
+        $ciudades = Ciudad::query()->get();
+        return view('administracion.vehiculos', compact(['registros', 'paises', 'provincias', 'ciudades']));
     }
 
     public function create(VehiculoRequest $request)

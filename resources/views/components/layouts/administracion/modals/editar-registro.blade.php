@@ -26,6 +26,7 @@
                                     @break
                                 @case("checkbox")
                                     <input type="hidden" name="activo" value="0">
+                                    <input type="hidden" name="disponible" value="0">
                                     <input 
                                         type="checkbox" 
                                         class="form-check-input" 

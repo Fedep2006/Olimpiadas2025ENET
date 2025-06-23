@@ -11,7 +11,8 @@ use App\Http\Controllers\Admin\{
     AdminPaquetesController,
     AdminReservasController,
     AdminVehiculosController,
-    AdminViajesController
+    AdminViajesController,
+    ContenidoController
 };
 
 // Principal Controllers
@@ -122,7 +123,9 @@ Route::get('/verify-email', [RegisterController::class, 'verifyEmail'])->name('v
 Route::get('/detalles', function () {
     return view('detalles');
 });
+
 use App\Http\Controllers\CartController;
+
 Route::get('/carrito', [CartController::class, 'index'])->name('carrito');
 Route::post('/cart/add', [CartController::class, 'add'])->name('cart.add');
 Route::post('/cart/update', [CartController::class, 'update'])->name('cart.update');
@@ -167,6 +170,12 @@ Route::prefix('administracion')->middleware(['auth', 'level:1'])->group(function
     Route::post('/paquetes/create',         [AdminPaquetesController::class, 'create'])->name('paquetes.create');
     Route::put('/paquetes/{paquete}',       [AdminPaquetesController::class, 'update'])->name('paquetes.update');
     Route::delete('/paquetes/{paquete}',    [AdminPaquetesController::class, 'destroy'])->name('paquetes.destroy');
+    Route::get('/paquetes/contenido',       [AdminPaquetesController::class, 'content'])->name('paquetes.content');
+
+    Route::get('/contenido/tipo', [ContenidoController::class, 'getContenidoPorTipo'])
+        ->name('contenido.por-tipo');
+    Route::post('/contenido/guardar', [ContenidoController::class, 'guardarContenido'])
+        ->name('contenido.guardar');
 
 
     // Detalle de viaje
