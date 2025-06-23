@@ -348,8 +348,17 @@
                     @if(Auth::check())
                         <li class="nav-item dropdown">
     <div class="d-flex align-items-center gap-4">
-        <a href="{{ route('carrito') }}" class="btn btn-link p-0 m-0" style="font-size:1.2rem;" title="Carrito">
+        <a href="{{ route('carrito') }}" class="btn btn-link p-0 m-0 position-relative" style="font-size:1.2rem;" title="Carrito">
             <i class="fas fa-shopping-cart"></i>
+            @php
+                $carrito = session('carrito', []);
+                $totalItems = array_sum(array_column($carrito, 'cantidad'));
+            @endphp
+            @if($totalItems > 0)
+                <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" style="font-size:0.7rem;">
+                    {{ $totalItems }}
+                </span>
+            @endif
         </a>
         <a class="nav-link d-flex align-items-center dropdown-toggle p-0" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
             <i class="fas fa-user"></i> {{ Auth::user()->name }}
@@ -474,17 +483,25 @@
             <div class="row">
                 @foreach($paquetes as $paquete)
                 <div class="col-md-4 mb-4">
-    <a href="{{ url('/details/paquete/'.$paquete->id) }}" class="text-decoration-none text-dark">
-        <div class="travel-card h-100">
-            <div class="travel-icon">
-                <i class="fas fa-suitcase"></i>
-            </div>
-            <h5>{{ $paquete->nombre }}</h5>
-            <p class="mb-3">{{ $paquete->descripcion }}</p>
-            <p class="price">${{ number_format($paquete->precio_total, 2) }}</p>
-        </div>
-    </a>
-</div>
+                    <div class="travel-card h-100 position-relative">
+                        <a href="{{ url('/details/paquete/'.$paquete->id) }}" class="text-decoration-none text-dark stretched-link">
+                            <div class="travel-icon">
+                                <i class="fas fa-suitcase"></i>
+                            </div>
+                            <h5>{{ $paquete->nombre }}</h5>
+                            <p class="mb-3">{{ $paquete->descripcion }}</p>
+                            <p class="price">${{ number_format($paquete->precio_total, 2) }}</p>
+                        </a>
+                        <div class="mt-3" style="position: relative; z-index: 1;">
+                            <form method="POST" action="{{ route('carrito.paquete.add', $paquete->id) }}" class="d-inline">
+                                @csrf
+                                <button type="submit" class="btn btn-warning btn-sm">
+                                    <i class="fas fa-cart-plus me-1"></i>Añadir al carrito
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
                 @endforeach
             </div>
         </div>
@@ -497,18 +514,26 @@
             <div class="row">
                 @foreach($hospedajes as $hospedaje)
                 <div class="col-md-4 mb-4">
-    <a href="{{ url('/details/hospedaje/'.$hospedaje->id) }}" class="text-decoration-none text-dark">
-        <div class="travel-card h-100">
-            <div class="travel-icon">
-                <i class="fas fa-bed"></i>
-            </div>
-            <h5>{{ $hospedaje->nombre }}</h5>
-            <p class="mb-3">{{ $hospedaje->descripcion }}</p>
-            <p class="price">${{ number_format($hospedaje->precio_por_noche ?? 0, 2) }} / noche</p>
-            <span class="badge bg-info">{{ $hospedaje->ciudad ?? '' }}</span>
-        </div>
-    </a>
-</div>
+                    <div class="travel-card h-100 position-relative">
+                        <a href="{{ url('/details/hospedaje/'.$hospedaje->id) }}" class="text-decoration-none text-dark stretched-link">
+                            <div class="travel-icon">
+                                <i class="fas fa-bed"></i>
+                            </div>
+                            <h5>{{ $hospedaje->nombre }}</h5>
+                            <p class="mb-3">{{ $hospedaje->descripcion }}</p>
+                            <p class="price">${{ number_format($hospedaje->precio_por_noche ?? 0, 2) }} / noche</p>
+                            <span class="badge bg-info">{{ $hospedaje->ciudad ?? '' }}</span>
+                        </a>
+                        <div class="mt-3" style="position: relative; z-index: 1;">
+                            <form method="POST" action="{{ route('carrito.hospedaje.add', $hospedaje->id) }}" class="d-inline">
+                                @csrf
+                                <button type="submit" class="btn btn-warning btn-sm">
+                                    <i class="fas fa-cart-plus me-1"></i>Añadir al carrito
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
                 @endforeach
             </div>
         </div>
@@ -521,18 +546,26 @@
             <div class="row">
                 @foreach($viajes as $viaje)
                 <div class="col-md-4 mb-4">
-    <a href="{{ url('/details/viaje/'.$viaje->id) }}" class="text-decoration-none text-dark">
-        <div class="travel-card h-100">
-            <div class="travel-icon">
-                <i class="fas fa-bus"></i>
-            </div>
-            <h5>{{ $viaje->nombre }}</h5>
-            <p class="mb-3">{{ $viaje->origen }} → {{ $viaje->destino }}</p>
-            <p class="price">${{ number_format($viaje->precio_base ?? 0, 2) }}</p>
-            <span class="badge bg-info">Salida: {{ optional($viaje->fecha_salida)->format('d/m/Y H:i') }}</span>
-        </div>
-    </a>
-</div>
+                    <div class="travel-card h-100 position-relative">
+                        <a href="{{ url('/details/viaje/'.$viaje->id) }}" class="text-decoration-none text-dark stretched-link">
+                            <div class="travel-icon">
+                                <i class="fas fa-bus"></i>
+                            </div>
+                            <h5>{{ $viaje->nombre }}</h5>
+                            <p class="mb-3">{{ $viaje->origen }} → {{ $viaje->destino }}</p>
+                            <p class="price">${{ number_format($viaje->precio_base ?? 0, 2) }}</p>
+                            <span class="badge bg-info">Salida: {{ optional($viaje->fecha_salida)->format('d/m/Y H:i') }}</span>
+                        </a>
+                        <div class="mt-3" style="position: relative; z-index: 1;">
+                            <form method="POST" action="{{ route('carrito.viaje.add', $viaje->id) }}" class="d-inline">
+                                @csrf
+                                <button type="submit" class="btn btn-warning btn-sm">
+                                    <i class="fas fa-cart-plus me-1"></i>Añadir al carrito
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
                 @endforeach
             </div>
         </div>
@@ -545,8 +578,8 @@
             <div class="row">
                 @foreach($vehiculos as $vehiculo)
                 <div class="col-md-4 mb-4">
-                    <a href="{{ url('/details/vehiculo/'.$vehiculo->id) }}" class="text-decoration-none text-dark">
-                        <div class="travel-card h-100">
+                    <div class="travel-card h-100 position-relative">
+                        <a href="{{ url('/details/vehiculo/'.$vehiculo->id) }}" class="text-decoration-none text-dark stretched-link">
                             <div class="travel-icon">
                                 <i class="fas fa-car"></i>
                             </div>
@@ -554,8 +587,16 @@
                             <p class="mb-3">{{ $vehiculo->tipo }}</p>
                             <p class="price">${{ number_format($vehiculo->precio_por_dia ?? 0, 2) }} / día</p>
                             <span class="badge bg-info">{{ $vehiculo->ubicacion ?? '' }}</span>
+                        </a>
+                        <div class="mt-3" style="position: relative; z-index: 1;">
+                            <form method="POST" action="{{ route('carrito.vehiculo.add', $vehiculo->id) }}" class="d-inline">
+                                @csrf
+                                <button type="submit" class="btn btn-warning btn-sm">
+                                    <i class="fas fa-cart-plus me-1"></i>Añadir al carrito
+                                </button>
+                            </form>
                         </div>
-                    </a>
+                    </div>
                 </div>
                 @endforeach
             </div>

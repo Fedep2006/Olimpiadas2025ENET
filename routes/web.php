@@ -58,10 +58,18 @@ Route::get('/login/carrito', function () {
     $carrito = session('carrito', []);
     return view('login.carrito', compact('carrito'));
 })->name('carrito');
-// Añadir hospedaje al carrito
+
+// Rutas del carrito
 Route::post('/carrito/hospedaje/{id}', [ReservasController::class, 'addHospedajeToCart'])->name('carrito.hospedaje.add');
-// Eliminar producto del carrito (AJAX)
+Route::post('/carrito/viaje/{id}', [ReservasController::class, 'addViajeToCart'])->name('carrito.viaje.add');
+Route::post('/carrito/vehiculo/{id}', [ReservasController::class, 'addVehiculoToCart'])->name('carrito.vehiculo.add');
+Route::post('/carrito/paquete/{id}', [ReservasController::class, 'addPaqueteToCart'])->name('carrito.paquete.add');
+
+// Operaciones del carrito (AJAX)
 Route::post('/carrito/remove', [ReservasController::class, 'removeFromCart'])->name('carrito.remove');
+Route::post('/carrito/update', [ReservasController::class, 'updateCartItem'])->name('carrito.update');
+Route::post('/carrito/clear', [ReservasController::class, 'clearCart'])->name('carrito.clear');
+
 // Reservar hospedaje directamente
 Route::post('/reservar/hospedaje/{id}', [ReservasController::class, 'reservarHospedaje'])->name('reservar.hospedaje');
 
