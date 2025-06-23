@@ -76,18 +76,18 @@
             <td>
                 <div class="flex justify-center items-center">
                     <div class="flex flex-col text-center ids gap-1">
-                        <h6>{{ $registro->origen }}</h6>
+                        <h6>{{ $registro->ciudad->nombre }}</h6>
                         <small class="camino-text">a</small>
-                        <h6>{{ $registro->destino }}</h6>
+                        <h6>{{ $registro->ciudadDestino->nombre }}</h6>
                     </div>
                 </div>
             </td>
             <td>
                 <div class="flex justify-center items-center">
                     <div class="flex flex-col text-center ids gap-1">
-                        <h6>{{ $registro->pais }}</h6>
-                        <small class="camino-text">a</small>
-                        <h6>{{ $registro->provincia }}</h6>
+                        <h6>{{ $registro->ubicacion }}</h6>
+                        <small class="camino-text">{{ $registro->provincia->nombre }}</small>
+                        <small class="camino-text">{{ $registro->pais->nombre }}</small>
                     </div>
                 </div>
             </td>

@@ -36,10 +36,23 @@ class AdminViajesController extends Controller
             $search = $request->search_nombre;
             $query->where('nombre', 'like', "%{$search}%");
         }
+        if ($request->filled('search_provincia_id')) {
+            $search = $request->search_provincia_id;
+            $query->where('provincia_id', $search);
+        }
+        if ($request->filled('search_pais_id')) {
+            $search = $request->search_pais_id;
+            $query->where('pais_id', $search);
+        }
 
         if ($request->filled('search_origen')) {
             $search = $request->search_origen;
             $query->where('origen', 'like', "%{$search}%");
+        }
+
+        if ($request->filled('search_ubicacion')) {
+            $search = $request->search_ubicacion;
+            $query->where('ubicacion', 'like', "%{$search}%");
         }
 
         if ($request->filled('search_destino')) {
@@ -57,9 +70,9 @@ class AdminViajesController extends Controller
             $query->where('fecha_llegada', $datetime);
         }
 
-        if ($request->filled('search_empresa')) {
-            $search = $request->search_empresa;
-            $query->where('empresa', 'like', "%{$search}%");
+        if ($request->filled('search_empresa_id')) {
+            $search = $request->search_empresa_id;
+            $query->where('empresa_id', 'like', "%{$search}%");
         }
 
         if ($request->filled('search_capacidad_total')) {
@@ -98,6 +111,7 @@ class AdminViajesController extends Controller
         })
             ->whereHas('pais')
             ->whereHas('provincia')
+            ->whereHas('ciudadDestino')
             ->whereHas('ciudad')
             ->with([
                 'empresa:id,nombre,tipo',
@@ -115,6 +129,7 @@ class AdminViajesController extends Controller
                 'pais_id',
                 'provincia_id',
                 'ciudad_id',
+                'ubicacion',
                 'fecha_salida',
                 'fecha_llegada',
                 'numero_viaje',
