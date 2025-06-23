@@ -11,7 +11,8 @@ use App\Http\Controllers\Admin\{
     AdminPaquetesController,
     AdminReservasController,
     AdminVehiculosController,
-    AdminViajesController
+    AdminViajesController,
+    ContenidoController
 };
 
 // Principal Controllers
@@ -180,6 +181,11 @@ Route::prefix('administracion')->middleware(['auth', 'level:1'])->group(function
     Route::put('/paquetes/{paquete}',       [AdminPaquetesController::class, 'update'])->name('paquetes.update');
     Route::delete('/paquetes/{paquete}',    [AdminPaquetesController::class, 'destroy'])->name('paquetes.destroy');
     Route::get('/paquetes/contenido',       [AdminPaquetesController::class, 'content'])->name('paquetes.content');
+
+    Route::get('/contenido/tipo', [ContenidoController::class, 'getContenidoPorTipo'])
+        ->name('contenido.por-tipo');
+    Route::post('/contenido/guardar', [ContenidoController::class, 'guardarContenido'])
+        ->name('contenido.guardar');
 
 
     // Detalle de viaje

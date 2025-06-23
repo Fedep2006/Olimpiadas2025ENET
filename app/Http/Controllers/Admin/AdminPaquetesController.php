@@ -54,18 +54,6 @@ class AdminPaquetesController extends Controller
         return view('administracion.paquetes', compact('registros'));
     }
 
-    public function content(Request $request)
-    {
-        $query = PaqueteContenido::find($request);
-        $query = PaqueteContenido::where('email', 'juan@example.com')->first();
-        $registros = $query->get();
-        if ($request->ajax()) {
-
-            return response()->json([
-                'contenido' => $registros,
-            ]);
-        }
-    }
     public function create(PaqueteRequest $request)
     {
         try {
