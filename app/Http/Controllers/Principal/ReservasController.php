@@ -4,13 +4,16 @@ namespace App\Http\Controllers\Principal;
 
 use App\Http\Controllers\Controller;
 use App\Models\Hospedaje;
-use App\Models\Viaje;
-use App\Models\Vehiculo;
-use App\Models\Paquete;
+use App\Models\Pago;
+use App\Models\ReservaHospedaje;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
+use Carbon\Carbon;
+use Illuminate\Http\Request;
 
 class ReservasController extends Controller {
     // Eliminar producto del carrito por clave
-    public function removeFromCart(\Illuminate\Http\Request $request)
+    public function removeFromCart(Request $request)
     {
         $carrito = session()->get('carrito', []);
         $key = $request->input('key');
@@ -22,28 +25,11 @@ class ReservasController extends Controller {
         return response()->json(['success' => false]);
     }
 
-    // Actualizar cantidad de un producto en el carrito
-    public function updateCartItem(\Illuminate\Http\Request $request)
-    {
-        $carrito = session()->get('carrito', []);
-        $key = $request->input('key');
-        $cantidad = $request->input('cantidad', 1);
-        
-        if(isset($carrito[$key])) {
-            $carrito[$key]['cantidad'] = max(1, $cantidad);
-            session(['carrito' => $carrito]);
-            return response()->json(['success' => true]);
-        }
-        return response()->json(['success' => false]);
-    }
-
-    // Añadir hospedaje al carrito
     public function addHospedajeToCart($id)
     {
         $hospedaje = Hospedaje::findOrFail($id);
         $carrito = session()->get('carrito', []);
         $key = 'hospedaje_' . $id;
-        
         if(isset($carrito[$key])) {
             $carrito[$key]['cantidad'] += 1;
         } else {
@@ -53,105 +39,112 @@ class ReservasController extends Controller {
                 'precio' => $hospedaje->precio_por_noche,
                 'tipo' => 'hospedaje',
                 'cantidad' => 1,
-                'descripcion' => $hospedaje->descripcion,
-                'ubicacion' => $hospedaje->ciudad,
-                'imagen' => null // Puedes agregar campo de imagen si lo necesitas
+                'imagen' => $hospedaje->imagen_principal
             ];
         }
-        
         session(['carrito' => $carrito]);
-        return redirect()->route('carrito')->with('success', 'Hospedaje añadido al carrito.');
+        return redirect('/login/carrito')->with('success', 'Hospedaje añadido al carrito.');
     }
 
-    // Añadir viaje al carrito
-    public function addViajeToCart($id)
+    public function reservarHospedaje(Request $request, $id)
     {
-        $viaje = Viaje::findOrFail($id);
-        $carrito = session()->get('carrito', []);
-        $key = 'viaje_' . $id;
+        $request->validate([
+            'fecha_entrada' => 'required|date|after_or_equal:today',
+            'fecha_salida' => 'required|date|after:fecha_entrada',
+            'cantidad_personas' => 'required|integer|min:1',
+            'nombre_titular' => 'required|string|max:255',
+            'numero_tarjeta' => 'required|string|size:16',
+            'fecha_vencimiento' => 'required|date_format:m/y|after:today',
+            'cvv' => 'required|string|size:3',
+        ]);
         
-        if(isset($carrito[$key])) {
-            $carrito[$key]['cantidad'] += 1;
+        $hospedaje = Hospedaje::findOrFail($id);
+        
+        // Calcular el total de noches y el monto total
+        $fechaEntrada = Carbon::parse($request->fecha_entrada);
+        $fechaSalida = Carbon::parse($request->fecha_salida);
+        $noches = $fechaEntrada->diffInDays($fechaSalida);
+        $montoTotal = $hospedaje->precio_por_noche * $noches * $request->cantidad_personas;
+        
+        // Iniciar transacción
+        DB::beginTransaction();
+        
+        try {
+            // Crear el pago
+            $pago = Pago::create([
+                'monto' => $montoTotal,
+                'moneda' => 'ARS',
+                'metodo_pago' => 'tarjeta_credito',
+                'estado' => 'aprobado',
+                'fecha_pago' => now(),
+                'tarjeta_ultimos_digitos' => substr($request->numero_tarjeta, -4),
+                'tarjeta_marca' => $this->getCardBrand($request->numero_tarjeta),
+                'nombre_titular' => $request->nombre_titular,
+                'user_id' => Auth::id(),
+                'detalles_adicionales' => 'Reserva de hospedaje: ' . $hospedaje->nombre,
+            ]);
+            
+            // Crear la reserva
+            $reserva = new ReservaHospedaje([
+                'hospedaje_id' => $hospedaje->id,
+                'user_id' => Auth::id(),
+                'pago_id' => $pago->id,
+                'fecha_entrada' => $request->fecha_entrada,
+                'fecha_salida' => $request->fecha_salida,
+                'cantidad_personas' => $request->cantidad_personas,
+                'precio_por_noche' => $hospedaje->precio_por_noche,
+                'monto_total' => $montoTotal,
+                'estado' => 'confirmada',
+                'notas' => 'Reserva creada el ' . now()->format('d/m/Y H:i:s'),
+            ]);
+            
+            $reserva->save();
+            
+            DB::commit();
+            
+            // Limpiar el carrito si existe este ítem
+            $carrito = session()->get('carrito', []);
+            $key = 'hospedaje_' . $id;
+            if(isset($carrito[$key])) {
+                unset($carrito[$key]);
+                session(['carrito' => $carrito]);
+            }
+            
+            return redirect()->route('mis-reservas')->with([
+                'reserva_status' => 'success',
+                'reserva_mensaje' => '¡Reserva de hospedaje realizada con éxito! Su número de reserva es: ' . $reserva->id,
+                'reserva_numero' => $reserva->id,
+            ]);
+            
+        } catch (\Exception $e) {
+            DB::rollBack();
+            \Log::error('Error al procesar la reserva de hospedaje: ' . $e->getMessage());
+            
+            return redirect()->back()->with([
+                'reserva_status' => 'error',
+                'reserva_mensaje' => 'Ocurrió un error al procesar su reserva. Por favor, intente nuevamente.'
+            ])->withInput();
+        }
+    }
+    
+    // Método auxiliar para determinar la marca de la tarjeta
+    private function getCardBrand($cardNumber)
+    {
+        $cardNumber = preg_replace('/\D/', '', $cardNumber);
+        
+        if (preg_match('/^4[0-9]{12}(?:[0-9]{3})?$/', $cardNumber)) {
+            return 'Visa';
+        } elseif (preg_match('/^5[1-5][0-9]{14}$/', $cardNumber)) {
+            return 'MasterCard';
+        } elseif (preg_match('/^3[47][0-9]{13}$/', $cardNumber)) {
+            return 'American Express';
+        } elseif (preg_match('/^3(?:0[0-5]|[68][0-9])[0-9]{11}$/', $cardNumber)) {
+            return 'Diners Club';
+        } elseif (preg_match('/^6(?:011|5[0-9]{2})[0-9]{12}$/', $cardNumber)) {
+            return 'Discover';
         } else {
-            $carrito[$key] = [
-                'id' => $viaje->id,
-                'nombre' => $viaje->nombre,
-                'precio' => $viaje->precio_base,
-                'tipo' => 'viaje',
-                'cantidad' => 1,
-                'descripcion' => $viaje->origen . ' → ' . $viaje->destino,
-                'fecha_salida' => $viaje->fecha_salida,
-                'imagen' => null
-            ];
+            return 'Otra';
         }
-        
-        session(['carrito' => $carrito]);
-        return redirect()->route('carrito')->with('success', 'Viaje añadido al carrito.');
-    }
-
-    // Añadir vehículo al carrito
-    public function addVehiculoToCart($id)
-    {
-        $vehiculo = Vehiculo::findOrFail($id);
-        $carrito = session()->get('carrito', []);
-        $key = 'vehiculo_' . $id;
-        
-        if(isset($carrito[$key])) {
-            $carrito[$key]['cantidad'] += 1;
-        } else {
-            $carrito[$key] = [
-                'id' => $vehiculo->id,
-                'nombre' => $vehiculo->marca . ' ' . $vehiculo->modelo,
-                'precio' => $vehiculo->precio_por_dia,
-                'tipo' => 'vehiculo',
-                'cantidad' => 1,
-                'descripcion' => $vehiculo->tipo . ' - ' . $vehiculo->ubicacion,
-                'imagen' => null
-            ];
-        }
-        
-        session(['carrito' => $carrito]);
-        return redirect()->route('carrito')->with('success', 'Vehículo añadido al carrito.');
-    }
-
-    // Añadir paquete al carrito
-    public function addPaqueteToCart($id)
-    {
-        $paquete = Paquete::findOrFail($id);
-        $carrito = session()->get('carrito', []);
-        $key = 'paquete_' . $id;
-        
-        if(isset($carrito[$key])) {
-            $carrito[$key]['cantidad'] += 1;
-        } else {
-            $carrito[$key] = [
-                'id' => $paquete->id,
-                'nombre' => $paquete->nombre,
-                'precio' => $paquete->precio_total,
-                'tipo' => 'paquete',
-                'cantidad' => 1,
-                'descripcion' => $paquete->descripcion,
-                'imagen' => null
-            ];
-        }
-        
-        session(['carrito' => $carrito]);
-        return redirect()->route('carrito')->with('success', 'Paquete añadido al carrito.');
-    }
-
-    // Vaciar carrito
-    public function clearCart()
-    {
-        session()->forget('carrito');
-        return response()->json(['success' => true]);
-    }
-
-    // Reservar hospedaje directamente
-    public function reservarHospedaje($id)
-    {
-        // Aquí deberías procesar la reserva (crear registro, enviar mail, etc.)
-        // Por ahora, solo simulamos la acción
-        return redirect()->back()->with('success', 'Hospedaje reservado correctamente.');
     }
 }
 
