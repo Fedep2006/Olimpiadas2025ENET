@@ -27,6 +27,7 @@ use App\Http\Controllers\Principal\{
 
 // Other Controllers
 use App\Http\Controllers\{
+    DetalleController,
     PagoController,
     administracionController,
     AuthController,
@@ -73,6 +74,10 @@ Route::post('/carrito/clear', [ReservasController::class, 'clearCart'])->name('c
 // Reservar hospedaje directamente
 Route::post('/reservar/hospedaje/{id}', [ReservasController::class, 'reservarHospedaje'])->name('reservar.hospedaje');
 
+// Ruta para procesar la reserva de un hospedaje con paquete dinámico
+Route::post('/hospedajes/reservar', [App\Http\Controllers\Principal\HospedajesController::class, 'storeReserva'])->name('hospedajes.storeReserva')->middleware('auth');
+Route::get('/hospedajes/{id}', [App\Http\Controllers\Principal\HospedajesController::class, 'show'])->name('hospedajes.show');
+
 // Página de inicio
 Route::get('/', function (Request $request) {
     $paquetes = Paquete::all();
@@ -80,31 +85,16 @@ Route::get('/', function (Request $request) {
     $viajes = Viaje::all();
     $vehiculos = Vehiculo::all();
     return view('index', compact('paquetes', 'hospedajes', 'viajes', 'vehiculos'));
-});
+})->name('home');
 
 // Detalles de un vehículo
 Route::get('/vehiculos/{id}', [VehiculosController::class, 'show'])->name('vehiculos.show');
 
 // Detalles de un recurso
-Route::get('/details/{type}/{id}', function ($type, $id) {
-    switch ($type) {
-        case 'viaje':
-            $item = Viaje::findOrFail($id);
-            break;
-        case 'hospedaje':
-            $item = Hospedaje::findOrFail($id);
-            break;
-        case 'vehiculo':
-            $item = Vehiculo::findOrFail($id);
-            break;
-        case 'paquete':
-            $item = Paquete::findOrFail($id);
-            break;
-        default:
-            abort(404);
-    }
-    return view('details', compact('type', 'item'));
-});
+Route::get('/details/{tipo}/{id}', [DetalleController::class, 'show'])->name('details.show');
+
+// Procesar reserva
+Route::post('/reservar', [DetalleController::class, 'store'])->name('reservar.store')->middleware('auth');
 
 // Autenticación
 Route::get('/login', function () {

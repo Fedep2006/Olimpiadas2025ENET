@@ -3,411 +3,491 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ ucfirst($vehiculo->marca ?? '') }} {{ ucfirst($vehiculo->modelo ?? '') }} - Detalles del Vehículo</title>
+    <title>Detalles de {{ $item->nombre ?? ($item->marca . ' ' . $item->modelo) }} - Frategar</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <style>
         :root {
-            --despegar-blue: #0066cc;
-            --despegar-orange: #ff6600;
-            --despegar-light-blue: #e6f3ff;
+            --frategar-blue: #0d6efd;
+            --frategar-orange: #fd7e14;
+            --frategar-light-blue: #e6f0ff;
         }
+
         body {
             background-color: #f8f9fa;
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
         }
+
         .navbar-brand {
             font-weight: bold;
             font-size: 1.8rem;
-            color: var(--despegar-blue) !important;
+            color: var(--frategar-blue) !important;
         }
-        .section-title {
-            font-size: 2.2rem;
-            font-weight: bold;
-            color: var(--despegar-blue);
-            text-align: center;
-            margin-bottom: 2rem;
-            position: relative;
-        }
-        .section-title::after {
-            content: '';
-            position: absolute;
-            bottom: -10px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 80px;
-            height: 3px;
-            background: var(--despegar-orange);
-            border-radius: 2px;
-        }
-        .vehicle-card {
-            background: white;
-            border-radius: 16px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.10);
-            overflow: hidden;
-            margin-bottom: 30px;
-        }
-        .vehicle-details {
-            background: white;
-            border-radius: 16px;
-            padding: 24px;
-            margin-top: 20px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
-        }
-        .price-display {
-            font-size: 28px;
-            font-weight: 600;
-            color: var(--despegar-orange);
-            margin-bottom: 24px;
-        }
-        .price-period {
-            font-size: 14px;
-            color: #666;
-            font-weight: normal;
-            margin-left: 8px;
-        }
-        .reserve-header {
-            background: var(--despegar-blue);
-            color: white;
-            padding: 18px 24px;
-            font-size: 20px;
-            font-weight: 600;
-            border-radius: 16px 16px 0 0;
-            margin: 0;
-        }
-        .booking-panel {
-            background: white;
-            padding: 0;
-            border-radius: 16px;
-            box-shadow: 0 5px 15px rgba(0,102,204,0.08);
-        }
-        .booking-content {
-            padding: 24px;
-        }
-        .form-group {
-            margin-bottom: 20px;
-        }
-        .form-label {
-            font-size: 14px;
-            color: #333;
-            font-weight: 500;
-            margin-bottom: 8px;
-            display: block;
-        }
-        .form-control {
-            border: 1px solid #ddd;
-            border-radius: 8px;
-            padding: 12px 16px;
-            font-size: 14px;
-            width: 100%;
-            transition: border-color 0.2s;
-        }
-        .form-control:focus {
-            border-color: var(--despegar-blue);
-            box-shadow: 0 0 0 3px rgba(0,102,204,0.08);
-            outline: none;
-        }
-        .reserve-button {
-            background: linear-gradient(135deg, var(--despegar-orange), #ff8533);
-            color: white;
-            border: none;
-            border-radius: 50px;
-            padding: 15px 0;
-            font-size: 1.1rem;
-            font-weight: bold;
-            width: 100%;
-            margin-bottom: 24px;
-            cursor: pointer;
-            transition: background 0.2s;
-        }
-        .reserve-button:hover {
-            background: linear-gradient(135deg, #ff8533, var(--despegar-orange));
-        }
-        .modal-content {
-            border-radius: 18px;
-        }
-        .nav-tabs .nav-link.active {
-            background-color: var(--despegar-blue);
-            color: #fff;
-            border-radius: 25px 25px 0 0;
-        }
-        .nav-tabs .nav-link {
-            color: var(--despegar-blue);
-            border-radius: 25px 25px 0 0;
-        }
-        .trust-indicators {
-            border-top: 1px solid #eee;
-            padding-top: 20px;
-        }
-        .trust-item {
-            display: flex;
-            align-items: center;
-            margin-bottom: 12px;
-            font-size: 14px;
-            color: #333;
-        }
-        .trust-item:last-child {
-            margin-bottom: 0;
-        }
-        .trust-icon {
-            width: 16px;
-            height: 16px;
-            border-radius: 50%;
-            margin-right: 12px;
-            flex-shrink: 0;
-        }
-        .trust-icon.blue {
-            background: var(--despegar-blue);
-        }
-        .trust-icon.green {
-            background: #34a853;
-        }
-        @media (max-width: 768px) {
-            .main-container {
-                padding: 0 5px;
-            }
-            .section-title {
-                font-size: 1.5rem;
-            }
-            .vehicle-image-container {
-                height: 220px;
-            }
-        }
-    
+
         .main-container {
             max-width: 1200px;
             margin: 40px auto;
             padding: 0 20px;
         }
-        
-        .vehicle-card {
+
+        .item-card, .item-details, .booking-panel, .characteristics-section {
             background: white;
             border-radius: 16px;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
             overflow: hidden;
         }
-        
-        .vehicle-image-container {
+
+        .item-image-container {
             position: relative;
-            height: 400px;
+            height: 450px;
             overflow: hidden;
         }
-        
-        .vehicle-image {
+
+        .item-image {
             width: 100%;
             height: 100%;
             object-fit: cover;
         }
-        
+
+        .item-details, .booking-panel, .characteristics-section {
+            padding: 24px;
+            margin-top: 24px;
+        }
+
         .booking-panel {
-            background: white;
             padding: 0;
         }
-        
+
         .reserve-header {
-            background: #1a73e8;
+            background: var(--frategar-blue);
             color: white;
-            padding: 16px 24px;
-            font-size: 18px;
-            font-weight: 500;
-            margin: 0;
+            padding: 18px 24px;
+            font-size: 20px;
+            font-weight: 600;
         }
-        
+
         .booking-content {
             padding: 24px;
         }
-        
+
         .price-display {
-            font-size: 28px;
-            font-weight: 600;
-            color: #333;
+            font-size: 2.1rem;
+            font-weight: 700;
+            color: var(--frategar-orange);
             margin-bottom: 24px;
         }
-        
+
         .price-period {
-            font-size: 14px;
-            color: #666;
+            font-size: 1rem;
+            color: #6c757d;
             font-weight: normal;
             margin-left: 8px;
         }
-        
-        .form-group {
-            margin-bottom: 20px;
-        }
-        
+
         .form-label {
-            font-size: 14px;
-            color: #333;
+            font-size: 0.9rem;
+            color: #343a40;
             font-weight: 500;
             margin-bottom: 8px;
-            display: block;
         }
-        
-        .form-control {
-            border: 1px solid #ddd;
+
+        .form-control, .form-select {
+            border: 1px solid #ced4da;
             border-radius: 8px;
             padding: 12px 16px;
-            font-size: 14px;
+            font-size: 1rem;
             width: 100%;
-            transition: border-color 0.2s;
+            transition: border-color 0.2s, box-shadow 0.2s;
         }
-        
-        .form-control:focus {
-            border-color: #1a73e8;
-            box-shadow: 0 0 0 3px rgba(26, 115, 232, 0.1);
+
+        .form-control:focus, .form-select:focus {
+            border-color: var(--frategar-blue);
+            box-shadow: 0 0 0 4px rgba(13, 110, 253, 0.15);
             outline: none;
         }
-        
+
         .reserve-button {
-            background: #1a73e8;
+            background: linear-gradient(135deg, var(--frategar-orange), #ff9a4e);
             color: white;
             border: none;
-            border-radius: 8px;
-            padding: 14px 20px;
-            font-size: 16px;
-            font-weight: 500;
+            border-radius: 50px;
+            padding: 15px 0;
+            font-size: 1.2rem;
+            font-weight: bold;
             width: 100%;
-            margin-bottom: 24px;
             cursor: pointer;
-            transition: background-color 0.2s;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(253, 126, 20, 0.3);
         }
-        
+
         .reserve-button:hover {
-            background: #1557b0;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(253, 126, 20, 0.4);
         }
-        
-        .trust-indicators {
-            border-top: 1px solid #eee;
-            padding-top: 20px;
-        }
-        
-        .trust-item {
-            display: flex;
-            align-items: center;
-            margin-bottom: 12px;
-            font-size: 14px;
-            color: #333;
-        }
-        
-        .trust-item:last-child {
-            margin-bottom: 0;
-        }
-        
-        .trust-icon {
-            width: 16px;
-            height: 16px;
-            border-radius: 50%;
-            margin-right: 12px;
-            flex-shrink: 0;
-        }
-        
-        .trust-icon.blue {
-            background: #1a73e8;
-        }
-        
-        .trust-icon.green {
-            background: #34a853;
-        }
-        
-        .vehicle-details {
-            background: white;
-            border-radius: 16px;
-            padding: 24px;
-            margin-top: 20px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
-        }
-        
+
         .details-title {
-            font-size: 20px;
+            font-size: 1.5rem;
             font-weight: 600;
-            color: #333;
+            color: var(--frategar-blue);
             margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid var(--frategar-light-blue);
         }
-        
+
         .details-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 16px;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 20px;
         }
-        
+
         .detail-item {
             display: flex;
-            justify-content: space-between;
-            padding: 12px 0;
-            border-bottom: 1px solid #f0f0f0;
+            align-items: center;
+            font-size: 1rem;
         }
-        
-        .detail-item:last-child {
-            border-bottom: none;
+
+        .detail-item i {
+            color: var(--frategar-blue);
+            margin-right: 12px;
+            width: 20px;
+            text-align: center;
         }
-        
+
         .detail-label {
             font-weight: 600;
-            color: #333;
+            color: #343a40;
+            margin-right: 8px;
         }
-        
+
         .detail-value {
-            color: #666;
+            color: #6c757d;
         }
-        
-        .characteristics-section {
-            background: white;
-            border-radius: 16px;
-            padding: 24px;
-            margin-top: 20px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
-        }
-        
+
         .characteristics-list {
             list-style: none;
             padding: 0;
             margin: 0;
+            columns: 2;
+            gap: 10px;
         }
-        
+
         .characteristic-item {
             padding: 8px 0;
-            color: #333;
+            color: #343a40;
+            display: flex;
+            align-items: center;
         }
-        
-        .characteristic-item:before {
-            content: "•";
-            color: #1a73e8;
-            font-weight: bold;
-            margin-right: 8px;
+
+        .characteristic-item i {
+            color: #28a745;
+            margin-right: 10px;
         }
-        
+
+        .modal-content {
+            border-radius: 16px;
+            border: none;
+        }
+
+        .modal-header {
+            background-color: var(--frategar-blue);
+            color: white;
+            border-bottom: none;
+            border-radius: 16px 16px 0 0;
+        }
+
+        .modal-header .btn-close {
+            filter: invert(1) grayscale(100%) brightness(200%);
+        }
+
+        #total-a-pagar-modal {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--frategar-orange);
+        }
+
         @media (max-width: 768px) {
             .main-container {
                 margin: 20px auto;
                 padding: 0 15px;
             }
-            
-            .vehicle-image-container {
-                height: 250px;
+            .item-image-container {
+                height: 280px;
             }
-            
-            .booking-content {
-                padding: 20px;
+            .characteristics-list {
+                columns: 1;
             }
         }
     </style>
 </head>
 <body>
+    <script>console.log('TEST: Script al inicio del BODY ejecutado.');</script>
     <!-- Header -->
     <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm mb-4">
         <div class="container">
             <a class="navbar-brand" href="/">
-                <i class="fas fa-plane text-primary"></i> Frategar
+                <i class="fas fa-plane-departure text-primary"></i> Frategar
             </a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNav">
                 <span class="navbar-toggler-icon"></span>
             </button>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav me-auto">
-                    <li class="nav-item"><a class="nav-link" href="#"><i class="fas fa-plane"></i> Vuelos</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#"><i class="fas fa-bed"></i> Hoteles</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#"><i class="fas fa-suitcase"></i> Paquetes</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#"><i class="fas fa-car"></i> Autos</a></li>
+            <div class="collapse navbar-collapse" id="mainNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item"><a class="nav-link" href="/"><i class="fas fa-home"></i> Inicio</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/paquetes"><i class="fas fa-box-open"></i> Paquetes</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/vehiculos"><i class="fas fa-car"></i> Vehículos</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/nosotros"><i class="fas fa-info-circle"></i> Sobre Nosotros</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#"><i class="fas fa-headset"></i> Ayuda</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container main-container">
+        @php
+            $type = isset($item->capacidad) ? 'hospedaje' : 'vehiculo';
+            $precio_por_dia = $item->precio_por_dia ?? $item->precio_por_noche;
+            $nombre_item = $item->nombre ?? ($item->marca . ' ' . $item->modelo);
+
+            $imagenPrincipal = 'https://via.placeholder.com/800x600.png/CCCCCC/FFFFFF?text=Imagen+no+disponible';
+            if (!empty($item->imagenes)) {
+                if (is_string($item->imagenes) && (str_starts_with($item->imagenes, 'http') || file_exists(public_path(str_replace('/storage', 'storage', $item->imagenes))))) {
+                    $imagenPrincipal = asset($item->imagenes);
+                } elseif (is_array($item->imagenes) && !empty($item->imagenes[0])) {
+                    $imagenPrincipal = asset($item->imagenes[0]);
+                }
+            }
+        @endphp
+
+        <div class="row g-4">
+            <!-- Columna Izquierda: Imagen y Detalles -->
+            <div class="col-lg-8">
+                <div class="item-card">
+                    <div class="item-image-container">
+                        <img src="{{ $imagenPrincipal }}" alt="Imagen de {{ $nombre_item }}" class="item-image">
+                    </div>
+                </div>
+
+                <div class="item-details">
+                    <h2 class="details-title">Detalles del {{ $type === 'hospedaje' ? 'Hospedaje' : 'Vehículo' }}</h2>
+                    <div class="details-grid">
+                        @if($type === 'hospedaje')
+                            <div class="detail-item"><i class="fas fa-map-marker-alt"></i> <div><span class="detail-label">Ubicación:</span><span class="detail-value">{{ $item->ubicacion }}</span></div></div>
+                            <div class="detail-item"><i class="fas fa-users"></i> <div><span class="detail-label">Capacidad:</span><span class="detail-value">{{ $item->capacidad }} personas</span></div></div>
+                            <div class="detail-item"><i class="fas fa-bed"></i> <div><span class="detail-label">Habitaciones:</span><span class="detail-value">{{ $item->habitaciones }}</span></div></div>
+                            <div class="detail-item"><i class="fas fa-bath"></i> <div><span class="detail-label">Baños:</span><span class="detail-value">{{ $item->baños }}</span></div></div>
+                        @else
+                            <div class="detail-item"><i class="fas fa-car"></i> <div><span class="detail-label">Tipo:</span><span class="detail-value">{{ $item->tipo }}</span></div></div>
+                            <div class="detail-item"><i class="fas fa-cogs"></i> <div><span class="detail-label">Transmisión:</span><span class="detail-value">{{ $item->transmision }}</span></div></div>
+                            <div class="detail-item"><i class="fas fa-gas-pump"></i> <div><span class="detail-label">Motor:</span><span class="detail-value">{{ $item->motor }}</span></div></div>
+                            <div class="detail-item"><i class="fas fa-user-friends"></i> <div><span class="detail-label">Pasajeros:</span><span class="detail-value">{{ $item->pasajeros }}</span></div></div>
+                        @endif
+                    </div>
+                </div>
+
+                @if(!empty($item->caracteristicas))
+                <div class="characteristics-section">
+                    <h3 class="details-title">Características Adicionales</h3>
+                    <ul class="characteristics-list">
+                        @foreach($item->caracteristicas as $caracteristica)
+                            <li class="characteristic-item"><i class="fas fa-check-circle"></i> {{ $caracteristica }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+                @endif
+            </div>
+
+            <!-- Columna Derecha: Panel de Reserva -->
+            <div class="col-lg-4">
+                <div class="booking-panel sticky-top p-3">
+                    
+                    <form action="{{ route('reservar.store') }}" method="POST" id="bookingForm" class="p-3">
+                        <h3 class="reserve-header mb-3">Completa tu Reserva</h3>
+                        @csrf
+                        <input type="hidden" name="item_id" value="{{ $item->id }}">
+                        <input type="hidden" name="tipo_item" value="{{ $type }}">
+                        <input type="hidden" name="precio_total" id="precio_total_hidden">
+                        <input type="hidden" name="fecha_inicio" id="fecha_inicio_hidden">
+                        <input type="hidden" name="fecha_fin" id="fecha_fin_hidden">
+
+                        <div class="price-display">
+                            ${{ number_format($precio_por_dia, 2) }}
+                            <span class="price-period">por {{ $type === 'hospedaje' ? 'noche' : 'día' }}</span>
+                        </div>
+
+                        <div class="form-group mb-3">
+                            <label for="fecha_inicio" class="form-label">{{ $type === 'hospedaje' ? 'Check-in' : 'Fecha de Retiro' }}</label>
+                            <input type="date" id="fecha_inicio" class="form-control" required>
+                        </div>
+
+                        <div class="form-group mb-3">
+                            <label for="fecha_fin" class="form-label">{{ $type === 'hospedaje' ? 'Check-out' : 'Fecha de Devolución' }}</label>
+                            <input type="date" id="fecha_fin" class="form-control" required>
+                        </div>
+                        
+                        <hr>
+
+                        <div class="row">
+                            <div class="col-md-12 mb-3">
+                                <label for="nombre" class="form-label">Nombre Completo</label>
+                                <input type="text" class="form-control" id="nombre" name="nombre" value="{{ old('nombre', auth()->user()->name ?? '') }}" required>
+                            </div>
+                            <div class="col-md-12 mb-3">
+                                <label for="email" class="form-label">Correo Electrónico</label>
+                                <input type="email" class="form-control" id="email" name="email" value="{{ old('email', auth()->user()->email ?? '') }}" required>
+                            </div>
+                        </div>
+                        
+                        <h5 class="mt-3 mb-3">Detalles del Pago</h5>
+                        <div class="row">
+                            <div class="col-12 mb-3">
+                                <label for="card-number" class="form-label">Número de Tarjeta</label>
+                                <input type="text" class="form-control" id="card-number" name="card_number" placeholder="**** **** **** ****" required>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="expiry-date" class="form-label">Vencimiento</label>
+                                <input type="text" class="form-control" id="expiry-date" name="expiry_date" placeholder="MM/YY" required>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="cvv" class="form-label">CVV</label>
+                                <input type="text" class="form-control" id="cvv" name="cvv" placeholder="123" required>
+                            </div>
+                        </div>
+
+                        <hr>
+                        
+                        <div class="d-flex justify-content-between align-items-center mb-3">
+                            <span class="fw-bold fs-5">Total a Pagar:</span>
+                            <span id="total-a-pagar" class="fw-bold fs-4" style="color: var(--frategar-orange);">$0.00</span>
+                        </div>
+
+                        <button type="submit" class="btn reserve-button w-100 mt-2">Confirmar y Pagar</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // --- LÓGICA DE CÁLCULO DE PRECIO ---
+            const fechaInicioEl = document.getElementById('fecha_inicio');
+            const fechaFinEl = document.getElementById('fecha_fin');
+            const totalAPagarEl = document.getElementById('total-a-pagar');
+            const precioTotalHiddenEl = document.getElementById('precio_total_hidden');
+            const fechaInicioHiddenEl = document.getElementById('fecha_inicio_hidden');
+            const fechaFinHiddenEl = document.getElementById('fecha_fin_hidden');
+
+            const precioPorUnidad = {{ $precio_por_dia }};
+            const tipoItem = '{{ $type }}';
+
+            function calcularTotal() {
+                const fechaInicio = fechaInicioEl.value;
+                const fechaFin = fechaFinEl.value;
+
+                if (fechaInicio && fechaFin) {
+                    const inicio = new Date(fechaInicio);
+                    const fin = new Date(fechaFin);
+
+                    if (fin > inicio) {
+                        const diffTiempo = fin.getTime() - inicio.getTime();
+                        let diffDias = Math.ceil(diffTiempo / (1000 * 3600 * 24));
+                        
+                        if(tipoItem === 'vehiculo') {
+                            diffDias = diffDias > 0 ? diffDias + 1 : 1;
+                        }
+
+                        if (diffDias <= 0) diffDias = 1;
+
+                        const total = diffDias * precioPorUnidad;
+                        
+                        totalAPagarEl.textContent = `$${total.toLocaleString('es-AR', {minimumFractionDigits: 2, maximumFractionDigits: 2})}`;
+                        precioTotalHiddenEl.value = total.toFixed(2);
+                        fechaInicioHiddenEl.value = fechaInicio;
+                        fechaFinHiddenEl.value = fechaFin;
+                    } else {
+                        totalAPagarEl.textContent = '$0.00';
+                        precioTotalHiddenEl.value = '0.00';
+                    }
+                } else {
+                    totalAPagarEl.textContent = '$0.00';
+                    precioTotalHiddenEl.value = '0.00';
+                }
+            }
+
+            if(fechaInicioEl && fechaFinEl) {
+                const hoy = new Date();
+                const manana = new Date(hoy);
+                manana.setDate(hoy.getDate() + 1);
+                
+                fechaInicioEl.setAttribute('min', manana.toISOString().split('T')[0]);
+                fechaFinEl.disabled = true; 
+
+                fechaInicioEl.addEventListener('change', () => {
+                    if (fechaInicioEl.value) {
+                        const fechaInicioSeleccionada = new Date(fechaInicioEl.value);
+                        const fechaMinFin = new Date(fechaInicioSeleccionada);
+                        fechaMinFin.setDate(fechaInicioSeleccionada.getDate() + 2);
+                        fechaFinEl.setAttribute('min', fechaMinFin.toISOString().split('T')[0]);
+                        fechaFinEl.disabled = false;
+                    } else {
+                        fechaFinEl.disabled = true;
+                    }
+                    calcularTotal();
+                });
+
+                fechaFinEl.addEventListener('change', calcularTotal);
+            }
+
+            @if ($errors->any())
+                document.getElementById('bookingForm').scrollIntoView({ behavior: 'smooth', block: 'center' });
+            @endif
+        });
+    </script>
+</body>
+</html>
+
+                        if (diffDias <= 0) diffDias = 1;
+
+                        const total = diffDias * precioPorUnidad;
+                        
+                        totalAPagarEl.textContent = `$${total.toFixed(2)}`;
+                        totalAPagarModalEl.textContent = `$${total.toFixed(2)}`;
+                        precioTotalHiddenEl.value = total.toFixed(2);
+                        fechaInicioHiddenEl.value = fechaInicio;
+                        fechaFinHiddenEl.value = fechaFin;
+
+                    } else {
+                        totalAPagarEl.textContent = '$0.00';
+                        totalAPagarModalEl.textContent = '$0.00';
+                        precioTotalHiddenEl.value = '0.00';
+                    }
+                } else {
+                    totalAPagarEl.textContent = '$0.00';
+                    totalAPagarModalEl.textContent = '$0.00';
+                    precioTotalHiddenEl.value = '0.00';
+                }
+            }
+
+            if(fechaInicioEl && fechaFinEl) {
+                fechaInicioEl.addEventListener('change', calcularTotal);
+                fechaFinEl.addEventListener('change', calcularTotal);
+                const hoy = new Date().toISOString().split('T')[0];
+                fechaInicioEl.setAttribute('min', hoy);
+                fechaFinEl.setAttribute('min', hoy);
+            }
+
+            @if ($errors->any())
+                console.log('Errores de validación de Laravel detectados. Abriendo modal.');
+                const modalPorError = new bootstrap.Modal(document.getElementById('paymentModal'));
+                modalPorError.show();
+            @endif
+        });
+    </script>
+</body>
+</html>
                 </ul>
                 <ul class="navbar-nav">
                     <li class="nav-item"><a class="nav-link" href="/login"><i class="fas fa-user"></i> Mi cuenta</a></li>
@@ -569,20 +649,21 @@
                         <h4 class="reserve-header">Reserva ahora</h4>
                         <div class="booking-content">
                             <div class="price-display mb-4">
-                                <span id="precio_total_display">${{ number_format($vehiculo->precio_por_dia, 2) }}</span>
+                                <span id="precio_total_display">${{ number_format($item->precio_por_dia, 2) }}</span>
                                 <span class="price-period">por día</span>
                             </div>
-                            <button type="button" class="btn btn-primary w-100 py-3 fw-bold" data-bs-toggle="modal" data-bs-target="#reservaPagoModal" {{ !$vehiculo->disponible ? 'disabled' : '' }}>
-                                <i class="fas fa-calendar-check me-2"></i> {{ $vehiculo->disponible ? 'Reservar Ahora' : 'No Disponible' }}
+                            <button type="button" class="btn btn-primary w-100 py-3 fw-bold" data-bs-toggle="modal" data-bs-target="#reservaPagoModal" {{ !$item->disponible ? 'disabled' : '' }}>
+                                <i class="fas fa-calendar-check me-2"></i> {{ $item->disponible ? 'Reservar Ahora' : 'No Disponible' }}
                             </button>
 
                             <!-- Modal con pestañas -->
                             <div class="modal fade" id="reservaPagoModal" tabindex="-1" aria-labelledby="reservaPagoModalLabel" aria-hidden="true">
                               <div class="modal-dialog modal-lg">
                                 <div class="modal-content">
-                                  <form action="{{ url('vehiculos/' . $vehiculo->id . '/reservar') }}" method="POST" id="formReservaPago">
+                                  @if ($type === 'vehiculo')
+                                  <form id="formReservaPago" action="{{ route('vehiculos.reservar', ['id' => $item->id]) }}" method="POST">
                                     @csrf
-                                    <input type="hidden" name="vehiculo_id" value="{{ $vehiculo->id }}">
+                                    <input type="hidden" name="vehiculo_id" value="{{ $item->id }}">
                                     
                                     <!-- Mostrar errores generales -->
                                     @if($errors->any())
@@ -595,7 +676,7 @@
                                     </div>
                                     @endif
                                     <div class="modal-header bg-primary text-white">
-                                      <h5 class="modal-title" id="reservaPagoModalLabel">Reservar Vehículo - {{ $vehiculo->marca }} {{ $vehiculo->modelo }}</h5>
+                                      <h5 class="modal-title" id="reservaPagoModalLabel">Reservar Vehículo - {{ $item->marca }} {{ $item->modelo }}</h5>
                                       <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Cerrar"></button>
                                     </div>
                                     <div class="modal-body">
@@ -605,13 +686,13 @@
                                           <h6 class="fw-bold mb-3">Resumen de la reserva</h6>
                                           <div class="card bg-light mb-3">
                                             <div class="card-body p-3">
-                                              <h6 class="card-title fw-bold">{{ $vehiculo->marca }} {{ $vehiculo->modelo }}</h6>
-                                              <p class="card-text small mb-1">{{ $vehiculo->tipo }} • {{ $vehiculo->capacidad_pasajeros }} pasajeros</p>
-                                              <p class="card-text small mb-2">{{ $vehiculo->ubicacion }}</p>
+                                              <h6 class="card-title fw-bold">{{ $item->marca }} {{ $item->modelo }}</h6>
+                                              <p class="card-text small mb-1">{{ $item->tipo }} • {{ $item->capacidad_pasajeros }} pasajeros</p>
+                                              <p class="card-text small mb-2">{{ $item->ubicacion }}</p>
                                               <hr class="my-2">
                                               <div class="d-flex justify-content-between align-items-center mb-2">
                                                 <span class="small">Precio por día:</span>
-                                                <span class="fw-bold">$<span id="precio_dia">{{ number_format($vehiculo->precio_por_dia, 2) }}</span></span>
+                                                <span class="fw-bold" id="precio_dia">${{ number_format($item->precio_por_dia, 2) }}</span>
                                               </div>
                                               <div class="d-flex justify-content-between align-items-center mb-2">
                                                 <span class="small">Cantidad de días:</span>
@@ -620,7 +701,7 @@
                                               <hr class="my-2">
                                               <div class="d-flex justify-content-between align-items-center">
                                                 <span class="fw-bold">Total a pagar:</span>
-                                                <span class="h5 mb-0 text-primary">$<span id="total_pagar">0.00</span></span>
+                                                <span class="h5 mb-0 text-primary" id="total_pagar">$0.00</span>
                                               </div>
                                             </div>
                                           </div>
@@ -723,6 +804,49 @@
                                       </button>
                                     </div>
                                   </form>
+                                  @elseif ($type === 'hospedaje')
+                                  <form id="formReservaHospedaje" action="{{ route('hospedajes.storeReserva') }}" method="POST">
+                                    @csrf
+                                    <input type="hidden" name="hospedaje_id" value="{{ $item->id }}">
+                                    <input type="hidden" name="noches" id="cantidad_noches_hidden">
+                                    <div class="row">
+                                        <div class="col-md-6 form-group">
+                                            <label for="hospedaje_fecha_inicio" class="form-label">Fecha de Entrada</label>
+                                            <input type="date" class="form-control" id="hospedaje_fecha_inicio" name="fecha_inicio" required>
+                                        </div>
+                                        <div class="col-md-6 form-group">
+                                            <label for="hospedaje_fecha_fin" class="form-label">Fecha de Salida</label>
+                                            <input type="date" class="form-control" id="hospedaje_fecha_fin" name="fecha_fin" required>
+                                        </div>
+                                    </div>
+                                    <div class="alert alert-info">Total de noches: <strong id="total_noches_display">0</strong></div>
+                                    <hr>
+                                    <h5 class="mb-3">Información de Pago</h5>
+                                    <div class="form-group">
+                                        <label for="cardholder_name" class="form-label">Nombre del Titular</label>
+                                        <input type="text" class="form-control" name="cardholder_name" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="card_number" class="form-label">Número de Tarjeta</label>
+                                        <input type="text" class="form-control" name="card_number" required>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-6 form-group">
+                                            <label for="expiration_month" class="form-label">Mes Exp.</label>
+                                            <input type="text" class="form-control" name="expiration_month" placeholder="MM" required>
+                                        </div>
+                                        <div class="col-md-6 form-group">
+                                            <label for="expiration_year" class="form-label">Año Exp.</label>
+                                            <input type="text" class="form-control" name="expiration_year" placeholder="YYYY" required>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="cvv" class="form-label">CVV</label>
+                                        <input type="text" class="form-control" name="cvv" required>
+                                    </div>
+                                    <button type="submit" class="reserve-button w-100 mt-3">Pagar y Reservar <span id="hospedaje_precio_total_display_modal"></span></button>
+                                  </form>
+                                  @endif
                                 </div>
                               </div>
                             </div>
@@ -755,7 +879,7 @@
                                     @endif
                                 @endif
                                 const spinner = document.getElementById('spinner');
-                                const precioPorDia = parseFloat({{ $vehiculo->precio_por_dia }});
+                                const precioPorDia = parseFloat({{ $item->precio_por_dia }});
                                 
                                 // Inicializar tooltips
                                 const tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
@@ -981,46 +1105,64 @@
                             
                             <script>
                             document.addEventListener('DOMContentLoaded', function() {
-                                // Función para calcular la fecha de fin basada en la fecha de inicio y días
-                                function calcularFechaFin() {
-                                    const inicio = document.getElementById('fecha_inicio');
-                                    const dias = document.getElementById('cantidad_dias');
-                                    const fechaFin = document.getElementById('fecha_fin');
-                                    
-                                    if (inicio && inicio.value && dias && dias.value) {
-                                        const fecha = new Date(inicio.value);
-                                        fecha.setDate(fecha.getDate() + parseInt(dias.value));
-                                        const yyyy = fecha.getFullYear();
-                                        const mm = String(fecha.getMonth() + 1).padStart(2, '0');
-                                        const dd = String(fecha.getDate()).padStart(2, '0');
-                                        fechaFin.value = `${yyyy}-${mm}-${dd}`;
+                                const type = '{{ $type }}';
+                                const item = @json($item);
+
+                                if (type === 'vehiculo') {
+                                    const precioPorDia = parseFloat(item.precio_por_dia);
+                                    const fechaInicioEl = document.getElementById('fecha_inicio');
+                                    const cantidadDiasEl = document.getElementById('cantidad_dias');
+                                    const fechaFinEl = document.getElementById('fecha_fin');
+                                    const precioTotalDisplay = document.getElementById('precio_total_display');
+                                    const precioTotalBtn = document.getElementById('precio_total_btn');
+                                    const precioTotalModal = document.getElementById('precio_total_display_modal');
+
+                                    function calcularVehiculo() {
+                                        if (!fechaInicioEl.value) return;
+                                        const dias = parseInt(cantidadDiasEl.value) || 1;
+                                        const inicio = new Date(fechaInicioEl.value);
+                                        inicio.setDate(inicio.getDate() + dias);
+                                        fechaFinEl.value = inicio.toISOString().split('T')[0];
+                                        const total = dias * precioPorDia;
+                                        if(precioTotalDisplay) precioTotalDisplay.innerText = `$${total.toFixed(2)}`;
+                                        if(precioTotalBtn) precioTotalBtn.innerText = `$${total.toFixed(2)}`;
+                                        if(precioTotalModal) precioTotalModal.innerText = `$${total.toFixed(2)}`;
+                                        document.getElementById('precio_total_hidden').value = total.toFixed(2);
                                     }
-                                    actualizarPrecio();
+                                    fechaInicioEl.addEventListener('change', calcularVehiculo);
+                                    cantidadDiasEl.addEventListener('input', calcularVehiculo);
+                                    calcularVehiculo();
+
+                                } else if (type === 'hospedaje') {
+                                    const precioPorNoche = parseFloat(item.precio_por_noche);
+                                    const fechaInicioEl = document.getElementById('hospedaje_fecha_inicio');
+                                    const fechaFinEl = document.getElementById('hospedaje_fecha_fin');
+                                    const nochesDisplay = document.getElementById('total_noches_display');
+                                    const nochesHidden = document.getElementById('cantidad_noches_hidden');
+                                    const precioTotalDisplay = document.getElementById('precio_total_display');
+                                    const precioTotalBtn = document.getElementById('precio_total_btn');
+                                    const precioTotalModal = document.getElementById('hospedaje_precio_total_display_modal');
+
+                                    function calcularHospedaje() {
+                                        if (!fechaInicioEl.value || !fechaFinEl.value) return;
+                                        const inicio = new Date(fechaInicioEl.value);
+                                        const fin = new Date(fechaFinEl.value);
+                                        if (fin <= inicio) {
+                                            if(nochesDisplay) nochesDisplay.innerText = '0';
+                                            return;
+                                        }
+                                        const diffTime = Math.abs(fin - inicio);
+                                        const noches = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+                                        if(nochesDisplay) nochesDisplay.innerText = noches;
+                                        if(nochesHidden) nochesHidden.value = noches;
+                                        const total = noches * precioPorNoche;
+                                        if(precioTotalDisplay) precioTotalDisplay.innerText = `$${total.toFixed(2)}`;
+                                        if(precioTotalBtn) precioTotalBtn.innerText = `$${total.toFixed(2)}`;
+                                        if(precioTotalModal) precioTotalModal.innerText = `$${total.toFixed(2)}`;
+                                    }
+                                    fechaInicioEl.addEventListener('change', calcularHospedaje);
+                                    fechaFinEl.addEventListener('change', calcularHospedaje);
                                 }
-                                
-                                // Función para actualizar el precio total
-                                function actualizarPrecio() {
-                                    const dias = parseInt(document.getElementById('cantidad_dias').value || '1');
-                                    const precioPorDia = {{ $vehiculo->precio_por_dia }};
-                                    const total = dias * precioPorDia;
-                                    document.getElementById('precio_total_display').innerText = `$${total.toFixed(2)}`;
-                                    document.getElementById('precio_total_btn').innerText = `$${total.toFixed(2)}`;
-                                }
-                                
-                                // Inicializar eventos
-                                const fechaInicio = document.getElementById('fecha_inicio');
-                                const cantidadDias = document.getElementById('cantidad_dias');
-                                
-                                if (fechaInicio) {
-                                    fechaInicio.addEventListener('change', calcularFechaFin);
-                                }
-                                
-                                if (cantidadDias) {
-                                    cantidadDias.addEventListener('input', calcularFechaFin);
-                                }
-                                
-                                // Calcular valores iniciales
-                                calcularFechaFin();
                             });
                             </script>
                             

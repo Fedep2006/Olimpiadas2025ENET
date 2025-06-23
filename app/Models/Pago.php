@@ -9,43 +9,36 @@ class Pago extends Model
 {
     use SoftDeletes;
 
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array<int, string>
+     */
     protected $fillable = [
-        'monto',
-        'moneda',
-        'metodo_pago',
+        'reserva_id',
         'estado',
-        'referencia_pago',
-        'fecha_pago',
-        'tarjeta_ultimos_digitos',
-        'tarjeta_marca',
-        'nombre_titular',
-        'user_id',
-        'detalles_adicionales',
+        'cardholder_name',
+        'card_number',
+        'expiration_month',
+        'expiration_year',
+        'cvv',
+        'amount',
     ];
 
+    /**
+     * The attributes that should be cast.
+     *
+     * @var array<string, string>
+     */
     protected $casts = [
-        'fecha_pago' => 'datetime',
-        'monto' => 'decimal:2',
+        'amount' => 'decimal:2',
     ];
 
-    // Relaciones
-    public function user()
+    /**
+     * Get the reserva that owns the pago.
+     */
+    public function reserva()
     {
-        return $this->belongsTo(User::class);
-    }
-
-    public function reservaHospedaje()
-    {
-        return $this->hasOne(ReservaHospedaje::class);
-    }
-
-    public function reservaViaje()
-    {
-        return $this->hasOne(ReservaViaje::class);
-    }
-
-    public function reservaVehiculo()
-    {
-        return $this->hasOne(ReservaVehiculo::class);
+        return $this->belongsTo(Reserva::class, 'reserva_id');
     }
 }
