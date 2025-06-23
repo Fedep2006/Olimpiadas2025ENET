@@ -25,69 +25,85 @@
         background-color: #dc3545;
         color: white;
     }
-
-    .user-profile {
-        display: flex;
-        align-items: center;
-        gap: 12px;
-    }
-
-    .user-profile-avatar {
-        width: 45px;
-        height: 45px;
-        border-radius: 50%;
-        background: var(--despegar-light-blue);
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        color: var(--despegar-blue);
-        font-weight: bold;
-        font-size: 1.1rem;
-    }
-
-    .user-info h6 {
+        .ids h6 {
         margin: 0;
-        font-weight: bold;
+        font-weight: normal;
     }
 
-    .user-info small {
+    small {
         color: #6c757d;
+        font-size: 12px;
+        line-height: 1;
     }
+    .camino-text{
+        color: #6c757d;
+        font-size: 14px;
+        line-height: 0.95;
+    }
+    tr{
+        text-align: center;
+    }
+    
 </style>
 @php
-    
+    $id1 = 0;
 @endphp
 @if ($registros->isEmpty())
     <tr>
-        <td colspan="4" class="text-center">No se encontraron usuarios</td>
+        <td colspan="4" class="text-center">No se encontraron paquetes</td>
     </tr>
 @else
     @foreach ($registros as $registro)
         <tr>
             <td>
-                <div class="user-profile">
-                    <div class="user-profile-avatar">
-                        {{ substr($registro->name, 0, 2) }}
-                    </div>
-                    <div class="user-info">
-                        <h6>{{ $registro->name }}</h6>
-                    </div>
+                <div class="flex flex-col text-center justify-between !self-center align-middle h-full w-full ">
+                    <h6>{{ ucfirst($registro->nombre) }}</h6>
+                    <small class="pb-2 font-bold">asd</small>
+                    <small class="pb-1">asd</small>
                 </div>
             </td>
-            <td>{{ $registro->email }}</td>
-            <td>{{ $registro->created_at->format('d/m/Y') }}</td>
-<td>
-    @if($registro->nivel == 0)
-        <span class="badge bg-primary">Cliente</span>
-    @elseif($registro->nivel == 1)
-        <span class="badge bg-warning text-dark">Empleado</span>
-    @elseif($registro->nivel == 2)
-        <span class="badge bg-danger">Superadmin</span>
-    @else
-        <span class="badge bg-secondary">Desconocido</span>
-    @endif
-</td>
-</td>
+            <td>
+                <div class="flex flex-col text-center justify-between !self-center h-full w-full text-[14px]">
+                    <span>Precio: {{ $registro->precio_total }}</span>
+                    <span>Duracion: {{ $registro->duracion }}</span>
+                    <span>Ubicacion: {{ $registro->ubicacion }}</span>
+                </div>
+            </td>
+            <td>
+                <div class="flex flex-col text-center justify-between h-full w-full ">
+                    <span>{{ $registro->cupo_minimo }}</span>
+                    <small>{{ $registro->cupo_maximo }}</small>
+                </div>
+            </td>
+            
+            <td>
+                <div class="flex items-center flex-col w-full">
+                    <span>{{ '$' . number_format($registro->numero_paquete, 0, ',', '.')}}</span>
+                    <small class="camino-text">por dia</small>
+                </div>
+            </td>
+            <td>
+                <span class="badge bg-{{ $registro->hecho_por_usuario ? 'success' : 'danger' }}">
+                    {{ $registro->hecho_por_usuario ? 'Hecho por Usuario' : 'Hecho por Empleado' }}
+                </span>
+            </td>
+            <td>
+                @php
+                    $detalles = [
+                        (object)[
+                            'titulo' => '',
+                            'contenido' => $registro->descripcion,
+                        ]
+                        
+                    ];
+                @endphp
+                <x-layouts.administracion.modals.mostrar-registro id={{$id1}} titulo="Descripcion" :detalles="$detalles"/>
+            </td>
+            <td>
+                <span class="badge bg-{{ $registro->disponible ? 'success' : 'danger' }}">
+                    {{ $registro->disponible ? 'Activo' : 'Inactivo' }}
+                </span>
+            </td>
             <td>
                 <div class="action-buttons">
                     <button class="action-btn edit" data-registro="{{ $registro }}" title="Editar">
@@ -99,5 +115,8 @@
                 </div>
             </td>
         </tr>
+        @php
+            $id1++;
+        @endphp
     @endforeach
 @endif

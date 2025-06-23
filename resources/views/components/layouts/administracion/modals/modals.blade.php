@@ -6,6 +6,7 @@
         --font-md: 1rem;
         --font-lg: 1.25rem;
     }
+
     .modal-dialog {
         display: flex;
         justify-content: center;
@@ -22,6 +23,7 @@
         grid-template-columns: repeat(1, minmax(0, 1fr));
         gap: 10px;
     }
+
     .modal form[data-items="5"],
     .modal form[data-items="6"],
     .modal form[data-items="7"],
@@ -67,6 +69,7 @@
         font-size: var(--font-sm);
         transition: all 0.3s ease;
     }
+
     .modal .btn-primary {
         background-color: var(--despegar-blue);
         border: none;
@@ -151,88 +154,146 @@
         margin-bottom: 5px;
         text-align: center;
     }
+
     @media (min-width: 768px) {
-    .modal-content {
-        font-size: var(--font-md);
-        width: 70%;
+        .modal-content {
+            font-size: var(--font-md);
+            width: 70%;
+        }
+
+        .modal-header,
+        .modal-body,
+        .modal-footer {
+            padding: var(--padding-desktop);
+        }
+
+        .modal form[data-items="5"],
+        .modal form[data-items="6"],
+        .modal form[data-items="7"],
+        .modal form[data-items="8"] {
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+
+        .modal form[data-items="9"],
+        .modal form[data-items="10"],
+        .modal form[data-items="11"],
+        .modal form[data-items="12"] {
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+        }
+
+        .modal form[data-items="13"],
+        .modal form[data-items="14"],
+        .modal form[data-items="15"],
+        .modal form[data-items="16"] {
+            grid-template-columns: repeat(4, minmax(0, 1fr));
+        }
+
+        .modal-content[data-items="6"],
+        .modal-content[data-items="7"],
+        .modal-content[data-items="8"],
+        .modal-content[data-items="9"],
+        .modal-content[data-items="10"] {
+            width: 80%;
+        }
+
+        .modal-content[data-items="11"],
+        .modal-content[data-items="12"],
+        .modal-content[data-items="13"],
+        .modal-content[data-items="14"],
+        .modal-content[data-items="15"] {
+            width: 90%;
+        }
+
+        @media (min-width: 1024px) {
+
+            .modal-content {
+                font-size: var(--font-md);
+                width: 35%;
+            }
+
+            .modal-content[data-items="6"],
+            .modal-content[data-items="7"],
+            .modal-content[data-items="8"],
+            .modal-content[data-items="9"],
+            .modal-content[data-items="10"] {
+                width: 50%;
+            }
+
+            .modal-content[data-items="11"],
+            .modal-content[data-items="12"],
+            .modal-content[data-items="13"],
+            .modal-content[data-items="14"],
+            .modal-content[data-items="15"] {
+                width: 60%;
+            }
+
+            .modal .form-label,
+            .modal .form-control,
+            .modal .btn {
+                font-size: var(--font-md);
+            }
+        }
     }
 
-    .modal-header,
-    .modal-body,
-    .modal-footer {
-        padding: var(--padding-desktop);
+    .dynamic-input-group {
+        border: 1px solid #dee2e6;
+        border-radius: 0.375rem;
+        padding: 15px;
+        margin-bottom: 15px;
+        background-color: #f8f9fa;
+        position: relative;
     }
 
-    .modal form[data-items="5"],
-    .modal form[data-items="6"],
-    .modal form[data-items="7"],
-    .modal form[data-items="8"] {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-    }
-    .modal form[data-items="9"],
-    .modal form[data-items="10"],
-    .modal form[data-items="11"],
-    .modal form[data-items="12"] {
-        grid-template-columns: repeat(3, minmax(0, 1fr));
-    }
-    .modal form[data-items="13"],
-    .modal form[data-items="14"],
-    .modal form[data-items="15"],
-    .modal form[data-items="16"] {
-        grid-template-columns: repeat(4, minmax(0, 1fr));
+    .remove-btn {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        z-index: 10;
     }
 
-    .modal-content[data-items="6"],
-    .modal-content[data-items="7"],
-    .modal-content[data-items="8"],
-    .modal-content[data-items="9"],
-    .modal-content[data-items="10"] {
-        width: 80%;
+    .add-inputs-btn {
+        background: linear-gradient(45deg, #007bff, #0056b3);
+        border: none;
+        color: white;
+        padding: 10px 20px;
+        border-radius: 25px;
+        font-weight: 500;
+        transition: all 0.3s ease;
+        box-shadow: 0 2px 10px rgba(0, 123, 255, 0.3);
     }
 
-    .modal-content[data-items="11"],
-    .modal-content[data-items="12"],
-    .modal-content[data-items="13"],
-    .modal-content[data-items="14"],
-    .modal-content[data-items="15"] {
-        width: 90%;
-    }
-    @media (min-width: 1024px) {
-
-    .modal-content {
-        font-size: var(--font-md);
-        width: 35%;
+    .add-inputs-btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 15px rgba(0, 123, 255, 0.4);
+        background: linear-gradient(45deg, #0056b3, #004085);
     }
 
-    .modal-content[data-items="6"],
-    .modal-content[data-items="7"],
-    .modal-content[data-items="8"],
-    .modal-content[data-items="9"],
-    .modal-content[data-items="10"] {
-        width: 50%;
+    .dynamic-inputs-container {
+        max-height: 400px;
+        overflow-y: auto;
     }
 
-    .modal-content[data-items="11"],
-    .modal-content[data-items="12"],
-    .modal-content[data-items="13"],
-    .modal-content[data-items="14"],
-    .modal-content[data-items="15"] {
-        width: 60%;
+    .fade-in {
+        animation: fadeIn 0.3s ease;
     }
 
-    .modal .form-label,
-    .modal .form-control,
-    .modal .btn {
-        font-size: var(--font-md);
+    @keyframes fadeIn {
+        from {
+            opacity: 0;
+            transform: translateY(-10px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
     }
-}
-}
 </style>
-@props(['tituloCrear','tituloEditar','tituloEliminar', 'camposCrear', 'camposEditar'])
+@props(['tituloCrear', 'tituloEditar', 'tituloEliminar', 'camposCrear', 'camposEditar'])
 
 <x-layouts.administracion.modals.crear-registro :titulo="$tituloCrear" :inputs="$camposCrear" />
 
-<x-layouts.administracion.modals.editar-registro :titulo="$tituloEditar" :inputs="$camposEditar"/>
+<x-layouts.administracion.modals.editar-registro :titulo="$tituloEditar" :inputs="$camposEditar" />
 
 <x-layouts.administracion.modals.eliminar-registro :titulo="$tituloEliminar" />
 
