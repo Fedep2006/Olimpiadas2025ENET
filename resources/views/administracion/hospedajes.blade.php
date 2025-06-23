@@ -71,22 +71,37 @@
                 'label' => 'Precio por Noche'
             ],
             (object)[
+                'id' => 'pais_id',
+                'name' => 'pais_id',
+                'type' => 'select',
+                'label' => 'Pais',
+                'options' => $paises->map(function($pais) {
+                    return (object)['value' => $pais->id, 'text' => $pais->nombre];
+                })->toArray()
+            ],
+            (object)[
+                'id' => 'provincia_id',
+                'name' => 'provincia_id',
+                'type' => 'select',
+                'label' => 'Provincia',
+                'options' => $provincias->map(function($provincia) {
+                    return (object)['value' => $provincia->id, 'text' => $provincia->nombre];
+                })->toArray()
+            ],
+            (object)[
+                'id' => 'ciudad_id',
+                'name' => 'ciudad_id',
+                'type' => 'select',
+                'label' => 'Ciudad',
+                'options' => $ciudades->map(function($ciudad) {
+                    return (object)['value' => $ciudad->id, 'text' => $ciudad->nombre];
+                })->toArray()
+            ],
+            (object)[
                 'id' => 'ubicacion',
                 'name' => 'ubicacion',
                 'type' => 'text',
-                'label' => 'Ubicacion del Hospedaje'
-            ],
-            (object)[
-                'id' => 'pais',
-                'name' => 'pais',
-                'type' => 'text',
-                'label' => 'Pais del Hospedaje'
-            ],
-            (object)[
-                'id' => 'ciudad',
-                'name' => 'ciudad',
-                'type' => 'text',
-                'label' => 'Ciudad del Hospedaje'
+                'label' => 'Ubicacion donde esta el Viaje',
             ],
             (object)[
                 'id' => 'estrellas',
@@ -215,22 +230,37 @@
                 'label' => 'Precio por Noche'
             ],
             (object)[
+                'id' => 'editPais_id',
+                'name' => 'pais_id',
+                'type' => 'select',
+                'label' => 'Pais',
+                'options' => $paises->map(function($pais) {
+                    return (object)['value' => $pais->id, 'text' => $pais->nombre];
+                })->toArray()
+            ],
+            (object)[
+                'id' => 'editProvincia_id',
+                'name' => 'provincia_id',
+                'type' => 'select',
+                'label' => 'Provincia',
+                'options' => $provincias->map(function($provincia) {
+                    return (object)['value' => $provincia->id, 'text' => $provincia->nombre];
+                })->toArray()
+            ],
+            (object)[
+                'id' => 'editCiudad_id',
+                'name' => 'ciudad_id',
+                'type' => 'select',
+                'label' => 'Ciudad',
+                'options' => $ciudades->map(function($ciudad) {
+                    return (object)['value' => $ciudad->id, 'text' => $ciudad->nombre];
+                })->toArray()
+            ],
+            (object)[
                 'id' => 'editUbicacion',
                 'name' => 'ubicacion',
                 'type' => 'text',
-                'label' => 'Ubicacion del Hospedaje'
-            ],
-            (object)[
-                'id' => 'editPais',
-                'name' => 'pais',
-                'type' => 'text',
-                'label' => 'Pais del Hospedaje'
-            ],
-            (object)[
-                'id' => 'editCiudad',
-                'name' => 'ciudad',
-                'type' => 'text',
-                'label' => 'Ciudad del Hospedaje'
+                'label' => 'Ubicacion donde esta el Viaje',
             ],
             (object)[
                 'id' => 'editEstrellas',
@@ -369,6 +399,36 @@
                 'id' => 'searchPrecio',
                 'placeholder' => 'Precio del hospedaje',
                 'value' => 'search_precio',
+            ],
+            (object)[
+                'id' => 'searchPais_id',
+                'name' => 'search_pais_id',
+                'type' => 'select',
+                'label' => 'Pais',
+                'value' => 'search_pais_id',
+                'options' => $paises->map(function($pais) {
+                    return (object)['value' => $pais->id, 'text' => $pais->nombre];
+                })->toArray()
+            ],
+            (object)[
+                'id' => 'searchProvincia_id',
+                'name' => 'search_provincia_id',
+                'type' => 'select',
+                'label' => 'Provincia',
+                'value' => 'search_provincia_id',
+                'options' => $provincias->map(function($provincia) {
+                    return (object)['value' => $provincia->id, 'text' => $provincia->nombre];
+                })->toArray()
+            ],
+            (object)[
+                'id' => 'searchCiudad_id',
+                'name' => 'search_ciudad_id',
+                'type' => 'select',
+                'label' => 'Ciudad',
+                'value' => 'search_ciudad_id',
+                'options' => $ciudades->map(function($ciudad) {
+                    return (object)['value' => $ciudad->id, 'text' => $ciudad->nombre];
+                })->toArray()
             ],
             (object)[
                 'label' => 'Ubicacion',
