@@ -1,38 +1,41 @@
 <?php
 
-use App\Http\Controllers\Admin\AdminUsuariosController;
-use App\Http\Controllers\Admin\AdminEmpresasController;
-use App\Http\Controllers\Admin\AdminHospedajesController;
-use App\Http\Controllers\Admin\AdminPaquetesController;
-use App\Http\Controllers\Admin\AdminReservasController;
-use App\Http\Controllers\Admin\AdminVehiculosController;
-use App\Http\Controllers\Admin\AdminViajesController;
-
-use App\Http\Controllers\Principal\VehiculosController;
-use App\Http\Controllers\Principal\ReservasController;
-use App\Http\Controllers\Principal\UsuariosController;
-use App\Http\Controllers\Principal\EmpresasController;
-use App\Http\Controllers\Principal\HospedajesController;
-use App\Http\Controllers\Principal\PaquetesController;
-use App\Http\Controllers\Principal\ViajesController;
-
 use Illuminate\Support\Facades\Route;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
-use App\Http\Controllers\PagoController;
+// Admin Controllers
+use App\Http\Controllers\Admin\{
+    AdminUsuariosController,
+    AdminEmpresasController,
+    AdminHospedajesController,
+    AdminPaquetesController,
+    AdminReservasController,
+    AdminVehiculosController,
+    AdminViajesController
+};
 
+// Principal Controllers
+use App\Http\Controllers\Principal\{
+    ReservasController,
+    UsuariosController,
+    EmpresasController,
+    HospedajesController,
+    PaquetesController,
+    ViajesController,
+    VehiculosController
+};
 
-Route::post('/vehiculos/{id}/pago-ficticio', [PagoController::class, 'storeFicticio'])->name('vehiculos.pago_ficticio');
-Route::post('/vehiculos/{id}/reservar', [VehiculosController::class, 'reservar'])->name('vehiculos.reservar');
-
-use App\Http\Controllers\administracionController;
-use App\Http\Controllers\AuthController;
-use App\Http\Controllers\RegisterController;
-use App\Http\Controllers\ResultsController;
-use App\Http\Controllers\TestCompraController;
-use App\Http\Controllers\TestGmailController;
-use App\Http\Controllers\TestEmailController;
+// Other Controllers
+use App\Http\Controllers\{
+    PagoController,
+    administracionController,
+    AuthController,
+    RegisterController,
+    ResultsController,
+    TestCompraController,
+    TestGmailController,
+    TestEmailController
+};
 
 // Modelos
 use App\Models\User;
@@ -44,6 +47,11 @@ use App\Models\Paquete;
 // Ruta de búsqueda unificada de texto y filtros avanzados
 Route::get('/results', [ResultsController::class, 'index'])
     ->name('results.index');
+
+// Rutas de reserva de vehículos
+Route::post('/vehiculos/{id}/reservar', [\App\Http\Controllers\Principal\VehiculosController::class, 'reservar'])
+    ->name('vehiculos.reservar')
+    ->middleware('auth');
 
 // Mostrar carrito
 Route::get('/login/carrito', function () {

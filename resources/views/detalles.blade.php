@@ -568,132 +568,460 @@
                     <div class="booking-panel">
                         <h4 class="reserve-header">Reserva ahora</h4>
                         <div class="booking-content">
-                            <div class="price-display">
+                            <div class="price-display mb-4">
                                 <span id="precio_total_display">${{ number_format($vehiculo->precio_por_dia, 2) }}</span>
-                                <span class="price-period">total</span>
+                                <span class="price-period">por día</span>
                             </div>
-                            
-                            <!-- Botón para abrir el modal -->
-                            <button type="button" class="reserve-button w-100" data-bs-toggle="modal" data-bs-target="#reservaPagoModal" {{ !$vehiculo->disponible ? 'disabled' : '' }}>
-                                <i class="fas fa-calendar-check me-2"></i>
-                                {{ $vehiculo->disponible ? 'Reservar ahora' : 'No disponible' }}
+                            <button type="button" class="btn btn-primary w-100 py-3 fw-bold" data-bs-toggle="modal" data-bs-target="#reservaPagoModal" {{ !$vehiculo->disponible ? 'disabled' : '' }}>
+                                <i class="fas fa-calendar-check me-2"></i> {{ $vehiculo->disponible ? 'Reservar Ahora' : 'No Disponible' }}
                             </button>
 
                             <!-- Modal con pestañas -->
                             <div class="modal fade" id="reservaPagoModal" tabindex="-1" aria-labelledby="reservaPagoModalLabel" aria-hidden="true">
-                              <div class="modal-dialog">
+                              <div class="modal-dialog modal-lg">
                                 <div class="modal-content">
-                                  <form action="{{ route('vehiculos.reservar', $vehiculo->id) }}" method="POST" id="formReservaPago">
+                                  <form action="{{ url('vehiculos/' . $vehiculo->id . '/reservar') }}" method="POST" id="formReservaPago">
                                     @csrf
-                                    <div class="modal-header">
-                                      <h5 class="modal-title" id="reservaPagoModalLabel">Reservar y Pagar</h5>
-                                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+                                    <input type="hidden" name="vehiculo_id" value="{{ $vehiculo->id }}">
+                                    
+                                    <!-- Mostrar errores generales -->
+                                    @if($errors->any())
+                                    <div class="alert alert-danger">
+                                        <ul class="mb-0">
+                                            @foreach($errors->all() as $error)
+                                                <li>{{ $error }}</li>
+                                            @endforeach
+                                        </ul>
+                                    </div>
+                                    @endif
+                                    <div class="modal-header bg-primary text-white">
+                                      <h5 class="modal-title" id="reservaPagoModalLabel">Reservar Vehículo - {{ $vehiculo->marca }} {{ $vehiculo->modelo }}</h5>
+                                      <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Cerrar"></button>
                                     </div>
                                     <div class="modal-body">
-                                      <ul class="nav nav-tabs" id="reservaPagoTabs" role="tablist">
-                                        <li class="nav-item" role="presentation">
-                                          <button class="nav-link active" id="reserva-tab" data-bs-toggle="tab" data-bs-target="#reserva" type="button" role="tab" aria-controls="reserva" aria-selected="true">Reserva</button>
-                                        </li>
-                                        <li class="nav-item" role="presentation">
-                                          <button class="nav-link" id="pago-tab" data-bs-toggle="tab" data-bs-target="#pago" type="button" role="tab" aria-controls="pago" aria-selected="false">Tarjeta</button>
-                                        </li>
-                                      </ul>
-                                      <div class="tab-content mt-3" id="reservaPagoTabsContent">
-                                        <!-- Tab Reserva -->
-                                        <div class="tab-pane fade show active" id="reserva" role="tabpanel" aria-labelledby="reserva-tab">
-                                          <div class="form-group mb-3">
-                                            <label class="form-label">Fecha de inicio</label>
-                                            <input type="date" class="form-control" name="fecha_inicio" id="fecha_inicio" value="{{ date('Y-m-d') }}" required>
+                                      <div class="row">
+                                        <!-- Columna izquierda - Resumen de la reserva -->
+                                        <div class="col-md-5 border-end">
+                                          <h6 class="fw-bold mb-3">Resumen de la reserva</h6>
+                                          <div class="card bg-light mb-3">
+                                            <div class="card-body p-3">
+                                              <h6 class="card-title fw-bold">{{ $vehiculo->marca }} {{ $vehiculo->modelo }}</h6>
+                                              <p class="card-text small mb-1">{{ $vehiculo->tipo }} • {{ $vehiculo->capacidad_pasajeros }} pasajeros</p>
+                                              <p class="card-text small mb-2">{{ $vehiculo->ubicacion }}</p>
+                                              <hr class="my-2">
+                                              <div class="d-flex justify-content-between align-items-center mb-2">
+                                                <span class="small">Precio por día:</span>
+                                                <span class="fw-bold">$<span id="precio_dia">{{ number_format($vehiculo->precio_por_dia, 2) }}</span></span>
+                                              </div>
+                                              <div class="d-flex justify-content-between align-items-center mb-2">
+                                                <span class="small">Cantidad de días:</span>
+                                                <span class="fw-bold" id="dias_reserva">0</span>
+                                              </div>
+                                              <hr class="my-2">
+                                              <div class="d-flex justify-content-between align-items-center">
+                                                <span class="fw-bold">Total a pagar:</span>
+                                                <span class="h5 mb-0 text-primary">$<span id="total_pagar">0.00</span></span>
+                                              </div>
+                                            </div>
                                           </div>
-                                          <div class="form-group mb-3">
-                                            <label class="form-label">Cantidad de días</label>
-                                            <input type="number" class="form-control" name="cantidad" id="cantidad_dias" value="1" min="1" required>
-                                          </div>
-                                          <div class="form-group mb-3">
-                                            <label class="form-label">Fecha de fin</label>
-                                            <input type="date" class="form-control" id="fecha_fin" value="{{ date('Y-m-d', strtotime('+1 day')) }}" readonly>
+                                          <div class="alert alert-info small p-2 mb-0">
+                                            <i class="fas fa-info-circle me-1"></i> El pago se procesará al confirmar la reserva.
                                           </div>
                                         </div>
-                                        <!-- Tab Pago -->
-                                        <div class="tab-pane fade" id="pago" role="tabpanel" aria-labelledby="pago-tab">
-                                          <div class="mb-3">
-                                            <label class="form-label">Titular de la tarjeta</label>
-                                            <input type="text" name="cardholder_name" value="{{ old('cardholder_name') }}" class="form-control @error('cardholder_name') is-invalid @enderror">
-                                            @error('cardholder_name')
-                                              <div class="invalid-feedback">{{ $message }}</div>
-                                            @enderror
-                                          </div>
-                                          <div class="mb-3">
-                                            <label class="form-label">Número de tarjeta</label>
-                                            <input type="text" name="card_number" value="{{ old('card_number') }}" class="form-control @error('card_number') is-invalid @enderror">
-                                            @error('card_number')
-                                              <div class="invalid-feedback">{{ $message }}</div>
-                                            @enderror
-                                          </div>
-                                          <div class="row">
-                                            <div class="col-md-6 mb-3">
-                                              <label class="form-label">Mes (MM)</label>
-                                              <input type="text" name="expiration_month" value="{{ old('expiration_month') }}" class="form-control @error('expiration_month') is-invalid @enderror">
-                                              @error('expiration_month')
-                                                <div class="invalid-feedback">{{ $message }}</div>
-                                              @enderror
+                                        
+                                        <!-- Columna derecha - Formulario -->
+                                        <div class="col-md-7">
+                                          <ul class="nav nav-tabs" id="reservaPagoTabs" role="tablist">
+                                            <li class="nav-item" role="presentation">
+                                              <button class="nav-link active" id="reserva-tab" data-bs-toggle="tab" data-bs-target="#reserva" type="button" role="tab" aria-controls="reserva" aria-selected="true">
+                                                <i class="far fa-calendar-alt me-1"></i> Fechas
+                                              </button>
+                                            </li>
+                                            <li class="nav-item" role="presentation">
+                                              <button class="nav-link" id="pago-tab" data-bs-toggle="tab" data-bs-target="#pago" type="button" role="tab" aria-controls="pago" aria-selected="false">
+                                                <i class="far fa-credit-card me-1"></i> Pago
+                                              </button>
+                                            </li>
+                                          </ul>
+                                          
+                                          <div class="tab-content mt-3" id="reservaPagoTabsContent">
+                                            <!-- Tab Reserva -->
+                                            <div class="tab-pane fade show active" id="reserva" role="tabpanel" aria-labelledby="reserva-tab">
+                                              <div class="row g-3">
+                                                <div class="col-md-6">
+                                                  <label for="fecha_retiro" class="form-label small fw-bold">Fecha de retiro</label>
+                                                  <input type="date" class="form-control" id="fecha_retiro" name="fecha_retiro" required>
+                                                </div>
+                                                <div class="col-md-6">
+                                                  <label for="fecha_devolucion" class="form-label small fw-bold">Fecha de devolución</label>
+                                                  <input type="date" class="form-control" id="fecha_devolucion" name="fecha_devolucion" required>
+                                                </div>
+                                              </div>
+                                              <div class="alert alert-warning small mt-3 p-2">
+                                                <i class="fas fa-exclamation-triangle me-1"></i> Por favor, verifique las fechas seleccionadas antes de continuar.
+                                              </div>
                                             </div>
-                                            <div class="col-md-6 mb-3">
-                                              <label class="form-label">Año (AAAA)</label>
-                                              <input type="text" name="expiration_year" value="{{ old('expiration_year') }}" class="form-control @error('expiration_year') is-invalid @enderror">
-                                              @error('expiration_year')
-                                                <div class="invalid-feedback">{{ $message }}</div>
-                                              @enderror
+                                            
+                                            <!-- Tab Pago -->
+                                            <div class="tab-pane fade" id="pago" role="tabpanel" aria-labelledby="pago-tab">
+                                              <h6 class="fw-bold mb-3">Información de pago</h6>
+                                              
+                                              <div class="mb-3">
+                                                <label class="form-label small fw-bold">Nombre del titular de la tarjeta</label>
+                                                <input type="text" class="form-control" name="nombre_titular" placeholder="Como aparece en la tarjeta" required>
+                                              </div>
+                                              
+                                              <div class="mb-3">
+                                                <label class="form-label small fw-bold">Número de tarjeta</label>
+                                                <div class="input-group">
+                                                  <input type="text" class="form-control" name="numero_tarjeta" placeholder="1234 5678 9012 3456" required>
+                                                  <span class="input-group-text"><i class="fas fa-credit-card"></i></span>
+                                                </div>
+                                                <div class="form-text small">Aceptamos Visa, Mastercard, American Express</div>
+                                              </div>
+                                              
+                                              <div class="row g-3">
+                                                <div class="col-md-6">
+                                                  <label class="form-label small fw-bold">Fecha de vencimiento</label>
+                                                  <input type="text" class="form-control" name="fecha_vencimiento" placeholder="MM/AA" required>
+                                                </div>
+                                                <div class="col-md-6">
+                                                  <label class="form-label small fw-bold">Código de seguridad (CVV)</label>
+                                                  <div class="input-group">
+                                                    <input type="text" class="form-control" name="cvv" placeholder="123" required>
+                                                    <span class="input-group-text" data-bs-toggle="tooltip" data-bs-placement="top" title="Los 3 dígitos en el reverso de su tarjeta">
+                                                      <i class="fas fa-question-circle"></i>
+                                                    </span>
+                                                  </div>
+                                                </div>
+                                              </div>
+                                              
+                                              <div class="form-check mt-3">
+                                                <input class="form-check-input" type="checkbox" id="terminos" required>
+                                                <label class="form-check-label small" for="terminos">
+                                                  Acepto los <a href="#" class="text-decoration-none">términos y condiciones</a> y la <a href="#" class="text-decoration-none">política de privacidad</a>
+                                                </label>
+                                              </div>
                                             </div>
-                                          </div>
-                                          <div class="mb-3">
-                                            <label class="form-label">CVV</label>
-                                            <input type="text" name="cvv" value="{{ old('cvv') }}" class="form-control w-50 @error('cvv') is-invalid @enderror">
-                                            @error('cvv')
-                                              <div class="invalid-feedback">{{ $message }}</div>
-                                            @enderror
                                           </div>
                                         </div>
                                       </div>
                                     </div>
                                     <div class="modal-footer">
-                                      <button type="submit" class="btn btn-primary w-100">
-                                        Reservar y Pagar <span id="precio_total_btn">${{ number_format($vehiculo->precio_por_dia, 2) }}</span>
+                                      <button type="button" class="btn btn-outline-secondary me-auto" id="btnAtras" style="display: none;">
+                                        <i class="fas fa-arrow-left me-1"></i> Atrás
+                                      </button>
+                                      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                                        <i class="fas fa-times me-1"></i> Cancelar
+                                      </button>
+                                      <button type="button" class="btn btn-primary" id="btnSiguiente">
+                                        <i class="fas fa-arrow-right me-1"></i> Siguiente
+                                      </button>
+                                      <button type="submit" class="btn btn-success" id="btnReservar" style="display: none;">
+                                        <span class="spinner-border spinner-border-sm d-none" id="spinner" role="status" aria-hidden="true"></span>
+                                        <i class="fas fa-check-circle me-1"></i> Confirmar Pago
                                       </button>
                                     </div>
                                   </form>
                                 </div>
                               </div>
                             </div>
+                            
+                            <!-- Script para el manejo del formulario de reserva -->
+                            @push('scripts')
                             <script>
-                                document.addEventListener('DOMContentLoaded', function() {
-                                    function calcularFechaFin() {
-                                        const inicio = document.getElementById('fecha_inicio').value;
-                                        const dias = parseInt(document.getElementById('cantidad_dias').value || '1');
-                                        if (inicio && dias > 0) {
-                                            const fecha = new Date(inicio);
-                                            fecha.setDate(fecha.getDate() + dias);
-                                            const yyyy = fecha.getFullYear();
-                                            const mm = String(fecha.getMonth() + 1).padStart(2, '0');
-                                            const dd = String(fecha.getDate()).padStart(2, '0');
-                                            document.getElementById('fecha_fin').value = `${yyyy}-${mm}-${dd}`;
-                                        }
-                                    }
-                                    function actualizarPrecio() {
-                                        const dias = parseInt(document.getElementById('cantidad_dias').value || '1');
-                                        const precioPorDia = {{ $vehiculo->precio_por_dia }};
-                                        const total = dias * precioPorDia;
-                                        document.getElementById('precio_total_display').innerText = `$${total.toFixed(2)}`;
-                                        document.getElementById('precio_total_btn').innerText = `$${total.toFixed(2)}`;
-                                    }
-                                    document.getElementById('fecha_inicio').addEventListener('change', calcularFechaFin);
-                                    document.getElementById('cantidad_dias').addEventListener('input', function() {
-                                        calcularFechaFin();
-                                        actualizarPrecio();
-                                    });
-                                    calcularFechaFin();
-                                    actualizarPrecio();
+                            document.addEventListener('DOMContentLoaded', function() {
+                                const form = document.getElementById('formReservaPago');
+                                const btnSiguiente = document.getElementById('btnSiguiente');
+                                const btnAtras = document.getElementById('btnAtras');
+                                const btnReservar = document.getElementById('btnReservar');
+                                const reservaTab = document.getElementById('reserva-tab');
+                                const pagoTab = document.getElementById('pago-tab');
+                                const reservaPane = document.getElementById('reserva');
+                                const pagoPane = document.getElementById('pago');
+                                const reservaTabContent = document.getElementById('reservaPagoTabsContent');
+                                
+                                // Mostrar errores de validación si existen
+                                @if($errors->any())
+                                    // Mostrar pestaña de pago si hay errores en los campos de pago
+                                    @if($errors->hasAny(['nombre_titular', 'numero_tarjeta', 'fecha_vencimiento', 'cvv']))
+                                        reservaTab.classList.remove('active');
+                                        pagoTab.classList.add('active');
+                                        reservaPane.classList.remove('show', 'active');
+                                        pagoPane.classList.add('show', 'active');
+                                        btnSiguiente.style.display = 'none';
+                                        btnAtras.style.display = 'inline-block';
+                                        btnReservar.style.display = 'inline-block';
+                                    @endif
+                                @endif
+                                const spinner = document.getElementById('spinner');
+                                const precioPorDia = parseFloat({{ $vehiculo->precio_por_dia }});
+                                
+                                // Inicializar tooltips
+                                const tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+                                const tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+                                    return new bootstrap.Tooltip(tooltipTriggerEl);
                                 });
+                                
+                                // Validar fechas al cambiar
+                                const fechaRetiro = document.getElementById('fecha_retiro');
+                                const fechaDevolucion = document.getElementById('fecha_devolucion');
+                                const hoy = new Date().toISOString().split('T')[0];
+                                
+                                // Establecer fecha mínima (hoy)
+                                fechaRetiro.min = hoy;
+                                fechaDevolucion.min = hoy;
+                                
+                                // Calcular total al cambiar fechas
+                                [fechaRetiro, fechaDevolucion].forEach(input => {
+                                    input.addEventListener('change', calcularTotal);
+                                });
+                                
+                                function calcularTotal() {
+                                    if (fechaRetiro.value && fechaDevolucion.value) {
+                                        const inicio = new Date(fechaRetiro.value);
+                                        const fin = new Date(fechaDevolucion.value);
+                                        
+                                        // Si la fecha de devolución es anterior a la de retiro, corregir
+                                        if (fin < inicio) {
+                                            fechaDevolucion.value = fechaRetiro.value;
+                                            calcularTotal();
+                                            return;
+                                        }
+                                        
+                                        // Calcular diferencia en días
+                                        const diffTime = Math.abs(fin - inicio);
+                                        const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24)) + 1; // +1 para incluir ambos días
+                                        
+                                        // Actualizar total
+                                        const total = diffDays * precioPorDia;
+                                        document.getElementById('dias_reserva').textContent = diffDays;
+                                        document.getElementById('total_pagar').textContent = total.toFixed(2);
+                                    }
+                                }
+                                
+                                // Navegación entre pestañas
+                                const reservaTab = document.getElementById('reserva-tab');
+                                const pagoTab = document.getElementById('pago-tab');
+                                const reservaPane = document.getElementById('reserva');
+                                const pagoPane = document.getElementById('pago');
+                                
+                                let currentTab = 'reserva';
+                                
+                                btnSiguiente.addEventListener('click', function() {
+                                    if (currentTab === 'reserva') {
+                                        // Validar fechas antes de continuar
+                                        if (!fechaRetiro.value || !fechaDevolucion.value) {
+                                            alert('Por favor, seleccione las fechas de retiro y devolución.');
+                                            return;
+                                        }
+                                        
+                                        // Cambiar a pestaña de pago
+                                        currentTab = 'pago';
+                                        reservaTab.classList.remove('active');
+                                        reservaPane.classList.remove('show', 'active');
+                                        pagoTab.classList.add('active');
+                                        pagoPane.classList.add('show', 'active');
+                                        
+                                        // Actualizar botones
+                                        btnSiguiente.style.display = 'none';
+                                        btnAtras.style.display = 'block';
+                                        btnReservar.style.display = 'block';
+                                    }
+                                });
+                                
+                                btnAtras.addEventListener('click', function() {
+                                    if (currentTab === 'pago') {
+                                        // Volver a pestaña de reserva
+                                        currentTab = 'reserva';
+                                        pagoTab.classList.remove('active');
+                                        pagoPane.classList.remove('show', 'active');
+                                        reservaTab.classList.add('active');
+                                        reservaPane.classList.add('show', 'active');
+                                        
+                                        // Actualizar botones
+                                        btnSiguiente.style.display = 'block';
+                                        btnAtras.style.display = 'none';
+                                        btnReservar.style.display = 'none';
+                                    }
+                                });
+                                
+                                // Función para mostrar errores en el formulario
+                                function showFormErrors(errors) {
+                                    // Limpiar errores anteriores
+                                    const errorElements = form.querySelectorAll('.is-invalid');
+                                    errorElements.forEach(el => el.classList.remove('is-invalid'));
+                                    
+                                    const feedbackElements = form.querySelectorAll('.invalid-feedback');
+                                    feedbackElements.forEach(el => el.remove());
+                                    
+                                    // Mostrar nuevos errores
+                                    Object.entries(errors).forEach(([field, messages]) => {
+                                        const input = form.querySelector(`[name="${field}"]`);
+                                        if (input) {
+                                            input.classList.add('is-invalid');
+                                            const errorDiv = document.createElement('div');
+                                            errorDiv.className = 'invalid-feedback';
+                                            errorDiv.textContent = messages[0];
+                                            input.parentNode.appendChild(errorDiv);
+                                            
+                                            // Desplazarse al primer campo con error
+                                            if (field === Object.keys(errors)[0]) {
+                                                input.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                                            }
+                                        }
+                                    });
+                                }
+                                
+                                // Manejar el envío del formulario
+                                form.addEventListener('submit', function(e) {
+                                    e.preventDefault();
+                                    
+                                    // Mostrar spinner y deshabilitar botón
+                                    spinner.style.display = 'inline-block';
+                                    btnReservar.disabled = true;
+                                    
+                                    // Enviar formulario con Fetch API
+                                    fetch(form.action, {
+                                        method: 'POST',
+                                        body: new FormData(form),
+                                        headers: {
+                                            'X-Requested-With': 'XMLHttpRequest',
+                                            'Accept': 'application/json',
+                                            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
+                                        }
+                                    })
+                                    .then(response => {
+                                        if (!response.ok) {
+                                            return response.json().then(err => { throw err; });
+                                        }
+                                        return response.json();
+                                    })
+                                    .then(data => {
+                                        if (data.redirect) {
+                                            // Redirigir a la página de éxito si se proporciona una URL
+                                            window.location.href = data.redirect;
+                                        } else if (data.success) {
+                                            // Mostrar mensaje de éxito y recargar
+                                            const successHtml = `
+                                                <div class="alert alert-success">
+                                                    <i class="fas fa-check-circle me-2"></i>
+                                                    ${data.message || '¡Reserva realizada con éxito!'}
+                                                </div>`;
+                                            
+                                            // Reemplazar el contenido del modal con el mensaje de éxito
+                                            document.querySelector('#reservaPagoModal .modal-content').innerHTML = `
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title">¡Reserva Exitosa!</h5>
+                                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+                                                </div>
+                                                <div class="modal-body text-center py-4">
+                                                    <div class="mb-3">
+                                                        <i class="fas fa-check-circle text-success" style="font-size: 4rem;"></i>
+                                                    </div>
+                                                    <h4 class="mb-3">¡Reserva confirmada!</h4>
+                                                    <p class="mb-0">${data.message || 'Tu reserva ha sido procesada exitosamente.'}</p>
+                                                </div>
+                                                <div class="modal-footer justify-content-center">
+                                                    <a href="{{ route('mis-reservas') }}" class="btn btn-primary">
+                                                        <i class="fas fa-calendar-check me-2"></i>Ver mis reservas
+                                                    </a>
+                                                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+                                                        <i class="fas fa-times me-2"></i>Cerrar
+                                                    </button>
+                                                </div>`;
+                                            
+                                            // Cerrar automáticamente después de 3 segundos
+                                            setTimeout(() => {
+                                                const modal = bootstrap.Modal.getInstance(document.getElementById('reservaPagoModal'));
+                                                if (modal) modal.hide();
+                                                window.location.reload();
+                                            }, 5000);
+                                        }
+                                    })
+                                    .catch(error => {
+                                        console.error('Error:', error);
+                                        
+                                        // Mostrar errores de validación
+                                        if (error.errors) {
+                                            showFormErrors(error.errors);
+                                            
+                                            // Mostrar pestaña de reserva si hay errores en las fechas
+                                            if (error.errors.fecha_retiro || error.errors.fecha_devolucion) {
+                                                reservaTab.click();
+                                            }
+                                            // Mostrar pestaña de pago si hay errores en los datos de pago
+                                            else if (error.errors.nombre_titular || error.errors.numero_tarjeta || 
+                                                    error.errors.fecha_vencimiento || error.errors.cvv) {
+                                                pagoTab.click();
+                                            }
+                                        } else {
+                                            // Mostrar error general
+                                            const errorHtml = `
+                                                <div class="alert alert-danger">
+                                                    <i class="fas fa-exclamation-circle me-2"></i>
+                                                    ${error.message || 'Error al procesar la reserva. Por favor, inténtalo de nuevo.'}
+                                                </div>`;
+                                            
+                                            // Insertar el mensaje de error al principio del formulario
+                                            const formHeader = form.querySelector('.modal-header');
+                                            if (formHeader) {
+                                                formHeader.insertAdjacentHTML('afterend', errorHtml);
+                                            }
+                                        }
+                                    })
+                                    .finally(() => {
+                                        // Ocultar spinner y habilitar botón
+                                        spinner.style.display = 'none';
+                                        btnReservar.disabled = false;
+                                    });
+                                });
+                            </script>
+                            @endpush
+                            
+                            <script>
+                            document.addEventListener('DOMContentLoaded', function() {
+                                // Función para calcular la fecha de fin basada en la fecha de inicio y días
+                                function calcularFechaFin() {
+                                    const inicio = document.getElementById('fecha_inicio');
+                                    const dias = document.getElementById('cantidad_dias');
+                                    const fechaFin = document.getElementById('fecha_fin');
+                                    
+                                    if (inicio && inicio.value && dias && dias.value) {
+                                        const fecha = new Date(inicio.value);
+                                        fecha.setDate(fecha.getDate() + parseInt(dias.value));
+                                        const yyyy = fecha.getFullYear();
+                                        const mm = String(fecha.getMonth() + 1).padStart(2, '0');
+                                        const dd = String(fecha.getDate()).padStart(2, '0');
+                                        fechaFin.value = `${yyyy}-${mm}-${dd}`;
+                                    }
+                                    actualizarPrecio();
+                                }
+                                
+                                // Función para actualizar el precio total
+                                function actualizarPrecio() {
+                                    const dias = parseInt(document.getElementById('cantidad_dias').value || '1');
+                                    const precioPorDia = {{ $vehiculo->precio_por_dia }};
+                                    const total = dias * precioPorDia;
+                                    document.getElementById('precio_total_display').innerText = `$${total.toFixed(2)}`;
+                                    document.getElementById('precio_total_btn').innerText = `$${total.toFixed(2)}`;
+                                }
+                                
+                                // Inicializar eventos
+                                const fechaInicio = document.getElementById('fecha_inicio');
+                                const cantidadDias = document.getElementById('cantidad_dias');
+                                
+                                if (fechaInicio) {
+                                    fechaInicio.addEventListener('change', calcularFechaFin);
+                                }
+                                
+                                if (cantidadDias) {
+                                    cantidadDias.addEventListener('input', calcularFechaFin);
+                                }
+                                
+                                // Calcular valores iniciales
+                                calcularFechaFin();
+                            });
                             </script>
                             
                             <div class="trust-indicators">
@@ -724,6 +1052,35 @@
         </div>
     </div>
 
+    <!-- Bootstrap JS and dependencies -->
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <script>
+    // Initialize tooltips
+    document.addEventListener('DOMContentLoaded', function() {
+        // Initialize all tooltips
+        var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+        var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+            return new bootstrap.Tooltip(tooltipTriggerEl);
+        });
+        
+        // Initialize modals
+        var myModal = document.getElementById('reservaPagoModal');
+        if (myModal) {
+            myModal.addEventListener('show.bs.modal', function (event) {
+                // Reset form when modal is shown
+                var form = document.getElementById('formReservaPago');
+                if (form) form.reset();
+            });
+        }
+        
+        // Show modal if there's an error
+        @if($errors->any())
+            var modal = new bootstrap.Modal(document.getElementById('reservaPagoModal'));
+            modal.show();
+        @endif
+    });
+    </script>
 </body>
 </html>
