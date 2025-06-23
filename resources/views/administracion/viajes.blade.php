@@ -47,13 +47,19 @@
                 })->toArray()
             ],
             (object)[
-                'id' => 'provicia_id',
-                'name' => 'provicia_id',
+                'id' => 'provincia_id',
+                'name' => 'provincia_id',
                 'type' => 'select',
                 'label' => 'Provincia',
                 'options' => $provincias->map(function($provincia) {
                     return (object)['value' => $provincia->id, 'text' => $provincia->nombre];
                 })->toArray()
+            ],
+            (object)[
+                'id' => 'ubicacion',
+                'name' => 'ubicacion',
+                'type' => 'text',
+                'label' => 'Ubicacion donde esta el Viaje',
             ],
             (object)[
                 'id' => 'origen',
@@ -160,13 +166,19 @@
                 })->toArray()
             ],
             (object)[
-                'id' => 'editProvicia_id',
-                'name' => 'provicia_id',
+                'id' => 'editProvincia_id',
+                'name' => 'provincia_id',
                 'type' => 'select',
                 'label' => 'Provincia',
                 'options' => $provincias->map(function($provincia) {
                     return (object)['value' => $provincia->id, 'text' => $provincia->nombre];
                 })->toArray()
+            ],
+            (object)[
+                'id' => 'editUbicacion',
+                'name' => 'ubicacion',
+                'type' => 'text',
+                'label' => 'Ubicacion donde esta el Viaje',
             ],
             (object)[
                 'id' => 'editOrigen',
@@ -274,11 +286,11 @@
                 })->toArray()
             ],
             (object)[
-                'id' => 'searchProvicia_id',
-                'name' => 'search_provicia_id',
+                'id' => 'searchProvincia_id',
+                'name' => 'search_provincia_id',
                 'type' => 'select',
                 'label' => 'Provincia',
-                'value' => 'search_provicia_id',
+                'value' => 'search_provincia_id',
                 'options' => $provincias->map(function($provincia) {
                     return (object)['value' => $provincia->id, 'text' => $provincia->nombre];
                 })->toArray()
@@ -302,6 +314,14 @@
                 'options' => $ciudades->map(function($ciudad) {
                     return (object)['value' => $ciudad->id, 'text' => $ciudad->nombre];
                 })->toArray()
+            ],
+            (object)[
+                'label' => 'Ubicacion',
+                'type' => 'text',
+                'name' => 'search_ubicacion',
+                'id' => 'searchUbicacion',
+                'value' => 'search_ubicacion',
+                'placeholder' => 'Ubicacion',
             ],
             (object)[
                 'label' => 'Fecha de Salida',
@@ -385,6 +405,7 @@
                 "Viaje",//aca ira el numero_viaje, tipo e ID
                 "Nombre",
                 "Camino", //origen y destino van a estar en el mismo lugar
+                "Ubicacion",
                 "Fechas",
                 "Empresa",
                 "Capacidad",// disponibles/capacidad

@@ -75,6 +75,10 @@ class Viaje extends Model
     {
         return $this->belongsTo(Ciudad::class, 'ciudad_id');
     }
+    public function ciudadDestino()
+    {
+        return $this->belongsTo(Ciudad::class, 'destino');
+    }
     public function paquetesContenidos(): MorphMany
     {
         return $this->morphMany(PaqueteContenido::class, 'contenido');

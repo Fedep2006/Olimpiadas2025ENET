@@ -91,10 +91,9 @@
             <td>
                 <div class="flex justify-center items-center">
                     <div class="flex flex-col text-center ids gap-1">
-                        <h6>{{ ucfirst($registro->pais) }}</h6>
-                        <small class="camino-text">
-                            {{ $registro->ciudad }} 
-                        </small>
+                        <h6>{{ $registro->ciudad->nombre }}</h6>
+                        <small class="camino-text">{{ $registro->provincia->nombre }}</small>
+                        <small class="camino-text">{{ $registro->pais->nombre }}</small>
                     </div>
                 </div>
             </td>

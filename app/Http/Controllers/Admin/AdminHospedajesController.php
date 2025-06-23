@@ -6,6 +6,9 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\HospedajeRequest;
 use App\Models\Empresa;
 use App\Models\Hospedaje;
+use App\Models\ubicacion\Ciudad;
+use App\Models\ubicacion\Pais;
+use App\Models\ubicacion\Provincia;
 use Illuminate\Http\Request;
 
 class AdminHospedajesController extends Controller
@@ -47,13 +50,22 @@ class AdminHospedajesController extends Controller
             $search = $request->search_hospedajes_disponibles;
             $query->Where('habitaciones_disponibles', $search);
         }
+        if ($request->filled('search_provincia_id')) {
+            $search = $request->search_provincia_id;
+            $query->where('provincia_id', $search);
+        }
+        if ($request->filled('search_pais_id')) {
+            $search = $request->search_pais_id;
+            $query->where('pais_id', $search);
+        }
+
+        if ($request->filled('search_ciudad_id')) {
+            $search = $request->search_ciudad_id;
+            $query->where('ciudad_id', $search);
+        }
         if ($request->filled('search_ubicacion')) {
             $search = $request->search_ubicacion;
-            $query->where(function ($q) use ($search) {
-                $q->where('ubicacion', 'like', "%{$search}%")
-                    ->orWhere('pais', 'like', "%{$search}%")
-                    ->orWhere('ciudad', 'like', "%{$search}%");
-            });
+            $query->Where('ubicacion', 'like', "%{$search}%");
         }
         if ($request->filled('search_calificacion')) {
             $search = $request->search_calificacion;
@@ -61,6 +73,10 @@ class AdminHospedajesController extends Controller
                 $q->where('estrellas', $search)
                     ->orWhere('calificacion', $search);
             });
+        }
+        if ($request->filled('search_precio')) {
+            $search = $request->search_precio;
+            $query->Where('precio_por_noche', 'like', "%{$search}%");
         }
         if ($request->filled('search_descripcion')) {
             $search = $request->search_descripcion;
@@ -92,7 +108,18 @@ class AdminHospedajesController extends Controller
         }
 
         // Ordenar campos
-        $query->select(['id', 'empresa_id', 'nombre', 'tipo', 'habitacion', 'habitaciones_disponibles', 'capacidad_personas', 'precio_por_noche', 'ubicacion', 'pais', 'ciudad', 'estrellas', 'descripcion', 'telefono', 'email', 'sitio_web', 'check_in', 'check_out', 'calificacion', 'activo', 'condiciones', 'created_at'])->orderBy('created_at', 'desc');
+        $registros = $query->whereHas('empresa', function ($query) {
+            $query->where('tipo', 'hospedajes');
+        })
+            ->whereHas('pais')
+            ->whereHas('provincia')
+            ->whereHas('ciudad')
+            ->with([
+                'empresa:id,nombre,tipo',
+                'pais:id,nombre',
+                'provincia:id,nombre,pais_id',
+                'ciudad:id,nombre,provincia_id'
+            ])->select(['id', 'empresa_id', 'nombre', 'tipo', 'habitacion', 'habitaciones_disponibles', 'capacidad_personas', 'precio_por_noche', 'ubicacion', 'pais_id', 'provincia_id', 'ciudad_id', 'estrellas', 'descripcion', 'telefono', 'email', 'sitio_web', 'check_in', 'check_out', 'calificacion', 'activo', 'condiciones', 'created_at'])->orderBy('created_at', 'desc');
 
         // Paginar resultados
         $registros = $query->paginate(10)->withQueryString();
@@ -111,8 +138,10 @@ class AdminHospedajesController extends Controller
             ->select('id', 'nombre')
             ->orderBy('id', 'asc')
             ->get();
-
-        return view('administracion.hospedajes', compact(['registros', 'empresas']));
+        $paises = Pais::query()->get();
+        $provincias = Provincia::query()->get();
+        $ciudades = Ciudad::query()->get();
+        return view('administracion.hospedajes', compact(['registros', 'empresas', 'paises', 'provincias', 'ciudades']));
     }
 
     public function create(HospedajeRequest $request)
