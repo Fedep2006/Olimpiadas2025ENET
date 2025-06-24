@@ -200,6 +200,7 @@ class CartController extends Controller
                             'precio_total' => $subtotal,
                             'codigo_reserva' => $this->generarCodigoReserva(),
                             'tipo_reserva' => 'hospedaje',
+                            
                         ]);
                         
                         // Crear pago para esta reserva
@@ -225,6 +226,7 @@ class CartController extends Controller
                             'precio_total' => $subtotal,
                             'codigo_reserva' => $this->generarCodigoReserva(),
                             'tipo_reserva' => 'vehiculo',
+                            
                         ]);
                         
                         // Crear pago para esta reserva
@@ -241,6 +243,10 @@ class CartController extends Controller
                         break;
 
                     case 'paquete':
+                        // asegurar que el paquete quede marcado como hecho_por_usuario = 1
+                        $paquete = Paquete::findOrFail($item['id']);
+                        $paquete->hecho_por_usuario = 1;
+                        $paquete->save();
                         $reserva = Reserva::create([
                             'usuario_id' => Auth::id(),
                             'paquete_id' => $item['id'],
@@ -250,6 +256,7 @@ class CartController extends Controller
                             'precio_total' => $subtotal,
                             'codigo_reserva' => $this->generarCodigoReserva(),
                             'tipo_reserva' => 'paquete',
+                            
                         ]);
                         
                         // Crear pago para esta reserva
@@ -277,6 +284,7 @@ class CartController extends Controller
                             'precio_total' => $subtotal,
                             'codigo_reserva' => $this->generarCodigoReserva(),
                             'tipo_reserva' => 'viaje',
+                            
                         ]);
                         
                         // Crear pago para esta reserva

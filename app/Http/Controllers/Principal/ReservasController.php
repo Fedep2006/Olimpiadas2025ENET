@@ -113,6 +113,7 @@ class ReservasController extends Controller {
                 'precio_total' => $montoTotal,
                 'codigo_reserva' => $this->generarCodigoReserva(),
                 'tipo_reserva' => 'hospedaje',
+                
             ]);
 
             // Asociar el pago a la reserva

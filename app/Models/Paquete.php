@@ -41,6 +41,11 @@ class Paquete extends Model
         ];
     }
 
+    // Valor por defecto para indicar que el paquete se creó desde la interfaz del usuario
+    protected $attributes = [
+        'hecho_por_usuario' => 1,
+    ];
+
     protected function hidden(): array
     {
         return [
