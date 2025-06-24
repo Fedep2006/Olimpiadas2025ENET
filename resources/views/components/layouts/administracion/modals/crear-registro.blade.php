@@ -16,7 +16,9 @@
                             @switch($input->type)
                                 @case('select')
                                     <select class="form-select" name="{{ $input->name ?? $input->id }}"
-                                        id="{{ $input->id ?? '' }}" required>
+                                        id="{{ $input->id ?? '' }}"
+                                        {{ filter_var($input->disabled ?? false, FILTER_VALIDATE_BOOLEAN) ? 'disabled' : '' }}
+                                        required>
                                         @foreach ($input->options as $option)
                                             <option value="{{ $option->value }}">{{ $option->text }}</option>
                                         @endforeach

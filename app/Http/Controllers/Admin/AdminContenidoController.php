@@ -64,23 +64,27 @@ class AdminContenidoController extends Controller
         }
 
         // Ordenar por fecha de creación descendente
-        $query->select(['id', 'nombre', 'descripcion', 'precio_total', 'duracion', 'ubicacion', 'cupo_minimo', 'cupo_maximo', 'numero_paquete', 'activo', 'created_at'])->orderBy('created_at', 'desc');
+        $query->whereHas('paquete')->select(['id', 'paquete_id', 'contenido_type', 'contenido_id', 'created_at'])->orderBy('created_at', 'desc');
 
         // Paginar resultados
         $registros = $query->paginate(10)->withQueryString();
 
         if ($request->ajax()) {
-            $view = view('administracion.partials.tablas.tabla-paquetes-contenido', compact('registros'))->render();
+            $view = view('administracion.partials.tablas.tabla-paquetes-contenidos-contenido', compact('registros'))->render();
             $pagination = view('administracion.partials.pagination', compact('registros'))->render();
 
             return response()->json([
                 'view' => $view,
                 'pagination' => $pagination,
-                'paginationInfo' => "Mostrando {$registros->firstItem()} - {$registros->lastItem()} de {$registros->total()} paquetes"
+                'paginationInfo' => "Mostrando {$registros->firstItem()} - {$registros->lastItem()} de {$registros->total()} contenidos"
             ]);
         }
 
-        return view('administracion.paquetes', compact(['registros']));
+        $viajes = Viaje::all();
+        $hospedajes = Hospedaje::all();
+        $vehiculos = Vehiculo::all();
+
+        return view('administracion.paquetes-contenidos', compact(['registros', 'viajes', 'hospedajes', 'vehiculos']));
     }
 
     public function create(PaqueteContenidoRequest $request)

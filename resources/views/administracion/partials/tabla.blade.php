@@ -45,7 +45,7 @@
 </style>
 <div class="content-card">
     <div class="card-header">
-        <h5 class="card-title">Lista de {{ucfirst($nombre)}}</h5>
+        <h5 class="card-title">Lista de {{ ucfirst($nombre) }}</h5>
     </div>
 
     <div class="table-container">
@@ -53,7 +53,7 @@
             <thead>
                 <tr>
                     @foreach ($tHead as $col)
-                        <th>{{$col}}</th>
+                        <th>{{ $col }}</th>
                     @endforeach
                     <th>Acciones</th>
                 </tr>
@@ -62,27 +62,37 @@
                 @switch($nombre)
                     @case('usuarios')
                         @include('administracion.partials.tablas.tabla-usuarios-contenido')
-                        @break
+                    @break
+
                     @case('viajes')
                         @include('administracion.partials.tablas.tabla-viajes-contenido')
-                        @break
+                    @break
+
                     @case('vehiculos')
                         @include('administracion.partials.tablas.tabla-vehiculos-contenido')
-                        @break
+                    @break
+
                     @case('reservas')
                         @include('administracion.partials.tablas.tabla-reservas-contenido')
-                        @break
+                    @break
+
                     @case('paquetes')
                         @include('administracion.partials.tablas.tabla-paquetes-contenido')
-                        @break
+                    @break
+
+                    @case('paquetesContenidos')
+                        @include('administracion.partials.tablas.tabla-paquetes-contenidos-contenido')
+                    @break
+
                     @case('hospedajes')
                         @include('administracion.partials.tablas.tabla-hospedajes-contenido')
-                        @break
+                    @break
+
                     @case('empresas')
                         @include('administracion.partials.tablas.tabla-empresas-contenido')
-                        @break
+                    @break
+
                     @default
-                        
                 @endswitch
             </tbody>
         </table>
@@ -92,10 +102,10 @@
     <div class="d-flex justify-content-between align-items-center mt-4">
         <div class="pagination-info">
             @if ($registros->total() > 0)
-                Mostrando {{ $registros->firstItem() }} - {{ $registros->lastItem() }} de {{ $registros->total()}} 
-                {{$nombre}}
+                Mostrando {{ $registros->firstItem() }} - {{ $registros->lastItem() }} de {{ $registros->total() }}
+                {{ $nombre }}
             @else
-                No hay {{$nombre}} para mostrar
+                No hay {{ $nombre }} para mostrar
             @endif
         </div>
         <div class="pagination-container">
