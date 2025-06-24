@@ -22,6 +22,7 @@ class Reserva extends Model
         'estado',
         'precio_total',
         'codigo_reserva',
+        'tipo_reserva',
     ];
 
     protected function casts(): array
@@ -52,6 +53,11 @@ class Reserva extends Model
     public function paquete(): BelongsTo
     {
         return $this->belongsTo(Paquete::class, 'paquete_id');
+    }
+
+    public function pago(): \Illuminate\Database\Eloquent\Relations\HasOne
+    {
+        return $this->hasOne(Pago::class, 'reserva_id');
     }
 
     public function serviciosReservados(): HasMany

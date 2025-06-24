@@ -30,7 +30,13 @@ function updateCartItem(key, cantidad) {
     .then(data => {
         if(data.success) {
             location.reload();
+        } else {
+            alert('Error al actualizar el carrito: ' + (data.message || 'Error desconocido'));
         }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        alert('Error al actualizar el carrito');
     });
 }
 
@@ -48,7 +54,13 @@ function removeCartItem(key) {
         .then(data => {
             if(data.success) {
                 location.reload();
+            } else {
+                alert('Error al eliminar el producto: ' + (data.message || 'Error desconocido'));
             }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('Error al eliminar el producto');
         });
     }
 }
@@ -66,7 +78,13 @@ function clearCart() {
         .then(data => {
             if(data.success) {
                 location.reload();
+            } else {
+                alert('Error al vaciar el carrito: ' + (data.message || 'Error desconocido'));
             }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('Error al vaciar el carrito');
         });
     }
 }
@@ -88,4 +106,65 @@ function showNotification(message, type = 'success') {
             alertDiv.remove();
         }
     }, 5000);
+}
+
+// Función para agregar productos al carrito desde otras páginas
+function addHospedajeToCart(hospedajeId) {
+    const form = document.createElement('form');
+    form.method = 'POST';
+    form.action = `/carrito/hospedaje/${hospedajeId}`;
+    
+    const csrfToken = document.createElement('input');
+    csrfToken.type = 'hidden';
+    csrfToken.name = '_token';
+    csrfToken.value = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+    
+    form.appendChild(csrfToken);
+    document.body.appendChild(form);
+    form.submit();
+}
+
+function addVehiculoToCart(vehiculoId) {
+    const form = document.createElement('form');
+    form.method = 'POST';
+    form.action = `/carrito/vehiculo/${vehiculoId}`;
+    
+    const csrfToken = document.createElement('input');
+    csrfToken.type = 'hidden';
+    csrfToken.name = '_token';
+    csrfToken.value = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+    
+    form.appendChild(csrfToken);
+    document.body.appendChild(form);
+    form.submit();
+}
+
+function addPaqueteToCart(paqueteId) {
+    const form = document.createElement('form');
+    form.method = 'POST';
+    form.action = `/carrito/paquete/${paqueteId}`;
+    
+    const csrfToken = document.createElement('input');
+    csrfToken.type = 'hidden';
+    csrfToken.name = '_token';
+    csrfToken.value = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+    
+    form.appendChild(csrfToken);
+    document.body.appendChild(form);
+    form.submit();
+}
+
+function addViajeToCart(viajeId) {
+    const form = document.createElement('form');
+    form.method = 'POST';
+    form.action = `/carrito/viaje/${viajeId}`;
+    
+    const csrfToken = document.createElement('input');
+    csrfToken.type = 'hidden';
+    csrfToken.name = '_token';
+    csrfToken.value = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+    
+    form.appendChild(csrfToken);
+    document.body.appendChild(form);
+    form.submit();
 }

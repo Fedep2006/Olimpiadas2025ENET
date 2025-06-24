@@ -5,44 +5,39 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class ReservaVehiculo extends Model
+class ReservaHospedaje extends Model
 {
     use SoftDeletes;
 
-    protected $table = 'reserva_vehiculos';
-    
+    protected $table = 'reserva_hospedajes';
+
     protected $fillable = [
-        'vehiculo_id',
+        'hospedaje_id',
         'user_id',
         'pago_id',
-        'tipo',
-        'marca',
-        'modelo',
-        'antiguedad',
-        'patente',
-        'color',
-        'capacidad_pasajeros',
+        'nombre_hospedaje',
+        'tipo_hospedaje',
+        'direccion',
         'pais_id',
         'provincia_id',
         'ciudad_id',
-        'ubicacion',
-        'precio_por_dia',
-        'fecha_retiro',
-        'fecha_devolucion',
+        'precio_por_noche',
+        'fecha_checkin',
+        'fecha_checkout',
         'estado',
         'notas',
     ];
 
     protected $casts = [
-        'fecha_retiro' => 'date',
-        'fecha_devolucion' => 'date',
-        'precio_por_dia' => 'decimal:2',
+        'fecha_checkin' => 'date',
+        'fecha_checkout' => 'date',
+        'precio_por_noche' => 'decimal:2',
     ];
 
     // Relaciones
-    public function vehiculo()
+    public function hospedaje()
     {
-        return $this->belongsTo(Vehiculo::class);
+        return $this->belongsTo(Hospedaje::class);
     }
 
     public function user()

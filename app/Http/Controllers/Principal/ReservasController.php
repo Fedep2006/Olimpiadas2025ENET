@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 class ReservasController extends Controller {
     // Eliminar producto del carrito por clave
@@ -118,7 +119,7 @@ class ReservasController extends Controller {
             
         } catch (\Exception $e) {
             DB::rollBack();
-            \Log::error('Error al procesar la reserva de hospedaje: ' . $e->getMessage());
+            Log::error('Error al procesar la reserva de hospedaje: ' . $e->getMessage());
             
             return redirect()->back()->with([
                 'reserva_status' => 'error',

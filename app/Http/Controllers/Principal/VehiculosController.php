@@ -17,16 +17,17 @@ class VehiculosController extends Controller
     // Muestra el detalle de un vehículo
     public function show($id)
     {
-        $vehiculo = Vehiculo::findOrFail($id);
-        
+        $item = Vehiculo::findOrFail($id);
+        $tipo = 'vehiculo';
+
         // Buscar reservas activas para este vehículo y usuario
-        $reservas = ReservaVehiculo::where('vehiculo_id', $vehiculo->id)
+        $reservas = ReservaVehiculo::where('vehiculo_id', $item->id)
             ->where('user_id', Auth::id())
             ->whereIn('estado', ['pendiente', 'aceptado'])
             ->orderBy('created_at', 'desc')
             ->get();
             
-        return view('detalles', compact('vehiculo', 'reservas'));
+        return view('details', compact('item', 'reservas', 'tipo'));
     }
     
     // Procesa la reserva de un vehículo

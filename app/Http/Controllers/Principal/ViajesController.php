@@ -13,7 +13,8 @@ class ViajesController extends Controller
      */
     public function show($id)
     {
-        $viaje = \App\Models\Viaje::findOrFail($id);
-        return view('administracion.viajes-show', compact('viaje'));
+        $item = \App\Models\Viaje::findOrFail($id);
+        $tipo = 'viaje';
+        return view('details', compact('item', 'tipo'));
     }
 }
