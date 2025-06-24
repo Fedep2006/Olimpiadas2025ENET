@@ -212,6 +212,10 @@
                     <i class="fas fa-tags"></i>
                     <span class="menu-text">Paquetes</span>
                 </a>
+                <a href="/administracion/paquetes/contenidos" class="menu-item {{ $paquetesContenidos ?? '' }}">
+                    <i class="fas fa-tags"></i>
+                    <span class="menu-text">Contenidos de Paquetes</span>
+                </a>
             </div>
             <form method="POST" action="{{ route('logout') }}">
                 @csrf

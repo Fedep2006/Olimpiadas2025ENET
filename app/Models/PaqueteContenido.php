@@ -16,6 +16,8 @@ class PaqueteContenido extends Model
 
     protected $fillable = [
         'paquete_id',
+        'contenido_type',
+        'contenido_id'
     ];
 
     protected function casts(): array

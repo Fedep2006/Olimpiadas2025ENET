@@ -208,12 +208,84 @@
   </style>
 </head>
 <body>
-  <!-- Navbar -->
-  <nav class="navbar navbar-expand-lg bg-white shadow-sm">
+  <!-- Header -->
+  <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm">
     <div class="container">
       <a class="navbar-brand" href="/">
-        <i class="fas fa-plane me-1 text-primary"></i> Frategar
+        <i class="fas fa-plane text-primary"></i> Frategar
       </a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav me-auto">
+          <li class="nav-item">
+            <a class="nav-link" href="{{ route('results.index', ['tab' => 'viajes']) }}"><i class="fas fa-plane"></i> Vuelos</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{{ route('results.index', ['tab' => 'hospedajes']) }}"><i class="fas fa-hotel"></i> Hoteles</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{{ route('results.index', ['tab' => 'paquetes']) }}"><i class="fas fa-box"></i> Paquetes</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{{ route('results.index', ['tab' => 'vehiculos']) }}"><i class="fas fa-car"></i> Autos</a>
+          </li>
+        </ul>
+        <ul class="navbar-nav align-items-center">
+          <!-- Carrito -->
+          <li class="nav-item">
+            <a href="{{ route('carrito') }}" class="nav-link position-relative" title="Carrito">
+              <i class="fas fa-shopping-cart"></i>
+              @php
+                $carrito = session('carrito', []);
+                $totalItems = is_array($carrito) ? array_sum(array_column($carrito, 'cantidad')) : 0;
+              @endphp
+              @if($totalItems > 0)
+                <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" style="font-size:0.7rem;">
+                  {{ $totalItems }}
+                </span>
+              @endif
+            </a>
+          </li>
+
+          @auth
+            <!-- User Dropdown -->
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                <i class="fas fa-user"></i> {{ Auth::user()->name }}
+              </a>
+              <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+                <li>
+                  <a class="dropdown-item" href="{{ route('mis-compras') }}">
+                    <i class="fas fa-shopping-bag me-1"></i> Mis Compras
+                  </a>
+                </li>
+                <li><hr class="dropdown-divider"></li>
+                <li>
+                  <a class="dropdown-item" href="{{ route('logout') }}"
+                     onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                    <i class="fas fa-sign-out-alt me-1"></i> Cerrar Sesión
+                  </a>
+                  <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+                    @csrf
+                  </form>
+                </li>
+              </ul>
+            </li>
+          @else
+            <!-- Mi Cuenta -->
+            <li class="nav-item">
+              <a class="nav-link" href="{{ route('login') }}"><i class="fas fa-user"></i> Mi cuenta</a>
+            </li>
+          @endauth
+
+          <!-- Ayuda -->
+          <li class="nav-item">
+            <a class="nav-link" href="{{ route('ayuda.index') }}"><i class="fas fa-headset"></i> Ayuda</a>
+          </li>
+        </ul>
+      </div>
     </div>
   </nav>
 
@@ -534,6 +606,52 @@
     </div>
   </section>
 
+  <!-- Footer -->
+  <footer class="footer-section">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-3 mb-4">
+          <h5>Frategar</h5>
+          <ul class="list-unstyled">
+            <li><a href="#" class="text-light text-decoration-none">Quiénes somos</a></li>
+            <li><a href="#" class="text-light text-decoration-none">Trabaja con nosotros</a></li>
+          </ul>
+        </div>
+        <div class="col-md-3 mb-4">
+          <h5>Productos</h5>
+          <ul class="list-unstyled">
+            <li><a href="{{ route('results.index', ['tab' => 'viajes']) }}" class="text-light text-decoration-none">Vuelos</a></li>
+            <li><a href="{{ route('results.index', ['tab' => 'hospedajes']) }}" class="text-light text-decoration-none">Hoteles</a></li>
+            <li><a href="{{ route('results.index', ['tab' => 'paquetes']) }}" class="text-light text-decoration-none">Paquetes</a></li>
+            <li><a href="{{ route('results.index', ['tab' => 'vehiculos']) }}" class="text-light text-decoration-none">Autos</a></li>
+          </ul>
+        </div>
+        <div class="col-md-3 mb-4">
+          <h5>Ayuda</h5>
+          <ul class="list-unstyled">
+            <li><a href="#" class="text-light text-decoration-none">Contacto</a></li>
+            <li><a href="{{ route("terminos") }}" class="text-light text-decoration-none">Términos y condiciones</a></li>
+          </ul>
+        </div>
+        <div class="col-md-3 mb-4">
+          <h5>Síguenos</h5>
+          <div class="d-flex gap-3">
+            <a href="#" class="text-light"><i class="fab fa-facebook fa-2x"></i></a>
+            <a href="#" class="text-light"><i class="fab fa-twitter fa-2x"></i></a>
+            <a href="#" class="text-light"><i class="fab fa-instagram fa-2x"></i></a>
+            <a href="#" class="text-light"><i class="fab fa-youtube fa-2x"></i></a>
+          </div>
+        </div>
+      </div>
+      <hr class="my-4">
+      <div class="row">
+        <div class="col-12 text-center">
+          <p class="mb-0">&copy; 2025 Frategar. Todos los derechos reservados.</p>
+        </div>
+      </div>
+    </div>
+  </footer>
+
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
   
   <!-- Script para mejorar la visualización de fechas en móviles -->
@@ -557,6 +675,19 @@ fetch('/api/ciudades')
     const listDestination = document.getElementById('list-destination');
     listOrigin.innerHTML = ciudades.map(c => `<option value="${c}">`).join('');
     listDestination.innerHTML = ciudades.map(c => `<option value="${c}">`).join('');
+  });
+// Bloque de debug para Bootstrap y dropdown
+  document.addEventListener('DOMContentLoaded', function() {
+    console.log('Bootstrap:', typeof bootstrap !== 'undefined' ? 'Cargado' : 'NO cargado');
+    var dropdown = document.querySelector('.dropdown-toggle');
+    var menu = document.querySelector('.dropdown-menu');
+    if (dropdown && menu) {
+        dropdown.addEventListener('click', function(e) {
+            e.preventDefault();
+            menu.classList.toggle('show');
+            console.log('Clase show toggled en dropdown-menu');
+        });
+    }
   });
 </script>
 </body>

@@ -3,101 +3,159 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\PaqueteContenidoRequest;
 use App\Models\Hospedaje;
+use App\Models\Paquete;
 use App\Models\PaqueteContenido;
 use App\Models\Vehiculo;
 use App\Models\Viaje;
 use Illuminate\Http\Request;
 
-class ContenidoController extends Controller
+class AdminContenidoController extends Controller
 {
-    private $contentTypes = [
-        'viaje' => Viaje::class,
-        'hospedaje' => Hospedaje::class,
-        'vehiculo' => Vehiculo::class,
-    ];
 
-    public function getContenidoPorTipo(Request $request)
+    public function index(Request $request)
     {
-        $tipo = $request->get('contenido_type_0');
+        $query = PaqueteContenido::query();
 
-        if (!isset($this->contentTypes[$tipo])) {
-            return response()->json(['error' => 'Tipo de contenido no válido'], 400);
+        // Aplicar búsqueda
+        if ($request->filled('search_paquete')) {
+            $search = $request->search_paquete;
+            $query->where(function ($q) use ($search) {
+                $q->where('nombre', 'like', "%{$search}%")
+                    ->orWhere('numero_paquete', 'like', "%{$search}%");
+            });
+        }
+        if ($request->filled('search_descripcion')) {
+            $search = $request->search_descripcion;
+            $query->Where('descripcion', 'like', "%{$search}%");
+        }
+        if ($request->filled('search_precio_total')) {
+            $search = $request->search_precio_total;
+            $query->Where('precio_total', 'like', "%{$search}%");
+        }
+        if ($request->filled('search_duracion')) {
+            $search = $request->search_duracion;
+            $query->Where('duracion', $search);
+        }
+        if ($request->filled('search_ubicacion')) {
+            $search = $request->search_ubicacion;
+            $query->Where('ubicacion', 'like', "%{$search}%");
+        }
+        if ($request->filled('search_cupo_minimo')) {
+            $search = $request->search_cupo_minimo;
+            $query->Where('cupo_minimo', $search);
+        }
+        if ($request->filled('search_cupo_maximo')) {
+            $search = $request->search_cupo_maximo;
+            $query->Where('cupo_maximo', $search);
+        }
+        if ($request->filled('search_hecho_por_usuario')) {
+            $search = $request->search_hecho_por_usuario;
+            $query->Where('hecho_por_usuario', $search);
+        }
+        if ($request->filled('search_activo')) {
+            $search = $request->search_activo;
+            $query->Where('activo', $search);
         }
 
-        $modelClass = $this->contentTypes[$tipo];
+        // Ordenar por fecha de creación descendente
+        $query->whereHas('paquete')->select(['id', 'paquete_id', 'contenido_type', 'contenido_id', 'created_at'])->orderBy('created_at', 'desc');
 
+        // Paginar resultados
+        $registros = $query->paginate(10)->withQueryString();
+
+        if ($request->ajax()) {
+            $view = view('administracion.partials.tablas.tabla-paquetes-contenidos-contenido', compact('registros'))->render();
+            $pagination = view('administracion.partials.pagination', compact('registros'))->render();
+
+            return response()->json([
+                'view' => $view,
+                'pagination' => $pagination,
+                'paginationInfo' => "Mostrando {$registros->firstItem()} - {$registros->lastItem()} de {$registros->total()} contenidos"
+            ]);
+        }
+
+        $viajes = Viaje::all();
+        $hospedajes = Hospedaje::all();
+        $vehiculos = Vehiculo::all();
+
+        return view('administracion.paquetes-contenidos', compact(['registros', 'viajes', 'hospedajes', 'vehiculos']));
+    }
+
+    public function create(PaqueteContenidoRequest $request)
+    {
         try {
-            $contenido = $modelClass::select($this->getSelectFields($tipo))
-                ->where('activo', true) // Si tienes campo activo
-                ->orderBy('created_at', 'desc')
-                ->get();
+            $paquete = Paquete::find(2);
+            $paquete->contenidos()->create([
+                'contenido_type' => $request->contenido_type,
+                'contenido_id' => $request->contenido_id,
+            ]);
+            /*
+            // Crear el contenido
+            PaqueteContenido::create([
+                'paquete_id' => 2,
+                'contenido_type' => Viaje::class,
+                'contenido_id' => 2,
+            ]);
+            
+            PaqueteContenido::create([
+                'paquete_id' => $request->paquete_id,
+                'contenido_type' => $request->contenido_type,
+                'contenido_id' => $request->contenido_id,
+            ]);
+            PaqueteContenido::create($request->validated());
+            */
 
             return response()->json([
                 'success' => true,
-                'data' => $contenido,
-                'tipo' => $tipo
-            ]);
+                'message' => 'Contenido creado exitosamente'
+            ], 201);
         } catch (\Exception $e) {
-            return response()->json(['error' => 'Error al cargar contenido'], 500);
+            return response()->json([
+                'success' => false,
+                'message' => 'Error al crear el contenido',
+                'error' => $e->getMessage()
+            ], 500);
         }
     }
 
-    /**
-     * Guardar relación polimórfica
-     */
-    public function guardarContenido(Request $request)
+    public function update(PaqueteContenidoRequest $request, PaqueteContenido $paquete)
     {
-        $request->validate([
-            'contenido_type' => 'required|string|in:viaje,hospedaje,vehiculo',
-            'contenido_id' => 'required|integer|min:1',
-            // Otros campos que necesites...
-        ]);
-
-        $tipo = $request->contenido_type;
-        $id = $request->contenido_id;
-        $paquete_id = $request->paquete_id;
-
-        // Verificar que el contenido existe
-        $modelClass = $this->contentTypes[$tipo];
-        $contenido = $modelClass::find($id);
-
-        if (!$contenido) {
-            return response()->json(['error' => 'El contenido seleccionado no existe'], 404);
-        }
 
         try {
-            $contenido = PaqueteContenido::create([
-                'contenido_type' => $this->contentTypes[$tipo],
-                'contenido_id' => $id,
-                'paquete_id' => $paquete_id
-            ]);
+            $paquete->update($request->validated());
 
             return response()->json([
                 'success' => true,
-                'message' => 'Contenido guardado exitosamente',
-                'data' => [
-                    'id' => $contenido->id,
-                    'contenido_type' => $tipo,
-                    'contenido_id' => $id,
-                ]
+                'message' => 'Contenido actualizado exitosamente'
             ]);
         } catch (\Exception $e) {
-            return response()->json(['error' => 'Error al guardar'], 500);
+            return response()->json([
+                'success' => false,
+                'message' => 'Error al actualizar el contenido',
+                'error' => $e->getMessage()
+            ], 500);
         }
     }
 
-    /**
-     * Obtener campos a seleccionar según tipo
-     */
-    private function getSelectFields($tipo)
+    public function destroy(PaqueteContenido $paquete)
     {
-        $fields = [
-            'viaje' => ['id', 'numero_viaje'],
-            'hospedaje' => ['id', 'nombre'],
-            'vehiculo' => ['id', 'patente'],
-        ];
+        try {
+            $paquete->delete();
 
-        return $fields[$tipo] ?? ['id', 'created_at'];
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Contenido eliminado exitosamente',
+            ]);
+        } catch (\Exception $e) {
+
+            return response()->json([
+                'success' => false,
+                'message' => 'Error al eliminar el contenido',
+                'error' => $e->getMessage()
+            ], 500);
+        }
     }
 }

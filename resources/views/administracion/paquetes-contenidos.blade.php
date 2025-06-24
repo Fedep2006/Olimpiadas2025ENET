@@ -3,65 +3,35 @@
 
 <head>
     @include('administracion.partials.head')
-    <title>Gestión de Paquetes - Frategar Admin</title>
+    <title>Gestión de Contenido de Paquetes - Frategar Admin</title>
 </head>
 
 <body>
     @php
         $camposCrear = [
             (object) [
-                'id' => 'nombre',
-                'name' => 'nombre',
-                'type' => 'text',
-                'label' => 'Nombre del Paquete',
-            ],
-            (object) [
-                'id' => 'duracion',
-                'name' => 'duracion',
-                'type' => 'number',
-                'label' => 'Duracion del Paquete',
-            ],
-            (object) [
-                'id' => 'ubicacion',
-                'name' => 'ubicacion',
-                'type' => 'text',
-                'label' => 'Ubicacion del Paquete',
-            ],
-            (object) [
-                'id' => 'cupo_minimo',
-                'name' => 'cupo_minimo',
-                'type' => 'text',
-                'label' => 'Cupo minimo de Personas',
-            ],
-            (object) [
-                'id' => 'cupo_maximo',
-                'name' => 'cupo_maximo',
-                'type' => 'text',
-                'label' => 'Cupo maximo de Personas',
-            ],
-            (object) [
-                'id' => 'precio_total',
-                'name' => 'precio_total',
-                'type' => 'number',
-                'label' => 'Precio total del Paquete',
-            ],
-            (object) [
                 'id' => 'numero_paquete',
                 'name' => 'numero_paquete',
                 'type' => 'text',
-                'label' => 'Codigo del Paquete',
+                'label' => 'Codigo de Paquete',
             ],
             (object) [
-                'id' => 'descripcion',
-                'name' => 'descripcion',
-                'type' => 'text',
-                'label' => 'Descripcion del Paquete',
+                'id' => 'contenido_type',
+                'name' => 'contenido_type',
+                'type' => 'select',
+                'label' => 'Tipo de contenido',
+                'options' => [
+                    (object) ['value' => 'viaje', 'text' => 'Viaje'],
+                    (object) ['value' => 'vehiculo', 'text' => 'Vehiculo'],
+                    (object) ['value' => 'hospedaje', 'text' => 'Hospedaje'],
+                ],
             ],
             (object) [
-                'id' => 'activo',
-                'name' => 'activo',
-                'type' => 'checkbox',
-                'label' => 'Paquete Disponible',
+                'id' => 'contenido_id',
+                'name' => 'contenido_id',
+                'type' => 'select',
+                'label' => 'Contenido',
+                'options' => [],
             ],
         ];
         $camposEditar = [
@@ -203,21 +173,22 @@
         ];
     @endphp
     <!-- Sidebar -->
-    <x-layouts.administracion.sidebar paquetes="active" />
+    <x-layouts.administracion.sidebar paquetesContenidos="active" />
 
     <!-- Main Content -->
-    <x-layouts.administracion.main nameHeader="Gestion de Paquetes">
+    <x-layouts.administracion.main nameHeader="Gestion de Contenido de Paquetes">
 
         <!-- Page Header -->
-        <x-layouts.administracion.page-header titulo="Gestion de Paquetes" contenido="Administra y gestiona los paquetes"
-            botonIcono="fas fa-plus" botonNombre="Nuevo Paquete" />
+        <x-layouts.administracion.page-header titulo="Gestion de Contenido de Paquetes"
+            contenido="Administra y gestiona el contenido de los paquetes" botonIcono="fas fa-plus"
+            botonNombre="Nuevo Contenido" />
 
         <!-- Search Bar -->
         <x-layouts.administracion.search-bar :inputs="$camposBuscar" />
 
         <!-- Users Table -->
         @php
-            $tHead = ['Nombre', 'Duracion', 'Ubicacion', 'Precio', 'Cupos', 'Creador', 'descripcion', 'Activo'];
+            $tHead = ['Paquete', 'Contenido'];
         @endphp
         @include('administracion.partials.tabla', [
             'tHead' => $tHead,
@@ -234,6 +205,79 @@
     @vite('resources/js/sidebar.js')
     @vite('resources/js/administracion/search-bar.js')
     @vite('resources/js/administracion/paginacion.js')
+    <script>
+        // Datos de ejemplo - reemplaza con tus datos reales de Laravel
+        const tablas = {
+            viaje: @json($viajes),
+            hospedaje: @json($hospedajes),
+            vehiculo: @json($vehiculos)
+        };
+
+        console.log(tablas);
+        const tablaSelect = document.getElementById('contenido_type');
+        const valorSelect = document.getElementById('contenido_id');
+
+        // Función para cargar los valores según la tabla seleccionada
+        function cargarValores(tabla) {
+            // Limpiar select de valores
+            valorSelect.innerHTML = '';
+
+            // Agregar opción por defecto
+            const defaultOption = document.createElement('option');
+            defaultOption.value = '';
+            defaultOption.textContent = 'Seleccionar...';
+            valorSelect.appendChild(defaultOption);
+
+            // Agregar los valores de la tabla seleccionada
+            switch (tabla) {
+                case 'viaje':
+                    tablas[tabla].forEach(item => {
+                        const option = document.createElement('option');
+                        option.value = item.id;
+                        option.textContent = item.nombre;
+                        valorSelect.appendChild(option);
+                    });
+                    break;
+                case 'hospedaje':
+                    tablas[tabla].forEach(item => {
+                        const option = document.createElement('option');
+                        option.value = item.id;
+                        option.textContent = item.nombre;
+                        valorSelect.appendChild(option);
+                    });
+                    break;
+                case 'vehiculo':
+                    tablas[tabla].forEach(item => {
+                        const option = document.createElement('option');
+                        option.value = item.id;
+                        option.textContent = item.modelo;
+                        valorSelect.appendChild(option);
+                    });
+                    break;
+                default:
+                    break;
+            }
+        }
+
+        // Función para actualizar la información mostrada
+        function actualizarInfo() {
+            const tablaSeleccionada = tablaSelect.value;
+            const valorSeleccionado = valorSelect.value;
+            const textoValor = valorSelect.options[valorSelect.selectedIndex].text;
+        }
+
+        // Event listeners
+        tablaSelect.addEventListener('change', function() {
+            cargarValores(this.value);
+        });
+
+        valorSelect.addEventListener('change', function() {
+            actualizarInfo();
+        });
+
+        // Cargar valores iniciales (primera tabla por defecto)
+        cargarValores(tablaSelect.value);
+    </script>
 </body>
 
 </html>

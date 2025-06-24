@@ -1,10 +1,4 @@
 import { updateTable, showToast } from "../utils";
-import {
-    initDynamicInputs,
-    addDynamicInputs,
-    removeInputGroup,
-    clearDynamicInputs,
-} from "./crear-inputs.js";
 
 setTimeout(function () {
     const nuevoRegistroModal = new bootstrap.Modal(
@@ -21,10 +15,6 @@ setTimeout(function () {
         .addEventListener("click", function (e) {
             e.preventDefault();
             nuevoRegistroModal.show();
-            initDynamicInputs({
-                addButtonId: "addInputsBtn",
-                modalId: "nuevoRegistroModal",
-            });
         });
     document
         .getElementById("guardarRegistro")

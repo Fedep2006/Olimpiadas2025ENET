@@ -261,37 +261,46 @@
                     </li>
                 </ul>
                 
-                <ul class="navbar-nav">
+                <ul class="navbar-nav align-items-center">
                     @if(Auth::check())
+                        <!-- Carrito -->
+                        <li class="nav-item">
+                            <a href="{{ route('carrito') }}" class="nav-link position-relative" title="Carrito">
+                                <i class="fas fa-shopping-cart"></i>
+                                @php
+                                    $carrito = session('carrito', []);
+                                    $totalItems = is_array($carrito) ? array_sum(array_column($carrito, 'cantidad')) : 0;
+                                @endphp
+                                @if($totalItems > 0)
+                                    <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" style="font-size:0.7rem;">
+                                        {{ $totalItems }}
+                                    </span>
+                                @endif
+                            </a>
+                        </li>
+
+                        <!-- User Dropdown -->
                         <li class="nav-item dropdown">
-                            <div class="d-flex align-items-center gap-4">
-                                <a href="{{ route('carrito') }}" class="btn btn-link p-0 m-0 position-relative" style="font-size:1.2rem;" title="Carrito">
-                                    <i class="fas fa-shopping-cart"></i>
-                                    @php
-                                        $carrito = session('carrito', []);
-                                        $totalItems = array_sum(array_column($carrito, 'cantidad'));
-                                    @endphp
-                                    @if($totalItems > 0)
-                                        <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" style="font-size:0.7rem;">
-                                            {{ $totalItems }}
-                                        </span>
-                                    @endif
-                                </a>
-                                <a class="nav-link d-flex align-items-center dropdown-toggle p-0" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                    <i class="fas fa-user"></i> {{ Auth::user()->name }}
-                                </a>
-                            </div>
+                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                <i class="fas fa-user"></i> {{ Auth::user()->name }}
+                            </a>
                             <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+                                <li>
+                                    <a class="dropdown-item" href="{{ route('mis-compras') }}">
+                                        <i class="fas fa-shopping-bag me-1"></i> Mis Compras
+                                    </a>
+                                </li>
+                                <li><hr class="dropdown-divider"></li>
                                 <li>
                                     <a class="dropdown-item" href="{{ route('logout') }}"
                                        onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
-                                        Cerrar sesión
+                                        <i class="fas fa-sign-out-alt me-1"></i> Cerrar Sesión
                                     </a>
+                                    <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+                                        @csrf
+                                    </form>
                                 </li>
                             </ul>
-                            <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
-                                @csrf
-                            </form>
                         </li>
                     @else
                         <li class="nav-item">

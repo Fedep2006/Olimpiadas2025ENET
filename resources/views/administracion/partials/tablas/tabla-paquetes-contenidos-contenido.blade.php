@@ -52,14 +52,14 @@
 @endphp
 @if ($registros->isEmpty())
     <tr>
-        <td colspan="4" class="text-center">No se encontraron paquetes</td>
+        <td colspan="4" class="text-center">No se encontraron contenidos</td>
     </tr>
 @else
     @foreach ($registros as $registro)
         <tr>
             <td>
                 <div class="flex flex-col text-center justify-between !self-center align-middle h-full w-full ">
-                    <h6>{{ ucfirst($registro->nombre) }}</h6>
+                    <h6>{{ ucfirst($registro->paquete->nombre) }}</h6>
                     <small class="pb-2 font-bold">Codigo: {{ Str::upper($registro->numero_paquete) }}</small>
                 </div>
             </td>
