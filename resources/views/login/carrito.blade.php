@@ -376,11 +376,7 @@
                                 <div class="row align-items-center">
                                     <div class="col-md-2">
                                         <div class="item-image">
-                                            @if(isset($item['imagen']) && $item['imagen'])
-                                                <img src="{{ $item['imagen'] }}" alt="{{ $item['nombre'] }}" class="img-fluid rounded">
-                                            @else
-                                                <i class="fas fa-box-open fa-2x text-primary"></i>
-                                            @endif
+                                            <i class="fas fa-box-open fa-2x text-primary"></i>
                                         </div>
                                     </div>
                                     <div class="col-md-5">
@@ -546,9 +542,6 @@
             <div class="row">
                 <div class="col-12 text-center">
                     <p class="mb-0">&copy; 2025 Frategar. Todos los derechos reservados.<br>
-    @auth
-        <span class="fw-bold">Sesión iniciada como: {{ Auth::user()->name }}</span>
-    @endauth
 </p>
                 </div>
             </div>

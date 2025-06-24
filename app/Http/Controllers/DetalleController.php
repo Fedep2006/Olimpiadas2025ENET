@@ -30,6 +30,9 @@ class DetalleController extends Controller
         elseif ($tipo === 'hospedaje') {
             $item = Hospedaje::findOrFail($id);
         }
+        elseif ($tipo === 'viaje') {
+            $item = Viaje::with('empresa')->findOrFail($id);
+        }
         else {
             abort(404, 'Tipo de item no válido.');
         }

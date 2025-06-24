@@ -5,12 +5,15 @@ namespace App\Http\Controllers\Principal;
 use App\Http\Controllers\Controller;
 use App\Models\Hospedaje;
 use App\Models\Pago;
-use App\Models\ReservaHospedaje;
+use App\Models\Reserva;
+use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
+use App\Mail\ReservaCreada; 
+use Illuminate\Support\Facades\Mail;
 
 class ReservasController extends Controller {
     // Eliminar producto del carrito por clave
@@ -99,9 +102,28 @@ class ReservasController extends Controller {
                 'notas' => 'Reserva creada el ' . now()->format('d/m/Y H:i:s'),
             ]);
             
-            $reserva->save();
+            // Crear la reserva genérica
+            $reserva = Reserva::create([
+                'usuario_id' => Auth::id(),
+                'reservable_id' => $hospedaje->id,
+                'reservable_type' => Hospedaje::class,
+                'fecha_inicio' => $request->fecha_entrada,
+                'fecha_fin' => $request->fecha_salida,
+                'estado' => 'confirmada',
+                'precio_total' => $montoTotal,
+                'codigo_reserva' => $this->generarCodigoReserva(),
+                'tipo_reserva' => 'hospedaje',
+            ]);
+
+            // Asociar el pago a la reserva
+            $pago->reserva_id = $reserva->id;
+            $pago->save();
             
             DB::commit();
+
+            // Enviar correo de confirmación
+            $user = Auth::user();
+            Mail::to($user->email)->send(new ReservaCreada($user, [$reserva]));
             
             // Limpiar el carrito si existe este ítem
             $carrito = session()->get('carrito', []);
@@ -111,11 +133,7 @@ class ReservasController extends Controller {
                 session(['carrito' => $carrito]);
             }
             
-            return redirect()->route('mis-reservas')->with([
-                'reserva_status' => 'success',
-                'reserva_mensaje' => '¡Reserva de hospedaje realizada con éxito! Su número de reserva es: ' . $reserva->id,
-                'reserva_numero' => $reserva->id,
-            ]);
+            return redirect()->route('mis-compras')->with('success', '¡Reserva de hospedaje realizada con éxito! Se ha enviado un correo de confirmación.');
             
         } catch (\Exception $e) {
             DB::rollBack();
@@ -128,6 +146,16 @@ class ReservasController extends Controller {
         }
     }
     
+    // Generar código único de reserva
+    private function generarCodigoReserva()
+    {
+        do {
+            $codigo = strtoupper(substr(md5(uniqid()), 0, 8));
+        } while (Reserva::where('codigo_reserva', $codigo)->exists());
+        
+        return $codigo;
+    }
+
     // Método auxiliar para determinar la marca de la tarjeta
     private function getCardBrand($cardNumber)
     {

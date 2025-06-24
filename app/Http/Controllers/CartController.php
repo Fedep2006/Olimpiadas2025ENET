@@ -11,7 +11,10 @@ use App\Models\Paquete;
 use App\Models\Viaje;
 use App\Models\Reserva;
 use App\Models\Pagos;
+use App\Models\User;
 use Carbon\Carbon;
+use App\Mail\ReservaCreada;
+use Illuminate\Support\Facades\Mail;
 
 class CartController extends Controller
 {
@@ -263,11 +266,13 @@ class CartController extends Controller
                         break;
 
                     case 'viaje':
+                        $viaje = Viaje::findOrFail($item['id']);
                         $reserva = Reserva::create([
                             'usuario_id' => Auth::id(),
-                            'paquete_id' => null,
-                            'fecha_inicio' => now(),
-                            'fecha_fin' => now()->addDays(7),
+                            'reservable_id' => $viaje->id,
+                            'reservable_type' => Viaje::class,
+                            'fecha_inicio' => $viaje->fecha_salida,
+                            'fecha_fin' => $viaje->fecha_llegada,
                             'estado' => 'confirmada',
                             'precio_total' => $subtotal,
                             'codigo_reserva' => $this->generarCodigoReserva(),
@@ -296,7 +301,11 @@ class CartController extends Controller
 
             DB::commit();
 
-            return redirect()->route('carrito')->with('success', 'Compra procesada exitosamente. Se han creado ' . count($reservasCreadas) . ' reservas.');
+            // Enviar correo de confirmación
+            $user = Auth::user();
+            Mail::to($user->email)->send(new ReservaCreada($user, $reservasCreadas));
+
+            return redirect()->route('mis-compras')->with('success', 'Compra procesada exitosamente. Se han creado ' . count($reservasCreadas) . ' reservas.');
 
         } catch (\Exception $e) {
             DB::rollback();
