@@ -332,55 +332,69 @@
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav me-auto">
                     <li class="nav-item">
-                        <a class="nav-link" href="#"><i class="fas fa-plane"></i> Vuelos</a>
+                        <a class="nav-link" href="{{ route('results.index', ['tab' => 'viajes']) }}"><i class="fas fa-plane"></i> Vuelos</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#"><i class="fas fa-bed"></i> Hoteles</a>
+                        <a class="nav-link" href="{{ route('results.index', ['tab' => 'hospedajes']) }}"><i class="fas fa-hotel"></i> Hoteles</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#"><i class="fas fa-suitcase"></i> Paquetes</a>
+                        <a class="nav-link" href="{{ route('results.index', ['tab' => 'paquetes']) }}"><i class="fas fa-box"></i> Paquetes</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#"><i class="fas fa-car"></i> Autos</a>
+                        <a class="nav-link" href="{{ route('results.index', ['tab' => 'vehiculos']) }}"><i class="fas fa-car"></i> Autos</a>
                     </li>
                 </ul>
-                <ul class="navbar-nav">
-                    @if(Auth::check())
+                <ul class="navbar-nav align-items-center">
+                    <!-- Carrito -->
+                    <li class="nav-item">
+                        <a href="{{ route('carrito') }}" class="nav-link position-relative" title="Carrito">
+                            <i class="fas fa-shopping-cart"></i>
+                            @php
+                                $carrito = session('carrito', []);
+                                $totalItems = is_array($carrito) ? array_sum(array_column($carrito, 'cantidad')) : 0;
+                            @endphp
+                            @if($totalItems > 0)
+                                <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" style="font-size:0.7rem;">
+                                    {{ $totalItems }}
+                                </span>
+                            @endif
+                        </a>
+                    </li>
+
+                    @auth
+                        <!-- User Dropdown -->
                         <li class="nav-item dropdown">
-    <div class="d-flex align-items-center gap-4">
-        <a href="{{ route('carrito') }}" class="btn btn-link p-0 m-0 position-relative" style="font-size:1.2rem;" title="Carrito">
-            <i class="fas fa-shopping-cart"></i>
-            @php
-                $carrito = session('carrito', []);
-                $totalItems = array_sum(array_column($carrito, 'cantidad'));
-            @endphp
-            @if($totalItems > 0)
-                <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" style="font-size:0.7rem;">
-                    {{ $totalItems }}
-                </span>
-            @endif
-        </a>
-        <a class="nav-link d-flex align-items-center dropdown-toggle p-0" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-            <i class="fas fa-user"></i> {{ Auth::user()->name }}
-        </a>
-    </div>
+                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                <i class="fas fa-user"></i> {{ Auth::user()->name }}
+                            </a>
                             <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-                                <li><a class="dropdown-item" href="{{ route('logout') }}"
+                                <li>
+                                    <a class="dropdown-item" href="{{ route('mis-compras') }}">
+                                        <i class="fas fa-shopping-bag me-1"></i> Mis Compras
+                                    </a>
+                                </li>
+                                <li><hr class="dropdown-divider"></li>
+                                <li>
+                                    <a class="dropdown-item" href="{{ route('logout') }}"
                                        onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
-                                    Cerrar sesión
-                                </a></li>
+                                        <i class="fas fa-sign-out-alt me-1"></i> Cerrar Sesión
+                                    </a>
+                                    <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+                                        @csrf
+                                    </form>
+                                </li>
                             </ul>
-                            <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
-                                @csrf
-                            </form>
                         </li>
                     @else
+                        <!-- Mi Cuenta -->
                         <li class="nav-item">
                             <a class="nav-link" href="{{ route('login') }}"><i class="fas fa-user"></i> Mi cuenta</a>
                         </li>
-                    @endif
+                    @endauth
+
+                    <!-- Ayuda -->
                     <li class="nav-item">
-                        <a class="nav-link" href="#"><i class="fas fa-headset"></i> Ayuda</a>
+                        <a class="nav-link" href="{{ route('ayuda.index') }}"><i class="fas fa-headset"></i> Ayuda</a>
                     </li>
                 </ul>
             </div>
@@ -476,37 +490,7 @@
         </div>
     </section>
 
-    <!-- Viajes individuales (desde base de datos) -->
-    <section class="py-5">
-        <div class="container">
-            <h2 class="section-title">Viajes</h2>
-            <div class="row">
-                @foreach($viajes as $viaje)
-                <div class="col-md-4 mb-4">
-                    <div class="travel-card h-100 position-relative">
-                        <a href="{{ route('viajes.show', $viaje->id) }}" class="text-decoration-none text-dark stretched-link">
-                            <div class="travel-icon">
-                                <i class="fas fa-bus"></i>
-                            </div>
-                            <h5>{{ $viaje->nombre }}</h5>
-                            <p class="mb-3">{{ $viaje->origen }} → {{ $viaje->destino }}</p>
-                            <p class="price">${{ number_format($viaje->precio_base ?? 0, 2) }}</p>
-                            <span class="badge bg-info">Salida: {{ optional($viaje->fecha_salida)->format('d/m/Y H:i') }}</span>
-                        </a>
-                        <div class="mt-3" style="position: relative; z-index: 1;">
-                            <form method="POST" action="{{ route('carrito.viaje.add', $viaje->id) }}" class="d-inline">
-                                @csrf
-                                <button type="submit" class="btn btn-warning btn-sm">
-                                    <i class="fas fa-cart-plus me-1"></i>Añadir al carrito
-                                </button>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-                @endforeach
-            </div>
-        </div>
-    </section>
+
 
     <!-- Paquetes (desde base de datos) -->
     <section class="py-5">
@@ -539,6 +523,38 @@
         </div>
     </section>
 
+        <!-- Viajes individuales (desde base de datos) -->
+        <section class="py-5">
+        <div class="container">
+            <h2 class="section-title">Viajes</h2>
+            <div class="row">
+                @foreach($viajes as $viaje)
+                <div class="col-md-4 mb-4">
+                    <div class="travel-card h-100 position-relative">
+                        <a href="{{ route('viajes.show', $viaje->id) }}" class="text-decoration-none text-dark stretched-link">
+                            <div class="travel-icon">
+                                <i class="fas fa-bus"></i>
+                            </div>
+                            <h5>{{ $viaje->nombre }}</h5>
+                            <p class="mb-3">{{ $viaje->origen }} → {{ $viaje->destino }}</p>
+                            <p class="price">${{ number_format($viaje->precio_base ?? 0, 2) }}</p>
+                            <span class="badge bg-info">Salida: {{ optional($viaje->fecha_salida)->format('d/m/Y H:i') }}</span>
+                        </a>
+                        <div class="mt-3" style="position: relative; z-index: 1;">
+                            <form method="POST" action="{{ route('carrito.viaje.add', $viaje->id) }}" class="d-inline">
+                                @csrf
+                                <button type="submit" class="btn btn-warning btn-sm">
+                                    <i class="fas fa-cart-plus me-1"></i>Añadir al carrito
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                @endforeach
+            </div>
+        </div>
+    </section>
+
     <!-- Hospedajes (desde base de datos) -->
     <section class="py-5">
         <div class="container">
@@ -558,38 +574,6 @@
                         </a>
                         <div class="mt-3" style="position: relative; z-index: 1;">
                             <form method="POST" action="{{ route('carrito.hospedaje.add', $hospedaje->id) }}" class="d-inline">
-                                @csrf
-                                <button type="submit" class="btn btn-warning btn-sm">
-                                    <i class="fas fa-cart-plus me-1"></i>Añadir al carrito
-                                </button>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-                @endforeach
-            </div>
-        </div>
-    </section>
-
-    <!-- Viajes individuales (desde base de datos) -->
-    <section class="py-5">
-        <div class="container">
-            <h2 class="section-title">Viajes</h2>
-            <div class="row">
-                @foreach($viajes as $viaje)
-                <div class="col-md-4 mb-4">
-                    <div class="travel-card h-100 position-relative">
-                        <a href="{{ url('/details/viaje/'.$viaje->id) }}" class="text-decoration-none text-dark stretched-link">
-                            <div class="travel-icon">
-                                <i class="fas fa-bus"></i>
-                            </div>
-                            <h5>{{ $viaje->nombre }}</h5>
-                            <p class="mb-3">{{ $viaje->origen }} → {{ $viaje->destino }}</p>
-                            <p class="price">${{ number_format($viaje->precio_base ?? 0, 2) }}</p>
-                            <span class="badge bg-info">Salida: {{ optional($viaje->fecha_salida)->format('d/m/Y H:i') }}</span>
-                        </a>
-                        <div class="mt-3" style="position: relative; z-index: 1;">
-                            <form method="POST" action="{{ route('carrito.viaje.add', $viaje->id) }}" class="d-inline">
                                 @csrf
                                 <button type="submit" class="btn btn-warning btn-sm">
                                     <i class="fas fa-cart-plus me-1"></i>Añadir al carrito
@@ -685,10 +669,10 @@
                 <div class="col-md-3 mb-4">
                     <h5>Productos</h5>
                     <ul class="list-unstyled">
-                        <li><a href="#" class="text-light text-decoration-none">Vuelos</a></li>
-                        <li><a href="#" class="text-light text-decoration-none">Hoteles</a></li>
-                        <li><a href="#" class="text-light text-decoration-none">Paquetes</a></li>
-                        <li><a href="#" class="text-light text-decoration-none">Autos</a></li>
+                        <li><a href="{{ route('results.index', ['tab' => 'viajes']) }}" class="text-light text-decoration-none">Vuelos</a></li>
+                        <li><a href="{{ route('results.index', ['tab' => 'hospedajes']) }}" class="text-light text-decoration-none">Hoteles</a></li>
+                        <li><a href="{{ route('results.index', ['tab' => 'paquetes']) }}" class="text-light text-decoration-none">Paquetes</a></li>
+                        <li><a href="{{ route('results.index', ['tab' => 'vehiculos']) }}" class="text-light text-decoration-none">Autos</a></li>
                     </ul>
                 </div>
                 <div class="col-md-3 mb-4">

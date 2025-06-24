@@ -38,7 +38,9 @@ use App\Http\Controllers\{
     TestCompraController,
     TestGmailController,
     TestEmailController,
-    CartController
+    CartController,
+    ComprasController,
+    HelpController
 };
 
 // Modelos
@@ -99,6 +101,14 @@ Route::get('/details/{tipo}/{id}', [DetalleController::class, 'show'])->name('de
 
 // Procesar reserva
 Route::post('/reservar', [DetalleController::class, 'store'])->name('reservar.store')->middleware('auth');
+
+// Mis Compras
+Route::get('/mis-compras', [ComprasController::class, 'index'])->name('mis-compras')->middleware('auth');
+Route::post('/mis-compras/{reserva}/cancelar', [ComprasController::class, 'cancelar'])->name('mis-compras.cancelar')->middleware('auth');
+Route::get('/mis-compras/{reserva}/modificar', [ComprasController::class, 'modificar'])->name('mis-compras.modificar')->middleware('auth');
+
+// Ayuda
+Route::get('/ayuda', [HelpController::class, 'index'])->name('ayuda.index');
 
 // Autenticación
 Route::get('/login', function () {

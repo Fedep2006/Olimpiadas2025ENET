@@ -245,16 +245,16 @@
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav me-auto">
                     <li class="nav-item">
-                        <a class="nav-link" href="#"><i class="fas fa-plane"></i> Vuelos</a>
+                        <a class="nav-link" href="{{ route('results.index', ['tab' => 'viajes']) }}"><i class="fas fa-plane"></i> Vuelos</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#"><i class="fas fa-bed"></i> Hoteles</a>
+                        <a class="nav-link" href="{{ route('results.index', ['tab' => 'hospedajes']) }}"><i class="fas fa-bed"></i> Hoteles</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#"><i class="fas fa-suitcase"></i> Paquetes</a>
+                        <a class="nav-link" href="{{ route('results.index', ['tab' => 'paquetes']) }}"><i class="fas fa-suitcase"></i> Paquetes</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#"><i class="fas fa-car"></i> Autos</a>
+                        <a class="nav-link" href="{{ route('results.index', ['tab' => 'vehiculos']) }}"><i class="fas fa-car"></i> Autos</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="#"><i class="fas fa-ship"></i> Cruceros</a>
@@ -299,7 +299,7 @@
                         </li>
                     @endauth
                     <li class="nav-item">
-                        <a class="nav-link" href="#"><i class="fas fa-headset"></i> Ayuda</a>
+                        <a class="nav-link" href="{{ route('ayuda.index') }}"><i class="fas fa-headset"></i> Ayuda</a>
                     </li>
                 </ul>
             </div>
@@ -376,11 +376,7 @@
                                 <div class="row align-items-center">
                                     <div class="col-md-2">
                                         <div class="item-image">
-                                            @if(isset($item['imagen']) && $item['imagen'])
-                                                <img src="{{ $item['imagen'] }}" alt="{{ $item['nombre'] }}" class="img-fluid rounded">
-                                            @else
-                                                <i class="fas fa-box-open fa-2x text-primary"></i>
-                                            @endif
+                                            <i class="fas fa-box-open fa-2x text-primary"></i>
                                         </div>
                                     </div>
                                     <div class="col-md-5">
@@ -513,10 +509,10 @@
                 <div class="col-md-3 mb-4">
                     <h5>Productos</h5>
                     <ul class="list-unstyled">
-                        <li><a href="#" class="text-light text-decoration-none">Vuelos</a></li>
-                        <li><a href="#" class="text-light text-decoration-none">Hoteles</a></li>
-                        <li><a href="#" class="text-light text-decoration-none">Paquetes</a></li>
-                        <li><a href="#" class="text-light text-decoration-none">Autos</a></li>
+                        <li><a href="{{ route('results.index', ['tab' => 'viajes']) }}" class="text-light text-decoration-none">Vuelos</a></li>
+                        <li><a href="{{ route('results.index', ['tab' => 'hospedajes']) }}" class="text-light text-decoration-none">Hoteles</a></li>
+                        <li><a href="{{ route('results.index', ['tab' => 'paquetes']) }}" class="text-light text-decoration-none">Paquetes</a></li>
+                        <li><a href="{{ route('results.index', ['tab' => 'vehiculos']) }}" class="text-light text-decoration-none">Autos</a></li>
                     </ul>
                 </div>
                 
@@ -546,9 +542,6 @@
             <div class="row">
                 <div class="col-12 text-center">
                     <p class="mb-0">&copy; 2025 Frategar. Todos los derechos reservados.<br>
-    @auth
-        <span class="fw-bold">Sesión iniciada como: {{ Auth::user()->name }}</span>
-    @endauth
 </p>
                 </div>
             </div>

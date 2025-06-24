@@ -269,11 +269,15 @@
                             <div class="detail-item"> <i class="fas fa-car-side"></i> <div><span class="detail-label">Modelo:</span><span class="detail-value">{{ $item->modelo }}</span></div></div>
                             <div class="detail-item"><i class="fas fa-user-friends"></i> <div><span class="detail-label">Pasajeros:</span><span class="detail-value">{{ $item->capacidad_pasajeros }}</span></div></div>
                         @elseif($tipo === 'viaje')
-                            {{-- Viaje --}}
+                                                        {{-- Viaje --}}
+                            <div class="detail-item"><i class="fas fa-building"></i> <div><span class="detail-label">Empresa:</span><span class="detail-value">{{ $item->empresa->nombre ?? 'No especificada' }}</span></div></div>
+
                             <div class="detail-item"><i class="fas fa-plane-departure"></i> <div><span class="detail-label">Origen:</span><span class="detail-value">{{ $item->origen }}</span></div></div>
                             <div class="detail-item"><i class="fas fa-plane-arrival"></i> <div><span class="detail-label">Destino:</span><span class="detail-value">{{ $item->destino }}</span></div></div>
                             <div class="detail-item"><i class="fas fa-calendar-alt"></i> <div><span class="detail-label">Salida:</span><span class="detail-value">{{ \Carbon\Carbon::parse($item->fecha_salida)->format('d/m/Y H:i') }}</span></div></div>
-                            <div class="detail-item"><i class="fas fa-calendar-check"></i> <div><span class="detail-label">Llegada:</span><span class="detail-value">{{ \Carbon\Carbon::parse($item->fecha_llegada)->format('d/m/Y H:i') }}</span></div></div>
+                            @if(!empty($item->fecha_llegada))
+    <div class="detail-item"><i class="fas fa-calendar-check"></i> <div><span class="detail-label">Llegada:</span><span class="detail-value">{{ \Carbon\Carbon::parse($item->fecha_llegada)->format('d/m/Y H:i') }}</span></div></div>
+@endif
                             <div class="detail-item"><i class="fas fa-chair"></i> <div><span class="detail-label">Asientos Disp:</span><span class="detail-value">{{ $item->asientos_disponibles }}</span></div></div>
                         @endif   
                     </div>
@@ -340,6 +344,18 @@
                             <span class="price-period">/ {{ $tipo === 'hospedaje' ? 'noche' : 'día' }}</span>
                         </div>
 
+                        @if ($tipo === 'viaje')
+<div class="row mb-3">
+    <div class="col-md-6">
+        <label class="form-label">Fecha de Salida</label>
+        <input type="date" class="form-control" id="fecha_inicio" name="fecha_inicio" value="{{ $item->fecha_salida->format('Y-m-d') }}" readonly>
+    </div>
+    <div class="col-md-6">
+        <label class="form-label">Fecha de Llegada</label>
+        <input type="date" class="form-control" id="fecha_fin" name="fecha_fin" value="{{ $item->fecha_llegada ? $item->fecha_llegada->format('Y-m-d') : '' }}" readonly>
+    </div>
+</div>
+                        @else
                         <div class="form-group mb-3">
                             <div class="col-6">
                                 <label for="fecha_inicio" class="form-label">{{ $tipo === 'hospedaje' ? 'Check-in' : 'Fecha de Retiro' }}</label>
@@ -356,6 +372,7 @@
                                 @enderror
                             </div>
                         </div>
+                        @endif
 
                         <hr>
 
@@ -444,7 +461,9 @@
                 const fechaFin = fechaFinEl.value;
                 let total = 0;
 
-                if (fechaInicio && fechaFin) {
+                if (tipoItem === 'viaje') {
+                    total = precioPorUnidad;
+                } else if (fechaInicio && fechaFin) {
                     const inicio = new Date(fechaInicio);
                     const fin = new Date(fechaFin);
 
@@ -466,6 +485,11 @@
             }
 
             function validarFechas() {
+                // Para viajes, las fechas son fijas y no deben validarse ni modificarse.
+                if (tipoItem === 'viaje') {
+                    return;
+                }
+
                 const hoy = new Date().toISOString().split('T')[0];
                 fechaInicioEl.min = hoy;
 

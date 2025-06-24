@@ -30,6 +30,9 @@ class DetalleController extends Controller
         elseif ($tipo === 'hospedaje') {
             $item = Hospedaje::findOrFail($id);
         }
+        elseif ($tipo === 'viaje') {
+            $item = Viaje::with('empresa')->findOrFail($id);
+        }
         else {
             abort(404, 'Tipo de item no válido.');
         }
@@ -46,7 +49,7 @@ class DetalleController extends Controller
             'item_id' => 'required|integer',
             'item_type' => 'required|string|in:hospedaje,vehiculo,viaje',
             'fecha_inicio' => 'required|date',
-            'fecha_fin' => 'required|date|after_or_equal:fecha_inicio',
+            'fecha_fin' => 'required_unless:item_type,viaje|nullable|date|after_or_equal:fecha_inicio',
             'total_pagar' => 'required|numeric|min:0',
             'nombre' => 'required|string|max:255',
             'email' => 'required|email|max:255',
@@ -86,47 +89,37 @@ class DetalleController extends Controller
             } elseif ($itemType === 'viaje') {
                 $item = Viaje::findOrFail($itemId);
             }
-            $itemName = $item->nombre ?? ($item->marca . ' ' . $item->modelo);
 
-            // Calcular duración (la BDD espera un string)
-            $fechaInicio = Carbon::parse($validated['fecha_inicio']);
-            $fechaFin = Carbon::parse($validated['fecha_fin']);
-            $duracion = $fechaFin->diffInDays($fechaInicio);
-            $duracion = $duracion > 0 ? $duracion : 1;
-            if ($itemType === 'vehiculo') {
-                 $duracion = $fechaFin->diffInDays($fechaInicio) + 1;
-            }
-            $duracionString = $duracion . ($duracion > 1 ? ' días' : ' día');
-
-            // 2. Crear un paquete virtual (con todos los campos obligatorios de la BDD)
+            // 2. Crear el paquete
             $paquete = Paquete::create([
-                'nombre' => 'Reserva de ' . ucfirst($itemType) . ': ' . $itemName,
-                'descripcion' => 'Paquete autogenerado para reserva individual.',
+                'usuario_id' => Auth::id(),
+                'nombre' => 'Reserva de ' . $itemType . ' - ' . ($item->nombre ?? 'ID ' . $item->id),
+                'descripcion' => 'Reserva individual para ' . $itemType,
                 'precio_total' => $validated['total_pagar'],
-                'duracion' => $duracionString, // La BDD espera un string
-                'ubicacion' => $item->ubicacion,
-                'numero_paquete' => 'IND-' . strtoupper(Str::random(8)), // Campo obligatorio
-                'hecho_por_usuario' => true,
-                'activo' => false,
-            ]);
-
-            // 3. Asociar el contenido al paquete
-            $contenido = new PaqueteContenido();
-            $contenido->paquete_id = $paquete->id;
-            $contenido->contenido()->associate($item);
-            $contenido->save();
-
-            // 4. Crear la reserva (con los campos correctos de la BDD)
-            $reserva = Reserva::create([
-                'usuario_id' => Auth::id(), // Columna correcta: usuario_id
-                'paquete_id' => $paquete->id,
-                'fecha_inicio' => $validated['fecha_inicio'],
-                'fecha_fin' => $validated['fecha_fin'],
                 'estado' => 'pendiente',
-                'tipo_reserva' => $itemType === 'vehiculo' ? 'viaje' : $itemType,
-                'precio_total' => $validated['total_pagar'],
-                'codigo_reserva' => strtoupper(Str::random(8)), // Campo obligatorio
             ]);
+
+            // 3. Crear la reserva usando la relación polimórfica y asociándola al paquete
+            $reservaData = [
+                'usuario_id'      => Auth::id(),
+                'paquete_id'      => $paquete->id, // Asociar al paquete creado
+                'reservable_id'   => $item->id,
+                'reservable_type' => get_class($item),
+                'fecha_inicio'    => $validated['fecha_inicio'],
+                'fecha_fin'       => $validated['fecha_fin'],
+                'estado'          => 'pendiente',
+                'tipo_reserva'    => 'paquete', // Se guarda como tipo 'paquete'
+                'precio_total'    => $validated['total_pagar'],
+                'codigo_reserva'  => strtoupper(Str::random(8)),
+            ];
+
+            // Para viajes, la fecha_fin se establece desde el modelo para garantizar la consistencia.
+            // Si es un viaje de solo ida (fecha_llegada es null), se usa la fecha de inicio.
+            if ($itemType === 'viaje') {
+                $reservaData['fecha_fin'] = $item->fecha_llegada ?? $reservaData['fecha_inicio'];
+            }
+
+            $reserva = Reserva::create($reservaData);
 
             // 5. Crear el pago (con los campos correctos de la BDD)
             $expiryDate = explode('/', $validated['card_expiry']);
@@ -149,7 +142,7 @@ class DetalleController extends Controller
 
             DB::commit();
 
-            return redirect()->route('home')->with('success', '¡Tu reserva ha sido confirmada con éxito! Código de reserva: ' . $reserva->codigo_reserva);
+            return redirect()->route('mis-compras')->with('success', '¡Reserva enviada con éxito! En breve recibirás un email con los detalles.');
 
         } catch (\Exception $e) {
             DB::rollBack();
