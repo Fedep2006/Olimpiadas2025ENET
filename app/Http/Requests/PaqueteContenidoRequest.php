@@ -23,6 +23,7 @@ class PaqueteContenidoRequest extends FormRequest
     {
         $rules = [
             'numero_paquete' => [
+                'nullable', // ← Puede ser null
                 'string',
                 'max:255',
                 'exists:paquetes,numero_paquete'
@@ -39,7 +40,18 @@ class PaqueteContenidoRequest extends FormRequest
             'contenido_id' => [
                 'required',
                 'integer',
-                'min:1'
+                'min:1',
+                Rule::unique('paquete_contenido')
+                    ->where('paquete_id', $this->paquete_id)
+                    ->where('contenido_type', $this->contenido_type)
+                    ->whereNull('deleted_at'),
+                // Validar que el ID existe en la tabla correspondiente
+                function ($attribute, $value, $fail) {
+                    $model = $this->contenido_type;
+                    if (!$model::find($value)) {
+                        $fail("El contenido seleccionado no existe.");
+                    }
+                }
             ]
         ];
 

@@ -15,6 +15,8 @@ return new class extends Migration
             $table->morphs('contenido');
             $table->timestamps();
             $table->softDeletes();
+
+            $table->unique(['paquete_id', 'contenido_type', 'contenido_id'], 'unique_paquete_contenido');
         });
     }
 

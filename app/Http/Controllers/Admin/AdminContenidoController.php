@@ -88,8 +88,8 @@ class AdminContenidoController extends Controller
         try {
             $paquete = Paquete::find(2);
             $paquete->contenidos()->create([
-                'contenido_type' => Viaje::class,
-                'contenido_id' => 2,
+                'contenido_type' => $request->contenido_type,
+                'contenido_id' => $request->contenido_id,
             ]);
             /*
             // Crear el contenido
