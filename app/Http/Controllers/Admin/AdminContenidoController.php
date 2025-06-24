@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\PaqueteContenidoRequest;
 use App\Models\Hospedaje;
+use App\Models\Paquete;
 use App\Models\PaqueteContenido;
 use App\Models\Vehiculo;
 use App\Models\Viaje;
@@ -12,11 +13,6 @@ use Illuminate\Http\Request;
 
 class AdminContenidoController extends Controller
 {
-    private $contentTypes = [
-        'viaje' => Viaje::class,
-        'hospedaje' => Hospedaje::class,
-        'vehiculo' => Vehiculo::class,
-    ];
 
     public function index(Request $request)
     {
@@ -90,30 +86,35 @@ class AdminContenidoController extends Controller
     public function create(PaqueteContenidoRequest $request)
     {
         try {
-            // Crear el paquete
-            PaqueteContenido::create([
-                'nombre' => $request->nombre,
-                'duracion' => $request->duracion,
-                'ubicacion' => $request->ubicacion,
-                'cupo_minimo' => $request->cupo_minimo,
-                'cupo_maximo' => $request->cupo_maximo,
-                'precio_total' => $request->precio_total,
-                'numero_paquete' => $request->numero_paquete,
-                'descripcion' => $request->descripcion,
-                'hecho_por_usuario' => $request->hecho_por_usuario,
-                'activo' => $request->activo,
-
+            $paquete = Paquete::find(2);
+            $paquete->contenidos()->create([
+                'contenido_type' => Viaje::class,
+                'contenido_id' => 2,
             ]);
-            //foreach ($request->contenido_type as $index => $tabla) {}
+            /*
+            // Crear el contenido
+            PaqueteContenido::create([
+                'paquete_id' => 2,
+                'contenido_type' => Viaje::class,
+                'contenido_id' => 2,
+            ]);
+            
+            PaqueteContenido::create([
+                'paquete_id' => $request->paquete_id,
+                'contenido_type' => $request->contenido_type,
+                'contenido_id' => $request->contenido_id,
+            ]);
+            PaqueteContenido::create($request->validated());
+            */
 
             return response()->json([
                 'success' => true,
-                'message' => 'Paquete creado exitosamente'
+                'message' => 'Contenido creado exitosamente'
             ], 201);
         } catch (\Exception $e) {
             return response()->json([
                 'success' => false,
-                'message' => 'Error al crear el paquete',
+                'message' => 'Error al crear el contenido',
                 'error' => $e->getMessage()
             ], 500);
         }
@@ -127,12 +128,12 @@ class AdminContenidoController extends Controller
 
             return response()->json([
                 'success' => true,
-                'message' => 'Paquete actualizado exitosamente'
+                'message' => 'Contenido actualizado exitosamente'
             ]);
         } catch (\Exception $e) {
             return response()->json([
                 'success' => false,
-                'message' => 'Error al actualizar el paquete',
+                'message' => 'Error al actualizar el contenido',
                 'error' => $e->getMessage()
             ], 500);
         }
@@ -146,13 +147,13 @@ class AdminContenidoController extends Controller
 
             return response()->json([
                 'success' => true,
-                'message' => 'Paquete eliminado exitosamente',
+                'message' => 'Contenido eliminado exitosamente',
             ]);
         } catch (\Exception $e) {
 
             return response()->json([
                 'success' => false,
-                'message' => 'Error al eliminar el paquete',
+                'message' => 'Error al eliminar el contenido',
                 'error' => $e->getMessage()
             ], 500);
         }

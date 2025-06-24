@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use App\Models\Hospedaje;
+use App\Models\Paquete;
 use App\Models\Vehiculo;
 use App\Models\Viaje;
 use Illuminate\Contracts\Validation\Validator;
@@ -21,10 +22,10 @@ class PaqueteContenidoRequest extends FormRequest
     public function rules(): array
     {
         $rules = [
-            'paquete_id' => [
-                'required',
-                'integer',
-                'exists:paquetes,id'
+            'numero_paquete' => [
+                'string',
+                'max:255',
+                'exists:paquetes,numero_paquete'
             ],
             'contenido_type' => [
                 'required',
@@ -62,8 +63,7 @@ class PaqueteContenidoRequest extends FormRequest
     public function messages(): array
     {
         return [
-            'paquete_id.required' => 'El paquete es obligatorio.',
-            'paquete_id.exists' => 'El paquete seleccionado no existe.',
+            'numero_paquete.exists' => 'El paquete seleccionado no existe.',
             'contenido_type.required' => 'El tipo de contenido es obligatorio.',
             'contenido_type.in' => 'El tipo de contenido debe ser válido.',
             'contenido_id.required' => 'El contenido es obligatorio.',
@@ -76,7 +76,7 @@ class PaqueteContenidoRequest extends FormRequest
     public function attributes(): array
     {
         return [
-            'paquete_id' => 'paquete',
+            'numero_paquete' => 'paquete',
             'contenido_type' => 'tipo de contenido',
             'contenido_id' => 'contenido'
         ];
@@ -85,17 +85,20 @@ class PaqueteContenidoRequest extends FormRequest
     protected function prepareForValidation(): void
     {
 
-        if ($this->has('tipo_contenido')) {
-            $tipoCompleto = match ($this->tipo_contenido) {
+        if ($this->has('contenido_type')) {
+            $contenidoType = match ($this->contenido_type) {
                 'viaje' => Viaje::class,
                 'hospedaje' => Hospedaje::class,
                 'vehiculo' => Vehiculo::class,
-                default => $this->tipo_contenido
+                default => $this->contenidoType
             };
+            $paquete = Paquete::query()->where('numero_paquete', $this->numero_paquete)->first();
 
             $this->merge([
-                'contenido_type' => $tipoCompleto
+                'contenido_type' => $contenidoType,
+                'paquete_id' => $paquete
             ]);
+            $this->offsetUnset('numero_paquete');
         }
     }
 

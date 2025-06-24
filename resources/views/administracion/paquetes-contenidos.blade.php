@@ -10,8 +10,8 @@
     @php
         $camposCrear = [
             (object) [
-                'id' => 'paquete_id',
-                'name' => 'paquete_id',
+                'id' => 'numero_paquete',
+                'name' => 'numero_paquete',
                 'type' => 'text',
                 'label' => 'Codigo de Paquete',
             ],
@@ -229,17 +229,33 @@
             valorSelect.appendChild(defaultOption);
 
             // Agregar los valores de la tabla seleccionada
-            tablas[tabla].forEach(item => {
-                const option = document.createElement('option');
-                option.value = item.id;
-                option.textContent = item.nombre;
-                valorSelect.appendChild(option);
-            });
-
-            // Seleccionar automáticamente el primer valor
-            if (tablas[tabla].length > 0) {
-                valorSelect.selectedIndex = 1; // Selecciona el primer item (no el "Seleccionar...")
-                actualizarInfo();
+            switch (tabla) {
+                case 'viaje':
+                    tablas[tabla].forEach(item => {
+                        const option = document.createElement('option');
+                        option.value = item.id;
+                        option.textContent = item.nombre;
+                        valorSelect.appendChild(option);
+                    });
+                    break;
+                case 'hospedaje':
+                    tablas[tabla].forEach(item => {
+                        const option = document.createElement('option');
+                        option.value = item.id;
+                        option.textContent = item.nombre;
+                        valorSelect.appendChild(option);
+                    });
+                    break;
+                case 'vehiculo':
+                    tablas[tabla].forEach(item => {
+                        const option = document.createElement('option');
+                        option.value = item.id;
+                        option.textContent = item.modelo;
+                        valorSelect.appendChild(option);
+                    });
+                    break;
+                default:
+                    break;
             }
         }
 
