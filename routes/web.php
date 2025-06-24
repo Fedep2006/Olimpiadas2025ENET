@@ -81,7 +81,7 @@ Route::get('/hospedajes/{id}', [App\Http\Controllers\Principal\HospedajesControl
 
 // Página de inicio
 Route::get('/', function (Request $request) {
-    $paquetes = Paquete::all();
+        $paquetes = Paquete::where('hecho_por_usuario', '!=', 1)->get();
     $hospedajes = Hospedaje::all();
     $viajes = Viaje::all();
     $vehiculos = Vehiculo::all();
@@ -120,9 +120,6 @@ Route::post('/CrearRegistro', [RegisterController::class, 'register'])->name('re
 Route::get('/verify-email', [RegisterController::class, 'verifyEmail'])->name('verify.email');
 
 // Vistas estáticas
-Route::get('/detalles', function () {
-    return view('detalles');
-});
 
 use App\Http\Controllers\CartController;
 
