@@ -36,7 +36,8 @@ use App\Http\Controllers\{
     ResultsController,
     TestCompraController,
     TestGmailController,
-    TestEmailController
+    TestEmailController,
+    CartController
 };
 
 // Modelos
@@ -55,22 +56,20 @@ Route::post('/vehiculos/{id}/reservar', [\App\Http\Controllers\Principal\Vehicul
     ->name('vehiculos.reservar')
     ->middleware('auth');
 
-// Mostrar carrito
-Route::get('/login/carrito', function () {
-    $carrito = session('carrito', []);
-    return view('login.carrito', compact('carrito'));
-})->name('carrito');
-
 // Rutas del carrito
-Route::post('/carrito/hospedaje/{id}', [ReservasController::class, 'addHospedajeToCart'])->name('carrito.hospedaje.add');
-Route::post('/carrito/viaje/{id}', [ReservasController::class, 'addViajeToCart'])->name('carrito.viaje.add');
-Route::post('/carrito/vehiculo/{id}', [ReservasController::class, 'addVehiculoToCart'])->name('carrito.vehiculo.add');
-Route::post('/carrito/paquete/{id}', [ReservasController::class, 'addPaqueteToCart'])->name('carrito.paquete.add');
+Route::get('/carrito', [CartController::class, 'index'])->name('carrito');
+Route::post('/carrito/hospedaje/{id}', [CartController::class, 'addHospedaje'])->name('carrito.hospedaje.add');
+Route::post('/carrito/viaje/{id}', [CartController::class, 'addViaje'])->name('carrito.viaje.add');
+Route::post('/carrito/vehiculo/{id}', [CartController::class, 'addVehiculo'])->name('carrito.vehiculo.add');
+Route::post('/carrito/paquete/{id}', [CartController::class, 'addPaquete'])->name('carrito.paquete.add');
 
 // Operaciones del carrito (AJAX)
-Route::post('/carrito/remove', [ReservasController::class, 'removeFromCart'])->name('carrito.remove');
-Route::post('/carrito/update', [ReservasController::class, 'updateCartItem'])->name('carrito.update');
-Route::post('/carrito/clear', [ReservasController::class, 'clearCart'])->name('carrito.clear');
+Route::post('/carrito/remove', [CartController::class, 'removeFromCart'])->name('carrito.remove');
+Route::post('/carrito/update', [CartController::class, 'updateCartItem'])->name('carrito.update');
+Route::post('/carrito/clear', [CartController::class, 'clearCart'])->name('carrito.clear');
+
+// Procesar compra del carrito
+Route::post('/carrito/checkout', [CartController::class, 'checkout'])->name('carrito.checkout')->middleware('auth');
 
 // Reservar hospedaje directamente
 Route::post('/reservar/hospedaje/{id}', [ReservasController::class, 'reservarHospedaje'])->name('reservar.hospedaje');
@@ -124,13 +123,6 @@ Route::get('/detalles', function () {
     return view('detalles');
 });
 
-use App\Http\Controllers\CartController;
-
-Route::get('/carrito', [CartController::class, 'index'])->name('carrito');
-Route::post('/cart/add', [CartController::class, 'add'])->name('cart.add');
-Route::post('/cart/update', [CartController::class, 'update'])->name('cart.update');
-Route::post('/cart/remove', [CartController::class, 'remove'])->name('cart.remove');
-Route::post('/cart/clear', [CartController::class, 'clear'])->name('cart.clear');
 Route::get('/busqueda', function () {
     return view('busqueda');
 });

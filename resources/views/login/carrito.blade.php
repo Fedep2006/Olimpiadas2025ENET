@@ -359,8 +359,7 @@
 
         <!-- Cart Content -->
         @php 
-            $cart = session('cart', []);
-            $carrito = isset($carrito) ? $carrito : $cart;
+            $carrito = session('carrito', []);
         @endphp
         
         @if(count($carrito) > 0)
@@ -377,7 +376,7 @@
                                 <div class="row align-items-center">
                                     <div class="col-md-2">
                                         <div class="item-image">
-                                            @if(isset($item['imagen']))
+                                            @if(isset($item['imagen']) && $item['imagen'])
                                                 <img src="{{ $item['imagen'] }}" alt="{{ $item['nombre'] }}" class="img-fluid rounded">
                                             @else
                                                 <i class="fas fa-box-open fa-2x text-primary"></i>
@@ -390,7 +389,7 @@
                                             @if(isset($item['tipo']))
                                                 <div class="small text-muted mb-1">Tipo: {{ ucfirst($item['tipo']) }}</div>
                                             @endif
-                                            @if(isset($item['descripcion']))
+                                            @if(isset($item['descripcion']) && $item['descripcion'])
                                                 <p class="text-muted mb-1">{{ $item['descripcion'] }}</p>
                                             @endif
                                         </div>
@@ -412,7 +411,7 @@
 
                     <!-- Continue Shopping -->
                     <div class="text-center">
-                        <a href="index.html" class="btn btn-continue">
+                        <a href="{{ route('home') }}" class="btn btn-continue">
                             <i class="fas fa-arrow-left me-2"></i>Continuar comprando
                         </a>
                     </div>
@@ -433,9 +432,18 @@
                             <span class="fs-4">${{ number_format($total, 2) }}</span>
                         </div>
                         
-                        <button class="btn btn-checkout mt-4">
-                            <i class="fas fa-credit-card me-2"></i>Proceder al pago
-                        </button>
+                        @auth
+                            <form action="{{ route('carrito.checkout') }}" method="POST" style="display: inline;">
+                                @csrf
+                                <button type="submit" class="btn btn-checkout mt-4">
+                                    <i class="fas fa-credit-card me-2"></i>Proceder al pago
+                                </button>
+                            </form>
+                        @else
+                            <a href="{{ route('login') }}" class="btn btn-checkout mt-4">
+                                <i class="fas fa-sign-in-alt me-2"></i>Iniciar sesión para continuar
+                            </a>
+                        @endauth
                         
                         <button class="btn btn-outline-danger mt-2" onclick="clearCart()" style="width: 100%;">
                             <i class="fas fa-trash me-2"></i>Vaciar carrito
@@ -481,7 +489,7 @@
                 <i class="fas fa-shopping-cart"></i>
                 <h4>¡Tu carrito está vacío!</h4>
                 <p>Agrega hospedajes, paquetes o viajes para continuar.</p>
-                <a href="index.html" class="btn btn-continue mt-3">
+                <a href="{{ route('home') }}" class="btn btn-continue mt-3">
                     <i class="fas fa-search me-2"></i>Explorar productos
                 </a>
             </div>
