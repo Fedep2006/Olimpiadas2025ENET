@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\PaqueteContenidoRequest;
 use App\Models\Hospedaje;
 use App\Models\PaqueteContenido;
 use App\Models\Vehiculo;
@@ -82,11 +83,11 @@ class AdminContenidoController extends Controller
         return view('administracion.paquetes', compact(['registros']));
     }
 
-    public function create(PaqueteRequest $request)
+    public function create(PaqueteContenidoRequest $request)
     {
         try {
             // Crear el paquete
-            Paquete::create([
+            PaqueteContenido::create([
                 'nombre' => $request->nombre,
                 'duracion' => $request->duracion,
                 'ubicacion' => $request->ubicacion,
@@ -114,7 +115,7 @@ class AdminContenidoController extends Controller
         }
     }
 
-    public function update(PaqueteRequest $request, Paquete $paquete)
+    public function update(PaqueteContenidoRequest $request, PaqueteContenido $paquete)
     {
 
         try {
@@ -133,7 +134,7 @@ class AdminContenidoController extends Controller
         }
     }
 
-    public function destroy(Paquete $paquete)
+    public function destroy(PaqueteContenido $paquete)
     {
         try {
             $paquete->delete();
