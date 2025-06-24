@@ -137,5 +137,69 @@
     @vite('resources/js/administracion/search-bar.js')
     @vite('resources/js/administracion/paginacion.js')
 </body>
+<script>
+    const tablas = {
+        vehiculo: @json($vehiculos),
+        viaje: @json($viajes),
+        hospedaje: @json($hospedajes)
+    };
+    const addButton = document.getElementById('addInputsBtn');
+    if (addButton) {
+        addButton.addEventListener("click", () => {
+            addDynamicInputs();
+            for (let i = 1; i < 15; i++) {
+                if (document.getElementById('contenido_type_' + i) !== null) {
+                    console.log(i);
+                    document.getElementById('contenido_type_' + i).addEventListener('change', function() {
+                        const tipo = this.value ?? 'viaje';
+                        const selectContenido = document.getElementById('contenido_id_' + i);
+                        // Limpiar opciones
+                        selectContenido.innerHTML =
+                            '<option value="">Selecciona contenido</option>';
+
+                        console.log(tablas[tipo]);
+                        console.log(tipo);
+                        if (tipo && tablas[tipo]) {
+                            console.log(tipo);
+                            // Llenar con datos de la tabla seleccionada
+                            if (tipo == "viaje") {
+                                tablas[tipo].forEach(function(item) {
+
+                                    console.log(item);
+                                    const option = document.createElement('option');
+                                    option.value = item.id;
+                                    option.textContent = item.numero_viaje;
+                                    selectContenido.appendChild(option);
+                                });
+                            } else if (tipo == "hospedaje") {
+                                tablas[tipo].forEach(function(item) {
+
+                                    const option = document.createElement('option');
+                                    option.value = item.id;
+                                    option.textContent = item.nombre;
+                                    selectContenido.appendChild(option);
+                                });
+                            } else if (tipo == "vehiculo") {
+                                tablas[tipo].forEach(function(item) {
+
+                                    console.log(item);
+                                    const option = document.createElement('option');
+                                    option.value = item.id;
+                                    option.textContent = item.patente;
+                                    selectContenido.appendChild(option);
+                                });
+                            }
+
+                            selectContenido.disabled = false;
+                        } else {
+                            selectContenido.disabled = true;
+                        }
+                    });
+                }
+            }
+
+        });
+    }
+</script>
 
 </html>

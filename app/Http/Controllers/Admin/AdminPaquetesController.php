@@ -4,8 +4,11 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\PaqueteRequest;
+use App\Models\Hospedaje;
 use App\Models\Paquete;
 use App\Models\PaqueteContenido;
+use App\Models\Vehiculo;
+use App\Models\Viaje;
 use Illuminate\Http\Request;
 
 class AdminPaquetesController extends Controller
@@ -50,8 +53,11 @@ class AdminPaquetesController extends Controller
                 'paginationInfo' => "Mostrando {$registros->firstItem()} - {$registros->lastItem()} de {$registros->total()} paquetes"
             ]);
         }
+        $viajes = Viaje::all();
+        $vehiculos = Vehiculo::all();
+        $hospedajes = Hospedaje::query()->whereHas('empresa')->get();
 
-        return view('administracion.paquetes', compact('registros'));
+        return view('administracion.paquetes', compact(['registros', 'viajes', 'vehiculos', 'hospedajes']));
     }
 
     public function create(PaqueteRequest $request)

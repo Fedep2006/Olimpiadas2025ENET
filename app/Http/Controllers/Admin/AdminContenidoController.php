@@ -19,7 +19,7 @@ class ContenidoController extends Controller
 
     public function getContenidoPorTipo(Request $request)
     {
-        $tipo = $request->get('tipo');
+        $tipo = $request->get('contenido_type_0');
 
         if (!isset($this->contentTypes[$tipo])) {
             return response()->json(['error' => 'Tipo de contenido no válido'], 400);

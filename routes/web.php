@@ -182,12 +182,6 @@ Route::prefix('administracion')->middleware(['auth', 'level:1'])->group(function
     Route::delete('/paquetes/{paquete}',    [AdminPaquetesController::class, 'destroy'])->name('paquetes.destroy');
     Route::get('/paquetes/contenido',       [AdminPaquetesController::class, 'content'])->name('paquetes.content');
 
-    Route::get('/contenido/tipo', [ContenidoController::class, 'getContenidoPorTipo'])
-        ->name('contenido.por-tipo');
-    Route::post('/contenido/guardar', [ContenidoController::class, 'guardarContenido'])
-        ->name('contenido.guardar');
-
-
     // Detalle de viaje
 
     Route::get('/viajes',                   [AdminViajesController::class, 'index'])->name('viajes.index');
