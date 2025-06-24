@@ -17,6 +17,8 @@ class Reserva extends Model
     protected $fillable = [
         'usuario_id',
         'paquete_id',
+        'reservable_id',
+        'reservable_type',
         'fecha_inicio',
         'fecha_fin',
         'estado',
@@ -68,5 +70,10 @@ class Reserva extends Model
     public function personasConReservas(): HasMany
     {
         return $this->hasMany(PersonaReserva::class, 'reserva_id');
+    }
+
+    public function reservable()
+    {
+        return $this->morphTo();
     }
 }
