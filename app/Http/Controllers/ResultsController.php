@@ -22,6 +22,7 @@ class ResultsController extends Controller
         $priceMin    = $request->query('price_min');
         $priceMax    = $request->query('price_max');
         $sort        = $request->query('sort'); // si implementas orden
+        $tab         = $request->query('tab', 'paquetes'); // Pestaña activa por defecto
 
         // Construir querybuilders
         $viajes     = Viaje::query();
@@ -124,7 +125,7 @@ class ResultsController extends Controller
         // Retornar la vista results.blade.php
         return view('results', array_merge(
             ['results' => $results, 'viajes_cercanos' => $viajes_cercanos],
-            compact('search','origin','destination','checkin','checkout','guests','priceMin','priceMax','sort')
+            compact('search','origin','destination','checkin','checkout','guests','priceMin','priceMax','sort', 'tab')
         ));
     }
 }

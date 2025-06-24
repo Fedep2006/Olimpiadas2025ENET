@@ -312,15 +312,19 @@
       $totalAll = collect($results)->flatten(1)->count();
     @endphp
 
-    <ul class="nav nav-tabs mb-4">
-      <li class="nav-item"><button class="nav-link active" data-bs-toggle="tab" data-bs-target="#tab-all">Todos ({{ $totalAll }})</button></li>
+    <ul class="nav nav-tabs justify-content-center border-0 mb-4">
+      {{-- La pestaña 'all' no es una opción por defecto, se activa si no hay otra --}}
+      @php $defaultTab = !isset($tab) || !in_array($tab, array_keys($tabs)); @endphp
+
+      <li class="nav-item"><button class="nav-link {{ $defaultTab ? 'active' : '' }}" data-bs-toggle="tab" data-bs-target="#tab-all">Todos ({{ $totalAll }})</button></li>
+
       @foreach($tabs as $key=>$label)
-        <li class="nav-item"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#tab-{{ $key }}">{{ $label }} ({{ $results[$key]->count() }})</button></li>
+        <li class="nav-item"><button class="nav-link {{ (isset($tab) && $tab == $key) ? 'active' : '' }}" data-bs-toggle="tab" data-bs-target="#tab-{{ $key }}">{{ $label }} ({{ $results[$key]->count() }})</button></li>
       @endforeach
     </ul>
 
     <div class="tab-content">
-      <div class="tab-pane fade show active" id="tab-all">
+      <div class="tab-pane fade {{ $defaultTab ? 'show active' : '' }}" id="tab-all">
         {{-- VIAJES EXACTOS --}}
         <h5 class="mt-3 mb-2"><i class="fas fa-plane text-primary me-2"></i>Viajes</h5>
         @forelse($results['viajes'] as $item)
@@ -463,8 +467,8 @@
           <p class="text-center text-muted">No hay paquetes.</p>
         @endforelse
       </div>
-      @foreach($tabs as $key=>$label)
-        <div class="tab-pane fade" id="tab-{{ $key }}">
+      @foreach($results as $key => $items)
+        <div class="tab-pane fade {{ (isset($tab) && $tab == $key) ? 'show active' : '' }}" id="tab-{{ $key }}">
           {{-- Título de sección según el tipo --}}
           @if($key=='viajes')
             <h5 class="mt-3 mb-2"><i class="fas fa-plane text-primary me-2"></i>Viajes</h5>

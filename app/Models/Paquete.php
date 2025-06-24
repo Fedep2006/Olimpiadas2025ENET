@@ -13,9 +13,11 @@ class Paquete extends Model
     use HasFactory, SoftDeletes;
 
     protected $fillable = [
+        'usuario_id',
         'nombre',
         'descripcion',
         'precio_total',
+        'estado',
         'duracion',
         'ubicacion',
         'cupo_minimo',
