@@ -52,7 +52,7 @@ class ReservaVehiculo extends Model
 
     public function pago()
     {
-        return $this->belongsTo(Pago::class);
+        return $this->belongsTo(Pagos::class);
     }
 
     public function pais()
