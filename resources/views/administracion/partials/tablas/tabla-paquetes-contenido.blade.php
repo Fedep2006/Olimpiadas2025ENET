@@ -25,7 +25,8 @@
         background-color: #dc3545;
         color: white;
     }
-        .ids h6 {
+
+    .ids h6 {
         margin: 0;
         font-weight: normal;
     }
@@ -35,15 +36,16 @@
         font-size: 12px;
         line-height: 1;
     }
-    .camino-text{
+
+    .camino-text {
         color: #6c757d;
         font-size: 14px;
         line-height: 0.95;
     }
-    tr{
+
+    tr {
         text-align: center;
     }
-    
 </style>
 @php
     $id1 = 0;
@@ -58,50 +60,50 @@
             <td>
                 <div class="flex flex-col text-center justify-between !self-center align-middle h-full w-full ">
                     <h6>{{ ucfirst($registro->nombre) }}</h6>
-                    <small class="pb-2 font-bold">asd</small>
-                    <small class="pb-1">asd</small>
+                    <small class="pb-2 font-bold">Codigo: {{ Str::upper($registro->numero_paquete) }}</small>
+                </div>
+            </td>
+            <td>
+                <div class="flex flex-col text-center justify-between !self-center align-middle h-full w-full ">
+                    <h6>{{ $registro->duracion }} dias</h6>
                 </div>
             </td>
             <td>
                 <div class="flex flex-col text-center justify-between !self-center h-full w-full text-[14px]">
-                    <span>Precio: {{ $registro->precio_total }}</span>
-                    <span>Duracion: {{ $registro->duracion }}</span>
-                    <span>Ubicacion: {{ $registro->ubicacion }}</span>
+                    <span>{{ $registro->ubicacion }}</span>
+                </div>
+            </td>
+            <td>
+                <div class="flex flex-col text-center justify-between !self-center h-full w-full text-[14px]">
+                    <span>{{ $registro->precio_total }}</span>
                 </div>
             </td>
             <td>
                 <div class="flex flex-col text-center justify-between h-full w-full ">
-                    <span>{{ $registro->cupo_minimo }}</span>
-                    <small>{{ $registro->cupo_maximo }}</small>
-                </div>
-            </td>
-            
-            <td>
-                <div class="flex items-center flex-col w-full">
-                    <span>{{ '$' . number_format($registro->numero_paquete, 0, ',', '.')}}</span>
-                    <small class="camino-text">por dia</small>
+                    <span>Minimo {{ $registro->cupo_minimo }} personas</span>
+                    <span>Maximo {{ $registro->cupo_maximo }} personas</span>
                 </div>
             </td>
             <td>
-                <span class="badge bg-{{ $registro->hecho_por_usuario ? 'success' : 'danger' }}">
+                <span class="badge bg-{{ $registro->hecho_por_usuario ? 'danger' : 'success' }}">
                     {{ $registro->hecho_por_usuario ? 'Hecho por Usuario' : 'Hecho por Empleado' }}
                 </span>
             </td>
             <td>
                 @php
                     $detalles = [
-                        (object)[
+                        (object) [
                             'titulo' => '',
                             'contenido' => $registro->descripcion,
-                        ]
-                        
+                        ],
                     ];
                 @endphp
-                <x-layouts.administracion.modals.mostrar-registro id={{$id1}} titulo="Descripcion" :detalles="$detalles"/>
+                <x-layouts.administracion.modals.mostrar-registro id={{ $id1 }} titulo="Descripcion"
+                    :detalles="$detalles" />
             </td>
             <td>
-                <span class="badge bg-{{ $registro->disponible ? 'success' : 'danger' }}">
-                    {{ $registro->disponible ? 'Activo' : 'Inactivo' }}
+                <span class="badge bg-{{ $registro->activo ? 'success' : 'danger' }}">
+                    {{ $registro->activo ? 'Activo' : 'Inactivo' }}
                 </span>
             </td>
             <td>

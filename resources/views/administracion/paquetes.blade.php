@@ -10,96 +10,194 @@
     @php
         $camposCrear = [
             (object) [
-                'id' => 'name',
-                'name' => 'name',
+                'id' => 'nombre',
+                'name' => 'nombre',
                 'type' => 'text',
-                'label' => 'Nombre de Usuario',
+                'label' => 'Nombre del Paquete',
             ],
             (object) [
-                'id' => 'email',
-                'name' => 'email',
-                'type' => 'email',
-                'label' => 'Email',
+                'id' => 'duracion',
+                'name' => 'duracion',
+                'type' => 'number',
+                'label' => 'Duracion del Paquete',
             ],
             (object) [
-                'id' => 'botonContenido',
-                'name' => 'contenido',
-                'type' => 'button',
-                'label' => 'Contenido del Paquete',
+                'id' => 'ubicacion',
+                'name' => 'ubicacion',
+                'type' => 'text',
+                'label' => 'Ubicacion del Paquete',
             ],
             (object) [
-                'id' => 'password',
-                'name' => 'password',
-                'type' => 'password',
-                'label' => 'Contraseña',
+                'id' => 'cupo_minimo',
+                'name' => 'cupo_minimo',
+                'type' => 'text',
+                'label' => 'Cupo minimo de Personas',
             ],
             (object) [
-                'id' => 'passwordConfirmation',
-                'name' => 'password_confirmation',
-                'type' => 'password',
-                'label' => 'Confirmar Contraseña',
+                'id' => 'cupo_maximo',
+                'name' => 'cupo_maximo',
+                'type' => 'text',
+                'label' => 'Cupo maximo de Personas',
             ],
             (object) [
-                'id' => 'nivel',
-                'name' => 'nivel',
-                'type' => 'select',
-                'label' => 'Nivel',
-                'options' => [
-                    (object) ['value' => 0, 'text' => 'Cliente'],
-                    (object) ['value' => 1, 'text' => 'Empleado'],
-                ],
+                'id' => 'precio_total',
+                'name' => 'precio_total',
+                'type' => 'number',
+                'label' => 'Precio total del Paquete',
+            ],
+            (object) [
+                'id' => 'numero_paquete',
+                'name' => 'numero_paquete',
+                'type' => 'text',
+                'label' => 'Codigo del Paquete',
+            ],
+            (object) [
+                'id' => 'descripcion',
+                'name' => 'descripcion',
+                'type' => 'text',
+                'label' => 'Descripcion del Paquete',
+            ],
+            (object) [
+                'id' => 'activo',
+                'name' => 'activo',
+                'type' => 'checkbox',
+                'label' => 'Paquete Disponible',
             ],
         ];
         $camposEditar = [
             (object) [
-                'id' => 'editName',
-                'name' => 'name',
+                'id' => 'editNombre',
+                'name' => 'nombre',
                 'type' => 'text',
-                'label' => 'Nombre de Usuario',
+                'label' => 'Nombre del Paquete',
             ],
             (object) [
-                'id' => 'editEmail',
-                'name' => 'email',
-                'type' => 'email',
-                'label' => 'Email',
+                'id' => 'editDuracion',
+                'name' => 'duracion',
+                'type' => 'number',
+                'label' => 'Duracion del Paquete',
             ],
             (object) [
-                'id' => 'editNivel',
-                'name' => 'nivel',
-                'type' => 'select',
-                'label' => 'Nivel',
-                'options' => [
-                    (object) ['value' => 0, 'text' => 'Cliente'],
-                    (object) ['value' => 1, 'text' => 'Empleado'],
-                ],
+                'id' => 'editUbicacion',
+                'name' => 'ubicacion',
+                'type' => 'text',
+                'label' => 'Ubicacion del Paquete',
+            ],
+            (object) [
+                'id' => 'editCupo_minimo',
+                'name' => 'cupo_minimo',
+                'type' => 'text',
+                'label' => 'Cupo minimo de Personas',
+            ],
+            (object) [
+                'id' => 'editCupo_maximo',
+                'name' => 'cupo_maximo',
+                'type' => 'text',
+                'label' => 'Cupo maximo de Personas',
+            ],
+            (object) [
+                'id' => 'editPrecio_total',
+                'name' => 'precio_total',
+                'type' => 'number',
+                'label' => 'Precio total del Paquete',
+            ],
+            (object) [
+                'id' => 'editNumero_paquete',
+                'name' => 'numero_paquete',
+                'type' => 'text',
+                'label' => 'Codigo del Paquete',
+            ],
+            (object) [
+                'id' => 'editDescripcion',
+                'name' => 'descripcion',
+                'type' => 'text',
+                'label' => 'Descripcion del Paquete',
+            ],
+            (object) [
+                'id' => 'editActivo',
+                'name' => 'activo',
+                'type' => 'checkbox',
+                'label' => 'Paquete Disponible',
             ],
         ];
 
         $camposBuscar = [
             (object) [
-                'label' => 'Buscar Usuario',
+                'label' => 'Buscar Paquete',
                 'type' => 'text',
-                'name' => 'search_usuario',
-                'id' => 'searchUsuario',
-                'placeholder' => 'Nombre o email del usuario',
-                'value' => 'search_usuario',
+                'name' => 'search_paquete',
+                'id' => 'searchPaquete',
+                'placeholder' => 'Nombre o codigo de paquete',
+                'value' => 'search_paquete',
             ],
             (object) [
-                'label' => 'Fecha de Registro',
-                'type' => 'date',
-                'name' => 'search_registration_date',
-                'id' => 'searchRegistrationDate',
-                'value' => 'search_registration_date',
+                'label' => 'Duracion',
+                'type' => 'number',
+                'name' => 'search_duracion',
+                'id' => 'searchDuracion',
+                'placeholder' => 'Duracion del Paquete',
+                'value' => 'search_duracion',
             ],
             (object) [
-                'label' => 'Nivel del Usuario',
+                'label' => 'Ubicacion',
+                'type' => 'text',
+                'name' => 'search_ubicacion',
+                'id' => 'searchUbicacion',
+                'placeholder' => 'Ubicacion del Paquete',
+                'value' => 'search_ubicacion',
+            ],
+            (object) [
+                'label' => 'Precio',
+                'type' => 'number',
+                'name' => 'search_precio_total',
+                'id' => 'searchPrecio_total',
+                'placeholder' => 'Precio del Paquete',
+                'value' => 'search_precio_total',
+            ],
+            (object) [
+                'label' => 'Minimo de Personas',
+                'type' => 'number',
+                'name' => 'search_cupo_minimo',
+                'id' => 'searchCupo_minimo',
+                'placeholder' => 'Cupo minimo de personas',
+                'value' => 'search_cupo_minimo',
+            ],
+            (object) [
+                'label' => 'Maximo de Personas',
+                'type' => 'number',
+                'name' => 'search_cupo_maximo',
+                'id' => 'searchCupo_maximo',
+                'placeholder' => 'Cupo maximo de personas',
+                'value' => 'search_cupo_maximo',
+            ],
+            (object) [
+                'label' => 'Descripcion',
+                'type' => 'text',
+                'name' => 'search_descripcion',
+                'id' => 'searchDescripcion',
+                'placeholder' => 'Descripcion del paquete',
+                'value' => 'search_descripcion',
+            ],
+            (object) [
+                'label' => 'Hecho por',
                 'type' => 'select',
-                'name' => 'search_nivel',
-                'id' => 'searchNivel',
-                'value' => 'search_nivel',
+                'name' => 'search_hecho_por_usuario',
+                'id' => 'searchHecho_por_usuario',
+                'value' => 'search_hecho_por_usuario',
                 'options' => [
-                    (object) ['value' => 0, 'text' => 'Cliente'],
-                    (object) ['value' => 1, 'text' => 'Empleado'],
+                    (object) ['value' => '0', 'text' => 'Empleado'],
+                    (object) ['value' => '1', 'text' => 'Usuario'],
+                ],
+            ],
+            (object) [
+                'label' => 'Hospedaje Activo',
+                'type' => 'select',
+                'name' => 'search_activo',
+                'id' => 'searchActivo',
+                'value' => 'search_activo',
+                'options' => [
+                    (object) ['value' => '1', 'text' => 'Activo'],
+                    (object) ['value' => '0', 'text' => 'Inactivo'],
                 ],
             ],
         ];
@@ -119,7 +217,7 @@
 
         <!-- Users Table -->
         @php
-            $tHead = ['Usuario', 'Email', 'Fecha Registro', 'Nivel'];
+            $tHead = ['Nombre', 'Duracion', 'Ubicacion', 'Precio', 'Cupos', 'Creador', 'descripcion', 'Activo'];
         @endphp
         @include('administracion.partials.tabla', [
             'tHead' => $tHead,
@@ -137,69 +235,5 @@
     @vite('resources/js/administracion/search-bar.js')
     @vite('resources/js/administracion/paginacion.js')
 </body>
-<script>
-    const tablas = {
-        vehiculo: @json($vehiculos),
-        viaje: @json($viajes),
-        hospedaje: @json($hospedajes)
-    };
-    const addButton = document.getElementById('addInputsBtn');
-    if (addButton) {
-        addButton.addEventListener("click", () => {
-            addDynamicInputs();
-            for (let i = 1; i < 15; i++) {
-                if (document.getElementById('contenido_type_' + i) !== null) {
-                    console.log(i);
-                    document.getElementById('contenido_type_' + i).addEventListener('change', function() {
-                        const tipo = this.value ?? 'viaje';
-                        const selectContenido = document.getElementById('contenido_id_' + i);
-                        // Limpiar opciones
-                        selectContenido.innerHTML =
-                            '<option value="">Selecciona contenido</option>';
-
-                        console.log(tablas[tipo]);
-                        console.log(tipo);
-                        if (tipo && tablas[tipo]) {
-                            console.log(tipo);
-                            // Llenar con datos de la tabla seleccionada
-                            if (tipo == "viaje") {
-                                tablas[tipo].forEach(function(item) {
-
-                                    console.log(item);
-                                    const option = document.createElement('option');
-                                    option.value = item.id;
-                                    option.textContent = item.numero_viaje;
-                                    selectContenido.appendChild(option);
-                                });
-                            } else if (tipo == "hospedaje") {
-                                tablas[tipo].forEach(function(item) {
-
-                                    const option = document.createElement('option');
-                                    option.value = item.id;
-                                    option.textContent = item.nombre;
-                                    selectContenido.appendChild(option);
-                                });
-                            } else if (tipo == "vehiculo") {
-                                tablas[tipo].forEach(function(item) {
-
-                                    console.log(item);
-                                    const option = document.createElement('option');
-                                    option.value = item.id;
-                                    option.textContent = item.patente;
-                                    selectContenido.appendChild(option);
-                                });
-                            }
-
-                            selectContenido.disabled = false;
-                        } else {
-                            selectContenido.disabled = true;
-                        }
-                    });
-                }
-            }
-
-        });
-    }
-</script>
 
 </html>

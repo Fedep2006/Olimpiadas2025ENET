@@ -29,15 +29,15 @@ class PaqueteRequest extends FormRequest
 
         // Validación adicional para que cupo_maximo sea mayor que cupo_minimo
         if ($this->filled('cupo_maximo') && $this->filled('cupo_minimo')) {
-            $rules['cupo_maximo'] = array_merge($rules['cupo_maximo'], ['gte:cupo_minimo']);
+            $rules['cupo_maximo'] .= '|gte:cupo_minimo';
         }
 
         // Validación única para numero_paquete (excluir el registro actual en edición)
         if ($this->isMethod('PUT') || $this->isMethod('PATCH')) {
             $paqueteId = $this->route('paquete') ? $this->route('paquete')->id : $this->route('id');
-            $rules['numero_paquete'] = array_merge($rules['numero_paquete'], ['unique:paquetes,numero_paquete,' . $paqueteId]);
+            $rules['numero_paquete'] .= '|unique:paquetes,numero_paquete,' . $paqueteId;
         } else {
-            $rules['numero_paquete'] = array_merge($rules['numero_paquete'], ['unique:paquetes,numero_paquete']);
+            $rules['numero_paquete'] .= '|unique:paquetes,numero_paquete';
         }
 
         return $rules;
@@ -115,6 +115,7 @@ class PaqueteRequest extends FormRequest
             'nombre' => trim($this->nombre ?? ''),
             'ubicacion' => trim($this->ubicacion ?? ''),
             'descripcion' => trim($this->descripcion ?? ''),
+            'hecho_por_usuario' => 0,
         ]);
     }
 }

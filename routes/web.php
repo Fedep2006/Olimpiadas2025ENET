@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Auth;
 
 // Admin Controllers
 use App\Http\Controllers\Admin\{
+    AdminContenidoController,
     AdminUsuariosController,
     AdminEmpresasController,
     AdminHospedajesController,
@@ -80,7 +81,7 @@ Route::get('/hospedajes/{id}', [App\Http\Controllers\Principal\HospedajesControl
 
 // Página de inicio
 Route::get('/', function (Request $request) {
-        $paquetes = Paquete::where('hecho_por_usuario', '!=', 1)->get();
+    $paquetes = Paquete::where('hecho_por_usuario', '!=', 1)->get();
     $hospedajes = Hospedaje::all();
     $viajes = Viaje::all();
     $vehiculos = Vehiculo::all();
@@ -162,7 +163,11 @@ Route::prefix('administracion')->middleware(['auth', 'level:1'])->group(function
     Route::post('/paquetes/create',         [AdminPaquetesController::class, 'create'])->name('paquetes.create');
     Route::put('/paquetes/{paquete}',       [AdminPaquetesController::class, 'update'])->name('paquetes.update');
     Route::delete('/paquetes/{paquete}',    [AdminPaquetesController::class, 'destroy'])->name('paquetes.destroy');
-    Route::get('/paquetes/contenido',       [AdminPaquetesController::class, 'content'])->name('paquetes.content');
+
+    Route::get('/paquetes/contenidos',                 [AdminContenidoController::class, 'index'])->name('paquetes.index');
+    Route::post('/paquetes/contenidos/create',         [AdminContenidoController::class, 'create'])->name('paquetes.create');
+    Route::put('/paquetes/contenidos/{paquete}',       [AdminContenidoController::class, 'update'])->name('paquetes.update');
+    Route::delete('/paquetes/contenidos/{paquete}',    [AdminContenidoController::class, 'destroy'])->name('paquetes.destroy');
 
     // Detalle de viaje
 
