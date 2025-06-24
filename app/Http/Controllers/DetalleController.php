@@ -8,6 +8,7 @@ use App\Models\Hospedaje;
 use App\Models\Pago;
 use App\Models\Paquete;
 use App\Models\PaqueteContenido;
+use App\Models\Viaje;
 use App\Models\Reserva;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -43,7 +44,7 @@ class DetalleController extends Controller
     {
         $rules = [
             'item_id' => 'required|integer',
-            'item_type' => 'required|string|in:hospedaje,vehiculo',
+            'item_type' => 'required|string|in:hospedaje,vehiculo,viaje',
             'fecha_inicio' => 'required|date',
             'fecha_fin' => 'required|date|after_or_equal:fecha_inicio',
             'total_pagar' => 'required|numeric|min:0',
@@ -77,8 +78,15 @@ class DetalleController extends Controller
             // 1. Identificar el producto
             $itemType = $validated['item_type'];
             $itemId = $validated['item_id'];
-            $item = $itemType === 'hospedaje' ? Hospedaje::findOrFail($itemId) : Vehiculo::findOrFail($itemId);
-            $itemName = $itemType === 'hospedaje' ? $item->nombre : ($item->marca . ' ' . $item->modelo);
+            $item = null;
+            if ($itemType === 'hospedaje') {
+                $item = Hospedaje::findOrFail($itemId);
+            } elseif ($itemType === 'vehiculo') {
+                $item = Vehiculo::findOrFail($itemId);
+            } elseif ($itemType === 'viaje') {
+                $item = Viaje::findOrFail($itemId);
+            }
+            $itemName = $item->nombre ?? ($item->marca . ' ' . $item->modelo);
 
             // Calcular duración (la BDD espera un string)
             $fechaInicio = Carbon::parse($validated['fecha_inicio']);
@@ -114,7 +122,7 @@ class DetalleController extends Controller
                 'paquete_id' => $paquete->id,
                 'fecha_inicio' => $validated['fecha_inicio'],
                 'fecha_fin' => $validated['fecha_fin'],
-                'estado' => 'confirmada',
+                'estado' => 'pendiente',
                 'tipo_reserva' => $itemType === 'vehiculo' ? 'viaje' : $itemType,
                 'precio_total' => $validated['total_pagar'],
                 'codigo_reserva' => strtoupper(Str::random(8)), // Campo obligatorio
@@ -130,7 +138,7 @@ class DetalleController extends Controller
 
             $pago = Pago::create([
                 'reserva_id' => $reserva->id, // Relación correcta
-                'estado' => 'completado',
+                'estado' => 'pendiente',
                 'cardholder_name' => $validated['nombre'],
                 'card_number' => $validated['card_number'],
                 'expiration_month' => $expiration_month,

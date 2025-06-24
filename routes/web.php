@@ -91,6 +91,9 @@ Route::get('/', function (Request $request) {
 // Detalles de un vehículo
 Route::get('/vehiculos/{id}', [VehiculosController::class, 'show'])->name('vehiculos.show');
 
+// Detalles de un viaje
+Route::get('/viajes/{id}', [ViajesController::class, 'show'])->name('viajes.show');
+
 // Detalles de un recurso
 Route::get('/details/{tipo}/{id}', [DetalleController::class, 'show'])->name('details.show');
 

@@ -226,7 +226,7 @@
     <div class="container main-container">
 @php
             // La variable $tipo se pasa desde el controlador y es la fuente de verdad.
-            $precio_por_dia = $item->precio_por_dia ?? $item->precio_por_noche;
+            $precio_por_dia = $item->precio_por_dia ?? $item->precio_por_noche ?? $item->precio_base;
             $nombre_item = $item->nombre ?? ($item->marca . ' ' . $item->modelo);
         @endphp
 
@@ -240,7 +240,7 @@
             <!-- Columna Izquierda: Detalles -->
             <div class="col-lg-8">
                 <div class="item-details">
-                    <h2 class="details-title">Detalles del {{ $tipo === 'hospedaje' ? 'Hospedaje' : 'Vehículo' }}</h2>
+                    <h2 class="details-title">Detalles del {{ ucfirst($tipo) }}</h2>
                     <div class="details-grid">
                         @if($tipo === 'hospedaje')
                             {{-- Información General --}}
@@ -263,13 +263,19 @@
                             {{-- Horarios --}}
                             <div class="detail-item"><i class="fas fa-clock"></i> <div><span class="detail-label">Check-in:</span><span class="detail-value">{{ $item->check_in ? \Carbon\Carbon::parse($item->check_in)->format('H:i') . ' hs' : 'No especificado' }}</span></div></div>
                             <div class="detail-item"><i class="far fa-clock"></i> <div><span class="detail-label">Check-out:</span><span class="detail-value">{{ $item->check_out ? \Carbon\Carbon::parse($item->check_out)->format('H:i') . ' hs' : 'No especificado' }}</span></div></div>
-                        @else
+                        @elseif($tipo === 'vehiculo')
                             {{-- Vehiculo --}}
-                            <div class="detail-item"><i class="fas fa-car"></i> <div><span class="detail-label">Marca:</span><span class="detail-value">{{ $item->marca }}</span></div></div>
-                            <div class="detail-item"><i class="fas fa-car-side"></i> <div><span class="detail-label">Modelo:</span><span class="detail-value">{{ $item->modelo }}</span></div></div>
-                            <div class="detail-item"><i class="fas fa-calendar-alt"></i> <div><span class="detail-label">Antigüedad:</span><span class="detail-value">{{ $item->antiguedad }}</span></div></div>
+                            <div class="detail-item"> <i class="fas fa-car"></i> <div><span class="detail-label">Marca:</span><span class="detail-value">{{ $item->marca }}</span></div></div>
+                            <div class="detail-item"> <i class="fas fa-car-side"></i> <div><span class="detail-label">Modelo:</span><span class="detail-value">{{ $item->modelo }}</span></div></div>
                             <div class="detail-item"><i class="fas fa-user-friends"></i> <div><span class="detail-label">Pasajeros:</span><span class="detail-value">{{ $item->capacidad_pasajeros }}</span></div></div>
-                        @endif
+                        @elseif($tipo === 'viaje')
+                            {{-- Viaje --}}
+                            <div class="detail-item"><i class="fas fa-plane-departure"></i> <div><span class="detail-label">Origen:</span><span class="detail-value">{{ $item->origen }}</span></div></div>
+                            <div class="detail-item"><i class="fas fa-plane-arrival"></i> <div><span class="detail-label">Destino:</span><span class="detail-value">{{ $item->destino }}</span></div></div>
+                            <div class="detail-item"><i class="fas fa-calendar-alt"></i> <div><span class="detail-label">Salida:</span><span class="detail-value">{{ \Carbon\Carbon::parse($item->fecha_salida)->format('d/m/Y H:i') }}</span></div></div>
+                            <div class="detail-item"><i class="fas fa-calendar-check"></i> <div><span class="detail-label">Llegada:</span><span class="detail-value">{{ \Carbon\Carbon::parse($item->fecha_llegada)->format('d/m/Y H:i') }}</span></div></div>
+                            <div class="detail-item"><i class="fas fa-chair"></i> <div><span class="detail-label">Asientos Disp:</span><span class="detail-value">{{ $item->asientos_disponibles }}</span></div></div>
+                        @endif   
                     </div>
                 </div>
 

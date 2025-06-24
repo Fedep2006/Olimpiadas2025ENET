@@ -476,6 +476,38 @@
         </div>
     </section>
 
+    <!-- Viajes individuales (desde base de datos) -->
+    <section class="py-5">
+        <div class="container">
+            <h2 class="section-title">Viajes</h2>
+            <div class="row">
+                @foreach($viajes as $viaje)
+                <div class="col-md-4 mb-4">
+                    <div class="travel-card h-100 position-relative">
+                        <a href="{{ route('viajes.show', $viaje->id) }}" class="text-decoration-none text-dark stretched-link">
+                            <div class="travel-icon">
+                                <i class="fas fa-bus"></i>
+                            </div>
+                            <h5>{{ $viaje->nombre }}</h5>
+                            <p class="mb-3">{{ $viaje->origen }} → {{ $viaje->destino }}</p>
+                            <p class="price">${{ number_format($viaje->precio_base ?? 0, 2) }}</p>
+                            <span class="badge bg-info">Salida: {{ optional($viaje->fecha_salida)->format('d/m/Y H:i') }}</span>
+                        </a>
+                        <div class="mt-3" style="position: relative; z-index: 1;">
+                            <form method="POST" action="{{ route('carrito.viaje.add', $viaje->id) }}" class="d-inline">
+                                @csrf
+                                <button type="submit" class="btn btn-warning btn-sm">
+                                    <i class="fas fa-cart-plus me-1"></i>Añadir al carrito
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                @endforeach
+            </div>
+        </div>
+    </section>
+
     <!-- Paquetes (desde base de datos) -->
     <section class="py-5">
         <div class="container">
