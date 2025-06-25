@@ -10,7 +10,9 @@ Artisan::command('inspire', function () {
     $this->comment(Inspiring::quote());
 })->purpose('Display an inspiring quote');
 
-Schedule::command('records:update-old')->daily()->at('02:00');
+Schedule::command('records:update-old')->hourly()
+    ->withoutOverlapping(120)
+    ->runInBackground();
 // Ejecutar cada hora
 Schedule::command('reservas:update-completed')
     ->hourly()
