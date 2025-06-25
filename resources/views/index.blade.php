@@ -490,7 +490,7 @@
                 @foreach($paquetes as $paquete)
                 <div class="col-md-4 mb-4">
                     <div class="travel-card h-100 position-relative">
-                        <a href="{{ url('/details/paquete/'.$paquete->id) }}" class="text-decoration-none text-dark stretched-link">
+                        <a href="{{ route('details.show', ['tipo' => 'paquete', 'id' => $paquete->id]) }}" class="text-decoration-none text-dark stretched-link">
                             <div class="travel-icon">
                                 <i class="fas fa-suitcase"></i>
                             </div>

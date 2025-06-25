@@ -342,7 +342,7 @@
     <div class="container main-container">
 @php
             // La variable $tipo se pasa desde el controlador y es la fuente de verdad.
-            $precio_por_dia = $item->precio_por_dia ?? $item->precio_por_noche ?? $item->precio_base;
+            $precio_por_dia = $item->precio_por_dia ?? $item->precio_por_noche ?? $item->precio_base ?? $item->precio_total;
             $nombre_item = $item->nombre ?? ($item->marca . ' ' . $item->modelo);
         @endphp
 
@@ -384,7 +384,11 @@
                             <div class="detail-item"> <i class="fas fa-car"></i> <div><span class="detail-label">Marca:</span><span class="detail-value">{{ $item->marca }}</span></div></div>
                             <div class="detail-item"> <i class="fas fa-car-side"></i> <div><span class="detail-label">Modelo:</span><span class="detail-value">{{ $item->modelo }}</span></div></div>
                             <div class="detail-item"><i class="fas fa-user-friends"></i> <div><span class="detail-label">Pasajeros:</span><span class="detail-value">{{ $item->capacidad_pasajeros }}</span></div></div>
-                        @elseif($tipo === 'viaje')
+                        @elseif($tipo === 'paquete')
+                            <p class="text-muted mb-3">Este paquete no requiere selección de fechas.</p>
+                            <input type="hidden" name="fecha_inicio" id="fecha_inicio" value="{{ \Carbon\Carbon::today()->format('Y-m-d') }}">
+                            <input type="hidden" name="fecha_fin" id="fecha_fin" value="{{ \Carbon\Carbon::today()->format('Y-m-d') }}">
+                        @elseif ($tipo === 'viaje')
                                                         {{-- Viaje --}}
                             <div class="detail-item"><i class="fas fa-building"></i> <div><span class="detail-label">Empresa:</span><span class="detail-value">{{ $item->empresa->nombre ?? 'No especificada' }}</span></div></div>
 
@@ -457,7 +461,7 @@
 
                         <div class="price-display">
                             ${{ number_format($precio_por_dia, 2) }}
-                            <span class="price-period">/ {{ $tipo === 'hospedaje' ? 'noche' : 'día' }}</span>
+                            <span class="price-period">/ {{ $tipo === 'hospedaje' ? 'noche' : ($tipo === 'paquete' ? 'paquete' : 'día') }}</span>
                         </div>
 
                         @if ($tipo === 'viaje')
@@ -471,24 +475,28 @@
         <input type="date" class="form-control" id="fecha_fin" name="fecha_fin" value="{{ $item->fecha_llegada ? $item->fecha_llegada->format('Y-m-d') : '' }}" readonly>
     </div>
 </div>
-                        @else
-                        <div class="form-group mb-3">
-                            <div class="col-6">
-                                <label for="fecha_inicio" class="form-label">{{ $tipo === 'hospedaje' ? 'Check-in' : 'Fecha de Retiro' }}</label>
-                                <input type="date" name="fecha_inicio" id="fecha_inicio" class="form-control @error('fecha_inicio') is-invalid @enderror" value="{{ old('fecha_inicio') }}" required>
-                                @error('fecha_inicio')
-                                    <div class="invalid-feedback">{{ $message }}</div>
-                                @enderror
-                            </div>
-                            <div class="col-6">
-                                <label for="fecha_fin" class="form-label">{{ $tipo === 'hospedaje' ? 'Check-out' : 'Fecha de Devolución' }}</label>
-                                <input type="date" name="fecha_fin" id="fecha_fin" class="form-control @error('fecha_fin') is-invalid @enderror" value="{{ old('fecha_fin') }}" required>
-                                @error('fecha_fin')
-                                    <div class="invalid-feedback">{{ $message }}</div>
-                                @enderror
-                            </div>
-                        </div>
-                        @endif
+@elseif ($tipo === 'paquete')
+<p class="text-muted mb-3">Este paquete no requiere selección de fechas.</p>
+<input type="hidden" name="fecha_inicio" id="fecha_inicio" value="{{ \Carbon\Carbon::today()->format('Y-m-d') }}">
+<input type="hidden" name="fecha_fin" id="fecha_fin" value="{{ \Carbon\Carbon::today()->format('Y-m-d') }}">
+@else
+<div class="form-group mb-3">
+    <div class="col-6">
+        <label for="fecha_inicio" class="form-label">{{ $tipo === 'hospedaje' ? 'Check-in' : 'Fecha de Retiro' }}</label>
+        <input type="date" name="fecha_inicio" id="fecha_inicio" class="form-control @error('fecha_inicio') is-invalid @enderror" value="{{ old('fecha_inicio') }}" required>
+        @error('fecha_inicio')
+            <div class="invalid-feedback">{{ $message }}</div>
+        @enderror
+    </div>
+    <div class="col-6">
+        <label for="fecha_fin" class="form-label">{{ $tipo === 'hospedaje' ? 'Check-out' : 'Fecha de Devolución' }}</label>
+        <input type="date" name="fecha_fin" id="fecha_fin" class="form-control @error('fecha_fin') is-invalid @enderror" value="{{ old('fecha_fin') }}" required>
+        @error('fecha_fin')
+            <div class="invalid-feedback">{{ $message }}</div>
+        @enderror
+    </div>
+</div>
+@endif
 
                         <hr>
 
@@ -575,7 +583,7 @@
                 const fechaFin = fechaFinEl.value;
                 let total = 0;
 
-                if (tipoItem === 'viaje') {
+                if (tipoItem === 'viaje' || tipoItem === 'paquete') {
                     total = precioPorUnidad;
                 } else if (fechaInicio && fechaFin) {
                     const inicio = new Date(fechaInicio);
@@ -599,8 +607,8 @@
             }
 
             function validarFechas() {
-                // Para viajes, las fechas son fijas y no deben validarse ni modificarse.
-                if (tipoItem === 'viaje') {
+                // Para viajes y paquetes, las fechas son fijas y no deben validarse ni modificarse.
+                if (tipoItem === 'viaje' || tipoItem === 'paquete') {
                     return;
                 }
 

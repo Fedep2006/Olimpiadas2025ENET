@@ -21,7 +21,7 @@ class ReservaViajeEnviada extends Mailable
     public function build()
     {
         return $this->subject('¡Tu reserva de viaje fue recibida!')
-            ->view('emails.reserva_enviada')
+            ->view('emails.reserva_viaje_enviada')
             ->with([
                 'viaje' => $this->viaje,
                 'reserva' => $this->reserva,

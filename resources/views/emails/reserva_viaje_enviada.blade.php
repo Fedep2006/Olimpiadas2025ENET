@@ -30,8 +30,8 @@
                 Destino: <b>{{ $viaje->destino }}</b><br>
                 Fecha de salida: <b>{{ $viaje->fecha_salida }}</b><br>
                 Fecha de llegada: <b>{{ $viaje->fecha_llegada }}</b><br>
-                Empresa: <b>{{ $viaje->empresa }}</b><br>
-                Cantidad de pasajeros: <b>{{ $reserva->cantidad }}</b><br>
+                Empresa: <b>{{ $viaje->empresa->nombre ?? '-' }}</b><br>
+                
                 Precio total: <b>${{ number_format($reserva->precio_total, 2) }}</b>
             </p>
             <a href="{{ url('/') }}" class="btn-main">Ir a Frategar</a>

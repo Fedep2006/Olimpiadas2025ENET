@@ -33,6 +33,12 @@ class DetalleController extends Controller
         elseif ($tipo === 'viaje') {
             $item = Viaje::with('empresa')->findOrFail($id);
         }
+        elseif ($tipo === 'paquete') {
+            $item = Paquete::where('id', $id)
+                ->where('hecho_por_usuario', '!=', 1)
+                ->where('activo', 1)
+                ->firstOrFail();
+        }
         else {
             abort(404, 'Tipo de item no válido.');
         }
@@ -47,9 +53,9 @@ class DetalleController extends Controller
     {
         $rules = [
             'item_id' => 'required|integer',
-            'item_type' => 'required|string|in:hospedaje,vehiculo,viaje',
+            'item_type' => 'required|string|in:hospedaje,vehiculo,viaje,paquete',
             'fecha_inicio' => 'required|date',
-            'fecha_fin' => 'required_unless:item_type,viaje|nullable|date|after_or_equal:fecha_inicio',
+            'fecha_fin' => 'required_unless:item_type,viaje,paquete|nullable|date|after_or_equal:fecha_inicio',
             'total_pagar' => 'required|numeric|min:0',
             'nombre' => 'required|string|max:255',
             'email' => 'required|email|max:255',
@@ -88,27 +94,27 @@ class DetalleController extends Controller
                 $item = Vehiculo::findOrFail($itemId);
             } elseif ($itemType === 'viaje') {
                 $item = Viaje::findOrFail($itemId);
+            } elseif ($itemType === 'paquete') {
+                $item = Paquete::findOrFail($itemId);
             }
 
-            // 2. Crear el paquete
-            $paquete = Paquete::create([
-                'usuario_id' => Auth::id(),
-                'nombre' => 'Reserva de ' . $itemType . ' - ' . ($item->nombre ?? 'ID ' . $item->id),
-                'descripcion' => 'Reserva individual para ' . $itemType,
-                'precio_total' => $validated['total_pagar'],
-                'estado' => 'pendiente',
-            ]);
+            // 2. Determinar si la reserva debe asociarse a un paquete existente
+            $paqueteId = null;
+            if ($itemType === 'paquete') {
+                // Si es un paquete existente, lo asociamos directamente.
+                $paqueteId = $item->id;
+            }
 
-            // 3. Crear la reserva usando la relación polimórfica y asociándola al paquete
+            // 3. Crear la reserva (polimórfica) y asociarla si corresponde
             $reservaData = [
                 'usuario_id'      => Auth::id(),
-                'paquete_id'      => $paquete->id, // Asociar al paquete creado
+                'paquete_id'      => $paqueteId, // Puede ser null para hospedaje/vehículo/viaje
                 'reservable_id'   => $item->id,
                 'reservable_type' => get_class($item),
                 'fecha_inicio'    => $validated['fecha_inicio'],
                 'fecha_fin'       => $validated['fecha_fin'],
                 'estado'          => 'pendiente',
-                'tipo_reserva'    => 'paquete', // Se guarda como tipo 'paquete'
+                'tipo_reserva'    => $itemType, // 'paquete', 'hospedaje', 'vehiculo' o 'viaje'
                 'precio_total'    => $validated['total_pagar'],
                 'codigo_reserva'  => strtoupper(Str::random(8)),
             ];
