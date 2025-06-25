@@ -8,314 +8,344 @@
 </head>
 
 <body>
-        @php
+    @php
         $camposCrear = [
-            (object)[
+            (object) [
                 'id' => 'nombre',
                 'name' => 'nombre',
                 'type' => 'text',
-                'label' => 'Nombre del Viaje'
+                'label' => 'Nombre del Viaje',
             ],
-            (object)[
+            (object) [
                 'id' => 'tipo',
                 'name' => 'tipo',
                 'type' => 'select',
                 'label' => 'Tipo de Viaje',
                 'options' => [
-                    (object)['value' => 'avion', 'text' => 'Avion'],
-                    (object)['value' => 'bus', 'text' => 'Bus'],
-                    (object)['value' => 'tren', 'text' => 'Tren'],
-                    (object)['value' => 'crucero', 'text' => 'Crucero'],
+                    (object) ['value' => 'avion', 'text' => 'Avion'],
+                    (object) ['value' => 'bus', 'text' => 'Bus'],
+                    (object) ['value' => 'tren', 'text' => 'Tren'],
+                    (object) ['value' => 'crucero', 'text' => 'Crucero'],
                 ],
             ],
-            (object)[
+            (object) [
                 'id' => 'empresa_id',
                 'name' => 'empresa_id',
                 'type' => 'select',
                 'label' => 'Empresa del Viaje',
-                'options' => $empresas->map(function($empresa) {
-                    return (object)['value' => $empresa->id, 'text' => $empresa->nombre];
-                })->toArray()
+                'options' => $empresas
+                    ->map(function ($empresa) {
+                        return (object) ['value' => $empresa->id, 'text' => $empresa->nombre];
+                    })
+                    ->toArray(),
             ],
-            (object)[
+            (object) [
                 'id' => 'pais_id',
                 'name' => 'pais_id',
                 'type' => 'select',
                 'label' => 'Pais',
-                'options' => $paises->map(function($pais) {
-                    return (object)['value' => $pais->id, 'text' => $pais->nombre];
-                })->toArray()
+                'options' => $paises
+                    ->map(function ($pais) {
+                        return (object) ['value' => $pais->id, 'text' => $pais->nombre];
+                    })
+                    ->toArray(),
             ],
-            (object)[
+            (object) [
                 'id' => 'provincia_id',
                 'name' => 'provincia_id',
                 'type' => 'select',
                 'label' => 'Provincia',
-                'options' => $provincias->map(function($provincia) {
-                    return (object)['value' => $provincia->id, 'text' => $provincia->nombre];
-                })->toArray()
+                'options' => $provincias
+                    ->map(function ($provincia) {
+                        return (object) ['value' => $provincia->id, 'text' => $provincia->nombre];
+                    })
+                    ->toArray(),
             ],
-            (object)[
+            (object) [
                 'id' => 'ubicacion',
                 'name' => 'ubicacion',
                 'type' => 'text',
                 'label' => 'Ubicacion donde esta el Viaje',
             ],
-            (object)[
+            (object) [
                 'id' => 'origen',
                 'name' => 'origen',
                 'type' => 'select',
                 'label' => 'Ciudad de Origen',
-                'options' => $ciudades->map(function($ciudad) {
-                    return (object)['value' => $ciudad->id, 'text' => $ciudad->nombre];
-                })->toArray()
+                'options' => $ciudades
+                    ->map(function ($ciudad) {
+                        return (object) ['value' => $ciudad->id, 'text' => $ciudad->nombre];
+                    })
+                    ->toArray(),
             ],
-            (object)[
+            (object) [
                 'id' => 'destino',
                 'name' => 'destino',
                 'type' => 'select',
                 'label' => 'Ciudad de Destino',
-                'options' => $ciudades->map(function($ciudad) {
-                    return (object)['value' => $ciudad->id, 'text' => $ciudad->nombre];
-                })->toArray()
+                'options' => $ciudades
+                    ->map(function ($ciudad) {
+                        return (object) ['value' => $ciudad->id, 'text' => $ciudad->nombre];
+                    })
+                    ->toArray(),
             ],
-            (object)[
+            (object) [
                 'id' => 'fecha_salida',
                 'name' => 'fecha_salida',
                 'type' => 'datetime-local',
-                'label' => 'Fecha de Salida'
+                'label' => 'Fecha de Salida',
             ],
-            (object)[
+            (object) [
                 'id' => 'fecha_llegada',
                 'name' => 'fecha_llegada',
                 'type' => 'datetime-local',
-                'label' => 'Fecha de Llegada'
+                'label' => 'Fecha de Llegada',
             ],
-            (object)[
+            (object) [
                 'id' => 'numero_viaje',
                 'name' => 'numero_viaje',
                 'type' => 'number',
-                'label' => 'Codigo del Viaje'
+                'label' => 'Codigo del Viaje',
             ],
-            (object)[
+            (object) [
                 'id' => 'capacidad_total',
                 'name' => 'capacidad_total',
                 'type' => 'number',
-                'label' => 'Capacidad del Viaje'
+                'label' => 'Capacidad del Viaje',
             ],
-            (object)[
+            (object) [
                 'id' => 'asientos_disponibles',
                 'name' => 'asientos_disponibles',
                 'type' => 'number',
-                'label' => 'Asientos Disponibles'
+                'label' => 'Asientos Disponibles',
             ],
-            (object)[
+            (object) [
                 'id' => 'precio_base',
                 'name' => 'precio_base',
                 'type' => 'number',
-                'label' => 'Precio del Viaje'
+                'label' => 'Precio del Viaje',
             ],
-            (object)[
+            (object) [
                 'id' => 'descripcion',
                 'name' => 'descripcion',
                 'type' => 'text',
                 'label' => 'Descripcion del Viaje',
             ],
-            (object)[
+            (object) [
                 'id' => 'activo',
                 'name' => 'activo',
                 'type' => 'checkbox',
                 'label' => 'Viaje Disponible',
-            ]
+            ],
         ];
         $camposEditar = [
-            (object)[
+            (object) [
                 'id' => 'editNombre',
                 'name' => 'nombre',
                 'type' => 'text',
-                'label' => 'Nombre del Viaje'
+                'label' => 'Nombre del Viaje',
             ],
-            (object)[
+            (object) [
                 'id' => 'editTipo',
                 'name' => 'tipo',
                 'type' => 'select',
                 'label' => 'Tipo de Viaje',
                 'options' => [
-                    (object)['value' => 'avion', 'text' => 'Avion'],
-                    (object)['value' => 'bus', 'text' => 'Bus'],
-                    (object)['value' => 'tren', 'text' => 'Tren'],
-                    (object)['value' => 'crucero', 'text' => 'Crucero'],
+                    (object) ['value' => 'avion', 'text' => 'Avion'],
+                    (object) ['value' => 'bus', 'text' => 'Bus'],
+                    (object) ['value' => 'tren', 'text' => 'Tren'],
+                    (object) ['value' => 'crucero', 'text' => 'Crucero'],
                 ],
             ],
-            (object)[
-                'id' => 'editEmpresa_id',
+            (object) [
+                'id' => 'editEmpresaId',
                 'name' => 'empresa_id',
                 'type' => 'select',
                 'label' => 'Empresa del Viaje',
-                'options' => $empresas->map(function($empresa) {
-                    return (object)['value' => $empresa->id, 'text' => $empresa->nombre];
-                })->toArray()
+                'options' => $empresas
+                    ->map(function ($empresa) {
+                        return (object) ['value' => $empresa->id, 'text' => $empresa->nombre];
+                    })
+                    ->toArray(),
             ],
-            (object)[
-                'id' => 'editPais_id',
+            (object) [
+                'id' => 'editPaisId',
                 'name' => 'pais_id',
                 'type' => 'select',
                 'label' => 'Pais',
-                'options' => $paises->map(function($pais) {
-                    return (object)['value' => $pais->id, 'text' => $pais->nombre];
-                })->toArray()
+                'options' => $paises
+                    ->map(function ($pais) {
+                        return (object) ['value' => $pais->id, 'text' => $pais->nombre];
+                    })
+                    ->toArray(),
             ],
-            (object)[
-                'id' => 'editProvincia_id',
+            (object) [
+                'id' => 'editProvinciaId',
                 'name' => 'provincia_id',
                 'type' => 'select',
                 'label' => 'Provincia',
-                'options' => $provincias->map(function($provincia) {
-                    return (object)['value' => $provincia->id, 'text' => $provincia->nombre];
-                })->toArray()
+                'options' => $provincias
+                    ->map(function ($provincia) {
+                        return (object) ['value' => $provincia->id, 'text' => $provincia->nombre];
+                    })
+                    ->toArray(),
             ],
-            (object)[
+            (object) [
                 'id' => 'editUbicacion',
                 'name' => 'ubicacion',
                 'type' => 'text',
                 'label' => 'Ubicacion donde esta el Viaje',
             ],
-            (object)[
+            (object) [
                 'id' => 'editOrigen',
                 'name' => 'origen',
                 'type' => 'select',
                 'label' => 'Ciudad de Origen',
-                'options' => $ciudades->map(function($ciudad) {
-                    return (object)['value' => $ciudad->id, 'text' => $ciudad->nombre];
-                })->toArray()
+                'options' => $ciudades
+                    ->map(function ($ciudad) {
+                        return (object) ['value' => $ciudad->id, 'text' => $ciudad->nombre];
+                    })
+                    ->toArray(),
             ],
-            (object)[
+            (object) [
                 'id' => 'editDestino',
                 'name' => 'destino',
                 'type' => 'select',
                 'label' => 'Ciudad de Destino',
-                'options' => $ciudades->map(function($ciudad) {
-                    return (object)['value' => $ciudad->id, 'text' => $ciudad->nombre];
-                })->toArray()
+                'options' => $ciudades
+                    ->map(function ($ciudad) {
+                        return (object) ['value' => $ciudad->id, 'text' => $ciudad->nombre];
+                    })
+                    ->toArray(),
             ],
-            (object)[
-                'id' => 'editFecha_salida',
+            (object) [
+                'id' => 'editFechaSalida',
                 'name' => 'fecha_salida',
                 'type' => 'datetime-local',
-                'label' => 'Fecha de Salida'
+                'label' => 'Fecha de Salida',
             ],
-            (object)[
-                'id' => 'editFecha_llegada',
+            (object) [
+                'id' => 'editFechaLlegada',
                 'name' => 'fecha_llegada',
                 'type' => 'datetime-local',
-                'label' => 'Fecha de Llegada'
+                'label' => 'Fecha de Llegada',
             ],
-            (object)[
-                'id' => 'editNumero_viaje',
+            (object) [
+                'id' => 'editNumeroViaje',
                 'name' => 'numero_viaje',
                 'type' => 'text',
-                'label' => 'Codigo del Viaje'
+                'label' => 'Codigo del Viaje',
             ],
-            (object)[
-                'id' => 'editCapacidad_total',
+            (object) [
+                'id' => 'editCapacidadTotal',
                 'name' => 'capacidad_total',
                 'type' => 'text',
-                'label' => 'Capacidad del Viaje'
+                'label' => 'Capacidad del Viaje',
             ],
-            (object)[
-                'id' => 'editAsientos_disponibles',
+            (object) [
+                'id' => 'editAsientosDisponibles',
                 'name' => 'asientos_disponibles',
                 'type' => 'number',
-                'label' => 'Asientos Disponibles'
+                'label' => 'Asientos Disponibles',
             ],
-            (object)[
-                'id' => 'editPrecio_base',
+            (object) [
+                'id' => 'editPrecioBase',
                 'name' => 'precio_base',
                 'type' => 'number',
-                'label' => 'Precio del Viaje'
+                'label' => 'Precio del Viaje',
             ],
-            (object)[
+            (object) [
                 'id' => 'editDescripcion',
                 'name' => 'descripcion',
                 'type' => 'text',
                 'label' => 'Descripcion del Viaje',
             ],
-            (object)[
+            (object) [
                 'id' => 'editActivo',
                 'name' => 'activo',
                 'type' => 'checkbox',
                 'label' => 'Viaje Disponible',
-            ]
+            ],
         ];
 
         $camposBuscar = [
-            (object)[
+            (object) [
                 'label' => 'Viaje',
                 'type' => 'text',
                 'name' => 'search_avion',
                 'id' => 'searchAvion',
                 'placeholder' => 'Numero o tipo de Viaje',
-                'value' => 'search_avion'
+                'value' => 'search_avion',
             ],
-            (object)[
+            (object) [
                 'label' => 'Nombre',
                 'type' => 'text',
                 'name' => 'search_nombre',
                 'id' => 'searchNombre',
                 'placeholder' => 'Nombre del Viaje',
-                'value' => 'search_nombre'
+                'value' => 'search_nombre',
             ],
-            (object)[
+            (object) [
                 'id' => 'searchEmpresa_id',
                 'name' => 'search_empresa_id',
                 'type' => 'select',
                 'label' => 'Empresa del Viaje',
                 'value' => 'search_empresa_id',
-                'options' => $empresas->map(function($empresa) {
-                    return (object)['value' => $empresa->id, 'text' => $empresa->nombre];
-                })->toArray()
+                'options' => $empresas
+                    ->map(function ($empresa) {
+                        return (object) ['value' => $empresa->id, 'text' => $empresa->nombre];
+                    })
+                    ->toArray(),
             ],
-            (object)[
+            (object) [
                 'id' => 'searchPais_id',
                 'name' => 'search_pais_id',
                 'type' => 'select',
                 'label' => 'Pais',
                 'value' => 'search_pais_id',
-                'options' => $paises->map(function($pais) {
-                    return (object)['value' => $pais->id, 'text' => $pais->nombre];
-                })->toArray()
+                'options' => $paises
+                    ->map(function ($pais) {
+                        return (object) ['value' => $pais->id, 'text' => $pais->nombre];
+                    })
+                    ->toArray(),
             ],
-            (object)[
+            (object) [
                 'id' => 'searchProvincia_id',
                 'name' => 'search_provincia_id',
                 'type' => 'select',
                 'label' => 'Provincia',
                 'value' => 'search_provincia_id',
-                'options' => $provincias->map(function($provincia) {
-                    return (object)['value' => $provincia->id, 'text' => $provincia->nombre];
-                })->toArray()
+                'options' => $provincias
+                    ->map(function ($provincia) {
+                        return (object) ['value' => $provincia->id, 'text' => $provincia->nombre];
+                    })
+                    ->toArray(),
             ],
-            (object)[
+            (object) [
                 'id' => 'searchOrigen',
                 'name' => 'search_origen',
                 'type' => 'select',
                 'label' => 'Ciudad de Origen',
                 'value' => 'search_origen',
-                'options' => $ciudades->map(function($ciudad) {
-                    return (object)['value' => $ciudad->id, 'text' => $ciudad->nombre];
-                })->toArray()
+                'options' => $ciudades
+                    ->map(function ($ciudad) {
+                        return (object) ['value' => $ciudad->id, 'text' => $ciudad->nombre];
+                    })
+                    ->toArray(),
             ],
-            (object)[
+            (object) [
                 'id' => 'searchDestino',
                 'name' => 'search_destino',
                 'type' => 'select',
                 'label' => 'Ciudad de Destino',
                 'value' => 'search_destino',
-                'options' => $ciudades->map(function($ciudad) {
-                    return (object)['value' => $ciudad->id, 'text' => $ciudad->nombre];
-                })->toArray()
+                'options' => $ciudades
+                    ->map(function ($ciudad) {
+                        return (object) ['value' => $ciudad->id, 'text' => $ciudad->nombre];
+                    })
+                    ->toArray(),
             ],
-            (object)[
+            (object) [
                 'label' => 'Ubicacion',
                 'type' => 'text',
                 'name' => 'search_ubicacion',
@@ -323,65 +353,64 @@
                 'value' => 'search_ubicacion',
                 'placeholder' => 'Ubicacion',
             ],
-            (object)[
+            (object) [
                 'label' => 'Fecha de Salida',
                 'type' => 'datetime-local',
                 'name' => 'search_fecha_salida',
                 'id' => 'searchFecha_salida',
-                'value' => 'search_fecha_salida'
+                'value' => 'search_fecha_salida',
             ],
-            (object)[
+            (object) [
                 'label' => 'Fecha de Llegada',
                 'type' => 'datetime-local',
                 'name' => 'search_fecha_llegada',
                 'id' => 'searchFecha_llegada',
-                'value' => 'search_fecha_llegada'
+                'value' => 'search_fecha_llegada',
             ],
-            (object)[
+            (object) [
                 'label' => 'Asientos Disponibles',
                 'type' => 'number',
                 'name' => 'search_asientos_disponibles',
                 'id' => 'searchAsientos_disponibles',
                 'placeholder' => 'Asiento',
-                'value' => 'search_asientos_disponibles'
+                'value' => 'search_asientos_disponibles',
             ],
-            (object)[
+            (object) [
                 'label' => 'Capacidad Total',
                 'type' => 'number',
                 'name' => 'search_capacidad_total',
                 'id' => 'searchCapacidad_total',
                 'placeholder' => 'Capacidad',
-                'value' => 'search_capacidad_total'
+                'value' => 'search_capacidad_total',
             ],
-            (object)[
+            (object) [
                 'label' => 'Precio',
                 'type' => 'number',
                 'name' => 'search_precio',
                 'id' => 'searchPrecio',
                 'placeholder' => 'Precio',
-                'value' => 'search_precio'
+                'value' => 'search_precio',
             ],
-            (object)[
+            (object) [
                 'label' => 'Descripcion',
                 'type' => 'text',
                 'name' => 'search_descripcion',
                 'id' => 'searchDescripcion',
                 'placeholder' => 'Texto',
-                'value' => 'search_descripcion'
+                'value' => 'search_descripcion',
             ],
-            (object)[
+            (object) [
                 'label' => 'Viaje Activo',
                 'type' => 'select',
                 'name' => 'search_activo',
                 'id' => 'searchActivo',
                 'value' => 'search_activo',
                 'options' => [
-                    (object)['value' => '1', 'text' => 'Activo'],
-                    (object)['value' => '0', 'text' => 'Inactivo'],
+                    (object) ['value' => '1', 'text' => 'Activo'],
+                    (object) ['value' => '0', 'text' => 'Inactivo'],
                 ],
-            ]
-        ]
-        
+            ],
+        ];
     @endphp
     <!-- Sidebar -->
     <x-layouts.administracion.sidebar viajes="active" />
@@ -389,48 +418,38 @@
     <!-- Main Content -->
     <x-layouts.administracion.main nameHeader="Gestion de Viajes">
 
-        <x-layouts.administracion.page-header 
-            titulo="Gestion de Viajes" 
-            contenido="Administra todos los viajes disponibles"
-            botonIcono="fas fa-plus" 
-            botonNombre="Nuevo Viaje" 
-        />
+        <x-layouts.administracion.page-header titulo="Gestion de Viajes"
+            contenido="Administra todos los viajes disponibles" botonIcono="fas fa-plus" botonNombre="Nuevo Viaje" />
 
         <!-- Search Bar -->
-        <x-layouts.administracion.search-bar :inputs="$camposBuscar"/>
+        <x-layouts.administracion.search-bar :inputs="$camposBuscar" />
 
         <!-- Tabla de viajes -->
         @php
-            $tHead= [
-                "Viaje",//aca ira el numero_viaje, tipo e ID
-                "Nombre",
-                "Camino", //origen y destino van a estar en el mismo lugar
-                "Ubicacion",
-                "Fechas",
-                "Empresa",
-                "Capacidad",// disponibles/capacidad
-                "Precio",
-                "Estado",
-                "Descripcion"
+            $tHead = [
+                'Viaje', //aca ira el numero_viaje, tipo e ID
+                'Nombre',
+                'Camino', //origen y destino van a estar en el mismo lugar
+                'Ubicacion',
+                'Fechas',
+                'Empresa',
+                'Capacidad', // disponibles/capacidad
+                'Precio',
+                'Estado',
+                'Descripcion',
                 //"Estado" el estado va a determinar si esta gris o no
             ];
         @endphp
-        @include('administracion.partials.tabla', 
-                [
-                    'tHead' => $tHead,
-                    'nombre' => 'viajes'
-                ])
-        
+        @include('administracion.partials.tabla', [
+            'tHead' => $tHead,
+            'nombre' => 'viajes',
+        ])
+
     </x-layouts.administracion.main>
 
     <!-- ABM Modals -->
-    <x-layouts.administracion.modals.modals 
-        tituloCrear="Crear Nuevo Viaje"
-        tituloEditar="Modificar Viaje"
-        tituloEliminar="Eliminar Viaje"
-        :camposCrear="$camposCrear"
-        :camposEditar="$camposEditar"
-    />
+    <x-layouts.administracion.modals.modals tituloCrear="Crear Nuevo Viaje" tituloEditar="Modificar Viaje"
+        tituloEliminar="Eliminar Viaje" :camposCrear="$camposCrear" :camposEditar="$camposEditar" />
     <!-- Toast Notifications -->
     <x-layouts.administracion.modals.toast />
 

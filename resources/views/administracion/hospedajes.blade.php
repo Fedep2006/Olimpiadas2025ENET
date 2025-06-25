@@ -9,143 +9,151 @@
 <body>
     @php
         $camposCrear = [
-            (object)[
+            (object) [
                 'id' => 'nombre',
                 'name' => 'nombre',
                 'type' => 'text',
-                'label' => 'Nombre del Hospedaje'
+                'label' => 'Nombre del Hospedaje',
             ],
-            (object)[
+            (object) [
                 'id' => 'empresa_id',
                 'name' => 'empresa_id',
                 'type' => 'select',
                 'label' => 'Empresa del Hospedaje',
-                'options' => $empresas->map(function($empresa) {
-                    return (object)['value' => $empresa->id, 'text' => $empresa->nombre];
-                })->toArray()
+                'options' => $empresas
+                    ->map(function ($empresa) {
+                        return (object) ['value' => $empresa->id, 'text' => $empresa->nombre];
+                    })
+                    ->toArray(),
             ],
-            (object)[
+            (object) [
                 'id' => 'tipo',
                 'name' => 'tipo',
                 'type' => 'select',
                 'label' => 'Tipo de Hospedaje',
                 'options' => [
-                    (object)['value' => 'hotel', 'text' => 'Hotel'],
-                    (object)['value' => 'hostal', 'text' => 'Hostal'],
-                    (object)['value' => 'apartamento', 'text' => 'Apartamento'],
-                    (object)['value' => 'casa', 'text' => 'Casa'],
-                    (object)['value' => 'cabaña', 'text' => 'Cabaña'],
-                    (object)['value' => 'resort', 'text' => 'Resort'],
+                    (object) ['value' => 'hotel', 'text' => 'Hotel'],
+                    (object) ['value' => 'hostal', 'text' => 'Hostal'],
+                    (object) ['value' => 'apartamento', 'text' => 'Apartamento'],
+                    (object) ['value' => 'casa', 'text' => 'Casa'],
+                    (object) ['value' => 'cabaña', 'text' => 'Cabaña'],
+                    (object) ['value' => 'resort', 'text' => 'Resort'],
                 ],
             ],
-            (object)[
+            (object) [
                 'id' => 'habitacion',
                 'name' => 'habitacion',
                 'type' => 'select',
                 'label' => 'Tipo de Habitacion',
                 'options' => [
-                    (object)['value' => 'individual', 'text' => 'Individual'],
-                    (object)['value' => 'doble', 'text' => 'Doble'],
-                    (object)['value' => 'triple', 'text' => 'Triple'],
-                    (object)['value' => 'cuadruple', 'text' => 'Cuadruple'],
-                    (object)['value' => 'suite', 'text' => 'Suite'],
-                    (object)['value' => 'familiar', 'text' => 'Familiar'],
+                    (object) ['value' => 'individual', 'text' => 'Individual'],
+                    (object) ['value' => 'doble', 'text' => 'Doble'],
+                    (object) ['value' => 'triple', 'text' => 'Triple'],
+                    (object) ['value' => 'cuadruple', 'text' => 'Cuadruple'],
+                    (object) ['value' => 'suite', 'text' => 'Suite'],
+                    (object) ['value' => 'familiar', 'text' => 'Familiar'],
                 ],
             ],
-            (object)[
+            (object) [
                 'id' => 'habitaciones_disponibles',
                 'name' => 'habitaciones_disponibles',
                 'type' => 'number',
-                'label' => 'Habitaciones Disponibles'
+                'label' => 'Habitaciones Disponibles',
             ],
-            (object)[
+            (object) [
                 'id' => 'capacidad_personas',
                 'name' => 'capacidad_personas',
                 'type' => 'number',
-                'label' => 'Capacidad de Personas'
+                'label' => 'Capacidad de Personas',
             ],
-            (object)[
+            (object) [
                 'id' => 'precio_por_noche',
                 'name' => 'precio_por_noche',
                 'type' => 'number',
-                'label' => 'Precio por Noche'
+                'label' => 'Precio por Noche',
             ],
-            (object)[
+            (object) [
                 'id' => 'pais_id',
                 'name' => 'pais_id',
                 'type' => 'select',
                 'label' => 'Pais',
-                'options' => $paises->map(function($pais) {
-                    return (object)['value' => $pais->id, 'text' => $pais->nombre];
-                })->toArray()
+                'options' => $paises
+                    ->map(function ($pais) {
+                        return (object) ['value' => $pais->id, 'text' => $pais->nombre];
+                    })
+                    ->toArray(),
             ],
-            (object)[
+            (object) [
                 'id' => 'provincia_id',
                 'name' => 'provincia_id',
                 'type' => 'select',
                 'label' => 'Provincia',
-                'options' => $provincias->map(function($provincia) {
-                    return (object)['value' => $provincia->id, 'text' => $provincia->nombre];
-                })->toArray()
+                'options' => $provincias
+                    ->map(function ($provincia) {
+                        return (object) ['value' => $provincia->id, 'text' => $provincia->nombre];
+                    })
+                    ->toArray(),
             ],
-            (object)[
+            (object) [
                 'id' => 'ciudad_id',
                 'name' => 'ciudad_id',
                 'type' => 'select',
                 'label' => 'Ciudad',
-                'options' => $ciudades->map(function($ciudad) {
-                    return (object)['value' => $ciudad->id, 'text' => $ciudad->nombre];
-                })->toArray()
+                'options' => $ciudades
+                    ->map(function ($ciudad) {
+                        return (object) ['value' => $ciudad->id, 'text' => $ciudad->nombre];
+                    })
+                    ->toArray(),
             ],
-            (object)[
+            (object) [
                 'id' => 'ubicacion',
                 'name' => 'ubicacion',
                 'type' => 'text',
                 'label' => 'Ubicacion donde esta el Hospedaje',
             ],
-            (object)[
+            (object) [
                 'id' => 'estrellas',
                 'name' => 'estrellas',
                 'type' => 'number',
-                'label' => 'Estrellas del Hospedaje'
+                'label' => 'Estrellas del Hospedaje',
             ],
-            (object)[
+            (object) [
                 'id' => 'descripcion',
                 'name' => 'descripcion',
                 'type' => 'text',
-                'label' => 'Descripcion del Hospedaje'
+                'label' => 'Descripcion del Hospedaje',
             ],
-            (object)[
+            (object) [
                 'id' => 'telefono',
                 'name' => 'telefono',
                 'type' => 'number',
-                'label' => 'Telefono del Hospedaje'
+                'label' => 'Telefono del Hospedaje',
             ],
-            (object)[
+            (object) [
                 'id' => 'email',
                 'name' => 'email',
                 'type' => 'email',
-                'label' => 'Email del Hospedaje'
+                'label' => 'Email del Hospedaje',
             ],
-            (object)[
+            (object) [
                 'id' => 'sitio_web',
                 'name' => 'sitio_web',
                 'type' => 'text',
-                'label' => 'Sitio Web del Hospedaje'
+                'label' => 'Sitio Web del Hospedaje',
             ],
-            (object)[
+            (object) [
                 'id' => 'check_in',
                 'name' => 'check_in',
                 'type' => 'time',
-                'label' => 'Check-in del Hospedaje'
+                'label' => 'Check-in del Hospedaje',
             ],
-            (object)[
+            (object) [
                 'id' => 'check_out',
                 'name' => 'check_out',
                 'type' => 'time',
-                'label' => 'Check-out del Hospedaje'
+                'label' => 'Check-out del Hospedaje',
             ],
-            (object)[
+            (object) [
                 'id' => 'calificacion',
                 'name' => 'calificacion',
                 'type' => 'number',
@@ -154,157 +162,165 @@
                 'step' => '0.1',
                 'max' => '5',
             ],
-            (object)[
+            (object) [
                 'id' => 'activo',
                 'name' => 'activo',
                 'type' => 'checkbox',
                 'label' => 'Hospedaje Disponible',
             ],
-            (object)[
+            (object) [
                 'id' => 'condiciones',
                 'name' => 'condiciones',
                 'type' => 'text',
-                'label' => 'Condiciones del Hospedaje'
-            ]
+                'label' => 'Condiciones del Hospedaje',
+            ],
         ];
         $camposEditar = [
-            (object)[
+            (object) [
                 'id' => 'editNombre',
                 'name' => 'nombre',
                 'type' => 'text',
-                'label' => 'Nombre del Hospedaje'
+                'label' => 'Nombre del Hospedaje',
             ],
-            (object)[
+            (object) [
                 'id' => 'editEmpresa_id',
                 'name' => 'empresa_id',
                 'type' => 'select',
                 'label' => 'Empresa del Hospedaje',
-                'options' => $empresas->map(function($empresa) {
-                    return (object)['value' => $empresa->id, 'text' => $empresa->nombre];
-                })->toArray()
+                'options' => $empresas
+                    ->map(function ($empresa) {
+                        return (object) ['value' => $empresa->id, 'text' => $empresa->nombre];
+                    })
+                    ->toArray(),
             ],
-            (object)[
+            (object) [
                 'id' => 'editTipo',
                 'name' => 'tipo',
                 'type' => 'select',
                 'label' => 'Tipo de Hospedaje',
                 'options' => [
-                    (object)['value' => 'hotel', 'text' => 'Hotel'],
-                    (object)['value' => 'hostal', 'text' => 'Hostal'],
-                    (object)['value' => 'apartamento', 'text' => 'Apartamento'],
-                    (object)['value' => 'casa', 'text' => 'Casa'],
-                    (object)['value' => 'cabaña', 'text' => 'Cabaña'],
-                    (object)['value' => 'resort', 'text' => 'Resort'],
+                    (object) ['value' => 'hotel', 'text' => 'Hotel'],
+                    (object) ['value' => 'hostal', 'text' => 'Hostal'],
+                    (object) ['value' => 'apartamento', 'text' => 'Apartamento'],
+                    (object) ['value' => 'casa', 'text' => 'Casa'],
+                    (object) ['value' => 'cabaña', 'text' => 'Cabaña'],
+                    (object) ['value' => 'resort', 'text' => 'Resort'],
                 ],
             ],
-            (object)[
+            (object) [
                 'id' => 'editHabitacion',
                 'name' => 'habitacion',
                 'type' => 'select',
                 'label' => 'Tipo de Habitacion',
                 'options' => [
-                    (object)['value' => 'individual', 'text' => 'Individual'],
-                    (object)['value' => 'doble', 'text' => 'Doble'],
-                    (object)['value' => 'triple', 'text' => 'Triple'],
-                    (object)['value' => 'cuadruple', 'text' => 'Cuadruple'],
-                    (object)['value' => 'suite', 'text' => 'Suite'],
-                    (object)['value' => 'familiar', 'text' => 'Familiar'],
+                    (object) ['value' => 'individual', 'text' => 'Individual'],
+                    (object) ['value' => 'doble', 'text' => 'Doble'],
+                    (object) ['value' => 'triple', 'text' => 'Triple'],
+                    (object) ['value' => 'cuadruple', 'text' => 'Cuadruple'],
+                    (object) ['value' => 'suite', 'text' => 'Suite'],
+                    (object) ['value' => 'familiar', 'text' => 'Familiar'],
                 ],
             ],
-            (object)[
-                'id' => 'editHabitaciones_disponibles',
+            (object) [
+                'id' => 'editHabitacionesDisponibles',
                 'name' => 'habitaciones_disponibles',
                 'type' => 'number',
-                'label' => 'Habitaciones Disponibles'
+                'label' => 'Habitaciones Disponibles',
             ],
-            (object)[
-                'id' => 'editCapacidad_personas',
+            (object) [
+                'id' => 'editCapacidadPersonas',
                 'name' => 'capacidad_personas',
                 'type' => 'number',
-                'label' => 'Capacidad de Personas'
+                'label' => 'Capacidad de Personas',
             ],
-            (object)[
-                'id' => 'editPrecio_por_noche',
+            (object) [
+                'id' => 'editPrecioPorNoche',
                 'name' => 'precio_por_noche',
                 'type' => 'number',
-                'label' => 'Precio por Noche'
+                'label' => 'Precio por Noche',
             ],
-            (object)[
-                'id' => 'editPais_id',
+            (object) [
+                'id' => 'editPaisId',
                 'name' => 'pais_id',
                 'type' => 'select',
                 'label' => 'Pais',
-                'options' => $paises->map(function($pais) {
-                    return (object)['value' => $pais->id, 'text' => $pais->nombre];
-                })->toArray()
+                'options' => $paises
+                    ->map(function ($pais) {
+                        return (object) ['value' => $pais->id, 'text' => $pais->nombre];
+                    })
+                    ->toArray(),
             ],
-            (object)[
-                'id' => 'editProvincia_id',
+            (object) [
+                'id' => 'editProvinciaId',
                 'name' => 'provincia_id',
                 'type' => 'select',
                 'label' => 'Provincia',
-                'options' => $provincias->map(function($provincia) {
-                    return (object)['value' => $provincia->id, 'text' => $provincia->nombre];
-                })->toArray()
+                'options' => $provincias
+                    ->map(function ($provincia) {
+                        return (object) ['value' => $provincia->id, 'text' => $provincia->nombre];
+                    })
+                    ->toArray(),
             ],
-            (object)[
-                'id' => 'editCiudad_id',
+            (object) [
+                'id' => 'editCiudadId',
                 'name' => 'ciudad_id',
                 'type' => 'select',
                 'label' => 'Ciudad',
-                'options' => $ciudades->map(function($ciudad) {
-                    return (object)['value' => $ciudad->id, 'text' => $ciudad->nombre];
-                })->toArray()
+                'options' => $ciudades
+                    ->map(function ($ciudad) {
+                        return (object) ['value' => $ciudad->id, 'text' => $ciudad->nombre];
+                    })
+                    ->toArray(),
             ],
-            (object)[
+            (object) [
                 'id' => 'editUbicacion',
                 'name' => 'ubicacion',
                 'type' => 'text',
                 'label' => 'Ubicacion donde esta el Hospedaje',
             ],
-            (object)[
+            (object) [
                 'id' => 'editEstrellas',
                 'name' => 'estrellas',
                 'type' => 'number',
-                'label' => 'Estrellas del Hospedaje'
+                'label' => 'Estrellas del Hospedaje',
             ],
-            (object)[
+            (object) [
                 'id' => 'editDescripcion',
                 'name' => 'descripcion',
                 'type' => 'text',
-                'label' => 'Descripcion del Hospedaje'
+                'label' => 'Descripcion del Hospedaje',
             ],
-            (object)[
+            (object) [
                 'id' => 'editTelefono',
                 'name' => 'telefono',
                 'type' => 'number',
-                'label' => 'Telefono del Hospedaje'
+                'label' => 'Telefono del Hospedaje',
             ],
-            (object)[
+            (object) [
                 'id' => 'editEmail',
                 'name' => 'email',
                 'type' => 'email',
-                'label' => 'Email del Hospedaje'
+                'label' => 'Email del Hospedaje',
             ],
-            (object)[
-                'id' => 'editSitio_web',
+            (object) [
+                'id' => 'editSitioWeb',
                 'name' => 'sitio_web',
                 'type' => 'text',
-                'label' => 'Sitio Web del Hospedaje'
+                'label' => 'Sitio Web del Hospedaje',
             ],
-            (object)[
-                'id' => 'editCheck_in',
+            (object) [
+                'id' => 'editCheckIn',
                 'name' => 'check_in',
                 'type' => 'time',
-                'label' => 'Check-in del Hospedaje'
+                'label' => 'Check-in del Hospedaje',
             ],
-            (object)[
-                'id' => 'editCheck_out',
+            (object) [
+                'id' => 'editCheckOut',
                 'name' => 'check_out',
                 'type' => 'time',
-                'label' => 'Check-out del Hospedaje'
+                'label' => 'Check-out del Hospedaje',
             ],
-            (object)[
+            (object) [
                 'id' => 'editCalificacion',
                 'name' => 'calificacion',
                 'type' => 'number',
@@ -313,78 +329,80 @@
                 'step' => '0.1',
                 'max' => '5',
             ],
-            (object)[
+            (object) [
                 'id' => 'editActivo',
                 'name' => 'activo',
                 'type' => 'checkbox',
                 'label' => 'Hospedaje Disponible',
             ],
-            (object)[
+            (object) [
                 'id' => 'editCondiciones',
                 'name' => 'condiciones',
                 'type' => 'text',
-                'label' => 'Condiciones del Hospedaje'
-            ]
+                'label' => 'Condiciones del Hospedaje',
+            ],
         ];
-        
+
         $camposBuscar = [
-            (object)[
+            (object) [
                 'label' => 'Hospedaje',
                 'type' => 'text',
                 'name' => 'search_hospedaje',
                 'id' => 'searchHospedaje',
                 'placeholder' => 'Nombre del hospedaje',
-                'value' => 'search_hospedaje'
+                'value' => 'search_hospedaje',
             ],
-            (object)[
+            (object) [
                 'label' => 'Tipo de Hospedaje',
                 'type' => 'select',
                 'name' => 'search_tipo',
                 'id' => 'searchTipo',
                 'value' => 'search_tipo',
                 'options' => [
-                    (object)['value' => 'hotel', 'text' => 'Hotel'],
-                    (object)['value' => 'hostal', 'text' => 'Hostal'],
-                    (object)['value' => 'apartamento', 'text' => 'Apartamento'],
-                    (object)['value' => 'casa', 'text' => 'Casa'],
-                    (object)['value' => 'cabaña', 'text' => 'Cabaña'],
-                    (object)['value' => 'resort', 'text' => 'Resort'],
+                    (object) ['value' => 'hotel', 'text' => 'Hotel'],
+                    (object) ['value' => 'hostal', 'text' => 'Hostal'],
+                    (object) ['value' => 'apartamento', 'text' => 'Apartamento'],
+                    (object) ['value' => 'casa', 'text' => 'Casa'],
+                    (object) ['value' => 'cabaña', 'text' => 'Cabaña'],
+                    (object) ['value' => 'resort', 'text' => 'Resort'],
                 ],
             ],
-            (object)[
+            (object) [
                 'id' => 'searchEmpresa_id',
                 'name' => 'search_empresa_id',
                 'type' => 'select',
                 'label' => 'Empresa',
                 'value' => 'search_empresa_id',
-                'options' => $empresas->map(function($empresa) {
-                    return (object)['value' => $empresa->id, 'text' => $empresa->nombre];
-                })->toArray()
+                'options' => $empresas
+                    ->map(function ($empresa) {
+                        return (object) ['value' => $empresa->id, 'text' => $empresa->nombre];
+                    })
+                    ->toArray(),
             ],
-            (object)[
+            (object) [
                 'id' => 'searchHabitacion',
                 'name' => 'search_habitacion',
                 'type' => 'select',
                 'label' => 'Tipo de Habitacion',
                 'value' => 'search_habitacion',
                 'options' => [
-                    (object)['value' => 'individual', 'text' => 'Individual'],
-                    (object)['value' => 'doble', 'text' => 'Doble'],
-                    (object)['value' => 'triple', 'text' => 'Triple'],
-                    (object)['value' => 'cuadruple', 'text' => 'Cuadruple'],
-                    (object)['value' => 'suite', 'text' => 'Suite'],
-                    (object)['value' => 'familiar', 'text' => 'Familiar'],
+                    (object) ['value' => 'individual', 'text' => 'Individual'],
+                    (object) ['value' => 'doble', 'text' => 'Doble'],
+                    (object) ['value' => 'triple', 'text' => 'Triple'],
+                    (object) ['value' => 'cuadruple', 'text' => 'Cuadruple'],
+                    (object) ['value' => 'suite', 'text' => 'Suite'],
+                    (object) ['value' => 'familiar', 'text' => 'Familiar'],
                 ],
             ],
-            (object)[
+            (object) [
                 'label' => 'Maximo de Personas',
                 'type' => 'number',
                 'name' => 'search_maximo_personas',
                 'id' => 'searchMaximo_personas',
                 'placeholder' => 'Maximo de personas',
-                'value' => 'search_maximo_personas'
+                'value' => 'search_maximo_personas',
             ],
-            (object)[
+            (object) [
                 'label' => 'Hospedajes Disponibles',
                 'type' => 'number',
                 'name' => 'search_hospedajes_disponibles',
@@ -392,7 +410,7 @@
                 'placeholder' => 'Hospedajes Disponibles',
                 'value' => 'search_hospedajes_disponibles',
             ],
-            (object)[
+            (object) [
                 'label' => 'Precio',
                 'type' => 'number',
                 'name' => 'search_precio',
@@ -400,37 +418,43 @@
                 'placeholder' => 'Precio del hospedaje',
                 'value' => 'search_precio',
             ],
-            (object)[
+            (object) [
                 'id' => 'searchPais_id',
                 'name' => 'search_pais_id',
                 'type' => 'select',
                 'label' => 'Pais',
                 'value' => 'search_pais_id',
-                'options' => $paises->map(function($pais) {
-                    return (object)['value' => $pais->id, 'text' => $pais->nombre];
-                })->toArray()
+                'options' => $paises
+                    ->map(function ($pais) {
+                        return (object) ['value' => $pais->id, 'text' => $pais->nombre];
+                    })
+                    ->toArray(),
             ],
-            (object)[
+            (object) [
                 'id' => 'searchProvincia_id',
                 'name' => 'search_provincia_id',
                 'type' => 'select',
                 'label' => 'Provincia',
                 'value' => 'search_provincia_id',
-                'options' => $provincias->map(function($provincia) {
-                    return (object)['value' => $provincia->id, 'text' => $provincia->nombre];
-                })->toArray()
+                'options' => $provincias
+                    ->map(function ($provincia) {
+                        return (object) ['value' => $provincia->id, 'text' => $provincia->nombre];
+                    })
+                    ->toArray(),
             ],
-            (object)[
+            (object) [
                 'id' => 'searchCiudad_id',
                 'name' => 'search_ciudad_id',
                 'type' => 'select',
                 'label' => 'Ciudad',
                 'value' => 'search_ciudad_id',
-                'options' => $ciudades->map(function($ciudad) {
-                    return (object)['value' => $ciudad->id, 'text' => $ciudad->nombre];
-                })->toArray()
+                'options' => $ciudades
+                    ->map(function ($ciudad) {
+                        return (object) ['value' => $ciudad->id, 'text' => $ciudad->nombre];
+                    })
+                    ->toArray(),
             ],
-            (object)[
+            (object) [
                 'label' => 'Ubicacion',
                 'type' => 'text',
                 'name' => 'search_ubicacion',
@@ -438,7 +462,7 @@
                 'placeholder' => 'Ubicacion del hospedaje',
                 'value' => 'search_ubicacion',
             ],
-            (object)[
+            (object) [
                 'id' => 'searchCalificacion',
                 'name' => 'search_calificacion',
                 'type' => 'number',
@@ -449,109 +473,97 @@
                 'max' => '5',
                 'placeholder' => 'Calificacion o Estrellas',
             ],
-            (object)[
+            (object) [
                 'label' => 'Descripcion',
                 'type' => 'text',
                 'name' => 'search_descripcion',
                 'id' => 'searchDescripcion',
                 'placeholder' => 'Texto',
-                'value' => 'search_descripcion'
+                'value' => 'search_descripcion',
             ],
-            (object)[
+            (object) [
                 'label' => 'Check-in',
                 'type' => 'time',
                 'name' => 'search_check_in',
                 'id' => 'searchCheck_in',
                 'placeholder' => 'Hora de entrada',
-                'value' => 'search_check_in'
+                'value' => 'search_check_in',
             ],
-            (object)[
+            (object) [
                 'label' => 'Check-out',
                 'type' => 'time',
                 'name' => 'search_check_out',
                 'id' => 'searchCheck_out',
                 'placeholder' => 'Hora de salida',
-                'value' => 'search_check_out'
+                'value' => 'search_check_out',
             ],
-            (object)[
+            (object) [
                 'label' => 'Contacto',
                 'type' => 'text',
                 'name' => 'search_contacto',
                 'id' => 'searchContacto',
                 'placeholder' => 'Email, sitio web o telefono',
-                'value' => 'search_contacto'
+                'value' => 'search_contacto',
             ],
-            (object)[
+            (object) [
                 'label' => 'Condiciones',
                 'type' => 'text',
                 'name' => 'search_condiciones',
                 'id' => 'searchCondiciones',
                 'placeholder' => 'Condiciones del hospedaje',
-                'value' => 'search_condiciones'
+                'value' => 'search_condiciones',
             ],
-            (object)[
+            (object) [
                 'label' => 'Hospedaje Activo',
                 'type' => 'select',
                 'name' => 'search_activo',
                 'id' => 'searchActivo',
                 'value' => 'search_activo',
                 'options' => [
-                    (object)['value' => '1', 'text' => 'Activo'],
-                    (object)['value' => '0', 'text' => 'Inactivo'],
+                    (object) ['value' => '1', 'text' => 'Activo'],
+                    (object) ['value' => '0', 'text' => 'Inactivo'],
                 ],
-            ]
+            ],
         ];
-        
     @endphp
     <!-- Sidebar -->
     <x-layouts.administracion.sidebar hospedajes="active" />
 
     <!-- Main Content -->
     <x-layouts.administracion.main nameHeader="Gestión de Hospedajes">
-                <!-- Page Header -->
-        <x-layouts.administracion.page-header 
-            titulo="Gestion de Hospedajes" 
-            contenido="Administra y gestiona los hospedajes"
-            botonIcono="fas fa-plus" 
-            botonNombre="Nuevo Hospedaje" 
-        />
+        <!-- Page Header -->
+        <x-layouts.administracion.page-header titulo="Gestion de Hospedajes"
+            contenido="Administra y gestiona los hospedajes" botonIcono="fas fa-plus" botonNombre="Nuevo Hospedaje" />
 
         <!-- Search Bar -->
-        <x-layouts.administracion.search-bar :inputs="$camposBuscar"/>
+        <x-layouts.administracion.search-bar :inputs="$camposBuscar" />
 
         <!-- Users Table -->
         @php
-            $tHead= [
-                "Nombre",
-                "Empresa",
-                "Habitacion",
-                "Precio",
-                "Ubicacion",
-                "Lugar",
-                "Calificacion",
-                "descripcion",
-                "Contacto",
-                "Horarios",
-                "condiciones",
-                "activo",
-
+            $tHead = [
+                'Nombre',
+                'Empresa',
+                'Habitacion',
+                'Precio',
+                'Ubicacion',
+                'Lugar',
+                'Calificacion',
+                'descripcion',
+                'Contacto',
+                'Horarios',
+                'condiciones',
+                'activo',
             ];
         @endphp
-        @include('administracion.partials.tabla', 
-                [
-                    'tHead' => $tHead,
-                    'nombre' => 'hospedajes'
-                ])
+        @include('administracion.partials.tabla', [
+            'tHead' => $tHead,
+            'nombre' => 'hospedajes',
+        ])
     </x-layouts.administracion.main>
 
     <!-- ABM Modals -->
-    <x-layouts.administracion.modals.modals 
-        tituloCrear="Crear Nuevo Hospedaje"
-        tituloEditar="Modificar Hospedaje"
-        tituloEliminar="Eliminar Hospedaje"
-        :camposCrear="$camposCrear"
-        :camposEditar="$camposEditar"
-    />
+    <x-layouts.administracion.modals.modals tituloCrear="Crear Nuevo Hospedaje" tituloEditar="Modificar Hospedaje"
+        tituloEliminar="Eliminar Hospedaje" :camposCrear="$camposCrear" :camposEditar="$camposEditar" />
     <!-- Toast Notifications -->
     <x-layouts.administracion.modals.toast />
 
