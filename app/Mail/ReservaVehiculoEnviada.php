@@ -5,26 +5,26 @@ use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 
-class ReservaViajeEnviada extends Mailable
+class ReservaVehiculoEnviada extends Mailable
 {
     use Queueable, SerializesModels;
 
-    public $viaje;
+    public $vehiculo;
     public $reserva;
 
-    public function __construct($viaje, $reserva)
+    public function __construct($vehiculo, $reserva)
     {
-        $this->viaje = $viaje;
+        $this->vehiculo = $vehiculo;
         $this->reserva = $reserva;
     }
 
     public function build()
     {
-        return $this->subject('¡Tu reserva de viaje fue recibida!')
+        return $this->subject('¡Tu reserva de vehículo fue recibida!')
             ->view('emails.reserva_enviada')
             ->with([
-                'viaje' => $this->viaje,
-                'reserva' => $this->reserva,
+                'vehiculo' => $this->vehiculo,
+                'reserva'  => $this->reserva,
             ]);
     }
 }

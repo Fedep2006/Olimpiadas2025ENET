@@ -13,7 +13,9 @@ use App\Models\Reserva;
 use App\Models\Pagos;
 use App\Models\User;
 use Carbon\Carbon;
-use App\Mail\ReservaCreada;
+
+use App\Mail\ReservaViajeEnviada;
+use App\Mail\ReservaVehiculoEnviada;
 use Illuminate\Support\Facades\Mail;
 
 class CartController extends Controller
@@ -311,7 +313,7 @@ class CartController extends Controller
 
             // Enviar correo de confirmación
             $user = Auth::user();
-            Mail::to($user->email)->send(new ReservaCreada($user, $reservasCreadas));
+
 
             return redirect()->route('mis-compras')->with('success', 'Compra procesada exitosamente. Se han creado ' . count($reservasCreadas) . ' reservas.');
 
