@@ -67,6 +67,7 @@ class HospedajesController extends Controller
                 'fecha_fin' => $validatedData['fecha_fin'],
                 'precio_total' => $paquete->precio,
                 'codigo_reserva' => strtoupper(Str::random(8)),
+                'tipo_reserva'   => 'hospedaje',
                 'estado' => 'pendiente',
             ]);
 

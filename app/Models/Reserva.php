@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Database\Eloquent\Relations\MorphTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Reserva extends Model
@@ -18,11 +19,15 @@ class Reserva extends Model
     protected $fillable = [
         'usuario_id',
         'paquete_id',
+        'reservable_id',
+        'reservable_type',
         'fecha_inicio',
         'fecha_fin',
         'estado',
+        'tipo_reserva',
         'precio_total',
         'codigo_reserva',
+        'hecho_por_usuario',
     ];
 
     protected function casts(): array
@@ -58,5 +63,13 @@ class Reserva extends Model
     public function pago(): HasOne
     {
         return $this->hasOne(Pago::class, 'reserva_id');
+    }
+
+    /**
+     * Relación polimórfica hacia el modelo reservable (hospedaje, vehiculo, viaje, etc.).
+     */
+    public function reservable(): MorphTo
+    {
+        return $this->morphTo();
     }
 }
