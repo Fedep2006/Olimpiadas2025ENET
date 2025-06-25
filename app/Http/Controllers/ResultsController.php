@@ -28,7 +28,8 @@ class ResultsController extends Controller
         $viajes     = Viaje::query();
         $hospedajes = Hospedaje::query();
         $vehiculos  = Vehiculo::query();
-        $paquetes   = Paquete::query();
+        // Excluir paquetes creados por usuarios
+        $paquetes   = Paquete::where('hecho_por_usuario', '!=', 1);
 
         // 1) Búsqueda libre
         if ($search) {
@@ -42,17 +43,38 @@ class ResultsController extends Controller
         }
 
         // 2) Filtros avanzados para viajes
-        if ($origin)      $viajes->where('origen', 'like', "%{$origin}%");
-        if ($destination) $viajes->where('destino','like', "%{$destination}%");
+        // Filtros por ciudad para viajes (origen / destino) usando FK cuando sea posible
+        if ($origin) {
+            if (is_numeric($origin)) {
+                $ciudadIdsOrigin = collect([(int)$origin]);
+            } else {
+                $ciudadIdsOrigin = \App\Models\ubicacion\Ciudad::where('nombre', 'like', "%{$origin}%")->pluck('id');
+            }
+            if ($ciudadIdsOrigin->count()) {
+                $viajes->whereIn('ciudad_id', $ciudadIdsOrigin);
+            }
+        }
+        if ($destination) {
+            if (is_numeric($destination)) {
+                $ciudadIdsDest = collect([(int)$destination]);
+            } else {
+                $ciudadIdsDest = \App\Models\ubicacion\Ciudad::where('nombre', 'like', "%{$destination}%")->pluck('id');
+            }
+            if ($ciudadIdsDest->count()) {
+                $viajes->whereIn('destino', $ciudadIdsDest);
+            }
+        }
 
         // Filtro por fechas para viajes
         $viajes_exactos = collect();
+        // asegurarse de clonar el builder después de filtros de ciudad
+        $viajeBuilderFiltrado = clone $viajes;
         $viajes_cercanos = collect();
         if ($checkin && $checkout) {
             // Ambos campos completos: filtrar entre ambos
-            $viajes->whereDate('fecha_salida', '>=', $checkin)
+            $viajeBuilderFiltrado->whereDate('fecha_salida', '>=', $checkin)
                    ->whereDate('fecha_llegada', '<=', $checkout);
-            $viajes_exactos = $viajes->get();
+            $viajes_exactos = $viajeBuilderFiltrado->get();
         } elseif ($checkin) {
             // Solo entrada: SOLO los de esa fecha exacta de salida
             $viajes_exactos = Viaje::whereDate('fecha_salida', '=', $checkin)->get();
@@ -76,10 +98,18 @@ class ResultsController extends Controller
             $viajes_exactos = $viajes->get();
         }
 
-        // --- Nuevo: filtrar hospedajes y vehículos por ciudad de destino ---
+        // --- Nuevo: filtrar hospedajes y vehículos por ciudad de destino (ahora usando FK) ---
         if ($destination) {
-            $hospedajes->where('ciudad', 'like', "%{$destination}%");
-            $vehiculos->where('ubicacion', 'like', "%{$destination}%");
+            // Buscar IDs de ciudades por nombre o usar directamente si es numérico
+            if (is_numeric($destination)) {
+                $ciudadIds = collect([(int)$destination]);
+            } else {
+                $ciudadIds = \App\Models\ubicacion\Ciudad::where('nombre', 'like', "%{$destination}%")->pluck('id');
+            }
+            if ($ciudadIds->count()) {
+                $hospedajes->whereIn('ciudad_id', $ciudadIds);
+                $vehiculos->whereIn('ciudad_id', $ciudadIds);
+            }
         }
 
         // Filtros avanzados para hospedajes por fechas y huéspedes

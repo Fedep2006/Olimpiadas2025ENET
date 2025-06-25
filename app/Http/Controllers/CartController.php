@@ -13,7 +13,9 @@ use App\Models\Reserva;
 use App\Models\Pagos;
 use App\Models\User;
 use Carbon\Carbon;
-use App\Mail\ReservaCreada;
+
+use App\Mail\ReservaViajeEnviada;
+use App\Mail\ReservaVehiculoEnviada;
 use Illuminate\Support\Facades\Mail;
 
 class CartController extends Controller
@@ -166,6 +168,19 @@ class CartController extends Controller
     // Procesar compra del carrito
     public function checkout(Request $request)
     {
+        // Validar datos del formulario
+        $request->validate([
+            'nombre' => 'required|string|max:255',
+            'email' => 'required|email|max:255',
+            'card_number' => 'required|string|max:19',
+            'card_expiry' => 'required|string|max:5',
+            'card_cvc' => 'required|string|max:4',
+        ], [
+            'required' => 'El campo :attribute es obligatorio.',
+            'email' => 'El email debe ser una dirección válida.',
+            'max' => 'El campo :attribute no debe exceder :max caracteres.',
+        ]);
+
         if (!Auth::check()) {
             return redirect()->route('login')->with('error', 'Debes iniciar sesión para continuar.');
         }
@@ -180,136 +195,88 @@ class CartController extends Controller
         
         try {
             $totalGeneral = 0;
-            $reservasCreadas = [];
+            foreach ($carrito as $item) {
+                $totalGeneral += $item['precio'] * $item['cantidad'];
+            }
 
+            // Crear el paquete temporal
+            $paquete = Paquete::create([
+                'usuario_id' => Auth::id(),
+                'nombre' => 'Compra del ' . now()->format('d/m/Y'),
+                'descripcion' => 'Paquete generado automáticamente para la compra de múltiples productos',
+                'precio_total' => $totalGeneral,
+                'estado' => 'pendiente',
+                'hecho_por_usuario' => true,
+                'activo' => false // Es un paquete temporal, no visible para otros usuarios
+            ]);
+
+            // Crear los contenidos del paquete y las reservas
             foreach ($carrito as $key => $item) {
                 $tipo = $item['tipo'];
                 $cantidad = $item['cantidad'];
-                $precioUnitario = $item['precio'];
-                $subtotal = $precioUnitario * $cantidad;
-                $totalGeneral += $subtotal;
+                $modelClass = match($tipo) {
+                    'hospedaje' => Hospedaje::class,
+                    'vehiculo' => Vehiculo::class,
+                    'viaje' => Viaje::class,
+                    'paquete' => Paquete::class,
+                    default => null
+                };
 
-                switch ($tipo) {
-                    case 'hospedaje':
-                        $reserva = Reserva::create([
-                            'usuario_id' => Auth::id(),
-                            'paquete_id' => null,
-                            'fecha_inicio' => now()->addDays(7),
-                            'fecha_fin' => now()->addDays(10),
-                            'estado' => 'confirmada',
-                            'precio_total' => $subtotal,
-                            'codigo_reserva' => $this->generarCodigoReserva(),
-                            'tipo_reserva' => 'hospedaje',
-                        ]);
-                        
-                        // Crear pago para esta reserva
-                        $pago = Pagos::create([
-                            'reserva_id' => $reserva->id,
-                            'amount' => $subtotal,
-                            'estado' => 'aprobado',
-                            'cardholder_name' => Auth::user()->name,
-                            'card_number' => '****',
-                            'expiration_month' => '12',
-                            'expiration_year' => '2025',
-                            'cvv' => '***',
-                        ]);
-                        break;
-
-                    case 'vehiculo':
-                        $reserva = Reserva::create([
-                            'usuario_id' => Auth::id(),
-                            'paquete_id' => null,
-                            'fecha_inicio' => now()->addDays(7),
-                            'fecha_fin' => now()->addDays(10),
-                            'estado' => 'confirmada',
-                            'precio_total' => $subtotal,
-                            'codigo_reserva' => $this->generarCodigoReserva(),
-                            'tipo_reserva' => 'vehiculo',
-                        ]);
-                        
-                        // Crear pago para esta reserva
-                        $pago = Pagos::create([
-                            'reserva_id' => $reserva->id,
-                            'amount' => $subtotal,
-                            'estado' => 'aprobado',
-                            'cardholder_name' => Auth::user()->name,
-                            'card_number' => '****',
-                            'expiration_month' => '12',
-                            'expiration_year' => '2025',
-                            'cvv' => '***',
-                        ]);
-                        break;
-
-                    case 'paquete':
-                        $reserva = Reserva::create([
-                            'usuario_id' => Auth::id(),
-                            'paquete_id' => $item['id'],
-                            'fecha_inicio' => now(),
-                            'fecha_fin' => now()->addDays(7),
-                            'estado' => 'confirmada',
-                            'precio_total' => $subtotal,
-                            'codigo_reserva' => $this->generarCodigoReserva(),
-                            'tipo_reserva' => 'paquete',
-                        ]);
-                        
-                        // Crear pago para esta reserva
-                        $pago = Pagos::create([
-                            'reserva_id' => $reserva->id,
-                            'amount' => $subtotal,
-                            'estado' => 'aprobado',
-                            'cardholder_name' => Auth::user()->name,
-                            'card_number' => '****',
-                            'expiration_month' => '12',
-                            'expiration_year' => '2025',
-                            'cvv' => '***',
-                        ]);
-                        break;
-
-                    case 'viaje':
-                        $viaje = Viaje::findOrFail($item['id']);
-                        $reserva = Reserva::create([
-                            'usuario_id' => Auth::id(),
-                            'reservable_id' => $viaje->id,
-                            'reservable_type' => Viaje::class,
-                            'fecha_inicio' => $viaje->fecha_salida,
-                            'fecha_fin' => $viaje->fecha_llegada,
-                            'estado' => 'confirmada',
-                            'precio_total' => $subtotal,
-                            'codigo_reserva' => $this->generarCodigoReserva(),
-                            'tipo_reserva' => 'viaje',
-                        ]);
-                        
-                        // Crear pago para esta reserva
-                        $pago = Pagos::create([
-                            'reserva_id' => $reserva->id,
-                            'amount' => $subtotal,
-                            'estado' => 'aprobado',
-                            'cardholder_name' => Auth::user()->name,
-                            'card_number' => '****',
-                            'expiration_month' => '12',
-                            'expiration_year' => '2025',
-                            'cvv' => '***',
-                        ]);
-                        break;
+                if (!$modelClass) {
+                    throw new \Exception("Tipo de item no válido: {$tipo}");
                 }
 
-                $reservasCreadas[] = $reserva;
+                // Agregar el item al paquete
+                $paquete->contenidos()->create([
+                    'contenido_type' => $modelClass,
+                    'contenido_id' => $item['id']
+                ]);
+
+                // Crear la reserva
+                $reserva = Reserva::create([
+                    'usuario_id' => Auth::id(),
+                    'paquete_id' => $paquete->id,
+                    'reservable_type' => $modelClass,
+                    'reservable_id' => $item['id'],
+                    'fecha_inicio' => $tipo === 'viaje' ? 
+                        $modelClass::find($item['id'])->fecha_salida : 
+                        now()->addDays(7),
+                    'fecha_fin' => $tipo === 'viaje' ? 
+                        $modelClass::find($item['id'])->fecha_llegada : 
+                        now()->addDays(10),
+                    'estado' => 'pendiente',
+                    'tipo_reserva' => 'paquete',
+                    'precio_total' => $item['precio'] * $item['cantidad'],
+                    'codigo_reserva' => $this->generarCodigoReserva()
+                ]);
+
+                // Crear el pago
+                Pagos::create([
+                    'reserva_id' => $reserva->id,
+                    'amount' => $item['precio'] * $item['cantidad'],
+                    'estado' => 'pendiente',
+                    'cardholder_name' => $request->nombre,
+                    'card_number' => substr($request->card_number, -4),
+                    'expiration_month' => substr($request->card_expiry, 0, 2),
+                    'expiration_year' => '20' . substr($request->card_expiry, -2),
+                    'cvv' => '***'
+                ]);
+
+
             }
 
-            // Limpiar carrito
+            DB::commit();
             session(['carrito' => []]);
 
-            DB::commit();
+            // Total de reservas creadas en el paquete
+            $totalReservas = $paquete->contenidos()->count();
 
-            // Enviar correo de confirmación
-            $user = Auth::user();
-            Mail::to($user->email)->send(new ReservaCreada($user, $reservasCreadas));
-
-            return redirect()->route('mis-compras')->with('success', 'Compra procesada exitosamente. Se han creado ' . count($reservasCreadas) . ' reservas.');
+            return redirect()->route('mis-compras')->with('success', 'Compra procesada exitosamente. Se han creado ' . $totalReservas . ' reservas.');
 
         } catch (\Exception $e) {
             DB::rollback();
-            return redirect()->route('carrito')->with('error', 'Error al procesar la compra: ' . $e->getMessage());
+            return redirect()->route('carrito')
+                ->with('error', 'Hubo un error al procesar tu compra. Por favor, intenta nuevamente.');
         }
     }
 

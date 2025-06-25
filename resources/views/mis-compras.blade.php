@@ -47,6 +47,10 @@
             box-shadow: 0 8px 25px rgba(0,0,0,0.15);
         }
 
+        .purchase-card .card-body {
+            padding: 1.3rem 1rem; /* Aumenta el padding vertical para más altura */
+        }
+
         .purchase-icon {
             color: var(--despegar-blue);
             opacity: 0.8;
@@ -194,106 +198,245 @@
     </nav>
 
     <!-- Contenido Principal - Mis Compras -->
-    <div class="container py-5">
-        <h1 class="page-title">
-            <i class="fas fa-shopping-bag me-3"></i>Mis Compras
-        </h1>
+    <div class="container my-5">
 
-        @if(session('success'))
-            <div class="alert alert-success alert-dismissible fade show" role="alert">
-                <i class="fas fa-check-circle me-2"></i>{{ session('success') }}
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-            </div>
-        @endif
+    <h1 class="page-title text-center">Mis Compras</h1>
 
-        @if(session('error'))
-            <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                <i class="fas fa-exclamation-triangle me-2"></i>{{ session('error') }}
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-            </div>
-        @endif
+    @if (session('success'))
+        <div class="alert alert-success shadow-sm">
+            {{ session('success') }}
+        </div>
+    @endif
 
-        @if($reservas->isEmpty())
-            <div class="empty-state">
-                <i class="fas fa-shopping-bag fa-4x mb-4"></i>
-                <h4 class="mb-3">Aún no has realizado ninguna compra.</h4>
-                <p class="text-muted mb-4">¡Explora nuestros productos y encuentra tu próxima aventura!</p>
-                <a href="{{ route('home') }}" class="btn btn-primary">
-                    <i class="fas fa-home me-2"></i>Ir a la página principal
-                </a>
-            </div>
-        @else
-            <div class="row">
-                @foreach($reservas as $reserva)
-                    @php
-                        $item = $reserva->reservable ?? $reserva->paquete;
-                        $tipo = $reserva->reservable_type ? class_basename($reserva->reservable_type) : ($reserva->paquete ? 'Paquete' : 'Desconocido');
-                        $icon = 'fa-box'; // Icono por defecto
-                        if ($tipo == 'Viaje') $icon = 'fa-plane-departure';
-                        if ($tipo == 'Hospedaje') $icon = 'fa-hotel';
-                        if ($tipo == 'Vehiculo') $icon = 'fa-car';
-                        if ($tipo == 'Paquete') $icon = 'fa-suitcase-rolling';
-                        
-                        $statusClass = 'warning';
-                        if ($reserva->estado == 'completado') $statusClass = 'success';
-                        if ($reserva->estado == 'cancelado') $statusClass = 'danger';
-                    @endphp
-                    
-                    <div class="col-12 mb-4">
-                        <div class="card purchase-card">
-                            <div class="card-body">
-                                <div class="row align-items-center">
-                                    <div class="col-auto">
-                                        <div class="text-center" style="width: 80px;">
-                                            <i class="fas {{ $icon }} fa-3x purchase-icon"></i>
-                                        </div>
-                                    </div>
-                                    <div class="col">
-                                        <div class="d-flex justify-content-between align-items-start mb-2">
-                                            <h5 class="card-title mb-0">{{ $item->nombre ?? 'Producto no disponible' }}</h5>
-                                            <span class="badge bg-{{ $statusClass }} status-badge">
-                                                {{ ucfirst($reserva->estado) }}
-                                            </span>
-                                        </div>
-                                        <div class="row">
-                                            <div class="col-md-8">
-                                                <p class="card-text mb-2">
-                                                    <strong><i class="fas fa-tag me-1"></i>Tipo:</strong> {{ $tipo }}
+    @if($reservas_pendientes->isEmpty() && $reservas_aceptadas->isEmpty() && $reservas_canceladas->isEmpty())
+        <div class="empty-state">
+            <i class="fas fa-shopping-bag fa-4x mb-4"></i>
+            <h2>Aún no tienes compras</h2>
+            <p class="lead text-muted">Parece que todavía no has realizado ninguna reserva. ¡Explora nuestros destinos y encuentra tu próxima aventura!</p>
+            <a href="/" class="btn btn-primary mt-3">
+                <i class="fas fa-search me-2"></i>Buscar ofertas
+            </a>
+        </div>
+    @else
+        <!-- Pestañas de Navegación -->
+        <ul class="nav nav-tabs nav-pills nav-fill mb-4" id="comprasTab" role="tablist">
+            <li class="nav-item" role="presentation">
+                <button class="nav-link active" id="pendientes-tab" data-bs-toggle="tab" data-bs-target="#pendientes" type="button" role="tab" aria-controls="pendientes" aria-selected="true">
+                    <i class="fas fa-clock me-2"></i>Pendientes <span class="badge bg-warning text-dark ms-1">{{ $reservas_pendientes->count() }}</span>
+                </button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="aceptadas-tab" data-bs-toggle="tab" data-bs-target="#aceptadas" type="button" role="tab" aria-controls="aceptadas" aria-selected="false">
+                    <i class="fas fa-check-circle me-2"></i>Aceptadas <span class="badge bg-success ms-1">{{ $reservas_aceptadas->count() }}</span>
+                </button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="canceladas-tab" data-bs-toggle="tab" data-bs-target="#canceladas" type="button" role="tab" aria-controls="canceladas" aria-selected="false">
+                    <i class="fas fa-times-circle me-2"></i>Canceladas <span class="badge bg-danger ms-1">{{ $reservas_canceladas->count() }}</span>
+                </button>
+            </li>
+        </ul>
+
+        <!-- Contenido de las Pestañas -->
+        <div class="tab-content" id="comprasTabContent">
+            <!-- Pestaña Pendientes -->
+            <div class="tab-pane fade show active" id="pendientes" role="tabpanel" aria-labelledby="pendientes-tab">
+                @if($reservas_pendientes->isEmpty())
+                    <div class="empty-state">
+                        <i class="fas fa-inbox fa-4x mb-4"></i>
+                        <h2>No tienes reservas pendientes</h2>
+                        <p class="lead text-muted">Cuando realices una nueva reserva, aparecerá aquí mientras se procesa.</p>
+                    </div>
+                @else
+                    <div class="row">
+                        @foreach($reservas_pendientes as $reserva)
+                            <div class="col-lg-12">
+                                <div class="purchase-card">
+                                    <div class="card-body">
+                                        <div class="row align-items-center">
+                                            <div class="col-md-2 text-center">
+                                                @php
+                                                    $iconClass = 'fa-question-circle';
+                                                    if ($reserva->reservable_type === 'App\\Models\\Hospedaje') $iconClass = 'fa-bed';
+                                                    if ($reserva->reservable_type === 'App\\Models\\Viaje') $iconClass = 'fa-plane';
+                                                    if ($reserva->reservable_type === 'App\\Models\\Vehiculo') $iconClass = 'fa-car';
+                                                    if ($reserva->tipo_reserva === 'paquete') $iconClass = 'fa-box';
+                                                @endphp
+                                                <i class="fas {{ $iconClass }} fa-3x purchase-icon"></i>
+                                            </div>
+                                            <div class="col-md-7">
+                                                <h5 class="card-title mb-1">
+                                                    @if($reserva->paquete)
+                                                        {{ $reserva->paquete->nombre }}
+                                                    @else
+                                                        {{ $reserva->reservable->nombre ?? 'Reserva ' . $reserva->codigo_reserva }}
+                                                    @endif
+                                                </h5>
+                                                <p class="card-text text-muted mb-2">
+                                                    Código de reserva: <strong>{{ $reserva->codigo_reserva }}</strong>
                                                 </p>
-                                                <p class="card-text mb-2">
-                                                    <strong><i class="fas fa-calendar-alt me-1"></i>Fechas:</strong> 
-                                                    {{ $reserva->fecha_inicio->format('d/m/Y') }} - {{ $reserva->fecha_fin->format('d/m/Y') }}
+                                                <p class="card-text text-muted">
+                                                    Fecha de compra: {{ $reserva->created_at->format('d/m/Y') }}
                                                 </p>
                                             </div>
-                                            <div class="col-md-4 text-end">
-                                                <h6 class="price-highlight mb-0">
-                                                    <i class="fas fa-dollar-sign me-1"></i>Total: ${{ number_format($reserva->precio_total, 2) }}
-                                                </h6>
+                                            <div class="col-md-3 text-md-end">
+                                                <p class="price-highlight mb-2">
+                                                    ARS {{ number_format($reserva->total_pagar, 2, ',', '.') }}
+                                                </p>
+                                                <div>
+                                                    @php
+                                                        $estado = $reserva->estado;
+                                                        $badgeClass = 'bg-warning text-dark';
+                                                    @endphp
+                                                    <span class="badge status-badge {{ $badgeClass }}">{{ ucfirst($estado) }}</span>
+                                                </div>
+                                                @if($reserva->estado === 'pendiente')
+                                                    <div class="d-flex justify-content-end gap-2">
+                                                        <a href="{{ route('mis-compras.edit', $reserva) }}" class="btn btn-sm btn-outline-primary">
+                                                            <i class="fas fa-edit me-1"></i> Editar
+                                                        </a>
+                                                        <form action="{{ route('mis-compras.cancelar', $reserva) }}" method="POST" onsubmit="return confirm('¿Estás seguro de que deseas cancelar esta reserva?');">
+                                                            @csrf
+                                                            <button type="submit" class="btn btn-sm btn-outline-danger">
+                                                                <i class="fas fa-times me-1"></i> Cancelar
+                                                            </button>
+                                                        </form>
+                                                    </div>
+                                                @endif
                                             </div>
                                         </div>
-                                        
-                                        @if($reserva->estado == 'pendiente')
-                                            <div class="mt-3 pt-3 border-top text-end">
-                                                <a href="{{ route('mis-compras.modificar', $reserva) }}" class="btn btn-outline-primary btn-sm me-2">
-                                                    <i class="fas fa-edit me-1"></i>Modificar Reserva
-                                                </a>
-                                                <form action="{{ route('mis-compras.cancelar', $reserva) }}" method="POST" class="d-inline" onsubmit="return confirm('¿Estás seguro de que quieres cancelar esta reserva?');">
-                                                    @csrf
-                                                    <button type="submit" class="btn btn-outline-danger btn-sm">
-                                                        <i class="fas fa-times me-1"></i>Cancelar Reserva
-                                                    </button>
-                                                </form>
-                                            </div>
-                                        @endif
                                     </div>
                                 </div>
                             </div>
-                        </div>
+                        @endforeach
                     </div>
-                @endforeach
+                @endif
             </div>
-        @endif
-    </div>
+
+            <!-- Pestaña Aceptadas -->
+            <div class="tab-pane fade" id="aceptadas" role="tabpanel" aria-labelledby="aceptadas-tab">
+                @if($reservas_aceptadas->isEmpty())
+                    <div class="empty-state">
+                        <i class="fas fa-suitcase-rolling fa-4x mb-4"></i>
+                        <h2>No tienes reservas aceptadas</h2>
+                        <p class="lead text-muted">Tus reservas confirmadas aparecerán aquí. ¡Buen viaje!</p>
+                    </div>
+                @else
+                    <div class="row">
+                        @foreach($reservas_aceptadas as $reserva)
+                            <div class="col-lg-12">
+                                <div class="purchase-card">
+                                    <div class="card-body">
+                                        <div class="row align-items-center">
+                                            <div class="col-md-2 text-center">
+                                                @php
+                                                    $iconClass = 'fa-question-circle';
+                                                    if ($reserva->reservable_type === 'App\\Models\\Hospedaje') $iconClass = 'fa-bed';
+                                                    if ($reserva->reservable_type === 'App\\Models\\Viaje') $iconClass = 'fa-plane';
+                                                    if ($reserva->reservable_type === 'App\\Models\\Vehiculo') $iconClass = 'fa-car';
+                                                    if ($reserva->tipo_reserva === 'paquete') $iconClass = 'fa-box';
+                                                @endphp
+                                                <i class="fas {{ $iconClass }} fa-3x purchase-icon"></i>
+                                            </div>
+                                            <div class="col-md-7">
+                                                <h5 class="card-title mb-1">
+                                                    @if($reserva->paquete)
+                                                        {{ $reserva->paquete->nombre }}
+                                                    @else
+                                                        {{ $reserva->reservable->nombre ?? 'Reserva ' . $reserva->codigo_reserva }}
+                                                    @endif
+                                                </h5>
+                                                <p class="card-text text-muted mb-2">
+                                                    Código de reserva: <strong>{{ $reserva->codigo_reserva }}</strong>
+                                                </p>
+                                                <p class="card-text text-muted">
+                                                    Fecha de compra: {{ $reserva->created_at->format('d/m/Y') }}
+                                                </p>
+                                            </div>
+                                            <div class="col-md-3 text-md-end">
+                                                <p class="price-highlight mb-2">
+                                                    ARS {{ number_format($reserva->total_pagar, 2, ',', '.') }}
+                                                </p>
+                                                <div>
+                                                    @php
+                                                        $estado = $reserva->estado;
+                                                        $badgeClass = 'bg-success';
+                                                    @endphp
+                                                    <span class="badge status-badge {{ $badgeClass }}">{{ ucfirst($estado) }}</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        @endforeach
+                    </div>
+                @endif
+            </div>
+
+            <!-- Pestaña Canceladas -->
+            <div class="tab-pane fade" id="canceladas" role="tabpanel" aria-labelledby="canceladas-tab">
+                @if($reservas_canceladas->isEmpty())
+                    <div class="empty-state">
+                        <i class="fas fa-history fa-4x mb-4"></i>
+                        <h2>No tienes reservas canceladas</h2>
+                        <p class="lead text-muted">Tu historial de reservas canceladas se mostrará aquí.</p>
+                    </div>
+                @else
+                    <div class="row">
+                        @foreach($reservas_canceladas as $reserva)
+                            <div class="col-lg-12">
+                                <div class="purchase-card">
+                                    <div class="card-body">
+                                        <div class="row align-items-center">
+                                            <div class="col-md-2 text-center">
+                                                @php
+                                                    $iconClass = 'fa-question-circle';
+                                                    if ($reserva->reservable_type === 'App\\Models\\Hospedaje') $iconClass = 'fa-bed';
+                                                    if ($reserva->reservable_type === 'App\\Models\\Viaje') $iconClass = 'fa-plane';
+                                                    if ($reserva->reservable_type === 'App\\Models\\Vehiculo') $iconClass = 'fa-car';
+                                                    if ($reserva->tipo_reserva === 'paquete') $iconClass = 'fa-box';
+                                                @endphp
+                                                <i class="fas {{ $iconClass }} fa-3x purchase-icon"></i>
+                                            </div>
+                                            <div class="col-md-7">
+                                                <h5 class="card-title mb-1">
+                                                    @if($reserva->paquete)
+                                                        {{ $reserva->paquete->nombre }}
+                                                    @else
+                                                        {{ $reserva->reservable->nombre ?? 'Reserva ' . $reserva->codigo_reserva }}
+                                                    @endif
+                                                </h5>
+                                                <p class="card-text text-muted mb-2">
+                                                    Código de reserva: <strong>{{ $reserva->codigo_reserva }}</strong>
+                                                </p>
+                                                <p class="card-text text-muted">
+                                                    Fecha de compra: {{ $reserva->created_at->format('d/m/Y') }}
+                                                </p>
+                                            </div>
+                                            <div class="col-md-3 text-md-end">
+                                                <p class="price-highlight mb-2">
+                                                    ARS {{ number_format($reserva->total_pagar, 2, ',', '.') }}
+                                                </p>
+                                                <div>
+                                                    @php
+                                                        $estado = $reserva->estado;
+                                                        $badgeClass = 'bg-danger';
+                                                    @endphp
+                                                    <span class="badge status-badge {{ $badgeClass }}">{{ ucfirst($estado) }}</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        @endforeach
+                    </div>
+                @endif
+            </div>
+        </div>
+    @endif
+</div>
 
     <!-- Footer -->
     <footer class="footer-section">

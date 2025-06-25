@@ -11,31 +11,96 @@ class ComprasController extends Controller
     public function index()
     {
         $user = Auth::user();
-        // Cargar las reservas con sus relaciones polimórficas (hospedaje, viaje, etc.)
-        $reservas = Reserva::where('usuario_id', $user->id)
-                            ->with(['reservable', 'paquete']) 
-                            ->orderBy('created_at', 'desc')
-                            ->get();
 
-        return view('mis-compras', compact('reservas'));
+        // Cargar reservas pendientes
+        $reservas_pendientes = Reserva::where('usuario_id', $user->id)
+                                    ->where('estado', 'pendiente')
+                                    ->with(['reservable', 'paquete'])
+                                    ->orderBy('created_at', 'desc')
+                                    ->get();
+
+        // Cargar reservas aceptadas (asumiendo que 'aceptada' es un estado válido)
+        $reservas_aceptadas = Reserva::where('usuario_id', $user->id)
+                                   ->where('estado', 'aceptada')
+                                   ->with(['reservable', 'paquete'])
+                                   ->orderBy('created_at', 'desc')
+                                   ->get();
+
+        // Cargar reservas canceladas
+        $reservas_canceladas = Reserva::where('usuario_id', $user->id)
+                                    ->where('estado', 'cancelada')
+                                    ->with(['reservable', 'paquete'])
+                                    ->orderBy('created_at', 'desc')
+                                    ->get();
+
+        return view('mis-compras', compact('reservas_pendientes', 'reservas_aceptadas', 'reservas_canceladas'));
     }
+
     public function cancelar(Reserva $reserva)
     {
-        // Verificar que el usuario autenticado es el dueño de la reserva
-        if (Auth::id() !== $reserva->usuario_id) {
+        if ($reserva->usuario_id !== auth()->id()) {
             abort(403, 'No tienes permiso para cancelar esta reserva.');
         }
 
-        // Verificar que la reserva esté en un estado que permita la cancelación (ej. 'pendiente')
         if ($reserva->estado !== 'pendiente') {
-            return redirect()->route('mis-compras')->with('error', 'Esta reserva no se puede cancelar.');
+            return redirect()->route('mis-compras')->with('error', 'Solo se pueden cancelar reservas pendientes.');
         }
 
-        // Cambiar el estado de la reserva a 'cancelado'
         $reserva->estado = 'cancelada';
         $reserva->save();
 
-        return redirect()->route('mis-compras')->with('success', 'Reserva cancelada correctamente.');
+        return redirect()->route('mis-compras')->with('success', 'La reserva ha sido cancelada exitosamente.');
+    }
+
+    public function edit(Reserva $reserva)
+    {
+        if ($reserva->usuario_id !== auth()->id() || $reserva->estado !== 'pendiente') {
+            abort(403, 'No tienes permiso para editar esta reserva.');
+        }
+
+        $reservable = $reserva->reservable;
+
+        return view('mis-compras.edit', compact('reserva', 'reservable'));
+    }
+
+    public function update(Request $request, Reserva $reserva)
+    {
+        if ($reserva->usuario_id !== auth()->id() || $reserva->estado !== 'pendiente') {
+            abort(403, 'No tienes permiso para actualizar esta reserva.');
+        }
+
+        $reservable = $reserva->reservable;
+
+        $validated = $request->validate([
+            'fecha_inicio' => 'required|date',
+            'fecha_fin' => 'nullable|date|after_or_equal:fecha_inicio',
+            'cantidad_personas' => 'required|integer|min:1',
+        ]);
+
+        $reserva->fecha_inicio = $validated['fecha_inicio'];
+        $reserva->cantidad_personas = $validated['cantidad_personas'];
+
+        $precio_por_noche_o_persona = $reservable->precio;
+        $total = 0;
+
+        if ($reservable instanceof \App\Models\Hospedaje) {
+            $reserva->fecha_fin = $validated['fecha_fin'];
+            $fechaInicio = new \DateTime($validated['fecha_inicio']);
+            $fechaFin = new \DateTime($validated['fecha_fin']);
+            $diferencia = $fechaFin->diff($fechaInicio);
+            $dias = $diferencia->days > 0 ? $diferencia->days : 1;
+            $total = $dias * $precio_por_noche_o_persona * $validated['cantidad_personas'];
+        } else if ($reservable instanceof \App\Models\Viaje) {
+            $reserva->fecha_fin = $validated['fecha_fin'];
+            $total = $precio_por_noche_o_persona * $validated['cantidad_personas'];
+        } else {
+            $total = $precio_por_noche_o_persona * $validated['cantidad_personas'];
+        }
+
+        $reserva->total_pagar = $total;
+        $reserva->save();
+
+        return redirect()->route('mis-compras')->with('success', 'Reserva actualizada correctamente.');
     }
 
     public function modificar(Reserva $reserva)

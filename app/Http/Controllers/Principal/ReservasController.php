@@ -12,7 +12,7 @@ use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
-use App\Mail\ReservaCreada; 
+
 use Illuminate\Support\Facades\Mail;
 
 class ReservasController extends Controller {
@@ -113,6 +113,7 @@ class ReservasController extends Controller {
                 'precio_total' => $montoTotal,
                 'codigo_reserva' => $this->generarCodigoReserva(),
                 'tipo_reserva' => 'hospedaje',
+                
             ]);
 
             // Asociar el pago a la reserva
@@ -123,7 +124,7 @@ class ReservasController extends Controller {
 
             // Enviar correo de confirmación
             $user = Auth::user();
-            Mail::to($user->email)->send(new ReservaCreada($user, [$reserva]));
+
             
             // Limpiar el carrito si existe este ítem
             $carrito = session()->get('carrito', []);

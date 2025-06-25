@@ -16,6 +16,9 @@
         body {
             background-color: #f8f9fa;
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
         }
 
         .navbar-brand {
@@ -28,6 +31,7 @@
             max-width: 1200px;
             margin: 40px auto;
             padding: 0 20px;
+            flex: 1;
         }
 
         .item-card, .item-details, .booking-panel, .characteristics-section {
@@ -217,11 +221,123 @@
                 columns: 1;
             }
         }
+
+        .footer-section {
+            background-color: #2c3e50;
+            color: white;
+            padding: 40px 0;
+            margin-top: auto;
+        }
+
+        .footer-section h5 {
+            color: white;
+            margin-bottom: 20px;
+            font-weight: 600;
+        }
+
+        .footer-section ul li {
+            margin-bottom: 10px;
+        }
+
+        .footer-section hr {
+            border-color: rgba(255, 255, 255, 0.1);
+        }
+
+        .footer-section .social-links a {
+            color: white;
+            margin-right: 15px;
+            font-size: 20px;
+        }
+
+        .footer-section .social-links a:hover {
+            color: var(--frategar-orange);
+        }
     </style>
 </head>
 <body>
     <script>console.log('TEST: Script al inicio del BODY ejecutado.');</script>
-    @include('layouts.partials._header')
+    <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm">
+        <div class="container">
+            <a class="navbar-brand" href="/">
+                <i class="fas fa-plane text-primary"></i> Frategar
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ route('results.index', ['tab' => 'viajes']) }}"><i class="fas fa-plane"></i> Vuelos</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ route('results.index', ['tab' => 'hospedajes']) }}"><i class="fas fa-hotel"></i> Hoteles</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ route('results.index', ['tab' => 'paquetes']) }}"><i class="fas fa-box"></i> Paquetes</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ route('results.index', ['tab' => 'vehiculos']) }}"><i class="fas fa-car"></i> Autos</a>
+                    </li>
+                </ul>
+
+                <ul class="navbar-nav align-items-center">
+                    <!-- Carrito -->
+                    <li class="nav-item">
+                        <a href="{{ route('carrito') }}" class="nav-link position-relative" title="Carrito">
+                            <i class="fas fa-shopping-cart"></i>
+                            @php
+                                $carrito = session('carrito', []);
+                                $totalItems = is_array($carrito) ? array_sum(array_column($carrito, 'cantidad')) : 0;
+                            @endphp
+                            @if($totalItems > 0)
+                                <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" style="font-size:0.7rem;">
+                                    {{ $totalItems }}
+                                </span>
+                            @endif
+                        </a>
+                    </li>
+
+                    @auth
+                        <!-- User Dropdown -->
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                <i class="fas fa-user"></i> {{ Auth::user()->name }}
+                            </a>
+                            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+                                <li>
+                                    <a class="dropdown-item" href="{{ route('mis-compras') }}">
+                                        <i class="fas fa-shopping-bag me-1"></i> Mis Compras
+                                    </a>
+                                </li>
+                                <li><hr class="dropdown-divider"></li>
+                                <li>
+                                    <a class="dropdown-item" href="{{ route('logout') }}"
+                                       onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                                        <i class="fas fa-sign-out-alt me-1"></i> Cerrar Sesión
+                                    </a>
+                                    <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+                                        @csrf
+                                    </form>
+                                </li>
+                            </ul>
+                        </li>
+                    @else
+                        <li class="nav-item">
+                            <a class="btn btn-outline-primary me-2" href="{{ route('login') }}">Ingresar</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="btn btn-primary" href="{{ route('register') }}">Registrarse</a>
+                        </li>
+                    @endauth
+
+                    <!-- Ayuda -->
+                    <li class="nav-item">
+                        <a class="nav-link" href="#"><i class="fas fa-headset"></i> Ayuda</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
 
     <div class="container main-container">
 @php
@@ -438,8 +554,6 @@
         </div>
     </div>
 
-
-
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous"></script>
     <script>
         document.addEventListener('DOMContentLoaded', function () {
@@ -516,5 +630,60 @@
             calcularTotal();
         });
     </script>
+
+    <!-- Footer -->
+    <footer class="footer-section">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-3 mb-4">
+                    <h5>Frategar</h5>
+                    <ul class="list-unstyled">
+                        <li><a href="#" class="text-light text-decoration-none">Quiénes somos</a></li>
+                        <li><a href="#" class="text-light text-decoration-none">Trabaja con nosotros</a></li>
+                        <li><a href="#" class="text-light text-decoration-none">Prensa</a></li>
+                        <li><a href="#" class="text-light text-decoration-none">Inversores</a></li>
+                    </ul>
+                </div>
+
+                <div class="col-md-3 mb-4">
+                    <h5>Productos</h5>
+                    <ul class="list-unstyled">
+                        <li><a href="{{ route('results.index', ['tab' => 'viajes']) }}" class="text-light text-decoration-none">Vuelos</a></li>
+                        <li><a href="{{ route('results.index', ['tab' => 'hospedajes']) }}" class="text-light text-decoration-none">Hoteles</a></li>
+                        <li><a href="{{ route('results.index', ['tab' => 'paquetes']) }}" class="text-light text-decoration-none">Paquetes</a></li>
+                        <li><a href="{{ route('results.index', ['tab' => 'vehiculos']) }}" class="text-light text-decoration-none">Autos</a></li>
+                    </ul>
+                </div>
+
+                <div class="col-md-3 mb-4">
+                    <h5>Ayuda</h5>
+                    <ul class="list-unstyled">
+                        <li><a href="#" class="text-light text-decoration-none">Centro de ayuda</a></li>
+                        <li><a href="#" class="text-light text-decoration-none">Contacto</a></li>
+                        <li><a href="{{ route("terminos") }}" class="text-light text-decoration-none">Términos y condiciones</a></li>
+                        <li><a href="#" class="text-light text-decoration-none">Privacidad</a></li>
+                    </ul>
+                </div>
+
+                <div class="col-md-3 mb-4">
+                    <h5>Síguenos</h5>
+                    <div class="d-flex gap-3">
+                        <a href="#" class="text-light"><i class="fab fa-facebook fa-2x"></i></a>
+                        <a href="#" class="text-light"><i class="fab fa-twitter fa-2x"></i></a>
+                        <a href="#" class="text-light"><i class="fab fa-instagram fa-2x"></i></a>
+                        <a href="#" class="text-light"><i class="fab fa-youtube fa-2x"></i></a>
+                    </div>
+                </div>
+            </div>
+
+            <hr class="my-4">
+
+            <div class="row">
+                <div class="col-12 text-center">
+                    <p class="mb-0">&copy; 2025 Frategar. Todos los derechos reservados.</p>
+                </div>
+            </div>
+        </div>
+    </footer>
 </body>
 </html>

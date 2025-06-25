@@ -93,6 +93,9 @@ Route::get('/', function (Request $request) {
 // Detalles de un vehículo
 Route::get('/vehiculos/{id}', [VehiculosController::class, 'show'])->name('vehiculos.show');
 
+// Detalles de un paquete
+Route::get('/paquetes/{id}', [PaquetesController::class, 'show'])->name('paquetes.show');
+
 // Detalles de un viaje
 Route::get('/viajes/{id}', [ViajesController::class, 'show'])->name('viajes.show');
 
@@ -105,6 +108,8 @@ Route::post('/reservar', [DetalleController::class, 'store'])->name('reservar.st
 // Mis Compras
 Route::get('/mis-compras', [ComprasController::class, 'index'])->name('mis-compras')->middleware('auth');
 Route::post('/mis-compras/{reserva}/cancelar', [ComprasController::class, 'cancelar'])->name('mis-compras.cancelar')->middleware('auth');
+Route::get('/mis-compras/{reserva}/editar', [ComprasController::class, 'edit'])->name('mis-compras.edit')->middleware('auth');
+Route::put('/mis-compras/{reserva}', [ComprasController::class, 'update'])->name('mis-compras.update')->middleware('auth');
 Route::get('/mis-compras/{reserva}/modificar', [ComprasController::class, 'modificar'])->name('mis-compras.modificar')->middleware('auth');
 
 // Ayuda

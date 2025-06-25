@@ -58,4 +58,33 @@ class Reserva extends Model
     {
         return $this->hasOne(Pago::class, 'reserva_id');
     }
+<<<<<<< HEAD
+=======
+
+    public function serviciosReservados(): HasMany
+    {
+        return $this->hasMany(ServicioReservado::class, 'reserva_id');
+    }
+
+    public function personasConReservas(): HasMany
+    {
+        return $this->hasMany(PersonaReserva::class, 'reserva_id');
+    }
+
+    
+    // Accesor de compatibilidad: total_pagar = precio_total
+    public function getTotalPagarAttribute()
+    {
+        // Si existe columna total_pagar se usa, sino precio_total
+        if (array_key_exists('total_pagar', $this->attributes) && !is_null($this->attributes['total_pagar'])) {
+            return $this->attributes['total_pagar'];
+        }
+        return $this->precio_total;
+    }
+
+    public function reservable()
+    {
+        return $this->morphTo();
+    }
+>>>>>>> b990db00d93c5b148e8df4daadfbede3b1535ce6
 }
