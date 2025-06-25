@@ -78,7 +78,9 @@ class ComprasController extends Controller
         ]);
 
         $reserva->fecha_inicio = $validated['fecha_inicio'];
-        $reserva->cantidad_personas = $validated['cantidad_personas'];
+        
+        // No guardamos cantidad_personas porque no existe en la tabla
+        // Solo la usamos para calcular el precio total
 
         $precio_por_noche_o_persona = $reservable->precio;
         $total = 0;
@@ -97,7 +99,7 @@ class ComprasController extends Controller
             $total = $precio_por_noche_o_persona * $validated['cantidad_personas'];
         }
 
-        $reserva->total_pagar = $total;
+        $reserva->precio_total = $total;
         $reserva->save();
 
         return redirect()->route('mis-compras')->with('success', 'Reserva actualizada correctamente.');

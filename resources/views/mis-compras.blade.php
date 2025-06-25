@@ -281,7 +281,7 @@
                                             </div>
                                             <div class="col-md-3 text-md-end">
                                                 <p class="price-highlight mb-2">
-                                                    ARS {{ number_format($reserva->total_pagar, 2, ',', '.') }}
+                                                    ARS {{ number_format($reserva->precio_total, 2, ',', '.') }}
                                                 </p>
                                                 <div>
                                                     @php
@@ -355,7 +355,7 @@
                                             </div>
                                             <div class="col-md-3 text-md-end">
                                                 <p class="price-highlight mb-2">
-                                                    ARS {{ number_format($reserva->total_pagar, 2, ',', '.') }}
+                                                    ARS {{ number_format($reserva->precio_total, 2, ',', '.') }}
                                                 </p>
                                                 <div>
                                                     @php
@@ -416,7 +416,7 @@
                                             </div>
                                             <div class="col-md-3 text-md-end">
                                                 <p class="price-highlight mb-2">
-                                                    ARS {{ number_format($reserva->total_pagar, 2, ',', '.') }}
+                                                    ARS {{ number_format($reserva->precio_total, 2, ',', '.') }}
                                                 </p>
                                                 <div>
                                                     @php
