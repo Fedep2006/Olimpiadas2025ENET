@@ -50,6 +50,13 @@ setTimeout(function () {
                 return resultado;
             }
 
+            // Función para convertir snake_case a camelCase para IDs
+            function toCamelCase(str) {
+                return str.replace(/_([a-z])/g, function (match, letter) {
+                    return letter.toUpperCase();
+                });
+            }
+
             // Si el dataset es un string JSON, parsea:
             let registro = editBtn.dataset.registro;
             if (typeof registro === "string") {
@@ -70,8 +77,12 @@ setTimeout(function () {
             Object.keys(registroAplanado)
                 .sort()
                 .forEach((key) => {
+                    // Convertir la key a camelCase para el ID del input
+                    const keyForId = toCamelCase(key);
                     const input = document.getElementById(
-                        "edit" + key.charAt(0).toUpperCase() + key.slice(1)
+                        "edit" +
+                            keyForId.charAt(0).toUpperCase() +
+                            keyForId.slice(1)
                     );
 
                     // Validar que el input existe
@@ -79,7 +90,12 @@ setTimeout(function () {
                         return; // Salta a la siguiente iteración
                     }
 
-                    console.log(`Procesando ${key}:`, registroAplanado[key]);
+                    console.log(
+                        `Procesando ${key} -> ID: edit${
+                            keyForId.charAt(0).toUpperCase() + keyForId.slice(1)
+                        }:`,
+                        registroAplanado[key]
+                    );
 
                     switch (input.type) {
                         case "date":
@@ -119,7 +135,6 @@ setTimeout(function () {
         }
     });
 
-    // Handle update user
     document
         .getElementById("actualizarRegistro")
         .addEventListener("click", async function () {

@@ -17,7 +17,7 @@
                             </label>
                             @switch($input->type)
                                 @case('select')
-                                    <select class="form-select no-initial" name="{{ $input->name ?? $input->id }}"
+                                    <select class="form-select" name="{{ $input->name ?? $input->id }}"
                                         id="{{ $input->id ?? '' }}" required>
                                         @foreach ($input->options as $option)
                                             <option value="{{ $option->value }}">{{ $option->text }}</option>

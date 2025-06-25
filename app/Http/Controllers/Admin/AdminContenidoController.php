@@ -16,9 +16,9 @@ class AdminContenidoController extends Controller
 
     public function index(Request $request)
     {
-        $query = PaqueteContenido::query();
+        $query = PaqueteContenido::with('contenido');
 
-        /*
+
         // Aplicar búsqueda
         if ($request->filled('search_paquete')) {
             $search = $request->search_paquete;
@@ -27,10 +27,13 @@ class AdminContenidoController extends Controller
                     ->orWhere('numero_paquete', 'like', "%{$search}%");
             });
         }
-        if ($request->filled('search_descripcion')) {
-            $search = $request->search_descripcion;
-            $query->Where('descripcion', 'like', "%{$search}%");
+        if ($request->filled('search_contenido')) {
+            $search = $request->search_contenido;
+            $query->where(function ($q) use ($search) {
+                $q->where('contenido_type', 'like', "%{$search}%");
+            });
         }
+        /*
         if ($request->filled('search_precio_total')) {
             $search = $request->search_precio_total;
             $query->Where('precio_total', 'like', "%{$search}%");

@@ -61,31 +61,32 @@
                 </div>
             </td>
             <td>
-                <div class="flex flex-col text-center justify-between !self-center align-middle h-full w-full ">
+                <div class="flex flex-col text-center justify-between !self-center align-middle h-full w-full">
 
-                    @if ($registro->contenido_type == 'App\Models\Vehiculo')
-                        <h6>Vehiculo</h6>
-                    @elseif ($registro->contenido_type == 'App\Models\Viaje')
-                        <h6>Viaje</h6>
-                    @elseif ($registro->contenido_type == 'App\Models\Hospedaje')
-                        <h6>Hospedaje</h6>
+                    @php
+                        $tipoMap = [
+                            'App\Models\Vehiculo' => ['nombre' => 'Vehiculo', 'campo' => 'patente'],
+                            'App\Models\Viaje' => ['nombre' => 'Viaje', 'campo' => 'numero_viaje'],
+                            'App\Models\Hospedaje' => ['nombre' => 'Hospedaje', 'campo' => 'nombre'],
+                        ];
+
+                        $tipo = $tipoMap[$registro->contenido_type] ?? null;
+                    @endphp
+
+                    @if ($tipo)
+                        <h6>{{ $tipo['nombre'] }}</h6>
+                        <small class="pb-2 font-bold">
+                            Codigo: {{ $registro->contenido->{$tipo['campo']} ?? 'N/A' }}
+                        </small>
+                    @else
+                        <h6>Tipo desconocido</h6>
+                        <small class="pb-2 font-bold">Codigo: N/A</small>
                     @endif
 
-                    <small class="pb-2 font-bold">Codigo: {{ $registro->paquete->numero_paquete }}</small>
                 </div>
             </td>
             <td>
-                <div class="flex flex-col text-center justify-between !self-center h-full w-full text-[14px]">
-                    <span></span>
-                </div>
-            </td>
-            <td>
-                <div class="flex flex-col text-center justify-between !self-center h-full w-full text-[14px]">
-                    <span></span>
-                </div>
-            </td>
-            <td>
-                <div class="action-buttons">
+                <div class="action-buttons justify-center">
                     <button class="action-btn edit" data-registro="{{ $registro }}" title="Editar">
                         <i class="fas fa-edit"></i>
                     </button>
