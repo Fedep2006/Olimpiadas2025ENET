@@ -10,43 +10,32 @@
                 <form id="editarRegistroForm">
                     <input type="hidden" id="editId" name="registro_id">
 
-                    @foreach ( $inputs as $input)
-                        <div class="mb-3{{$input->type == "checkbox" ? ' flex flex-row gap-3' : ''}}" style="{{$input->type == "checkbox" ? 'justify-content: flex-start' : ''}}">
-                            <label 
-                                for="{{ $input->name ?? $input->name}}" 
-                                class="form-label">{{$input->label ?? ""}}
+                    @foreach ($inputs as $input)
+                        <div class="mb-3{{ $input->type == 'checkbox' ? ' flex flex-row gap-3' : '' }}"
+                            style="{{ $input->type == 'checkbox' ? 'justify-content: flex-start' : '' }}">
+                            <label for="{{ $input->name ?? $input->name }}" class="form-label">{{ $input->label ?? '' }}
                             </label>
                             @switch($input->type)
-                                @case("select")
-                                    <select class="form-select" name="{{ $input->name ?? $input->id }}" id="{{ $input->id ?? '' }}" required>
+                                @case('select')
+                                    <select class="form-select no-initial" name="{{ $input->name ?? $input->id }}"
+                                        id="{{ $input->id ?? '' }}" required>
                                         @foreach ($input->options as $option)
                                             <option value="{{ $option->value }}">{{ $option->text }}</option>
                                         @endforeach
                                     </select>
-                                    @break
-                                @case("checkbox")
+                                @break
+
+                                @case('checkbox')
                                     <input type="hidden" name="activo" value="0">
                                     <input type="hidden" name="disponible" value="0">
-                                    <input 
-                                        type="checkbox" 
-                                        class="form-check-input" 
-                                        value="1"
-                                        id="{{$input->id ?? ''}}" 
-                                        name="{{$input->name ?? $input->id}}"
-                                    >
-                                    
-                                    @break
-                            
+                                    <input type="checkbox" class="form-check-input" value="1" id="{{ $input->id ?? '' }}"
+                                        name="{{ $input->name ?? $input->id }}">
+                                @break
+
                                 @default
-                                    <input 
-                                        type="{{$input->type ?? ""}}" 
-                                        step="{{$input->step ?? ""}}"
-                                        class="form-control" 
-                                        id="{{$input->id  ?? ""}}" 
-                                        name="{{$input->name ?? $input->id}}" 
-                                        step="{{$input->step ?? ""}}"
-                                        required
-                                    >
+                                    <input type="{{ $input->type ?? '' }}" step="{{ $input->step ?? '' }}"
+                                        class="form-control" id="{{ $input->id ?? '' }}"
+                                        name="{{ $input->name ?? $input->id }}" step="{{ $input->step ?? '' }}" required>
                             @endswitch
                         </div>
                     @endforeach

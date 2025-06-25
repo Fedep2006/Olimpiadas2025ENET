@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Reserva extends Model
@@ -54,37 +55,8 @@ class Reserva extends Model
         return $this->belongsTo(Paquete::class, 'paquete_id');
     }
 
-    public function pago(): \Illuminate\Database\Eloquent\Relations\HasOne
+    public function pago(): HasOne
     {
         return $this->hasOne(Pago::class, 'reserva_id');
     }
-<<<<<<< HEAD
-=======
-
-    public function serviciosReservados(): HasMany
-    {
-        return $this->hasMany(ServicioReservado::class, 'reserva_id');
-    }
-
-    public function personasConReservas(): HasMany
-    {
-        return $this->hasMany(PersonaReserva::class, 'reserva_id');
-    }
-
-    
-    // Accesor de compatibilidad: total_pagar = precio_total
-    public function getTotalPagarAttribute()
-    {
-        // Si existe columna total_pagar se usa, sino precio_total
-        if (array_key_exists('total_pagar', $this->attributes) && !is_null($this->attributes['total_pagar'])) {
-            return $this->attributes['total_pagar'];
-        }
-        return $this->precio_total;
-    }
-
-    public function reservable()
-    {
-        return $this->morphTo();
-    }
->>>>>>> b990db00d93c5b148e8df4daadfbede3b1535ce6
 }

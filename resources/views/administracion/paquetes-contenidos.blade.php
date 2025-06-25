@@ -36,13 +36,13 @@
         ];
         $camposEditar = [
             (object) [
-                'id' => 'EditNumero_paquete',
+                'id' => 'editNumero_paquete',
                 'name' => 'numero_paquete',
                 'type' => 'text',
                 'label' => 'Codigo de Paquete',
             ],
             (object) [
-                'id' => 'contenido_type',
+                'id' => 'editContenido_type',
                 'name' => 'contenido_type',
                 'type' => 'select',
                 'label' => 'Tipo de contenido',
@@ -53,7 +53,7 @@
                 ],
             ],
             (object) [
-                'id' => 'contenido_id',
+                'id' => 'editContenido_id',
                 'name' => 'contenido_id',
                 'type' => 'select',
                 'label' => 'Contenido',
@@ -176,99 +176,80 @@
     @vite('resources/js/administracion/search-bar.js')
     @vite('resources/js/administracion/paginacion.js')
     <script>
-        // Datos de ejemplo - reemplaza con tus datos reales de Laravel
         const tablas = {
             viaje: @json($viajes),
             hospedaje: @json($hospedajes),
             vehiculo: @json($vehiculos)
         };
 
-        const tablaSelect = document.getElementsByName('contenido_type');
-        const valorSelect = document.getElementsByName('contenido_id');
-        console.log(valorSelect);
+        const tablaSelects = document.getElementsByName('contenido_type');
+        const valorSelects = document.getElementsByName('contenido_id');
 
         // Función para cargar los valores según la tabla seleccionada
-        function cargarValores(tabla) {
+        function cargarValores(tabla, targetSelect) {
             // Limpiar select de valores
-            valorSelect.innerHTML = '';
+            targetSelect.innerHTML = '';
 
             // Agregar opción por defecto
             const defaultOption = document.createElement('option');
             defaultOption.value = '';
             defaultOption.textContent = 'Seleccionar...';
-            valorSelect.forEach(item => {
-                item.appendChild(defaultOption);
-            });
+            targetSelect.appendChild(defaultOption);
 
             // Agregar los valores de la tabla seleccionada
-            switch (tabla) {
-                case 'viaje':
-                    tablas[tabla].forEach(item => {
-                        const option = document.createElement('option');
-                        option.value = item.id;
-                        option.textContent = item.nombre;
-                        valorSelect.forEach(item => {
-                            item.appendChild(option);
-                        });
-                    });
-                    break;
-                case 'hospedaje':
-                    tablas[tabla].forEach(item => {
-                        const option = document.createElement('option');
-                        option.value = item.id;
-                        option.textContent = item.nombre;
-                        valorSelect.forEach(item => {
-                            item.appendChild(option);
-                        });
-                    });
-                    break;
-                case 'vehiculo':
-                    tablas[tabla].forEach(item => {
-                        const option = document.createElement('option');
-                        option.value = item.id;
-                        option.textContent = item.modelo;
-                        valorSelect.forEach(item => {
-                            item.appendChild(option);
-                        });
-                    });
-                    break;
-                default:
-                    break;
+            if (tablas[tabla]) {
+                tablas[tabla].forEach(item => {
+                    const option = document.createElement('option');
+                    option.value = item.id;
+
+                    // Usar la propiedad correcta según el tipo
+                    switch (tabla) {
+                        case 'vehiculo':
+                            option.textContent = item.modelo;
+                            break;
+                        default:
+                            option.textContent = item.nombre;
+                            break;
+                    }
+
+                    targetSelect.appendChild(option);
+                });
             }
         }
 
         // Función para actualizar la información mostrada
-        function actualizarInfo() {
-            const tablaSeleccionada = null;
-            tablaSeleccionada.forEach(item => {
-                tablaSeleccionada = item.value;
-            });
-            const valorSeleccionado = null;
-            const textoValor = null;
-            valorSelect.forEach(item => {
-                valorSeleccionado = item.value;
-                textoValor = item.options[item.selectedIndex].text;
-            });
+        function actualizarInfo(tablaSelect, valorSelect) {
+            const tablaSeleccionada = tablaSelect.value;
+            const valorSeleccionado = valorSelect.value;
+            const textoValor = valorSelect.options[valorSelect.selectedIndex].text;
 
+            // Aquí puedes agregar la lógica que necesites con estos valores
+            console.log('Tabla:', tablaSeleccionada, 'Valor:', valorSeleccionado, 'Texto:', textoValor);
         }
 
-        // Event listeners
-        tablaSelect.forEach(item => {
-            item.addEventListener('change', function() {
-                cargarValores(this.value);
-            });
-        });
-        valorSelect.forEach(item => {
-            item.addEventListener('change', function() {
-                actualizarInfo();
-            });
-        });
+        // Event listeners - asociar cada select de tabla con su correspondiente select de valor
+        for (let i = 0; i < tablaSelects.length; i++) {
+            const tablaSelect = tablaSelects[i];
+            const valorSelect = valorSelects[i]; // Asumiendo que hay la misma cantidad de ambos
 
-        // Cargar valores iniciales (primera tabla por defecto)
+            if (tablaSelect && valorSelect) {
+                // Listener para cambio de tabla
+                tablaSelect.addEventListener('change', function() {
+                    cargarValores(this.value, valorSelect);
+                });
 
-        tablaSelect.forEach(item => {
-            cargarValores(item.value);
-        });
+                // Listener para cambio de valor
+                valorSelect.addEventListener('change', function() {
+                    actualizarInfo(tablaSelect, valorSelect);
+                });
+
+                // Cargar valores iniciales si ya hay una tabla seleccionada
+                // Solo si el select NO tiene la clase 'no-initial' o data-attribute
+                if (tablaSelect.value && !tablaSelect.classList.contains('no-initial')) {
+                    cargarValores(tablaSelect.value, valorSelect);
+                }
+            }
+        }
     </script>
 </body>
 

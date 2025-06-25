@@ -19,6 +19,37 @@ setTimeout(function () {
                 return texto && !isNaN(Date.parse(texto));
             }
 
+            // Función para aplanar objetos anidados
+            function aplanarObjeto(obj, prefijo = "") {
+                let resultado = {};
+
+                for (let key in obj) {
+                    if (obj.hasOwnProperty(key)) {
+                        const valor = obj[key];
+                        const nuevaKey = prefijo ? `${prefijo}_${key}` : key;
+
+                        // Si el valor es un objeto (pero no null, array o Date)
+                        if (
+                            valor &&
+                            typeof valor === "object" &&
+                            !Array.isArray(valor) &&
+                            !(valor instanceof Date)
+                        ) {
+                            // Recursivamente aplanar el objeto anidado
+                            Object.assign(
+                                resultado,
+                                aplanarObjeto(valor, nuevaKey)
+                            );
+                        } else {
+                            // Agregar el valor directamente
+                            resultado[nuevaKey] = valor;
+                        }
+                    }
+                }
+
+                return resultado;
+            }
+
             // Si el dataset es un string JSON, parsea:
             let registro = editBtn.dataset.registro;
             if (typeof registro === "string") {
@@ -30,7 +61,13 @@ setTimeout(function () {
                 }
             }
 
-            Object.keys(registro)
+            console.log("Registro original:", registro);
+
+            // Aplanar el objeto para manejar propiedades anidadas
+            const registroAplanado = aplanarObjeto(registro);
+            console.log("Registro aplanado:", registroAplanado);
+
+            Object.keys(registroAplanado)
                 .sort()
                 .forEach((key) => {
                     const input = document.getElementById(
@@ -42,26 +79,38 @@ setTimeout(function () {
                         return; // Salta a la siguiente iteración
                     }
 
+                    console.log(`Procesando ${key}:`, registroAplanado[key]);
+
                     switch (input.type) {
                         case "date":
-                            let fecha = new Date(registro[key]);
-                            input.value = fecha.toISOString().split("T")[0];
+                            if (esFechaValida(registroAplanado[key])) {
+                                let fecha = new Date(registroAplanado[key]);
+                                input.value = fecha.toISOString().split("T")[0];
+                            }
                             break;
                         case "datetime-local":
-                            let fechaLocal = new Date(registro[key]);
-                            input.value = fechaLocal.toISOString().slice(0, 16);
+                            if (esFechaValida(registroAplanado[key])) {
+                                let fechaLocal = new Date(
+                                    registroAplanado[key]
+                                );
+                                input.value = fechaLocal
+                                    .toISOString()
+                                    .slice(0, 16);
+                            }
                             break;
                         case "number":
-                            input.value = parseInt(registro[key]);
+                            input.value = parseInt(registroAplanado[key]) || "";
                             break;
                         case "checkbox":
                             input.value = 1;
-                            if (input.value == registro[key]) {
+                            if (input.value == registroAplanado[key]) {
                                 input.checked = true;
+                            } else {
+                                input.checked = false;
                             }
                             break;
                         default:
-                            input.value = registro[key];
+                            input.value = registroAplanado[key] || "";
                             break;
                     }
                 });
