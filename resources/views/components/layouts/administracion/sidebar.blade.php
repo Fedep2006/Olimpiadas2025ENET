@@ -15,19 +15,23 @@
         body {
             background-color: #f8f9fa;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            padding: 0;
+            margin: 0;
         }
 
         .admin-sidebar {
             position: fixed;
             top: 0;
             left: 0;
-            height: 100vh;
+            height: 100vh !important;
+            max-height: 100vh !important;
             width: var(--sidebar-width);
             background: linear-gradient(180deg, var(--despegar-blue) 0%, #004499 100%);
             color: white;
             z-index: 1000;
-            overflow-y: auto;
+            overflow-y: hidden;
             transition: all 0.3s ease;
+            box-sizing: border-box;
         }
 
         .admin-sidebar.collapsed {
@@ -55,7 +59,7 @@
             width: 100%;
             justify-content: center;
             text-align: center;
-            padding: 1vw 1vw;
+            padding: 1rem;
         }
 
         .admin-sidebar.collapsed .menu-item i {
@@ -68,13 +72,14 @@
         }
 
         .sidebar-header {
-            padding: 20px;
+            padding: 1rem;
             height: 7.5vh;
+            min-height: 60px;
             border-bottom: 1px solid rgba(255, 255, 255, 0.1);
             display: flex;
+            box-sizing: border-box;
             justify-content: space-between;
             align-items: center;
-            min-height: 60px;
         }
 
         .sidebar-brand {
@@ -88,7 +93,7 @@
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
-            padding-right: 10px;
+            flex: 1;
         }
 
         .sidebar-brand i {
@@ -97,10 +102,11 @@
 
         .sidebar-menu {
             display: flex;
-            padding: 20px 0 0 0;
-            height: 92.5vh;
+            padding: 1rem 0 0 0;
+            height: calc(92.5vh - 1rem);
             flex-direction: column;
             justify-content: space-between;
+            box-sizing: border-box;
         }
 
         .menu-item[type="submit"] {
@@ -112,18 +118,19 @@
             text-align: left;
             cursor: pointer;
             font: inherit;
-
         }
 
         .menu-item {
             display: flex;
             align-items: center;
-            padding: 12px 20px;
+            padding: 0.75rem 1.25rem;
             color: rgba(255, 255, 255, 0.8);
             text-decoration: none;
             transition: all 0.3s ease;
             border-left: 3px solid transparent;
             white-space: nowrap;
+            box-sizing: border-box;
+            min-height: 44px;
         }
 
         .menu-item:hover,
@@ -137,6 +144,13 @@
             width: 20px;
             margin-right: 15px;
             text-align: center;
+            flex-shrink: 0;
+        }
+
+        .menu-text {
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
         }
 
         .toggle-sidebar {
@@ -144,13 +158,13 @@
             justify-content: center;
             align-items: center;
             background: none;
-            margin-top: 1.6%;
             border: none;
             color: white;
             font-size: 1.2rem;
             cursor: pointer;
-            padding: 0;
+            padding: 0.5rem;
             transition: color 0.3s ease;
+            flex-shrink: 0;
         }
 
         .toggle-sidebar:hover {
@@ -159,6 +173,114 @@
 
         .main-content.collapsed {
             margin-left: 70px;
+        }
+
+        /* Media Queries para responsividad */
+        @media (max-width: 768px) {
+            :root {
+                --sidebar-width: 280px;
+            }
+
+            .admin-sidebar {
+                transform: translateX(-100%);
+                width: var(--sidebar-width);
+            }
+
+            .admin-sidebar.show {
+                transform: translateX(0);
+            }
+
+            .admin-sidebar.collapsed {
+                width: 60px;
+                transform: translateX(-100%);
+            }
+
+            .admin-sidebar.collapsed.show {
+                transform: translateX(0);
+            }
+
+            .sidebar-header {
+                padding: 0.75rem;
+                min-height: 50px;
+            }
+
+            .sidebar-brand {
+                font-size: 1.25rem;
+            }
+
+            .menu-item {
+                padding: 0.6rem 1rem;
+                min-height: 40px;
+            }
+
+            .main-content {
+                margin-left: 0;
+            }
+
+            .main-content.collapsed {
+                margin-left: 0;
+            }
+        }
+
+        @media (max-width: 480px) {
+            :root {
+                --sidebar-width: 250px;
+            }
+
+            .sidebar-header {
+                padding: 0.5rem;
+                min-height: 45px;
+            }
+
+            .sidebar-brand {
+                font-size: 1rem;
+                gap: 5px;
+            }
+
+            .menu-item {
+                padding: 0.5rem 0.75rem;
+                font-size: 0.9rem;
+                min-height: 36px;
+            }
+
+            .menu-item i {
+                width: 18px;
+                margin-right: 10px;
+                font-size: 0.9rem;
+            }
+
+            .admin-sidebar.collapsed {
+                width: 50px;
+            }
+
+            .admin-sidebar.collapsed .menu-item {
+                padding: 0.75rem;
+            }
+
+            .admin-sidebar.collapsed .menu-item i {
+                font-size: 1rem;
+            }
+        }
+
+        /* Overlay para móviles */
+        @media (max-width: 768px) {
+            .sidebar-overlay {
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background: rgba(0, 0, 0, 0.5);
+                z-index: 999;
+                opacity: 0;
+                visibility: hidden;
+                transition: all 0.3s ease;
+            }
+
+            .sidebar-overlay.show {
+                opacity: 1;
+                visibility: visible;
+            }
         }
     </style>
 </head>
@@ -226,6 +348,65 @@
             </form>
         </nav>
     </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const sidebar = document.getElementById('sidebar');
+            const toggleButton = document.getElementById('toggleSidebar');
+            const mainContent = document.getElementById('mainContent');
+
+            // Crear overlay para móviles
+            const overlay = document.createElement('div');
+            overlay.className = 'sidebar-overlay';
+            document.body.appendChild(overlay);
+
+            // Toggle sidebar
+            toggleButton.addEventListener('click', function() {
+                if (window.innerWidth <= 768) {
+                    // En móviles, mostrar/ocultar sidebar
+                    sidebar.classList.toggle('show');
+                    overlay.classList.toggle('show');
+                } else {
+                    // En desktop, colapsar/expandir sidebar
+                    sidebar.classList.toggle('collapsed');
+                    if (mainContent) {
+                        mainContent.classList.toggle('collapsed');
+                    }
+                }
+            });
+
+            // Cerrar sidebar al hacer click en overlay (móviles)
+            overlay.addEventListener('click', function() {
+                sidebar.classList.remove('show');
+                overlay.classList.remove('show');
+            });
+
+            // Manejar cambios de tamaño de ventana
+            window.addEventListener('resize', function() {
+                if (window.innerWidth > 768) {
+                    // En desktop, remover clases de móvil
+                    sidebar.classList.remove('show');
+                    overlay.classList.remove('show');
+                } else {
+                    // En móviles, remover clase collapsed
+                    sidebar.classList.remove('collapsed');
+                    if (mainContent) {
+                        mainContent.classList.remove('collapsed');
+                    }
+                }
+            });
+
+            // Cerrar sidebar al hacer click en enlaces (móviles)
+            const menuItems = document.querySelectorAll('.menu-item');
+            menuItems.forEach(item => {
+                item.addEventListener('click', function() {
+                    if (window.innerWidth <= 768) {
+                        sidebar.classList.remove('show');
+                        overlay.classList.remove('show');
+                    }
+                });
+            });
+        });
+    </script>
 </body>
 
 </html>
