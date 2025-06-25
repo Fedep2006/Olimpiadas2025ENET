@@ -39,7 +39,7 @@ class ReservaObserver
                 break;
             default:
                 // Paquete u otros: usar email genérico
-                Mail::to($user->email)->send(new ReservaCreada($user, [$reserva]));
+                Mail::to($user->email)->send(new ReservaCreada($reserva));
                 break;
         }
     }

@@ -262,20 +262,16 @@ class CartController extends Controller
                     'cvv' => '***'
                 ]);
 
-                // Enviar email de confirmación
-                Mail::to($request->email)->send(new ReservaCreada($reserva));
+
             }
 
             DB::commit();
             session(['carrito' => []]);
 
-            DB::commit();
+            // Total de reservas creadas en el paquete
+            $totalReservas = $paquete->contenidos()->count();
 
-            // Enviar correo de confirmación
-            $user = Auth::user();
-            Mail::to($user->email)->send(new ReservaCreada($user, $reservasCreadas));
-
-            return redirect()->route('mis-compras')->with('success', 'Compra procesada exitosamente. Se han creado ' . count($reservasCreadas) . ' reservas.');
+            return redirect()->route('mis-compras')->with('success', 'Compra procesada exitosamente. Se han creado ' . $totalReservas . ' reservas.');
 
         } catch (\Exception $e) {
             DB::rollback();
