@@ -425,45 +425,86 @@
                 <!-- Summary Sidebar -->
                 <div class="col-lg-4">
                     <div class="summary-card">
-                        <h5 class="mb-4 text-center">Resumen de compra</h5>
+                        <form id="checkout-form" method="POST" action="{{ route('carrito.checkout') }}">
+                            @csrf
+                            <input type="hidden" name="total_pagar" value="{{ $total }}">
+
+                            <h5 class="mb-4 text-center">Detalles de la Compra</h5>
                         
-                        <div class="summary-row">
+                            <div class="summary-row mb-4">
                             <span>Subtotal</span>
                             <span>${{ number_format($total, 2) }}</span>
                         </div>
-                        <hr>
-                        <div class="summary-row">
-                            <span>Total</span>
-                            <span class="fs-4">${{ number_format($total, 2) }}</span>
+
+                            <div class="row">
+                                <div class="col-12 mb-3">
+                                    <label for="nombre" class="form-label">Nombre Completo</label>
+                                    <input type="text" name="nombre" class="form-control @error('nombre') is-invalid @enderror" 
+                                           id="nombre" placeholder="Nombre como aparece en la tarjeta" 
+                                           required value="{{ old('nombre', Auth::user()->name ?? '') }}">
+                                    @error('nombre')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                                </div>
+
+                                <div class="col-12 mb-3">
+                                    <label for="email" class="form-label">Email de Contacto</label>
+                                    <input type="email" name="email" class="form-control @error('email') is-invalid @enderror" 
+                                           id="email" placeholder="tucorreo@ejemplo.com" 
+                                           required value="{{ old('email', Auth::user()->email ?? '') }}">
+                                    @error('email')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                                </div>
+                            </div>
+
+                            <h5 class="mt-4 mb-3">Detalles del Pago</h5>
+                            <div class="row">
+                                <div class="col-12 mb-3">
+                                    <label for="card_number" class="form-label">Número de Tarjeta</label>
+                                    <input type="text" name="card_number" class="form-control @error('card_number') is-invalid @enderror" 
+                                           id="card_number" placeholder="0000 0000 0000 0000" required>
+                                    @error('card_number')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                                </div>
+
+                                <div class="col-md-6 mb-3">
+                                    <label for="card_expiry" class="form-label">Vencimiento</label>
+                                    <input type="text" name="card_expiry" class="form-control @error('card_expiry') is-invalid @enderror" 
+                                           id="card_expiry" placeholder="MM/AA" required>
+                                    @error('card_expiry')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                                </div>
+
+                                <div class="col-md-6 mb-3">
+                                    <label for="card_cvc" class="form-label">CVC</label>
+                                    <input type="text" name="card_cvc" class="form-control @error('card_cvc') is-invalid @enderror" 
+                                           id="card_cvc" placeholder="123" required>
+                                    @error('card_cvc')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                                </div>
+                            </div>
+
+                            <hr>
+
+                            <div class="d-flex justify-content-between align-items-center mb-4">
+                                <span class="fw-bold fs-5">Total a Pagar:</span>
+                                <span class="fw-bold fs-4" style="color: var(--despegar-orange);">${{ number_format($total, 2) }}</span>
                         </div>
                         
-                        @auth
-                            <form action="{{ route('carrito.checkout') }}" method="POST" style="display: inline;">
-                                @csrf
-                                <button type="submit" class="btn btn-checkout mt-4">
-                                    <i class="fas fa-credit-card me-2"></i>Proceder al pago
+                            <button type="submit" class="btn btn-checkout mt-2">
+                                <i class="fas fa-credit-card me-2"></i>Confirmar y Pagar
                                 </button>
                             </form>
-                        @else
-                            <a href="{{ route('login') }}" class="btn btn-checkout mt-4">
-                                <i class="fas fa-sign-in-alt me-2"></i>Iniciar sesión para continuar
-                            </a>
-                        @endauth
                         
-                        <button class="btn btn-outline-danger mt-2" onclick="clearCart()" style="width: 100%;">
+                        <button class="btn btn-outline-danger mt-3" onclick="clearCart()" style="width: 100%;">
                             <i class="fas fa-trash me-2"></i>Vaciar carrito
                         </button>
                         
-                        <div class="text-center mt-3">
-                            <small class="text-muted">
-                                <i class="fas fa-shield-alt me-1"></i>
-                                Compra 100% segura y protegida
-                            </small>
-                        </div>
-                    </div>
-
-                    <!-- Security Badges -->
-                    <div class="security-badges">
+                        <div class="security-badges mt-4">
                         <div class="security-badge">
                             <i class="fas fa-lock"></i>
                             <div style="font-size: 0.8rem;">SSL</div>
@@ -477,15 +518,6 @@
                             <div style="font-size: 0.8rem;">Pagos</div>
                         </div>
                     </div>
-
-                    <!-- Help Section -->
-                    <div class="cart-card mt-3">
-                        <h6><i class="fas fa-headset text-primary me-2"></i>¿Necesitás ayuda?</h6>
-                        <p class="mb-2">Nuestros expertos están disponibles 24/7</p>
-                        <p class="mb-0">
-                            <strong>+54 11 4000-1234</strong><br>
-                            <small class="text-muted">Llamada gratuita</small>
-                        </p>
                     </div>
                 </div>
             </div>
@@ -569,6 +601,109 @@
         @if(session('error'))
             showNotification('{{ session('error') }}', 'danger');
         @endif
+
+        // Manejo de formato y validación de tarjeta
+        document.addEventListener('DOMContentLoaded', function() {
+            const cardNumberInput = document.getElementById('card_number');
+            const cardExpiryInput = document.getElementById('card_expiry');
+            const cardCvcInput = document.getElementById('card_cvc');
+            const checkoutForm = document.getElementById('checkout-form');
+
+            // Formato número de tarjeta
+            cardNumberInput?.addEventListener('input', function(e) {
+                let value = e.target.value.replace(/\D/g, '');
+                let formattedValue = '';
+                for (let i = 0; i < value.length; i++) {
+                    if (i > 0 && i % 4 === 0) {
+                        formattedValue += ' ';
+                    }
+                    formattedValue += value[i];
+                }
+                e.target.value = formattedValue.substring(0, 19);
+            });
+
+            // Formato fecha de vencimiento
+            cardExpiryInput?.addEventListener('input', function(e) {
+                let value = e.target.value.replace(/\D/g, '');
+                if (value.length > 2) {
+                    value = value.substring(0, 2) + '/' + value.substring(2, 4);
+                }
+                e.target.value = value;
+            });
+
+            // Formato CVC
+            cardCvcInput?.addEventListener('input', function(e) {
+                let value = e.target.value.replace(/\D/g, '');
+                e.target.value = value.substring(0, 3);
+            });
+
+            // Validación del formulario
+            checkoutForm?.addEventListener('submit', function(e) {
+                e.preventDefault();
+
+                // Validar número de tarjeta (Luhn algorithm)
+                const cardNumber = cardNumberInput.value.replace(/\D/g, '');
+                if (!isValidCreditCard(cardNumber)) {
+                    showNotification('El número de tarjeta no es válido', 'danger');
+                    return;
+                }
+
+                // Validar fecha de vencimiento
+                const expiry = cardExpiryInput.value.split('/');
+                if (expiry.length !== 2 || !isValidExpiry(expiry[0], expiry[1])) {
+                    showNotification('La fecha de vencimiento no es válida', 'danger');
+                    return;
+                }
+
+                // Validar CVC
+                const cvc = cardCvcInput.value;
+                if (cvc.length < 3) {
+                    showNotification('El código CVC no es válido', 'danger');
+                    return;
+                }
+
+                // Si todo está bien, enviar el formulario
+                this.submit();
+            });
+
+            // Función para validar número de tarjeta (Luhn algorithm)
+            function isValidCreditCard(number) {
+                let sum = 0;
+                let isEven = false;
+                
+                for (let i = number.length - 1; i >= 0; i--) {
+                    let digit = parseInt(number[i]);
+                    
+                    if (isEven) {
+                        digit *= 2;
+                        if (digit > 9) {
+                            digit -= 9;
+                        }
+                    }
+                    
+                    sum += digit;
+                    isEven = !isEven;
+                }
+                
+                return sum % 10 === 0;
+            }
+
+            // Función para validar fecha de vencimiento
+            function isValidExpiry(month, year) {
+                const currentDate = new Date();
+                const currentYear = currentDate.getFullYear() % 100;
+                const currentMonth = currentDate.getMonth() + 1;
+                
+                month = parseInt(month);
+                year = parseInt(year);
+                
+                if (month < 1 || month > 12) return false;
+                if (year < currentYear) return false;
+                if (year === currentYear && month < currentMonth) return false;
+                
+                return true;
+            }
+        });
     </script>
 </body>
 </html>
