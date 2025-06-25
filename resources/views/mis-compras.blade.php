@@ -131,10 +131,10 @@
                         <a class="nav-link" href="{{ route('results.index', ['tab' => 'viajes']) }}"><i class="fas fa-plane"></i> Vuelos</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="{{ route('results.index', ['tab' => 'hospedajes']) }}"><i class="fas fa-bed"></i> Hoteles</a>
+                        <a class="nav-link" href="{{ route('results.index', ['tab' => 'hospedajes']) }}"><i class="fas fa-hotel"></i> Hoteles</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="{{ route('results.index', ['tab' => 'paquetes']) }}"><i class="fas fa-suitcase"></i> Paquetes</a>
+                        <a class="nav-link" href="{{ route('results.index', ['tab' => 'paquetes']) }}"><i class="fas fa-box"></i> Paquetes</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="{{ route('results.index', ['tab' => 'vehiculos']) }}"><i class="fas fa-car"></i> Autos</a>
@@ -485,18 +485,12 @@
     </footer>
 
     <script>
-        // Bloque de debug para Bootstrap y dropdown
+        // Asegurarse de que el dropdown funcione
         document.addEventListener('DOMContentLoaded', function() {
-            console.log('Bootstrap:', typeof bootstrap !== 'undefined' ? 'Cargado' : 'NO cargado');
-            var dropdown = document.querySelector('.dropdown-toggle');
-            var menu = document.querySelector('.dropdown-menu');
-            if (dropdown && menu) {
-                dropdown.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    menu.classList.toggle('show');
-                    console.log('Clase show toggled en dropdown-menu');
-                });
-            }
+            var dropdownElementList = [].slice.call(document.querySelectorAll('.dropdown-toggle'));
+            var dropdownList = dropdownElementList.map(function (dropdownToggleEl) {
+                return new bootstrap.Dropdown(dropdownToggleEl);
+            });
         });
     </script>
 </body>
