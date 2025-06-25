@@ -8,66 +8,7 @@
 
 <body>
     @php
-        $camposCrear = [
-            (object) [
-                'id' => 'usuario_id',
-                'name' => 'usuario_id',
-                'type' => 'select',
-                'label' => 'Usuario',
-                'options' => $usuarios
-                    ->map(function ($usuario) {
-                        return (object) ['value' => $usuario->id, 'text' => $usuario->name];
-                    })
-                    ->toArray(),
-            ],
-            (object) [
-                'id' => 'paquete_id',
-                'name' => 'paquete_id',
-                'type' => 'select',
-                'label' => 'Paquete',
-                'options' => $paquetes
-                    ->map(function ($paquete) {
-                        return (object) ['value' => $paquete->id, 'text' => $paquete->nombre];
-                    })
-                    ->toArray(),
-            ],
-            (object) [
-                'id' => 'fecha_inicio',
-                'name' => 'fecha_inicio',
-                'type' => 'datetime-local',
-                'label' => 'Fecha de Inicio',
-            ],
-            (object) [
-                'id' => 'fecha_fin',
-                'name' => 'fecha_fin',
-                'type' => 'datetime-local',
-                'label' => 'Fecha Final',
-            ],
-            (object) [
-                'id' => 'precio_total',
-                'name' => 'precio_total',
-                'type' => 'number',
-                'label' => 'Precio Total',
-            ],
-            (object) [
-                'id' => 'codigo_reserva',
-                'name' => 'codigo_reserva',
-                'type' => 'text',
-                'label' => 'Codigo de Reserva',
-            ],
-            (object) [
-                'id' => 'estado',
-                'name' => 'estado',
-                'type' => 'select',
-                'label' => 'Estado de la Reserva',
-                'options' => [
-                    (object) ['value' => 'pendiente', 'text' => 'Pendiente'],
-                    (object) ['value' => 'confirmada', 'text' => 'Confirmada'],
-                    (object) ['value' => 'cancelada', 'text' => 'Cancelada'],
-                    (object) ['value' => 'completada', 'text' => 'Completada'],
-                ],
-            ],
-        ];
+        $camposCrear = [];
         $camposEditar = [
             (object) [
                 'id' => 'editEstado',
@@ -99,7 +40,7 @@
                 'value' => 'search_usuario',
             ],
             (object) [
-                'label' => 'fecha_inicio',
+                'label' => 'fecha de Inicio',
                 'type' => 'date',
                 'name' => 'search_fecha_inicio',
                 'id' => 'searchFecha_inicio',
@@ -107,7 +48,7 @@
                 'value' => 'search_fecha_inicio',
             ],
             (object) [
-                'label' => 'fecha_fin',
+                'label' => 'fecha de Fin',
                 'type' => 'date',
                 'name' => 'search_fecha_fin',
                 'id' => 'searchFecha_fin',

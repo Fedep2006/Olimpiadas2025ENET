@@ -14,22 +14,43 @@ class AdminReservasController extends Controller
 {
     public function index(Request $request)
     {
-        $query = Reserva::query();
+        $query = Reserva::with(['paquete', 'pago', 'usuario']);
 
         // Aplicar búsqueda
+        if ($request->filled('search_reserva')) {
+            $search = $request->search_reserva;
+            $query->where(function ($q) use ($search) {
+                $q->where('codigo_reserva', 'like', "%{$search}%")
+                    ->orWhereHas('paquete', function ($subQuery) use ($search) {
+                        $subQuery->where('numero_paquete', 'like', "%{$search}%");
+                    });
+            });
+        }
         if ($request->filled('search_usuario')) {
             $search = $request->search_usuario;
             $query->where(function ($q) use ($search) {
-                $q->where('name', 'like', "%{$search}%")
-                    ->orWhere('email', 'like', "%{$search}%");
+                $q->WhereHas('usuario', function ($subQuery) use ($search) {
+                    $subQuery->where('name', 'like', "%{$search}%")
+                        ->orWhere('email', 'like', "%{$search}%");
+                });
             });
         }
-
-        if ($request->filled('search_nivel')) {
-            $search = $request->search_nivel;
-            $query->Where('nivel', $search);
+        if ($request->filled('search_fecha_inicio')) {
+            $search = $request->search_fecha_inicio;
+            $query->whereDate('fecha_inicio', $search);
         }
-
+        if ($request->filled('search_fecha_fin')) {
+            $search = $request->search_fecha_fin;
+            $query->whereDate('fecha_fin', $search);
+        }
+        if ($request->filled('search_precio_total')) {
+            $search = $request->search_precio_total;
+            $query->where('precio_total', 'like', "%{$search}%");
+        }
+        if ($request->filled('search_estado')) {
+            $search = $request->search_estado;
+            $query->where('estado', $search);
+        }
         // Aplicar filtro de fecha
         if ($request->filled('search_registration_date')) {
             $date = $request->search_registration_date;
@@ -37,10 +58,7 @@ class AdminReservasController extends Controller
         }
 
         // Ordenar por fecha de creación descendente
-        $query->whereHas('pago')
-            ->whereHas('paquete')
-            ->whereHas('usuario')
-            ->select(['id', 'usuario_id', 'paquete_id', 'fecha_inicio', 'fecha_fin', 'estado', 'precio_total', 'codigo_reserva', 'created_at'])->orderBy('created_at', 'desc');
+        $query->orderBy('created_at', 'desc');
 
         // Paginar resultados
         $registros = $query->paginate(10)->withQueryString();
