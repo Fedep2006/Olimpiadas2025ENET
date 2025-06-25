@@ -55,9 +55,12 @@
             <h1 class="page-title">{{ $titulo }}</h1>
             <p class="page-subtitle">{{ $contenido }}</p>
         </div>
-        <button class="btn-admin orange">
-            <i class="{{$botonIcono}}"></i>
-            {{ $botonNombre ?? 'Acción' }}
-        </button>
+        @if (isset($botonNombre))
+            <button class="btn-admin orange">
+                <i class="{{ $botonIcono }}"></i>
+                {{ $botonNombre ?? 'Acción' }}
+            </button>
+        @endif
+
     </div>
 </div>

@@ -114,7 +114,7 @@
     @foreach ($registros as $registro)
         <tr>
             <td>
-                <div class="user-profile">
+                <div class="user-profile pl-5">
                     <div class="user-profile-avatar">
                         {{ substr($registro->usuario->name, 0, 2) }}
                     </div>
@@ -124,27 +124,40 @@
                     </div>
                 </div>
             </td>
-            <td>{{ $registro->usuario->email }}</td>
-            <td>{{ $registro->created_at->format('d/m/Y') }}</td>
             <td>
-                @if ($registro->nivel == 0)
-                    <span class="badge bg-primary">Cliente</span>
-                @elseif($registro->nivel == 1)
-                    <span class="badge bg-warning text-dark">Empleado</span>
-                @elseif($registro->nivel == 2)
-                    <span class="badge bg-danger">Superadmin</span>
+                <span>Codigo: <small class="pb-2 font-bold">{{ $registro->codigo_reserva }}</small></span>
+            </td>
+            <td>
+                <h6>{{ $registro->paquete->nombre }}</h6>
+                <small class="pb-2 font-bold">Codigo: {{ Str::upper($registro->paquete->numero_paquete) }}</small>
+            </td>
+            <td>
+                <div class="flex justify-center items-center">
+                    <div class="flex flex-col text-center ids gap-1">
+                        <h6>{{ $registro->fecha_inicio->format('d/m/Y H:i') }}</h6>
+                        <small class="camino-text">a</small>
+                        <h6>{{ $registro->fecha_fin->format('d/m/Y H:i') }}</h6>
+                    </div>
+                </div>
+            </td>
+            <td>
+                <h6>{{ $registro->precio_total }}</h6>
+            </td>
+            <td>
+                @if ($registro->estado == 'pendiente')
+                    <h6 class="badge bg-amber-500 p-3 !text-[1rem] text-dark">Pendiente</h6>
+                @elseif($registro->estado == 'cancelada')
+                    <span class="badge bg-red-500 p-3 !text-[1rem] ">Cancelado</span>
+                @elseif($registro->estado == 'confirmada')
+                    <span class="badge bg-success p-3 !text-[1rem]">Confirmada</span>
                 @else
-                    <span class="badge bg-secondary">Desconocido</span>
+                    <span class="badge bg-secondary p-3 !text-[1rem]">Completado</span>
                 @endif
             </td>
-            </td>
             <td>
-                <div class="action-buttons">
+                <div class="action-buttons justify-center">
                     <button class="action-btn edit" data-registro="{{ $registro }}" title="Editar">
                         <i class="fas fa-edit"></i>
-                    </button>
-                    <button class="action-btn delete" data-registro-id="{{ $registro->id }}" title="Eliminar">
-                        <i class="fas fa-trash"></i>
                     </button>
                 </div>
             </td>

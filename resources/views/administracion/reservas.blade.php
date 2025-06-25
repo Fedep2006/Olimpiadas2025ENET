@@ -70,61 +70,13 @@
         ];
         $camposEditar = [
             (object) [
-                'id' => 'editUsuario_id',
-                'name' => 'usuario_id',
-                'type' => 'select',
-                'label' => 'Usuario',
-                'options' => $usuarios
-                    ->map(function ($usuario) {
-                        return (object) ['value' => $usuario->id, 'text' => $usuario->name];
-                    })
-                    ->toArray(),
-            ],
-            (object) [
-                'id' => 'editPaquete_id',
-                'name' => 'paquete_id',
-                'type' => 'select',
-                'label' => 'Paquete',
-                'options' => $paquetes
-                    ->map(function ($paquete) {
-                        return (object) ['value' => $paquete->id, 'text' => $paquete->nombre];
-                    })
-                    ->toArray(),
-            ],
-            (object) [
-                'id' => 'editFecha_inicio',
-                'name' => 'fecha_inicio',
-                'type' => 'date',
-                'label' => 'Fecha de Inicio',
-            ],
-            (object) [
-                'id' => 'editFecha_fin',
-                'name' => 'fecha_fin',
-                'type' => 'date',
-                'label' => 'Fecha Final',
-            ],
-            (object) [
-                'id' => 'editPrecio_total',
-                'name' => 'precio_total',
-                'type' => 'number',
-                'label' => 'Precio Total',
-            ],
-            (object) [
-                'id' => 'editCodigo_reserva',
-                'name' => 'codigo_reserva',
-                'type' => 'text',
-                'label' => 'Codigo de Reserva',
-            ],
-            (object) [
                 'id' => 'editEstado',
                 'name' => 'estado',
                 'type' => 'select',
                 'label' => 'Estado de la Reserva',
                 'options' => [
-                    (object) ['value' => 'pendiente', 'text' => 'Pendiente'],
                     (object) ['value' => 'confirmada', 'text' => 'Confirmada'],
                     (object) ['value' => 'cancelada', 'text' => 'Cancelada'],
-                    (object) ['value' => 'completada', 'text' => 'Completada'],
                 ],
             ],
         ];
@@ -193,14 +145,14 @@
 
         <!-- Page Header -->
         <x-layouts.administracion.page-header titulo="Gestion de Reservas" contenido="Administra y gestiona las reservas"
-            botonIcono="fas fa-plus" botonNombre="Nuevo Reserva" />
+            botonIcono="fas fa-plus" />
 
         <!-- Search Bar -->
         <x-layouts.administracion.search-bar :inputs="$camposBuscar" />
 
         <!-- Users Table -->
         @php
-            $tHead = ['Reserva', 'Usuario', 'Paquete', 'Fechas', 'Precio', 'Estado'];
+            $tHead = ['Usuario', 'Reserva', 'Paquete', 'Fechas', 'Precio', 'Estado'];
         @endphp
         @include('administracion.partials.tabla', [
             'tHead' => $tHead,

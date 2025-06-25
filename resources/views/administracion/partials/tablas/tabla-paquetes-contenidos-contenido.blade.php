@@ -57,7 +57,7 @@
             <td>
                 <div class="flex flex-col text-center justify-between !self-center align-middle h-full w-full ">
                     <h6>{{ $registro->paquete->nombre }}</h6>
-                    <small class="pb-2 font-bold">Codigo: {{ $registro->paquete->numero_paquete }}</small>
+                    <small class="pb-2 font-bold">Codigo: {{ Str::upper($registro->paquete->numero_paquete) }}</small>
                 </div>
             </td>
             <td>
@@ -76,7 +76,7 @@
                     @if ($tipo)
                         <h6>{{ $tipo['nombre'] }}</h6>
                         <small class="pb-2 font-bold">
-                            Codigo: {{ $registro->contenido->{$tipo['campo']} ?? 'N/A' }}
+                            Codigo: {{ Str::upper($registro->contenido->{$tipo['campo']}) ?? 'N/A' }}
                         </small>
                     @else
                         <h6>Tipo desconocido</h6>
