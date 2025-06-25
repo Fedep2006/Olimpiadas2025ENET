@@ -83,7 +83,9 @@ Route::get('/hospedajes/{id}', [App\Http\Controllers\Principal\HospedajesControl
 
 // Página de inicio
 Route::get('/', function (Request $request) {
-    $paquetes = Paquete::where('hecho_por_usuario', '!=', 1)->get();
+    $paquetes = Paquete::where('hecho_por_usuario', '!=', 1)
+        ->where('activo', 1)
+        ->get();
     $hospedajes = Hospedaje::all();
     $viajes = Viaje::all();
     $vehiculos = Vehiculo::all();

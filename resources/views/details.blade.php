@@ -385,9 +385,15 @@
                             <div class="detail-item"> <i class="fas fa-car-side"></i> <div><span class="detail-label">Modelo:</span><span class="detail-value">{{ $item->modelo }}</span></div></div>
                             <div class="detail-item"><i class="fas fa-user-friends"></i> <div><span class="detail-label">Pasajeros:</span><span class="detail-value">{{ $item->capacidad_pasajeros }}</span></div></div>
                         @elseif($tipo === 'paquete')
-                            <p class="text-muted mb-3">Este paquete no requiere selección de fechas.</p>
-                            <input type="hidden" name="fecha_inicio" id="fecha_inicio" value="{{ \Carbon\Carbon::today()->format('Y-m-d') }}">
-                            <input type="hidden" name="fecha_fin" id="fecha_fin" value="{{ \Carbon\Carbon::today()->format('Y-m-d') }}">
+                            {{-- Información General del Paquete --}}
+                            <div class="detail-item"><i class="fas fa-box"></i> <div><span class="detail-label">Nombre:</span><span class="detail-value">{{ $item->nombre }}</span></div></div>
+                            <div class="detail-item"><i class="fas fa-clock"></i> <div><span class="detail-label">Duración:</span><span class="detail-value">{{ $item->duracion }} días</span></div></div>
+                            <div class="detail-item"><i class="fas fa-map-marker-alt"></i> <div><span class="detail-label">Ubicación:</span><span class="detail-value">{{ $item->ubicacion }}</span></div></div>
+                            <div class="detail-item"><i class="fas fa-users"></i> <div><span class="detail-label">Cupo:</span><span class="detail-value">{{ $item->cupo_minimo }} - {{ $item->cupo_maximo }} personas</span></div></div>
+                            <div class="detail-item"><i class="fas fa-hashtag"></i> <div><span class="detail-label">Número de Paquete:</span><span class="detail-value">{{ $item->numero_paquete }}</span></div></div>
+                            @if($item->descripcion)
+                            <div class="detail-item"><i class="fas fa-info-circle"></i> <div><span class="detail-label">Descripción:</span><span class="detail-value">{{ $item->descripcion }}</span></div></div>
+                            @endif
                         @elseif ($tipo === 'viaje')
                                                         {{-- Viaje --}}
                             <div class="detail-item"><i class="fas fa-building"></i> <div><span class="detail-label">Empresa:</span><span class="detail-value">{{ $item->empresa->nombre ?? 'No especificada' }}</span></div></div>
@@ -402,6 +408,54 @@
                         @endif   
                     </div>
                 </div>
+
+                {{-- Contenido del Paquete --}}
+                @if($tipo === 'paquete' && $item->contenidos->count() > 0)
+                    <div class="item-details mt-4">
+                        <h3 class="details-title">Contenido del Paquete</h3>
+                        
+                        @foreach($item->contenidos as $contenido)
+                            <div class="card mb-3">
+                                <div class="card-body">
+                                    @php
+                                        $contenidoItem = $contenido->contenido;
+                                        $tipoContenido = class_basename($contenido->contenido_type);
+                                    @endphp
+
+                                    <h5 class="card-title">
+                                        @if($tipoContenido === 'Hospedaje')
+                                            <i class="fas fa-hotel text-primary"></i> Hospedaje
+                                        @elseif($tipoContenido === 'Vehiculo')
+                                            <i class="fas fa-car text-success"></i> Vehículo
+                                        @elseif($tipoContenido === 'Viaje')
+                                            <i class="fas fa-plane text-info"></i> Viaje
+                                        @endif
+                                    </h5>
+
+                                    <div class="details-grid mt-3">
+                                        @if($tipoContenido === 'Hospedaje')
+                                            <div class="detail-item"><i class="fas fa-building"></i> <div><span class="detail-label">Nombre:</span><span class="detail-value">{{ $contenidoItem->nombre }}</span></div></div>
+                                            <div class="detail-item"><i class="fas fa-map-marker-alt"></i> <div><span class="detail-label">Ubicación:</span><span class="detail-value">{{ $contenidoItem->ubicacion }}</span></div></div>
+                                            <div class="detail-item"><i class="fas fa-star"></i> <div><span class="detail-label">Estrellas:</span><span class="detail-value">{{ $contenidoItem->estrellas }} / 5</span></div></div>
+                                            <div class="detail-item"><i class="fas fa-bed"></i> <div><span class="detail-label">Tipo:</span><span class="detail-value">{{ $contenidoItem->tipo }}</span></div></div>
+                                        @elseif($tipoContenido === 'Vehiculo')
+                                            <div class="detail-item"><i class="fas fa-car"></i> <div><span class="detail-label">Vehículo:</span><span class="detail-value">{{ $contenidoItem->marca }} {{ $contenidoItem->modelo }}</span></div></div>
+                                            <div class="detail-item"><i class="fas fa-users"></i> <div><span class="detail-label">Capacidad:</span><span class="detail-value">{{ $contenidoItem->capacidad_pasajeros }} pasajeros</span></div></div>
+                                            <div class="detail-item"><i class="fas fa-map-marker-alt"></i> <div><span class="detail-label">Ubicación:</span><span class="detail-value">{{ $contenidoItem->ubicacion }}</span></div></div>
+                                        @elseif($tipoContenido === 'Viaje')
+                                            <div class="detail-item"><i class="fas fa-plane-departure"></i> <div><span class="detail-label">Origen:</span><span class="detail-value">{{ $contenidoItem->origen }}</span></div></div>
+                                            <div class="detail-item"><i class="fas fa-plane-arrival"></i> <div><span class="detail-label">Destino:</span><span class="detail-value">{{ $contenidoItem->destino }}</span></div></div>
+                                            <div class="detail-item"><i class="fas fa-calendar"></i> <div><span class="detail-label">Salida:</span><span class="detail-value">{{ $contenidoItem->fecha_salida ? \Carbon\Carbon::parse($contenidoItem->fecha_salida)->format('d/m/Y H:i') : 'No especificada' }}</span></div></div>
+                                            @if($contenidoItem->fecha_llegada)
+                                                <div class="detail-item"><i class="fas fa-calendar-check"></i> <div><span class="detail-label">Llegada:</span><span class="detail-value">{{ \Carbon\Carbon::parse($contenidoItem->fecha_llegada)->format('d/m/Y H:i') }}</span></div></div>
+                                            @endif
+                                        @endif
+                                    </div>
+                                </div>
+                            </div>
+                        @endforeach
+                    </div>
+                @endif
 
                 {{-- Descripción, Condiciones y Contacto (solo para hospedaje) --}}
                 @if($tipo === 'hospedaje')

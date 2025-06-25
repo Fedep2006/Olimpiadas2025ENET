@@ -28,8 +28,9 @@ class ResultsController extends Controller
         $viajes     = Viaje::query();
         $hospedajes = Hospedaje::query();
         $vehiculos  = Vehiculo::query();
-        // Excluir paquetes creados por usuarios
-        $paquetes   = Paquete::where('hecho_por_usuario', '!=', 1);
+        // Excluir paquetes creados por usuarios y paquetes inactivos
+        $paquetes   = Paquete::where('hecho_por_usuario', '!=', 1)
+            ->where('activo', 1);
 
         // 1) Búsqueda libre
         if ($search) {

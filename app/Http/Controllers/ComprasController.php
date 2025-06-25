@@ -21,7 +21,7 @@ class ComprasController extends Controller
 
         // Cargar reservas aceptadas (asumiendo que 'aceptada' es un estado válido)
         $reservas_aceptadas = Reserva::where('usuario_id', $user->id)
-                                   ->where('estado', 'aceptada')
+                                   ->where('estado', 'confirmada')
                                    ->with(['reservable', 'paquete'])
                                    ->orderBy('created_at', 'desc')
                                    ->get();

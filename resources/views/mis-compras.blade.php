@@ -227,7 +227,7 @@
             </li>
             <li class="nav-item" role="presentation">
                 <button class="nav-link" id="aceptadas-tab" data-bs-toggle="tab" data-bs-target="#aceptadas" type="button" role="tab" aria-controls="aceptadas" aria-selected="false">
-                    <i class="fas fa-check-circle me-2"></i>Aceptadas <span class="badge bg-success ms-1">{{ $reservas_aceptadas->count() }}</span>
+                    <i class="fas fa-check-circle me-2"></i>Confirmadas <span class="badge bg-success ms-1">{{ $reservas_aceptadas->count() }}</span>
                 </button>
             </li>
             <li class="nav-item" role="presentation">
@@ -318,7 +318,7 @@
                 @if($reservas_aceptadas->isEmpty())
                     <div class="empty-state">
                         <i class="fas fa-suitcase-rolling fa-4x mb-4"></i>
-                        <h2>No tienes reservas aceptadas</h2>
+                        <h2>No tienes reservas confirmadas</h2>
                         <p class="lead text-muted">Tus reservas confirmadas aparecerán aquí. ¡Buen viaje!</p>
                     </div>
                 @else

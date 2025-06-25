@@ -388,9 +388,9 @@
         {{-- VIAJES EXACTOS --}}
         <h5 class="mt-3 mb-2"><i class="fas fa-plane text-primary me-2"></i>Viajes</h5>
         @forelse($results['viajes'] as $item)
-          @php $type = 'viajes'; @endphp
+          @php $type = 'viaje'; @endphp
           <div class="result-card">
-            <a href="{{ url('/details', ['type'=>$type,'id'=>$item->id]) }}" class="text-decoration-none text-dark">
+            <a href="{{ route('details.show', ['tipo'=>$type,'id'=>$item->id]) }}" class="text-decoration-none text-dark">
               <div class="result-body">
                 <div class="result-info">
                   <span class="badge bg-primary badge-type">{{ strtoupper($type) }}</span>
@@ -423,7 +423,7 @@
           </div>
           @foreach($viajes_cercanos as $item)
             <div class="result-card border border-info">
-              <a href="{{ url('/details', ['type'=>'viajes','id'=>$item->id]) }}" class="text-decoration-none text-dark">
+              <a href="{{ route('details.show', ['tipo'=>'viaje','id'=>$item->id]) }}" class="text-decoration-none text-dark">
                 <div class="result-body">
                   <div class="result-info">
                     <span class="badge bg-info text-dark badge-type">VIAJE CERCANO</span>
@@ -452,7 +452,7 @@
         <h5 class="mt-4 mb-2"><i class="fas fa-hotel text-success me-2"></i>Hospedajes</h5>
         @forelse($results['hospedajes'] as $item)
           <div class="result-card">
-            <a href="{{ url('/details', ['type'=>'hospedajes','id'=>$item->id]) }}" class="text-decoration-none text-dark">
+            <a href="{{ route('details.show', ['tipo'=>'hospedaje','id'=>$item->id]) }}" class="text-decoration-none text-dark">
               <div class="result-body">
                 <div class="result-info">
                   <span class="badge bg-success badge-type">HOSPEDAJE</span>
@@ -507,7 +507,7 @@
         <h5 class="mt-4 mb-2"><i class="fas fa-box text-secondary me-2"></i>Paquetes</h5>
         @forelse($results['paquetes'] as $item)
           <div class="result-card">
-            <a href="{{ url('/details', ['type'=>'paquetes','id'=>$item->id]) }}" class="text-decoration-none text-dark">
+            <a href="{{ route('details.show', ['tipo'=>'paquete','id'=>$item->id]) }}" class="text-decoration-none text-dark">
               <div class="result-body">
                 <div class="result-info">
                   <span class="badge bg-secondary badge-type">PAQUETE</span>
@@ -527,6 +527,9 @@
           <p class="text-center text-muted">No hay paquetes.</p>
         @endforelse
       </div>
+      @php
+        $singularTypes = ['viajes'=>'viaje','hospedajes'=>'hospedaje','vehiculos'=>'vehiculo','paquetes'=>'paquete'];
+      @endphp
       @foreach($results as $key => $items)
         <div class="tab-pane fade {{ (isset($tab) && $tab == $key) ? 'show active' : '' }}" id="tab-{{ $key }}">
           {{-- Título de sección según el tipo --}}
@@ -540,9 +543,9 @@
             <h5 class="mt-3 mb-2"><i class="fas fa-box text-secondary me-2"></i>Paquetes</h5>
           @endif
           @forelse($results[$key] as $item)
-            @php $type = $key; @endphp
+            @php $type = $singularTypes[$key] ?? $key; @endphp
             <div class="result-card">
-              <a href="{{ url('/details', ['type'=>$type,'id'=>$item->id]) }}" class="text-decoration-none text-dark">
+              <a href="{{ route('details.show', ['tipo'=>$type,'id'=>$item->id]) }}" class="text-decoration-none text-dark">
                 <div class="result-body">
                   <div class="result-info">
                     <span class="badge bg-primary badge-type">{{ strtoupper($type) }}</span>
