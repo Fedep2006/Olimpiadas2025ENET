@@ -348,65 +348,7 @@
             </form>
         </nav>
     </div>
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const sidebar = document.getElementById('sidebar');
-            const toggleButton = document.getElementById('toggleSidebar');
-            const mainContent = document.getElementById('mainContent');
 
-            // Crear overlay para móviles
-            const overlay = document.createElement('div');
-            overlay.className = 'sidebar-overlay';
-            document.body.appendChild(overlay);
-
-            // Toggle sidebar
-            toggleButton.addEventListener('click', function() {
-                if (window.innerWidth <= 768) {
-                    // En móviles, mostrar/ocultar sidebar
-                    sidebar.classList.toggle('show');
-                    overlay.classList.toggle('show');
-                } else {
-                    // En desktop, colapsar/expandir sidebar
-                    sidebar.classList.toggle('collapsed');
-                    if (mainContent) {
-                        mainContent.classList.toggle('collapsed');
-                    }
-                }
-            });
-
-            // Cerrar sidebar al hacer click en overlay (móviles)
-            overlay.addEventListener('click', function() {
-                sidebar.classList.remove('show');
-                overlay.classList.remove('show');
-            });
-
-            // Manejar cambios de tamaño de ventana
-            window.addEventListener('resize', function() {
-                if (window.innerWidth > 768) {
-                    // En desktop, remover clases de móvil
-                    sidebar.classList.remove('show');
-                    overlay.classList.remove('show');
-                } else {
-                    // En móviles, remover clase collapsed
-                    sidebar.classList.remove('collapsed');
-                    if (mainContent) {
-                        mainContent.classList.remove('collapsed');
-                    }
-                }
-            });
-
-            // Cerrar sidebar al hacer click en enlaces (móviles)
-            const menuItems = document.querySelectorAll('.menu-item');
-            menuItems.forEach(item => {
-                item.addEventListener('click', function() {
-                    if (window.innerWidth <= 768) {
-                        sidebar.classList.remove('show');
-                        overlay.classList.remove('show');
-                    }
-                });
-            });
-        });
-    </script>
 </body>
 
 </html>
