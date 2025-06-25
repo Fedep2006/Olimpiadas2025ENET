@@ -352,19 +352,7 @@
               <input type="date" name="checkout" class="form-control border-0" placeholder="Fecha de vuelta" value="{{ request('checkout') }}">
             </div>
           </div>
-          
-          <!-- Huéspedes -->
-          <div class="col-md-2">
-            <label class="form-label fw-bold mb-2">
-              <i class="fas fa-bed me-2 text-primary"></i>HUÉSPEDES
-            </label>
-            <div class="input-group input-elevated">
-              <span class="input-group-text bg-transparent border-0">
-                <i class="fas fa-users"></i>
-              </span>
-              <input type="number" name="guests" min="1" class="form-control border-0" value="{{ request('guests', 1) }}">
-            </div>
-          </div>
+
         </div>
         
         <!-- Botón Aplicar Filtros -->
