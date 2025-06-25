@@ -36,58 +36,28 @@
         ];
         $camposEditar = [
             (object) [
-                'id' => 'editNombre',
-                'name' => 'nombre',
-                'type' => 'text',
-                'label' => 'Nombre del Paquete',
-            ],
-            (object) [
-                'id' => 'editDuracion',
-                'name' => 'duracion',
-                'type' => 'number',
-                'label' => 'Duracion del Paquete',
-            ],
-            (object) [
-                'id' => 'editUbicacion',
-                'name' => 'ubicacion',
-                'type' => 'text',
-                'label' => 'Ubicacion del Paquete',
-            ],
-            (object) [
-                'id' => 'editCupo_minimo',
-                'name' => 'cupo_minimo',
-                'type' => 'text',
-                'label' => 'Cupo minimo de Personas',
-            ],
-            (object) [
-                'id' => 'editCupo_maximo',
-                'name' => 'cupo_maximo',
-                'type' => 'text',
-                'label' => 'Cupo maximo de Personas',
-            ],
-            (object) [
-                'id' => 'editPrecio_total',
-                'name' => 'precio_total',
-                'type' => 'number',
-                'label' => 'Precio total del Paquete',
-            ],
-            (object) [
-                'id' => 'editNumero_paquete',
+                'id' => 'EditNumero_paquete',
                 'name' => 'numero_paquete',
                 'type' => 'text',
-                'label' => 'Codigo del Paquete',
+                'label' => 'Codigo de Paquete',
             ],
             (object) [
-                'id' => 'editDescripcion',
-                'name' => 'descripcion',
-                'type' => 'text',
-                'label' => 'Descripcion del Paquete',
+                'id' => 'contenido_type',
+                'name' => 'contenido_type',
+                'type' => 'select',
+                'label' => 'Tipo de contenido',
+                'options' => [
+                    (object) ['value' => 'viaje', 'text' => 'Viaje'],
+                    (object) ['value' => 'vehiculo', 'text' => 'Vehiculo'],
+                    (object) ['value' => 'hospedaje', 'text' => 'Hospedaje'],
+                ],
             ],
             (object) [
-                'id' => 'editActivo',
-                'name' => 'activo',
-                'type' => 'checkbox',
-                'label' => 'Paquete Disponible',
+                'id' => 'contenido_id',
+                'name' => 'contenido_id',
+                'type' => 'select',
+                'label' => 'Contenido',
+                'options' => [],
             ],
         ];
 
@@ -192,7 +162,7 @@
         @endphp
         @include('administracion.partials.tabla', [
             'tHead' => $tHead,
-            'nombre' => 'paquetes',
+            'nombre' => 'paquetesContenidos',
         ])
     </x-layouts.administracion.main>
 
@@ -213,9 +183,9 @@
             vehiculo: @json($vehiculos)
         };
 
-        console.log(tablas);
-        const tablaSelect = document.getElementById('contenido_type');
-        const valorSelect = document.getElementById('contenido_id');
+        const tablaSelect = document.getElementsByName('contenido_type');
+        const valorSelect = document.getElementsByName('contenido_id');
+        console.log(valorSelect);
 
         // Función para cargar los valores según la tabla seleccionada
         function cargarValores(tabla) {
@@ -226,7 +196,9 @@
             const defaultOption = document.createElement('option');
             defaultOption.value = '';
             defaultOption.textContent = 'Seleccionar...';
-            valorSelect.appendChild(defaultOption);
+            valorSelect.forEach(item => {
+                item.appendChild(defaultOption);
+            });
 
             // Agregar los valores de la tabla seleccionada
             switch (tabla) {
@@ -235,7 +207,9 @@
                         const option = document.createElement('option');
                         option.value = item.id;
                         option.textContent = item.nombre;
-                        valorSelect.appendChild(option);
+                        valorSelect.forEach(item => {
+                            item.appendChild(option);
+                        });
                     });
                     break;
                 case 'hospedaje':
@@ -243,7 +217,9 @@
                         const option = document.createElement('option');
                         option.value = item.id;
                         option.textContent = item.nombre;
-                        valorSelect.appendChild(option);
+                        valorSelect.forEach(item => {
+                            item.appendChild(option);
+                        });
                     });
                     break;
                 case 'vehiculo':
@@ -251,7 +227,9 @@
                         const option = document.createElement('option');
                         option.value = item.id;
                         option.textContent = item.modelo;
-                        valorSelect.appendChild(option);
+                        valorSelect.forEach(item => {
+                            item.appendChild(option);
+                        });
                     });
                     break;
                 default:
@@ -261,22 +239,36 @@
 
         // Función para actualizar la información mostrada
         function actualizarInfo() {
-            const tablaSeleccionada = tablaSelect.value;
-            const valorSeleccionado = valorSelect.value;
-            const textoValor = valorSelect.options[valorSelect.selectedIndex].text;
+            const tablaSeleccionada = null;
+            tablaSeleccionada.forEach(item => {
+                tablaSeleccionada = item.value;
+            });
+            const valorSeleccionado = null;
+            const textoValor = null;
+            valorSelect.forEach(item => {
+                valorSeleccionado = item.value;
+                textoValor = item.options[item.selectedIndex].text;
+            });
+
         }
 
         // Event listeners
-        tablaSelect.addEventListener('change', function() {
-            cargarValores(this.value);
+        tablaSelect.forEach(item => {
+            item.addEventListener('change', function() {
+                cargarValores(this.value);
+            });
         });
-
-        valorSelect.addEventListener('change', function() {
-            actualizarInfo();
+        valorSelect.forEach(item => {
+            item.addEventListener('change', function() {
+                actualizarInfo();
+            });
         });
 
         // Cargar valores iniciales (primera tabla por defecto)
-        cargarValores(tablaSelect.value);
+
+        tablaSelect.forEach(item => {
+            cargarValores(item.value);
+        });
     </script>
 </body>
 

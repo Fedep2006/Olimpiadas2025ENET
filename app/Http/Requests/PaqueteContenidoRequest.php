@@ -104,11 +104,14 @@ class PaqueteContenidoRequest extends FormRequest
                 'vehiculo' => Vehiculo::class,
                 default => $this->contenidoType
             };
-            $paquete = Paquete::query()->where('numero_paquete', $this->numero_paquete)->first();
-
+            $paqueteId = null;
+            if ($this->numero_paquete) {
+                $paquete = Paquete::query()->where('numero_paquete', $this->numero_paquete)->first();
+                $paqueteId = $paquete?->id; // Usar el ID, no el objeto completo
+            }
             $this->merge([
                 'contenido_type' => $contenidoType,
-                'paquete_id' => $paquete
+                'paquete_id' => $paqueteId // Ahora es el ID o null
             ]);
             $this->offsetUnset('numero_paquete');
         }

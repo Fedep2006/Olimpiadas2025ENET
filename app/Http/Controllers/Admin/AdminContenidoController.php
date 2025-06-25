@@ -18,6 +18,7 @@ class AdminContenidoController extends Controller
     {
         $query = PaqueteContenido::query();
 
+        /*
         // Aplicar búsqueda
         if ($request->filled('search_paquete')) {
             $search = $request->search_paquete;
@@ -57,10 +58,12 @@ class AdminContenidoController extends Controller
         if ($request->filled('search_activo')) {
             $search = $request->search_activo;
             $query->Where('activo', $search);
-        }
+        }*/
 
         // Ordenar por fecha de creación descendente
-        $query->whereHas('paquete')->select(['id', 'paquete_id', 'contenido_type', 'contenido_id', 'created_at'])->orderBy('created_at', 'desc');
+        $query->whereHas('paquete')->with([
+            'paquete:id,nombre,numero_paquete'
+        ])->select(['id', 'paquete_id', 'contenido_type', 'contenido_id', 'created_at'])->orderBy('created_at', 'desc');
 
         // Paginar resultados
         $registros = $query->paginate(10)->withQueryString();
@@ -86,26 +89,11 @@ class AdminContenidoController extends Controller
     public function create(PaqueteContenidoRequest $request)
     {
         try {
-            $paquete = Paquete::find(2);
+            $paquete = Paquete::find($request->paquete_id);
             $paquete->contenidos()->create([
                 'contenido_type' => $request->contenido_type,
                 'contenido_id' => $request->contenido_id,
             ]);
-            /*
-            // Crear el contenido
-            PaqueteContenido::create([
-                'paquete_id' => 2,
-                'contenido_type' => Viaje::class,
-                'contenido_id' => 2,
-            ]);
-            
-            PaqueteContenido::create([
-                'paquete_id' => $request->paquete_id,
-                'contenido_type' => $request->contenido_type,
-                'contenido_id' => $request->contenido_id,
-            ]);
-            PaqueteContenido::create($request->validated());
-            */
 
             return response()->json([
                 'success' => true,

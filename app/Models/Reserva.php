@@ -17,14 +17,11 @@ class Reserva extends Model
     protected $fillable = [
         'usuario_id',
         'paquete_id',
-        'reservable_id',
-        'reservable_type',
         'fecha_inicio',
         'fecha_fin',
         'estado',
         'precio_total',
         'codigo_reserva',
-        'tipo_reserva',
     ];
 
     protected function casts(): array
@@ -60,20 +57,5 @@ class Reserva extends Model
     public function pago(): \Illuminate\Database\Eloquent\Relations\HasOne
     {
         return $this->hasOne(Pago::class, 'reserva_id');
-    }
-
-    public function serviciosReservados(): HasMany
-    {
-        return $this->hasMany(ServicioReservado::class, 'reserva_id');
-    }
-
-    public function personasConReservas(): HasMany
-    {
-        return $this->hasMany(PersonaReserva::class, 'reserva_id');
-    }
-
-    public function reservable()
-    {
-        return $this->morphTo();
     }
 }

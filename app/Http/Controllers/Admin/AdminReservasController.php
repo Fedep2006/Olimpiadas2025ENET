@@ -4,8 +4,11 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\ReservaRequest;
+use App\Models\Pago;
+use App\Models\Paquete;
 use Illuminate\Http\Request;
 use App\Models\Reserva;
+use App\Models\User;
 
 class AdminReservasController extends Controller
 {
@@ -34,7 +37,10 @@ class AdminReservasController extends Controller
         }
 
         // Ordenar por fecha de creación descendente
-        $query->select(['id', 'usuario_id', 'paquete_id', 'fecha_inicio', 'fecha_fin', 'estado', 'precio_total', 'codigo_reserva', 'created_at'])->orderBy('created_at', 'desc');
+        $query->whereHas('pago')
+            ->whereHas('paquete')
+            ->whereHas('usuario')
+            ->select(['id', 'usuario_id', 'paquete_id', 'fecha_inicio', 'fecha_fin', 'estado', 'precio_total', 'codigo_reserva', 'created_at'])->orderBy('created_at', 'desc');
 
         // Paginar resultados
         $registros = $query->paginate(10)->withQueryString();
@@ -49,13 +55,15 @@ class AdminReservasController extends Controller
                 'paginationInfo' => "Mostrando {$registros->firstItem()} - {$registros->lastItem()} de {$registros->total()} reservas"
             ]);
         }
-
-        return view('administracion.reservas', compact('registros'));
+        $usuarios = User::all();
+        $paquetes = Paquete::all();
+        $pagos = Pago::all();
+        return view('administracion.reservas', compact(['registros', 'usuarios', 'paquetes', 'pagos']));
     }
     public function create(ReservaRequest $request)
     {
         try {
-            // Crear el viaje
+            // Crear la reserva
             Reserva::create($request->validated());
 
             return response()->json([
